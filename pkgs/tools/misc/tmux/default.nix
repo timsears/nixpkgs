@@ -1,28 +1,61 @@
-{stdenv, fetchurl, ncurses, libevent, pkgconfig, makeWrapper}:
+{ stdenv
+, fetchFromGitHub
+, autoreconfHook
+, pkgconfig
+, makeWrapper
+, bison
+, ncurses
+, libevent
+}:
+
+let
+
+  bashCompletion = fetchFromGitHub {
+    owner = "imomaliev";
+    repo = "tmux-bash-completion";
+    rev = "fcda450d452f07d36d2f9f27e7e863ba5241200d";
+    sha256 = "092jpkhggjqspmknw7h3icm0154rg21mkhbc71j5bxfmfjdxmya8";
+  };
+
+in
 
 stdenv.mkDerivation rec {
   pname = "tmux";
-  version = "1.9a";
-  name = "${pname}-${version}";
+  version = "3.0a";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/${pname}/${name}.tar.gz";
-    sha256 = "1x9k4wfd4l5jg6fh7xkr3yyilizha6ka8m5b1nr0kw8wj0mv5qy5";
+  outputs = [ "out" "man" ];
+
+  src = fetchFromGitHub {
+    owner = "tmux";
+    repo = "tmux";
+    rev = version;
+    sha256 = "0y9lv1yr0x50v3k70vzkc8hfr7yijlsi30p7dr7i8akp3lwmmc7h";
   };
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [
+    pkgconfig
+    autoreconfHook
+    bison
+  ];
 
-  buildInputs = [ ncurses libevent makeWrapper ];
+  buildInputs = [
+    ncurses
+    libevent
+    makeWrapper
+  ];
 
-  postInstall =
-    ''
-      mkdir -p $out/etc/bash_completion.d
-      cp -v examples/bash_completion_tmux.sh $out/etc/bash_completion.d/tmux
-      wrapProgram $out/bin/tmux --prefix TERMINFO : $out/share/terminfo
-    '';
+  configureFlags = [
+    "--sysconfdir=/etc"
+    "--localstatedir=/var"
+  ];
+
+  postInstall = ''
+    mkdir -p $out/share/bash-completion/completions
+    cp -v ${bashCompletion}/completions/tmux $out/share/bash-completion/completions/tmux
+  '';
 
   meta = {
-    homepage = http://tmux.sourceforge.net/;
+    homepage = "http://tmux.github.io/";
     description = "Terminal multiplexer";
 
     longDescription =
@@ -36,12 +69,12 @@ stdenv.mkDerivation rec {
           * Interactive menus to select windows, sessions or clients.
           * Change the current window by searching for text in the target.
           * Terminal locking, manually or after a timeout.
-          * A clean, easily extended, BSD-licensed codebase, under active development. 
+          * A clean, easily extended, BSD-licensed codebase, under active development.
       '';
 
     license = stdenv.lib.licenses.bsd3;
 
     platforms = stdenv.lib.platforms.unix;
-    maintainers = with stdenv.lib.maintainers; [ shlevy thammers ];
+    maintainers = with stdenv.lib.maintainers; [ thammers fpletz ];
   };
 }

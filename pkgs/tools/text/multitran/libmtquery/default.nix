@@ -9,6 +9,8 @@ stdenv.mkDerivation {
 
   buildInputs = [ libmtsupport libfacet libbtree multitrandata ];
 
+  NIX_LDFLAGS = "-lbtree";
+
   patchPhase = ''
     sed -i -e 's@\$(DESTDIR)/usr@'$out'@' \
       -e 's@/usr/include/mt/support@${libmtsupport}/include/mt/support@' \
@@ -22,5 +24,6 @@ stdenv.mkDerivation {
     homepage = http://multitran.sourceforge.net/;
     description = "Multitran lib: main engine to query translations";
     license = stdenv.lib.licenses.gpl2;
+    platforms = stdenv.lib.platforms.linux;
   };
 }

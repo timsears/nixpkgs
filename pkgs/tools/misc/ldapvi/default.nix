@@ -1,7 +1,7 @@
 { stdenv, fetchgit, openldap, openssl, popt, glib, ncurses, readline, pkgconfig, cyrus_sasl, autoconf, automake }:
 
-stdenv.mkDerivation rec {
-  name = "ldapvi-${version}";
+stdenv.mkDerivation {
+  pname = "ldapvi";
   version = "0lz1sb5r0y9ypy8d7hm0l2wfa8l69f8ll0i5c78c0apz40nyjqkg";
 
   # use latest git, it includes some important patches since 2007 release
@@ -10,13 +10,11 @@ stdenv.mkDerivation rec {
     sha256 = "3ef3103030ecb04d7fe80180e3fd490377cf81fb2af96782323fddabc3225030";
   };
 
-  buildInputs = [ openldap openssl popt glib ncurses readline pkgconfig cyrus_sasl autoconf automake ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ openldap openssl popt glib ncurses readline cyrus_sasl autoconf automake ];
 
-  setSourceRoot = ''
-    sourceRoot=git-export/ldapvi
-  '';
- 
   preConfigure = ''
+    cd ldapvi
     ./autogen.sh
   '';
 
@@ -28,7 +26,7 @@ stdenv.mkDerivation rec {
     '';
     homepage = http://www.lichteblau.com/ldapvi/;
     license = licenses.gpl2;
-    maintainers = with maintainers; [ iElectric ];
+    maintainers = with maintainers; [ domenkozar ];
     platforms = stdenv.lib.platforms.linux;
   };
 }

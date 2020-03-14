@@ -1,22 +1,22 @@
-{ stdenv, fetchurl, buildPythonPackage, pycrypto }:
+{ stdenv, fetchurl, pythonPackages }:
 
-buildPythonPackage rec {
-  namePrefix = "";
-  name = "volatility-2.3.1";
+pythonPackages.buildPythonApplication rec {
+  version = "2.6";
+  pname = "volatility";
 
   src = fetchurl {
-    url = "http://volatility.googlecode.com/files/${name}.tar.gz";
-    sha256 = "bb1411fc671e0bf550a31e534fb1991b2f940f1dce1ebe4ce2fb627aec40726c";
+    url = "https://downloads.volatilityfoundation.org/releases/${version}/${pname}-${version}.zip";
+    sha256 = "15cjrx31nnqa3bpjkv0x05j7f2sb7pq46a72zh7qg55zf86hawsv";
   };
 
   doCheck = false;
 
-  propagatedBuildInputs = [ pycrypto ];
+  propagatedBuildInputs = [ pythonPackages.pycrypto pythonPackages.distorm3 ];
 
   meta = with stdenv.lib; {
-    homepage = https://code.google.com/p/volatility;
-    description = "advanced memory forensics framework";
+    homepage = https://www.volatilityfoundation.org/;
+    description = "Advanced memory forensics framework";
     maintainers = with maintainers; [ bosu ];
-    license = "GPLv2+";
+    license = stdenv.lib.licenses.gpl2Plus;
   };
 }

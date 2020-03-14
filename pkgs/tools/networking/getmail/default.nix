@@ -1,24 +1,30 @@
-{ stdenv, fetchurl, buildPythonPackage }:
+{ stdenv, fetchurl, python2Packages }:
 
-buildPythonPackage rec {
-  version = "4.46.0";
-  name = "getmail-${version}";
-  namePrefix = "";
+python2Packages.buildPythonApplication rec {
+  pname = "getmail";
+  version = "5.14";
 
   src = fetchurl {
-    url = "http://pyropus.ca/software/getmail/old-versions/${name}.tar.gz";
-    sha256 = "15rqmm25pq6ll8aaqh8h6pfdkpqs7y6yismb3h3w1bz8j292c8zl";
+    url = "http://pyropus.ca/software/getmail/old-versions/${pname}-${version}.tar.gz";
+    sha256 = "1hcrd9h4g12f5gvl1djsbchcjry02ghq4icdr897s8v48pkrzagk";
   };
 
   doCheck = false;
 
+  postPatch = ''
+    # getmail spends a lot of effort to build an absolute path for
+    # documentation installation; too bad it is counterproductive now
+    sed -e '/datadir or prefix,/d' -i setup.py
+  '';
+
   meta = {
     description = "A program for retrieving mail";
-    maintainers = [ stdenv.lib.maintainers.raskin stdenv.lib.maintainers.iElectric ];
+    maintainers = [ stdenv.lib.maintainers.raskin stdenv.lib.maintainers.domenkozar ];
     platforms = stdenv.lib.platforms.linux;
 
-    homepage = "http://pyropus.ca/software/getmail/";
+    homepage = http://pyropus.ca/software/getmail/;
     inherit version;
     updateWalker = true;
+    license = stdenv.lib.licenses.gpl2Plus;
   };
 }

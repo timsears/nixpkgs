@@ -1,40 +1,57 @@
-{ fetchurl, pkgs, stdenv, makeWrapper, qt5, yajl, libzip, hunspell, boost, lua5_1, luafilesystem, luazip, lrexlib, luasqlite3 }:
+{ fetchFromGitHub, fetchpatch, stdenv, wrapQtAppsHook, git, pcre, pugixml, qtbase, libsForQt5, qtmultimedia, qttools, yajl, libzip, hunspell
+, boost, libGLU, lua, cmake,  which, }:
 
+let
+  luaEnv = lua.withPackages(ps: with ps; [ luazip luafilesystem lrexlib-pcre luasql-sqlite3 lua-yajl luautf8 ]);
+in
 stdenv.mkDerivation rec {
-  name = "mudlet-${version}";
-  version = "3.0";
+  pname = "mudlet";
+  version = "4.3";
 
-  src = fetchurl {
-    url = "https://github.com/Mudlet/Mudlet/archive/6bc55dde0499cffab48b0021f27dcff1d57b0b66.zip";
-    sha256 = "c7b9a383d2cf393da730ce07ac8f06478eaec1fdf730054e837e58c598222d38";
+  src = fetchFromGitHub {
+    owner = "Mudlet";
+    repo = "Mudlet";
+    rev = "Mudlet-${version}";
+    fetchSubmodules = true;
+    sha256 = "0qqdmivfwf9jmv5yx90z1fj99nlhnq762lfw6bcxgv74y4l4b4c0";
   };
 
-  buildInputs = [ pkgs.unzip qt5 lua5_1 hunspell libzip yajl boost makeWrapper luafilesystem luazip lrexlib luasqlite3 ];
+  nativeBuildInputs = [ cmake wrapQtAppsHook git qttools which ];
+  buildInputs = [
+    pcre pugixml qtbase libsForQt5.qtkeychain qtmultimedia luaEnv libzip libGLU yajl boost hunspell
+  ];
 
-  configurePhase = "cd src && qmake";
+  WITH_FONTS = "NO";
+  WITH_UPDATER = "NO";
 
-  installPhase = let
-    luaZipPath = "${luazip}/lib/lua/5.1/?.so";
-    luaFileSystemPath = "${luafilesystem}/lib/lua/5.1/?.so";
-    lrexlibPath = "${lrexlib}/lib/lua/5.1/?.so";
-    luasqlitePath = "${luasqlite3}/lib/lua/5.1/?.so";
-  in ''
+  enableParallelBuilding = true;
+
+  installPhase =  ''
+    mkdir -pv $out/lib
+    cp 3rdparty/edbee-lib/edbee-lib/qslog/lib/libQsLog.so $out/lib
     mkdir -pv $out/bin
-    cp mudlet $out
-    cp -r mudlet-lua $out
+    cp src/mudlet $out
+    mkdir -pv $out/share/mudlet
+    cp -r ../src/mudlet-lua/lua $out/share/mudlet/
 
-    makeWrapper $out/mudlet $out/bin/mudlet \
-      --set LUA_CPATH "\"${luaFileSystemPath};${luaZipPath};${lrexlibPath};${luasqlitePath}\"" \
+    mkdir -pv $out/share/applications
+    cp ../mudlet.desktop $out/share/applications/
+
+    mkdir -pv $out/share/pixmaps
+    cp -r ../mudlet.png $out/share/pixmaps/
+
+    makeQtWrapper $out/mudlet $out/bin/mudlet \
+      --set LUA_CPATH "${luaEnv}/lib/lua/${lua.luaversion}/?.so" \
+      --prefix LUA_PATH : "$NIX_LUA_PATH" \
+      --prefix LD_LIBRARY_PATH : "${libsForQt5.qtkeychain}/lib/" \
       --run "cd $out";
   '';
 
-  patches = [ ./libs.patch ];
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "Crossplatform mud client";
     homepage = http://mudlet.org/;
-    maintainers = [ stdenv.lib.maintainers.wyvie ];
-    platforms = stdenv.lib.platforms.linux;
-    license = stdenv.lib.licenses.gpl2;
+    maintainers = [ maintainers.wyvie maintainers.pstn ];
+    platforms = platforms.linux;
+    license = licenses.gpl2;
   };
 }

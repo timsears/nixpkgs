@@ -1,13 +1,14 @@
 { stdenv, fetchurl, jre }:
+stdenv.mkDerivation {
+  pname = "minecraft-server";
+  version = "1.15.2";
 
-stdenv.mkDerivation rec {
-  name    = "minecraft-server-${version}";
-  version = "1.7.10";
-
-  src  = fetchurl {
-    url    = "http://s3.amazonaws.com/Minecraft.Download/versions/${version}/minecraft_server.${version}.jar";
-    sha256 = "1z7kf8wm27yq10rnlwlig7c2vc45x3sfbxslw4lxh9201kq70267";
+  src = fetchurl {
+    url    = "https://launcher.mojang.com/v1/objects/bb2b6b1aefcd70dfd1892149ac3a215f6c636b07/server.jar";
+    sha256 = "12kynrpxgcdg8x12wcvwkxka0fxgm5siqg8qq0nnmv0443f8dkw0";
   };
+
+  preferLocalBuild = true;
 
   installPhase = ''
     mkdir -p $out/bin $out/lib/minecraft
@@ -28,6 +29,6 @@ stdenv.mkDerivation rec {
     homepage    = "https://minecraft.net";
     license     = stdenv.lib.licenses.unfreeRedistributable;
     platforms   = stdenv.lib.platforms.unix;
-    maintainers = [ stdenv.lib.maintainers.thoughtpolice ];
+    maintainers = with stdenv.lib.maintainers; [ thoughtpolice tomberek costrouc];
   };
 }

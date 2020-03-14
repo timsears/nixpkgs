@@ -1,22 +1,25 @@
-{stdenv, fetchurl}:
+{ stdenv, fetchFromGitHub, cmake, perl, zlib, bzip2, popt }:
 
-stdenv.mkDerivation {
-  name = "librsync-0.9.7";
-  
-  src = fetchurl {
-    url = mirror://sourceforge/librsync/librsync-0.9.7.tar.gz;
-    sha256 = "1mj1pj99mgf1a59q9f2mxjli2fzxpnf55233pc1klxk2arhf8cv6";
+stdenv.mkDerivation rec {
+  pname = "librsync";
+  version = "2.2.1";
+
+  src = fetchFromGitHub {
+    owner = "librsync";
+    repo = "librsync";
+    rev = "v${version}";
+    sha256 = "08wdlxsa9zg2pyasz1lwg70d5psi4amv81v4yxwffx67ndzb9yp5";
   };
 
-  configureFlags = if stdenv.isCygwin then "--enable-static" else "--enable-shared";
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [ perl zlib bzip2 popt ];
 
-  crossAttrs = {
-    dontStrip = true;
-  };
+  dontStrip = stdenv.hostPlatform != stdenv.buildPlatform;
 
-  meta = {
+  meta = with stdenv.lib; {
     homepage = http://librsync.sourceforge.net/;
-    license = stdenv.lib.licenses.lgpl2Plus;
+    license = licenses.lgpl2Plus;
     description = "Implementation of the rsync remote-delta algorithm";
+    platforms = platforms.unix;
   };
 }

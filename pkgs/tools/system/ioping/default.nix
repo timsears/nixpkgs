@@ -1,46 +1,23 @@
-x@{builderDefsPackage
-  , ...}:
-builderDefsPackage
-(a :  
-let 
-  helperArgNames = ["stdenv" "fetchurl" "builderDefsPackage"] ++ 
-    [];
+{ stdenv, fetchFromGitHub }:
 
-  buildInputs = map (n: builtins.getAttr n x)
-    (builtins.attrNames (builtins.removeAttrs x helperArgNames));
-  sourceInfo = rec {
-    baseName="ioping";
-    version = "0.8";
-    name="${baseName}-${version}";
-    url="http://ioping.googlecode.com/files/${name}.tar.gz";
-  };
-in
-rec {
-  src = a.fetchurl {
-    url = sourceInfo.url;
-    sha256 = "0j7yal61nby1lkg9wnr6lxfljbd7wl3n0z8khqwvc9lf57bxngz2";
+stdenv.mkDerivation rec {
+  pname = "ioping";
+  version = "1.2";
+
+  src = fetchFromGitHub {
+    owner = "koct9i";
+    repo = "ioping";
+    rev = "v${version}";
+    sha256 = "10bv36bqga8sdifxzywzzpjil7vmy62psirz7jbvlsq1bw71aiid";
   };
 
-  inherit (sourceInfo) name version;
-  inherit buildInputs;
+  makeFlags = [ "PREFIX=$(out)" ];
 
-  /* doConfigure should be removed if not needed */
-  phaseNames = ["doMakeInstall"];
-  makeFlags = [
-    ''PREFIX="$out"''
-  ];
-      
-  meta = {
-    description = "Filesystem IO delay time measurer";
-    maintainers = with a.lib.maintainers;
-    [
-      raskin
-    ];
-    platforms = with a.lib.platforms;
-      linux;
-    license = a.lib.licenses.gpl3Plus;
-    downloadPage = "http://code.google.com/p/ioping/downloads/list";
-    inherit version;
+  meta = with stdenv.lib; {
+    description = "Disk I/O latency measuring tool";
+    maintainers = with maintainers; [ raskin ];
+    platforms = platforms.unix;
+    license = licenses.gpl3Plus;
+    homepage = https://github.com/koct9i/ioping;
   };
-}) x
-
+}

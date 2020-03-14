@@ -1,53 +1,49 @@
-{ stdenv, pkgs, config }:
+{ lib
+, crossSystem, localSystem, config, overlays
+, bootStages
+, ...
+}:
 
-import ../generic rec {
-  inherit config;
+assert crossSystem == localSystem;
 
-  preHook =
-    ''
-      export NIX_ENFORCE_PURITY=1
-      export NIX_IGNORE_LD_THROUGH_GCC=1
-    '' + (if stdenv.isDarwin then ''
-      export NIX_ENFORCE_PURITY=
-      export NIX_DONT_SET_RPATH=1
-      export NIX_NO_SELF_RPATH=1
-      dontFixLibtool=1
-      stripAllFlags=" " # the Darwin "strip" command doesn't know "-s"
-      xargsFlags=" "
-      export MACOSX_DEPLOYMENT_TARGET=10.6
-      export SDKROOT=$(/usr/bin/xcrun --show-sdk-path 2> /dev/null || true)
-      export NIX_CFLAGS_COMPILE+=" --sysroot=/var/empty -idirafter $SDKROOT/usr/include -F$SDKROOT/System/Library/Frameworks -Wno-multichar -Wno-deprecated-declarations"
-      export NIX_LDFLAGS_AFTER+=" -L$SDKROOT/usr/lib"
-    '' else "");
+bootStages ++ [
+  (prevStage: {
+    inherit config overlays;
 
-  initialPath = (import ../common-path.nix) {pkgs = pkgs;};
+    stdenv = import ../generic rec {
+      inherit config;
 
-  system = stdenv.system;
+      inherit (prevStage.stdenv) buildPlatform hostPlatform targetPlatform;
 
-  gcc = import ../../build-support/gcc-wrapper {
-    nativeTools = false;
-    nativePrefix = stdenv.lib.optionalString stdenv.isSunOS "/usr";
-    nativeLibc = true;
-    inherit stdenv;
-    binutils =
-      if stdenv.isDarwin then
-        import ../../build-support/native-darwin-cctools-wrapper {inherit stdenv;}
-      else
-        pkgs.binutils;
-    gcc = pkgs.gcc.gcc;
-    coreutils = pkgs.coreutils;
-    shell = pkgs.bash + "/bin/sh";
-  };
+      preHook = ''
+        export NIX_ENFORCE_PURITY="''${NIX_ENFORCE_PURITY-1}"
+        export NIX_ENFORCE_NO_NATIVE="''${NIX_ENFORCE_NO_NATIVE-1}"
+        export NIX_IGNORE_LD_THROUGH_GCC=1
+      '';
 
-  shell = pkgs.bash + "/bin/sh";
+      initialPath = (import ../common-path.nix) { pkgs = prevStage; };
 
-  fetchurlBoot = stdenv.fetchurlBoot;
+      cc = import ../../build-support/cc-wrapper {
+        nativeTools = false;
+        nativePrefix = lib.optionalString hostPlatform.isSunOS "/usr";
+        nativeLibc = true;
+        inherit (prevStage) stdenvNoCC binutils coreutils gnugrep;
+        cc = prevStage.gcc.cc;
+        isGNU = true;
+        shell = prevStage.bash + "/bin/sh";
+      };
 
-  overrides = pkgs_: {
-    inherit gcc;
-    inherit (gcc) binutils;
-    inherit (pkgs)
-      gzip bzip2 xz bash coreutils diffutils findutils gawk
-      gnumake gnused gnutar gnugrep gnupatch perl;
-  };
-}
+      shell = prevStage.bash + "/bin/sh";
+
+      fetchurlBoot = prevStage.stdenv.fetchurlBoot;
+
+      overrides = self: super: {
+        inherit cc;
+        inherit (cc) binutils;
+        inherit (prevStage)
+          gzip bzip2 xz bash coreutils diffutils findutils gawk
+          gnumake gnused gnutar gnugrep gnupatch perl;
+      };
+    };
+  })
+]

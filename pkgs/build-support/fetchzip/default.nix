@@ -5,17 +5,17 @@
 # (e.g. due to minor changes in the compression algorithm, or changes
 # in timestamps).
 
-{ lib, fetchurl, unzip }:
+{ fetchurl, unzip }:
 
 { # Optionally move the contents of the unpacked tree up one level.
   stripRoot ? true
 , url
+, extraPostFetch ? ""
+, name ? "source"
 , ... } @ args:
 
-fetchurl ({
-  # Remove the extension, because otherwise unpackPhase will get
-  # confused. FIXME: fix unpackPhase.
-  name = args.name or lib.removeSuffix ".zip" (lib.removeSuffix ".tar.gz" (baseNameOf url));
+(fetchurl ({
+  inherit name;
 
   recursiveHash = true;
 
@@ -23,22 +23,30 @@ fetchurl ({
 
   postFetch =
     ''
-      export PATH=${unzip}/bin:$PATH
-      mkdir $out
-      cd $out
+      unpackDir="$TMPDIR/unpack"
+      mkdir "$unpackDir"
+      cd "$unpackDir"
+
       renamed="$TMPDIR/${baseNameOf url}"
       mv "$downloadedFile" "$renamed"
       unpackFile "$renamed"
     ''
-    # FIXME: handle zip files that contain a single regular file.
-    + lib.optionalString stripRoot ''
-      shopt -s dotglob
-      if [ "$(ls -d $out/* | wc -l)" != 1 ]; then
-        echo "error: zip file must contain a single directory."
+    + (if stripRoot then ''
+      if [ $(ls "$unpackDir" | wc -l) != 1 ]; then
+        echo "error: zip file must contain a single file or directory."
+        echo "hint: Pass stripRoot=false; to fetchzip to assume flat list of files."
         exit 1
       fi
-      fn=$(cd "$out" && echo *)
-      mv $out/$fn/* "$out/"
-      rmdir "$out/$fn"
-    '';
-} // args)
+      fn=$(cd "$unpackDir" && echo *)
+      if [ -f "$unpackDir/$fn" ]; then
+        mkdir $out
+      fi
+      mv "$unpackDir/$fn" "$out"
+    '' else ''
+      mv "$unpackDir" "$out"
+    '') #*/
+    + extraPostFetch;
+} // removeAttrs args [ "stripRoot" "extraPostFetch" ])).overrideAttrs (x: {
+  # Hackety-hack: we actually need unzip hooks, too
+  nativeBuildInputs = x.nativeBuildInputs ++ [ unzip ];
+})

@@ -1,23 +1,25 @@
-{ stdenv, fetchurl, cmake, SDL, SDL_image, SDL_mixer, SDL_net, SDL_ttf, pango
-, gettext, zlib, boost, freetype, libpng, pkgconfig, lua, dbus, fontconfig, libtool
-, fribidi, asciidoc }:
+{ stdenv, fetchurl, cmake, pkgconfig, SDL2, SDL2_image, SDL2_mixer, SDL2_net, SDL2_ttf
+, pango, gettext, boost, libvorbis, fribidi, dbus, libpng, pcre, openssl, icu
+, Cocoa, Foundation
+, enableTools ? false
+}:
 
 stdenv.mkDerivation rec {
   pname = "wesnoth";
-  version = "1.10.7";
-
-  name = "${pname}-${version}";
+  version = "1.14.11";
 
   src = fetchurl {
-    url = "mirror://sourceforge/sourceforge/${pname}/${name}.tar.bz2";
-    sha256 = "0gi5fzij48hmhhqxc370jxvxig5q3d70jiz56rjn8yx514s5lfwa";
+    url = "mirror://sourceforge/sourceforge/${pname}/${pname}-${version}.tar.bz2";
+    sha256 = "1i8mz6gw3qar09bscczhki0g4scj8pl58v85rp0g55r4bcq41l5v";
   };
 
-  buildInputs = [ SDL SDL_image SDL_mixer SDL_net SDL_ttf pango gettext zlib
-                  boost boost.lib fribidi cmake freetype libpng pkgconfig lua
-                  dbus fontconfig libtool ];
+  nativeBuildInputs = [ cmake pkgconfig ];
 
-  cmakeFlags = [ "-DENABLE_STRICT_COMPILATION=FALSE" ]; # newer gcc problems http://gna.org/bugs/?21030
+  buildInputs = [ SDL2 SDL2_image SDL2_mixer SDL2_net SDL2_ttf pango gettext boost
+                  libvorbis fribidi dbus libpng pcre openssl icu ]
+                ++ stdenv.lib.optionals stdenv.isDarwin [ Cocoa Foundation];
+
+  cmakeFlags = [ "-DENABLE_TOOLS=${if enableTools then "ON" else "OFF"}" ];
 
   enableParallelBuilding = true;
 
@@ -31,9 +33,9 @@ stdenv.mkDerivation rec {
       adventures.
     '';
 
-    homepage = http://www.wesnoth.org/;
+    homepage = "http://www.wesnoth.org/";
     license = licenses.gpl2;
-    maintainers = [ maintainers.kkallio ];
-    platforms = platforms.linux;
+    maintainers = with maintainers; [ abbradar ];
+    platforms = platforms.unix;
   };
 }

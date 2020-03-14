@@ -13,7 +13,7 @@ let
   };
 
   # Temporary check, for nixos to cope both with nixpkgs stdenv-updates and trunk
-  platform = pkgs.stdenv.platform;
+  inherit (pkgs.stdenv.hostPlatform) platform;
 
 in
 
@@ -24,6 +24,7 @@ in
 
       enable = mkOption {
         default = false;
+        type = types.bool;
         description = ''
           Whether to create symlinks to the system generations under
           <literal>/boot</literal>.  When enabled,
@@ -42,10 +43,11 @@ in
 
       copyKernels = mkOption {
         default = false;
-        description = "
+        type = types.bool;
+        description = ''
           Whether copy the necessary boot files into /boot, so
           /nix/store is not needed by the boot loader.
-        ";
+        '';
       };
 
     };

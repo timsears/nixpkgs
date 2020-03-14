@@ -5,13 +5,13 @@ let
   cfg = config.services.tor;
 
   torify = pkgs.writeTextFile {
-    name = "torify";
+    name = "tsocks";
     text = ''
-        #!${pkgs.stdenv.shell}
-        TSOCKS_CONF_FILE=${pkgs.writeText "tsocks.conf" cfg.torify.config} LD_PRELOAD="${pkgs.tsocks}/lib/libtsocks.so $LD_PRELOAD" "$@"
+        #!${pkgs.runtimeShell}
+        TSOCKS_CONF_FILE=${pkgs.writeText "tsocks.conf" cfg.tsocks.config} LD_PRELOAD="${pkgs.tsocks}/lib/libtsocks.so $LD_PRELOAD" "$@"
     '';
     executable = true;
-    destination = "/bin/torify";
+    destination = "/bin/tsocks";
   };
 
 in
@@ -19,19 +19,29 @@ in
 {
 
   ###### interface
-  
+
   options = {
-  
-    services.tor.torify = {
+
+    services.tor.tsocks = {
 
       enable = mkOption {
-        default = cfg.client.enable;
+        type = types.bool;
+        default = false;
         description = ''
-          Whether to build torify scipt to relay application traffic via TOR.
+          Whether to build tsocks wrapper script to relay application traffic via Tor.
+
+          <important>
+            <para>You shouldn't use this unless you know what you're
+            doing because your installation of Tor already comes with
+            its own superior (doesn't leak DNS queries)
+            <literal>torsocks</literal> wrapper which does pretty much
+            exactly the same thing as this.</para>
+          </important>
         '';
       };
 
       server = mkOption {
+        type = types.str;
         default = "localhost:9050";
         example = "192.168.0.20";
         description = ''
@@ -40,6 +50,7 @@ in
       };
 
       config = mkOption {
+        type = types.lines;
         default = "";
         description = ''
           Extra configuration. Contents will be added verbatim to TSocks
@@ -53,13 +64,13 @@ in
 
   ###### implementation
 
-  config = mkIf cfg.torify.enable {
+  config = mkIf cfg.tsocks.enable {
 
     environment.systemPackages = [ torify ];  # expose it to the users
 
-    services.tor.torify.config = ''
-      server = ${toString(head (splitString ":" cfg.torify.server))}
-      server_port = ${toString(tail (splitString ":" cfg.torify.server))}
+    services.tor.tsocks.config = ''
+      server = ${toString(head (splitString ":" cfg.tsocks.server))}
+      server_port = ${toString(tail (splitString ":" cfg.tsocks.server))}
 
       local = 127.0.0.0/255.128.0.0
       local = 127.128.0.0/255.192.0.0

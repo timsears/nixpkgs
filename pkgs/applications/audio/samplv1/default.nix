@@ -1,15 +1,17 @@
-{ stdenv, fetchurl, jack2, libsndfile, lv2, qt4 }:
+{ stdenv, fetchurl, pkgconfig, libjack2, alsaLib, liblo, libsndfile, lv2, qt5 }:
 
 stdenv.mkDerivation rec {
-  name = "samplv1-${version}";
-  version = "0.5.1";
+  pname = "samplv1";
+  version = "0.9.12";
 
   src = fetchurl {
-    url = "mirror://sourceforge/samplv1/${name}.tar.gz";
-    sha256 = "155qq7gxyqn7sh8bbyhjk40lxl157lb2h539j4gqgv5jphz8g6wy";
+    url = "mirror://sourceforge/samplv1/${pname}-${version}.tar.gz";
+    sha256 = "0xzjxiqzcf1ygabrjsy0iachhnpy85rp9519fmj2f568r6ml6hzg";
   };
 
-  buildInputs = [ jack2 libsndfile lv2 qt4 ];
+  buildInputs = [ libjack2 alsaLib liblo libsndfile lv2 qt5.qtbase qt5.qttools];
+
+  nativeBuildInputs = [ pkgconfig ];
 
   meta = with stdenv.lib; {
     description = "An old-school all-digital polyphonic sampler synthesizer with stereo fx";

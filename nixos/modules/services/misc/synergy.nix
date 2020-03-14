@@ -81,27 +81,28 @@ in
 
   ###### implementation
 
-  config = {
-
-    systemd.services."synergy-client" = {
-      enable = cfgC.enable;
-      after = [ "network.target" ];
-      description = "Synergy client";
-      wantedBy = optional cfgC.autoStart "multi-user.target";
-      path = [ pkgs.synergy ];
-      serviceConfig.ExecStart = ''${pkgs.synergy}/bin/synergyc -f ${optionalString (cfgC.screenName != "") "-n ${cfgC.screenName}"} ${cfgC.serverAddress}'';
-    };
-
-    systemd.services."synergy-server" = {
-      enable = cfgS.enable;
-      after = [ "network.target" ];
-      description = "Synergy server";
-      wantedBy = optional cfgS.autoStart "multi-user.target";
-      path = [ pkgs.synergy ];
-      serviceConfig.ExecStart = ''${pkgs.synergy}/bin/synergys -c ${cfgS.configFile} -f ${optionalString (cfgS.address != "") "-a ${cfgS.address}"} ${optionalString (cfgS.screenName != "") "-n ${cfgS.screenName}" }'';
-    };
-
-  };
+  config = mkMerge [
+    (mkIf cfgC.enable {
+      systemd.user.services.synergy-client = {
+        after = [ "network.target" "graphical-session.target" ];
+        description = "Synergy client";
+        wantedBy = optional cfgC.autoStart "graphical-session.target";
+        path = [ pkgs.synergy ];
+        serviceConfig.ExecStart = ''${pkgs.synergy}/bin/synergyc -f ${optionalString (cfgC.screenName != "") "-n ${cfgC.screenName}"} ${cfgC.serverAddress}'';
+        serviceConfig.Restart = "on-failure";
+      };
+    })
+    (mkIf cfgS.enable {
+      systemd.user.services.synergy-server = {
+        after = [ "network.target" "graphical-session.target" ];
+        description = "Synergy server";
+        wantedBy = optional cfgS.autoStart "graphical-session.target";
+        path = [ pkgs.synergy ];
+        serviceConfig.ExecStart = ''${pkgs.synergy}/bin/synergys -c ${cfgS.configFile} -f ${optionalString (cfgS.address != "") "-a ${cfgS.address}"} ${optionalString (cfgS.screenName != "") "-n ${cfgS.screenName}" }'';
+        serviceConfig.Restart = "on-failure";
+      };
+    })
+  ];
 
 }
 

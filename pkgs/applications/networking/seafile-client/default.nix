@@ -1,39 +1,34 @@
-{stdenv, fetchurl, writeScript, pkgconfig, cmake, qt4, seafile-shared, ccnet, makeWrapper}:
+{ mkDerivation, lib, fetchFromGitHub, pkgconfig, cmake, qtbase, qttools
+, seafile-shared, ccnet, jansson, libsearpc
+, withShibboleth ? true, qtwebengine }:
 
-stdenv.mkDerivation rec
-{
-  version = "3.0.4";
-  name = "seafile-client-${version}";
+mkDerivation rec {
+  pname = "seafile-client";
+  version = "7.0.5";
 
-  src = fetchurl
-  {
-    url = "https://github.com/haiwen/seafile-client/archive/v${version}.tar.gz";
-    sha256 = "10iz45y8j5f9smi0srxw62frb97vhr0w938v8w3rsjcw9qq366a2";
+  src = fetchFromGitHub {
+    owner = "haiwen";
+    repo = "seafile-client";
+    rev = "v${version}";
+    sha256 = "08ysmhvdpyzq2s16i3fvii252fzjrxly3da74x8y6wbyy8yywmjy";
   };
 
-  buildInputs = [ pkgconfig cmake qt4 seafile-shared makeWrapper ];
+  nativeBuildInputs = [ pkgconfig cmake ];
+  buildInputs = [ qtbase qttools seafile-shared jansson libsearpc ]
+    ++ lib.optional withShibboleth qtwebengine;
 
-  builder = writeScript "${name}-builder.sh" ''
-    source $stdenv/setup
+  cmakeFlags = [ "-DCMAKE_BUILD_TYPE=Release" ]
+    ++ lib.optional withShibboleth "-DBUILD_SHIBBOLETH_SUPPORT=ON";
 
-    tar xvfz $src
-    cd seafile-client-*
+  qtWrapperArgs = [
+    "--suffix PATH : ${lib.makeBinPath [ ccnet seafile-shared ]}"
+  ];
 
-    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_SKIP_BUILD_RPATH=ON -DCMAKE_INSTALL_PREFIX="$out" .
-    make -j1
-
-    make install
-
-    wrapProgram $out/bin/seafile-applet \
-      --suffix PATH : ${ccnet}/bin:${seafile-shared}/bin
-    '';
-
-  meta =
-  {
-    homepage = "https://github.com/haiwen/seafile-clients";
+  meta = with lib; {
+    homepage = "https://github.com/haiwen/seafile-client";
     description = "Desktop client for Seafile, the Next-generation Open Source Cloud Storage";
-    license = stdenv.lib.licenses.asl20;
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.calrama ];
+    license = licenses.asl20;
+    platforms = platforms.linux;
+    maintainers = with maintainers; [ ];
   };
 }

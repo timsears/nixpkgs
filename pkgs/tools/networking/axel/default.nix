@@ -1,16 +1,28 @@
-{stdenv, fetchurl}:
+{ stdenv, fetchFromGitHub, autoreconfHook, autoconf-archive
+, pkgconfig, gettext, libssl, txt2man }:
 
-stdenv.mkDerivation {
-  name = "axel-2.4";
-  src = fetchurl {
-    urls = [
-      #https://alioth.debian.org/frs/download.php/3016/axel-2.4.tar.bz2
-      mirror://debian/pool/main/a/axel/axel_2.4.orig.tar.gz
-    ];
-    sha256 = "0dl0r9byd2ps90cq2nj1y7ib6gnkb5y9f3a3fmhcnjrm9smmg6im";
+stdenv.mkDerivation rec {
+  pname = "axel";
+  version = "2.17.7";
+
+  src = fetchFromGitHub {
+    owner = "axel-download-accelerator";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "0z20d2fkf69v35d4pkba95vnk7yq7393kwikmb64y7cjyz4m2ngk";
   };
 
-  meta = {
+  nativeBuildInputs = [ autoreconfHook pkgconfig autoconf-archive txt2man ];
+
+  buildInputs = [ gettext libssl ];
+
+  installFlags = [ "ETCDIR=${placeholder "out"}/etc" ];
+
+  meta = with stdenv.lib; {
     description = "Console downloading program with some features for parallel connections for faster downloading";
+    homepage = "https://github.com/axel-download-accelerator/axel";
+    maintainers = with maintainers; [ pSub ];
+    platforms = with platforms; unix;
+    license = licenses.gpl2;
   };
 }

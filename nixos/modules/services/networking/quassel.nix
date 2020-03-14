@@ -3,8 +3,8 @@
 with lib;
 
 let
-  quassel = pkgs.kde4.quasselDaemon;
   cfg = config.services.quassel;
+  quassel = cfg.package;
   user = if cfg.user != null then cfg.user else "quassel";
 in
 
@@ -23,11 +23,37 @@ in
         '';
       };
 
-      interface = mkOption {
-        default = "127.0.0.1";
+      certificateFile = mkOption {
+        type = types.nullOr types.str;
+        default = null;
         description = ''
-          The interface the Quassel daemon will be listening to.  If `127.0.0.1',
-          only clients on the local host can connect to it; if `0.0.0.0', clients
+          Path to the certificate used for SSL connections with clients.
+        '';
+      };
+
+      requireSSL = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Require SSL for connections from clients.
+        '';
+      };
+
+      package = mkOption {
+        type = types.package;
+        default = pkgs.quasselDaemon;
+        defaultText = "pkgs.quasselDaemon";
+        description = ''
+          The package of the quassel daemon.
+        '';
+        example = literalExample "pkgs.quasselDaemon";
+      };
+
+      interfaces = mkOption {
+        default = [ "127.0.0.1" ];
+        description = ''
+          The interfaces the Quassel daemon will be listening to.  If `[ 127.0.0.1 ]',
+          only clients on the local host can connect to it; if `[ 0.0.0.0 ]', clients
           can access it from any network interface.
         '';
       };
@@ -61,34 +87,49 @@ in
   ###### implementation
 
   config = mkIf cfg.enable {
+    assertions = [
+      { assertion = cfg.requireSSL -> cfg.certificateFile != null;
+        message = "Quassel needs a certificate file in order to require SSL";
+      }];
 
-    users.extraUsers = mkIf (cfg.user == null) [
-      { name = "quassel";
+    users.users = optionalAttrs (cfg.user == null) {
+      quassel = {
+        name = "quassel";
         description = "Quassel IRC client daemon";
         group = "quassel";
         uid = config.ids.uids.quassel;
-      }];
+      };
+    };
 
-    users.extraGroups = mkIf (cfg.user == null) [
-      { name = "quassel";
+    users.groups = optionalAttrs (cfg.user == null) {
+      quassel = {
+        name = "quassel";
         gid = config.ids.gids.quassel;
-      }];
+      };
+    };
 
-    jobs.quassel =
+    systemd.tmpfiles.rules = [
+      "d '${cfg.dataDir}' - ${user} - - -"
+    ];
+
+    systemd.services.quassel =
       { description = "Quassel IRC client daemon";
 
-        startOn = "ip-up";
+        wantedBy = [ "multi-user.target" ];
+        after = [ "network.target" ] ++ optional config.services.postgresql.enable "postgresql.service"
+                                     ++ optional config.services.mysql.enable "mysql.service";
 
-        preStart = ''
-            mkdir -p ${cfg.dataDir}
-            chown ${user} ${cfg.dataDir}
-        '';
-
-        exec = ''
-            ${pkgs.su}/bin/su -s ${pkgs.stdenv.shell} ${user} \
-                -c '${quassel}/bin/quasselcore --listen=${cfg.interface}\
-                    --port=${toString cfg.portNumber} --configdir=${cfg.dataDir}'
-        '';
+        serviceConfig =
+        {
+          ExecStart = concatStringsSep " " ([
+            "${quassel}/bin/quasselcore"
+            "--listen=${concatStringsSep "," cfg.interfaces}"
+            "--port=${toString cfg.portNumber}"
+            "--configdir=${cfg.dataDir}"
+          ] ++ optional cfg.requireSSL "--require-ssl"
+            ++ optional (cfg.certificateFile != null) "--ssl-cert=${cfg.certificateFile}");
+          User = user;
+        };
       };
 
   };

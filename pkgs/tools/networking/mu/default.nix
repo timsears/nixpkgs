@@ -1,24 +1,31 @@
-{ fetchurl, stdenv, sqlite, pkgconfig, autoconf, automake
-, xapian, glib, gmime, texinfo , emacs, guile
-, gtk3, webkit, libsoup, icu, withMug ? false /* doesn't build with current gtk3 */ }:
+{ stdenv, fetchFromGitHub, sqlite, pkgconfig, autoreconfHook, pmccabe
+, xapian, glib, gmime3, texinfo , emacs, guile
+, gtk3, webkitgtk, libsoup, icu
+, withMug ? false }:
 
 stdenv.mkDerivation rec {
-  version = "0.9.10";
-  name = "mu-${version}";
+  pname = "mu";
+  version = "1.2";
 
-  src = fetchurl {
-    url = "https://github.com/djcb/mu/archive/v${version}.tar.gz";
-    sha256 = "0yrkzf0czp85fd3g4zh95z648lsvkc4g2r8xbjn48xgba1ygqbyq";
+  src = fetchFromGitHub {
+    owner  = "djcb";
+    repo   = "mu";
+    rev    = version;
+    sha256 = "0yhjlj0z23jw3cf2wfnl98y8q6gikvmhkb8vdm87bd7jw0bdnrfz";
   };
 
-  buildInputs =
-    [ sqlite pkgconfig autoconf automake xapian
-      glib gmime texinfo emacs guile libsoup icu ]
-    ++ stdenv.lib.optional withMug [ gtk3 webkit ];
-
-  preConfigure = ''
-    autoreconf -i
+  # test-utils coredumps so don't run those
+  postPatch = ''
+    sed -i -e '/test-utils/d' lib/parser/Makefile.am
   '';
+
+  buildInputs = [
+    sqlite xapian glib gmime3 texinfo emacs guile libsoup icu
+  ] ++ stdenv.lib.optionals withMug [ gtk3 webkitgtk ];
+
+  nativeBuildInputs = [ pkgconfig autoreconfHook pmccabe ];
+
+  enableParallelBuilding = true;
 
   preBuild = ''
     # Fix mu4e-builddir (set it to $out)
@@ -27,20 +34,23 @@ stdenv.mkDerivation rec {
 
     # We install msg2pdf to bin/msg2pdf, fix its location in elisp
     substituteInPlace mu4e/mu4e-actions.el \
-      --replace "/toys/msg2pdf/msg2pdf" "/bin/msg2pdf"
+      --replace "/toys/msg2pdf/" "/bin/"
   '';
 
   # Install mug and msg2pdf
   postInstall = stdenv.lib.optionalString withMug ''
-    cp -v toys/msg2pdf/msg2pdf $out/bin/
-    cp -v toys/mug/mug $out/bin/
+    for f in msg2pdf mug ; do
+      install -m755 toys/$f/$f $out/bin/$f
+    done
   '';
 
-  meta = {
+  doCheck = true;
+
+  meta = with stdenv.lib; {
     description = "A collection of utilties for indexing and searching Maildirs";
-    license = stdenv.lib.licenses.gpl3Plus;
-    homepage = "http://www.djcbsoftware.nl/code/mu/";
-    platforms = stdenv.lib.platforms.mesaPlatforms;
-    maintainers = with stdenv.lib.maintainers; [ antono the-kenny ];
+    license = licenses.gpl3Plus;
+    homepage = https://www.djcbsoftware.nl/code/mu/;
+    platforms = platforms.mesaPlatforms;
+    maintainers = with maintainers; [ antono the-kenny peterhoeg ];
   };
 }

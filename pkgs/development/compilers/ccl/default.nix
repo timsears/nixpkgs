@@ -1,49 +1,93 @@
-a :  
-let 
-  buildInputs = with a; [
-    
-  ];
-in
-rec {
-  version = "1.8";
-  name = "ccl-${version}";
+{ stdenv, fetchurl, bootstrap_cmds, coreutils, glibc, m4, runtimeShell }:
 
-  /* There are also MacOS and FreeBSD and Windows versions */
-  src = a.fetchurl {
-    url = "ftp://ftp.clozure.com/pub/release/${version}/${name}-linuxx86.tar.gz";
-    sha256 = "1dgg6a8i2csa6xidsq66hbw7zx62gm2178hpkp88yyzgxylszp01";
+let
+  options = rec {
+    /* TODO: there are also FreeBSD and Windows versions */
+    x86_64-linux = {
+      arch = "linuxx86";
+      sha256 = "0hs1f3z7crgzvinpj990kv9gvbsipxvcvwbmk54n51nasvc5025q";
+      runtime = "lx86cl64";
+      kernel = "linuxx8664";
+    };
+    i686-linux = {
+      arch = "linuxx86";
+      sha256 = x86_64-linux.sha256;
+      runtime = "lx86cl";
+      kernel = "linuxx8632";
+    };
+    armv7l-linux = {
+      arch = "linuxarm";
+      sha256 = "0p0l1dzsygb6i1xxgbipjpxkn46xhq3jm41a34ga1qqp4x8lkr62";
+      runtime = "armcl";
+      kernel = "linuxarm";
+    };
+    x86_64-darwin = {
+      arch = "darwinx86";
+      sha256 = "5adbea3d8b4a2e29af30d141f781c6613844f468c0ccfa11bae908c3e9641939";
+      runtime = "dx86cl64";
+      kernel = "darwinx8664";
+    };
+    armv6l-linux = armv7l-linux;
   };
-  
-  inherit buildInputs;
-  configureFlags = [];
+  cfg = options.${stdenv.hostPlatform.system} or (throw "missing source url for platform ${stdenv.hostPlatform.system}");
+in
 
-  /* doConfigure should be removed if not needed */
-  phaseNames = ["doUnpack" "doPatchElf" "doCopy"];
+stdenv.mkDerivation rec {
+  pname = "ccl";
+  version  = "1.11.5";
 
-  doCopy = a.fullDepEntry ''
+  src = fetchurl {
+    url = "https://github.com/Clozure/ccl/releases/download/v${version}/ccl-${version}-${cfg.arch}.tar.gz";
+    sha256 = cfg.sha256;
+  };
+
+  buildInputs = if stdenv.isDarwin then [ bootstrap_cmds m4 ] else [ glibc m4 ];
+
+  CCL_RUNTIME = cfg.runtime;
+  CCL_KERNEL = cfg.kernel;
+
+  postPatch = if stdenv.isDarwin then ''
+    substituteInPlace lisp-kernel/${CCL_KERNEL}/Makefile \
+      --replace "M4 = gm4"   "M4 = m4" \
+      --replace "dtrace"     "/usr/sbin/dtrace" \
+      --replace "/bin/rm"    "${coreutils}/bin/rm" \
+      --replace "/bin/echo"  "${coreutils}/bin/echo"
+
+    substituteInPlace lisp-kernel/m4macros.m4 \
+      --replace "/bin/pwd" "${coreutils}/bin/pwd"
+  '' else ''
+    substituteInPlace lisp-kernel/${CCL_KERNEL}/Makefile \
+      --replace "/bin/rm"    "${coreutils}/bin/rm" \
+      --replace "/bin/echo"  "${coreutils}/bin/echo"
+
+    substituteInPlace lisp-kernel/m4macros.m4 \
+      --replace "/bin/pwd" "${coreutils}/bin/pwd"
+  '';
+
+  buildPhase = ''
+    make -C lisp-kernel/${CCL_KERNEL} clean
+    make -C lisp-kernel/${CCL_KERNEL} all
+
+    ./${CCL_RUNTIME} -n -b -e '(ccl:rebuild-ccl :full t)' -e '(ccl:quit)'
+  '';
+
+  installPhase = ''
     mkdir -p "$out/share"
-    cp -r . "$out/share/ccl-installation"
+    cp -r .  "$out/share/ccl-installation"
 
     mkdir -p "$out/bin"
-    for i in $(find . -maxdepth 1 -type f -perm +111); do
-      echo -e '#! /bin/sh\n'"$out/share/ccl-installation/$(basename "$i")"'"$@"\n' > "$out"/bin/"$(basename "$i")"
-      chmod a+x "$out"/bin/"$(basename "$i")"
-    done
-  '' ["minInit" "doUnpack" "defEnsureDir"];
+    echo -e '#!${runtimeShell}\n'"$out/share/ccl-installation/${CCL_RUNTIME}"' "$@"\n' > "$out"/bin/"${CCL_RUNTIME}"
+    chmod a+x "$out"/bin/"${CCL_RUNTIME}"
+    ln -s "$out"/bin/"${CCL_RUNTIME}" "$out"/bin/ccl
+  '';
 
-  doPatchElf = a.fullDepEntry ''
-    patchelfFile="$(type -P patchelf)"
-    goodInterp="$(patchelf --print-interpreter "$patchelfFile")"
-    find . -type f -perm +111 -exec  patchelf --set-interpreter "$goodInterp" '{}' ';'
-  '' ["minInit" "doUnpack"];
-      
-  meta = {
+  hardeningDisable = [ "format" ];
+
+  meta = with stdenv.lib; {
     description = "Clozure Common Lisp";
-    maintainers = [
-      a.lib.maintainers.raskin
-    ];
-    platforms = with a.lib.platforms; 
-      linux;
+    homepage    = https://ccl.clozure.com/;
+    maintainers = with maintainers; [ raskin muflax tohl ];
+    platforms   = attrNames options;
+    license     = licenses.lgpl21;
   };
 }
-

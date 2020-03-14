@@ -1,16 +1,16 @@
-{stdenv, fetchurl, perl, WWWMechanize, LWP, makeWrapper}:
+{stdenv, fetchurl, perlPackages, makeWrapper}:
 
 stdenv.mkDerivation {
   name = "slimrat-1.0";
   src = fetchurl {
-    url = http://slimrat.googlecode.com/files/slimrat-1.0.tar.bz2;
+    url = "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/slimrat/slimrat-1.0.tar.bz2";
     sha256 = "139b71d45k4b1y47iq62a9732cnaqqbh8s4knkrgq2hx0jxpsk5a";
   };
 
-  buildInputs = [ perl WWWMechanize LWP makeWrapper ];
+  buildInputs = [ makeWrapper ] ++ (with perlPackages; [ perl WWWMechanize LWP ]);
 
   patchPhase = ''
-    sed -e 's,#!.*,#!${perl}/bin/perl,' -i src/{slimrat,slimrat-gui}
+    sed -e 's,#!.*,#!${perlPackages.perl}/bin/perl,' -i src/{slimrat,slimrat-gui}
   '';
 
   installPhase = ''
@@ -24,8 +24,10 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    homepage = http://code.google.com/p/slimrat/;
+    homepage = https://code.google.com/archive/p/slimrat/;
     description = "Linux Rapidshare downloader";
-    license = "BSD";
+    license = stdenv.lib.licenses.mit;
+    platforms = stdenv.lib.platforms.unix;
+    broken = true; # officially abandonned upstream
   };
 }

@@ -1,59 +1,76 @@
-{ lib, stdenv, fetchurl, zlib, gd, texinfo4, makeWrapper, readline
-, withTeXLive ? false, texLive
+{ lib, stdenv, fetchurl, makeWrapper, pkgconfig, texinfo
+, cairo, gd, libcerf, pango, readline, zlib
+, withTeXLive ? false, texlive
 , withLua ? false, lua
-, emacs ? null
 , libX11 ? null
 , libXt ? null
 , libXpm ? null
 , libXaw ? null
 , aquaterm ? false
 , withWxGTK ? false, wxGTK ? null
-, pango ? null
-, cairo ? null
-, pkgconfig ? null
 , fontconfig ? null
 , gnused ? null
 , coreutils ? null
-, withQt ? false, qt4 }:
+, withQt ? false, mkDerivation, qttools, qtbase, qtsvg
+}:
 
 assert libX11 != null -> (fontconfig != null && gnused != null && coreutils != null);
 let
   withX = libX11 != null && !aquaterm && !stdenv.isDarwin;
 in
-stdenv.mkDerivation rec {
-  name = "gnuplot-4.6.6";
+(if withQt then mkDerivation else stdenv.mkDerivation) rec {
+  pname = "gnuplot";
+  version = "5.2.8";
 
   src = fetchurl {
-    url = "mirror://sourceforge/gnuplot/${name}.tar.gz";
-    sha256 = "0x022d7psl9g6q389x5rjlfsvfciz88yrgxg4lig4ichs1pmj68z";
+    url = "mirror://sourceforge/gnuplot/${pname}-${version}.tar.gz";
+    sha256 = "0dxc52d17mpyb2xm24da1nvhlacryv0irwa0q5l1cjj0rx67d9k0";
   };
 
+  nativeBuildInputs = [ makeWrapper pkgconfig texinfo ] ++ lib.optional withQt qttools;
+
   buildInputs =
-    [ zlib gd texinfo4 readline pango cairo pkgconfig makeWrapper ]
-    ++ lib.optional withTeXLive texLive
+    [ cairo gd libcerf pango readline zlib ]
+    ++ lib.optional withTeXLive (texlive.combine { inherit (texlive) scheme-small; })
     ++ lib.optional withLua lua
     ++ lib.optionals withX [ libX11 libXpm libXt libXaw ]
-    ++ lib.optional withQt [ qt4 ]
-    # compiling with wxGTK causes a malloc (double free) error on darwin
-    ++ lib.optional (withWxGTK && !stdenv.isDarwin) wxGTK;
+    ++ lib.optionals withQt [ qtbase qtsvg ]
+    ++ lib.optional withWxGTK wxGTK;
 
-  configureFlags =
-    (if withX then ["--with-x"] else ["--without-x"])
-    ++ (if withQt then ["--enable-qt"] else ["--disable-qt"])
-    ++ (if aquaterm then ["--with-aquaterm"] else ["--without-aquaterm"]);
+  postPatch = ''
+    # lrelease is in qttools, not in qtbase.
+    sed -i configure -e 's|''${QT5LOC}/lrelease|lrelease|'
+  '';
+
+  configureFlags = [
+    (if withX then "--with-x" else "--without-x")
+    (if withQt then "--with-qt=qt5" else "--without-qt")
+    (if aquaterm then "--with-aquaterm" else "--without-aquaterm")
+  ];
 
   postInstall = lib.optionalString withX ''
     wrapProgram $out/bin/gnuplot \
        --prefix PATH : '${gnused}/bin' \
        --prefix PATH : '${coreutils}/bin' \
-       --prefix PATH : '${fontconfig}/bin' \
+       --prefix PATH : '${fontconfig.bin}/bin' \
        --run '. ${./set-gdfontpath-from-fontconfig.sh}'
   '';
+
+  enableParallelBuilding = true;
 
   meta = with lib; {
     homepage = http://www.gnuplot.info/;
     description = "A portable command-line driven graphing utility for many platforms";
-    hydraPlatforms = platforms.linux ++ platforms.darwin;
+    platforms = platforms.linux ++ platforms.darwin;
+    license = {
+      # Essentially a BSD license with one modifaction:
+      # Permission to modify the software is granted, but not the right to
+      # distribute the complete modified source code.  Modifications are to
+      # be distributed as patches to the released version.  Permission to
+      # distribute binaries produced by compiling modified sources is granted,
+      # provided you: ...
+      url = https://sourceforge.net/p/gnuplot/gnuplot-main/ci/master/tree/Copyright;
+    };
     maintainers = with maintainers; [ lovek323 ];
   };
 }

@@ -1,26 +1,52 @@
-{stdenv, fetchgit, zlib, gnutls, libgcrypt}:
+{ stdenv, fetchgit, fetchpatch, zlib
+, gnutlsSupport ? false, gnutls ? null, nettle ? null
+, opensslSupport ? true, openssl ? null
+}:
 
+# Must have an ssl library enabled
+assert (gnutlsSupport || opensslSupport);
+assert gnutlsSupport -> gnutlsSupport != null && nettle != null && !opensslSupport;
+assert opensslSupport -> openssl != null && !gnutlsSupport;
+
+with stdenv.lib;
 stdenv.mkDerivation {
-  name = "rtmpdump-2.4";
+  pname = "rtmpdump";
+  version = "2019-03-30";
+
   src = fetchgit {
-    url = git://git.ffmpeg.org/rtmpdump;
-    rev = "79459a2b43f41ac44a2ec001139bcb7b1b8f7497";
-    sha256 = "5af22362004566794035f989879b13d721f85d313d752abd10a7e45806e3944c";
+    url = "git://git.ffmpeg.org/rtmpdump";
+    # Currently the latest commit is used (a release has not been made since 2011, i.e. '2.4')
+    rev = "c5f04a58fc2aeea6296ca7c44ee4734c18401aa3";
+    sha256 = "07ias612jgmxpam9h418kvlag32da914jsnjsfyafklpnh8gdzjb";
   };
 
-  buildInputs = [ zlib gnutls libgcrypt ];
+  patches = [
+    # Fix build with OpenSSL 1.1
+    (fetchpatch {
+      url = "https://gitweb.gentoo.org/repo/gentoo.git/plain/media-video/rtmpdump/files/rtmpdump-openssl-1.1.patch?id=1e7bef484f96e7647f5f0911d3c8caa48131c33b";
+      sha256 = "1wds98pk8qr7shkfl8k49iirxiwd972h18w84bamiqln29wv6ql1";
+    })
+  ];
 
-  makeFlags = "CRYPTO=GNUTLS";
+  makeFlags = [ ''prefix=$(out)'' ]
+    ++ optional gnutlsSupport "CRYPTO=GNUTLS"
+    ++ optional opensslSupport "CRYPTO=OPENSSL"
+    ++ optional stdenv.isDarwin "SYS=darwin"
+    ++ optional stdenv.cc.isClang "CC=clang";
 
-  configurePhase = ''
-    sed -i s,/usr/local,$out, Makefile librtmp/Makefile
-  '';
+  propagatedBuildInputs = [ zlib ]
+    ++ optionals gnutlsSupport [ gnutls nettle ]
+    ++ optional opensslSupport openssl;
+
+  outputs = [ "out" "dev" ];
+
+  separateDebugInfo = true;
 
   meta = {
-    homepage = http://rtmpdump.mplayerhq.hu/;
     description = "Toolkit for RTMP streams";
-    license = stdenv.lib.licenses.gpl2Plus;
-    maintainers = [ stdenv.lib.maintainers. viric ];
-    platforms = stdenv.lib.platforms.linux;
+    homepage    = "http://rtmpdump.mplayerhq.hu/";
+    license     = licenses.gpl2;
+    platforms   = platforms.unix;
+    maintainers = with maintainers; [ codyopel ];
   };
 }

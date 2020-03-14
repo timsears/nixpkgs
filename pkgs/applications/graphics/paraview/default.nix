@@ -1,44 +1,68 @@
-{ fetchurl, stdenv, cmake, qt4
-, hdf5
-, mpich2
-, python
-, libxml2
-, mesa, libXt
-}:
+{ stdenv, fetchFromGitHub, cmake, makeWrapper, qtbase , qttools, python
+, libGLU, libGL , libXt, qtx11extras, qtxmlpatterns , mkDerivation }:
 
-stdenv.mkDerivation rec {
-  name = "paraview-4.0.1";
-  src = fetchurl {
-    url = "http://paraview.org/files/v4.0/ParaView-v4.0.1-source.tgz";
-    sha256 = "1qj8dq8gqpsw75sv4sdc7xm1xcpv0ilsddnrcfhha0zfhp0gq10y";
+mkDerivation rec {
+  pname = "paraview";
+  version = "5.6.3";
+
+  # fetching from GitHub instead of taking an "official" source
+  # tarball because of missing submodules there
+  src = fetchFromGitHub {
+    owner = "Kitware";
+    repo = "ParaView";
+    rev = "v${version}";
+    sha256 = "0zcij59pg47c45gfddnpbin13w16smzhcbivzm1k4pg4366wxq1q";
+    fetchSubmodules = true;
   };
 
-  # [  5%] Generating vtkGLSLShaderLibrary.h
-  # ../../../bin/ProcessShader: error while loading shared libraries: libvtksys.so.pv3.10: cannot open shared object file: No such file or directory
-  preConfigure = ''
-    export NIX_LDFLAGS="$NIX_LDFLAGS -rpath $out/lib/paraview-3.98 -rpath ../../../../../../lib -rpath ../../../../../lib -rpath ../../../../lib -rpath ../../../lib -rpath ../../lib -rpath ../lib"
-  '';
   cmakeFlags = [
-    "-DPARAVIEW_USE_SYSTEM_HDF5:BOOL=ON"
-    "-DVTK_USE_SYSTEM_LIBXML2:BOOL=ON"
-    "-DPARAVIEW_ENABLE_PYTHON:BOOL=ON"
-#  use -DPARAVIEW_INSTALL_THIRD_PARTY_LIBRARIES:BOOL=OFF \ to fix make install error: http://www.cmake.org/pipermail/paraview/2011-February/020268.html
-    "-DPARAVIEW_INSTALL_THIRD_PARTY_LIBRARIES:BOOL=OFF"
-    "-DCMAKE_SKIP_BUILD_RPATH=ON"
-    "-DVTK_USE_RPATH:BOOL=ON"
-    "-DPARAVIEW_INSTALL_DEVELOPMENT=ON"
+    "-DPARAVIEW_ENABLE_PYTHON=ON"
+    "-DPARAVIEW_INSTALL_DEVELOPMENT_FILES=ON"
+    "-DPARAVIEW_ENABLE_EMBEDDED_DOCUMENTATION=OFF"
+    "-DOpenGL_GL_PREFERENCE=GLVND"
   ];
+
+  # During build, binaries are called that rely on freshly built
+  # libraries.  These reside in build/lib, and are not found by
+  # default.
+  preBuild = ''
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH''${LD_LIBRARY_PATH:+:}$PWD/lib:$PWD/VTK/ThirdParty/vtkm/vtk-m/lib
+  '';
 
   enableParallelBuilding = true;
 
-  buildInputs = [ cmake qt4 hdf5 mpich2 python libxml2 mesa libXt ];
+  nativeBuildInputs = [
+    cmake
+    makeWrapper
+  ];
 
-  meta = {
-    homepage = "http://www.paraview.org/";
+  buildInputs = [
+    python
+    python.pkgs.numpy
+    libGLU libGL
+    libXt
+    qtbase
+    qtx11extras
+    qttools
+    qtxmlpatterns
+  ];
+
+  # Paraview links into the Python library, resolving symbolic links on the way,
+  # so we need to put the correct sitePackages (with numpy) back on the path
+  preFixup = ''
+    wrapQtApp $out/bin/paraview \
+      --prefix PYTHONPATH "${python.pkgs.numpy}/${python.sitePackages}"
+    wrapQtApp $out/bin/pvbatch \
+      --prefix PYTHONPATH "${python.pkgs.numpy}/${python.sitePackages}"
+    wrapQtApp $out/bin/pvpython \
+      --prefix PYTHONPATH "${python.pkgs.numpy}/${python.sitePackages}"
+  '';
+
+  meta = with stdenv.lib; {
+    homepage = http://www.paraview.org/;
     description = "3D Data analysis and visualization application";
-    license = "free";
-    maintainers = with stdenv.lib.maintainers; [viric guibert];
-    platforms = with stdenv.lib.platforms; linux;
+    license = licenses.free;
+    maintainers = with maintainers; [ guibert ];
+    platforms = platforms.linux;
   };
 }
-

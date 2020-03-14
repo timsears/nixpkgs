@@ -1,30 +1,26 @@
-{ stdenv, fetchgit, lessc, closurecompiler }:
+{ stdenv, fetchurl, unzip }:
 
 stdenv.mkDerivation rec {
-  name = "twitter-bootstrap-${version}";
-  version = "2.3.2";
+  pname = "bootstrap";
+  version = "4.4.1";
 
-  src = fetchgit {
-    url = https://github.com/twitter/bootstrap.git;
-    rev = "refs/tags/v${version}";
-    sha256 = "093z4yxqhrr30vna67ksxz3bq146q2xr05hinh78pg2ls88k77la";
-  };  
+  src = fetchurl {
+    url = "https://github.com/twbs/bootstrap/releases/download/v${version}/${pname}-${version}-dist.zip";
+    sha256 = "1gdzp54f2xyvbw9hnyjlj4s69jvxkxr3hqclq1c8ajmx39s7rymz";
+  };
 
-  buildInputs = [ lessc closurecompiler ];
+  buildInputs = [ unzip ];
 
-  phases = [ "installPhase" ];
-
+  dontBuild = true;
   installPhase = ''
-    mkdir -p $out/css $out/js $out/img
-    cp $src/img/* $out/img/
-    closure-compiler --js $src/js/*.js > $out/js/bootstrap.js
-    lessc $src/less/bootstrap.less -O2 -x > $out/css/bootstrap.css
-  ''; 
+    mkdir $out
+    cp -r * $out/
+  '';
 
   meta = {
     description = "Front-end framework for faster and easier web development";
-    homepage = http://getbootstrap.com/;
-    license = stdenv.lib.licenses.asl20;
-    platforms = stdenv.lib.platforms.linux;
+    homepage = https://getbootstrap.com/;
+    license = stdenv.lib.licenses.mit;
   };
+
 }

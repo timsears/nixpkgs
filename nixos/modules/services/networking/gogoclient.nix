@@ -34,7 +34,7 @@ in
 
       password = mkOption {
         default = "";
-        type = types.string;
+        type = types.str;
         description = ''
           Path to a file (as a string), containing your gogoNET password, if any.
         '';
@@ -76,8 +76,7 @@ in
         exec ${pkgs.gogoclient}/bin/gogoc -y -f /var/lib/gogoc/gogoc.conf
       '';
     } // optionalAttrs cfg.autorun {
-      wantedBy = [ "ip-up.target" ];
-      partOf = [ "ip-up.target" ];
+      wantedBy = [ "multi-user.target" ];
     };
 
   };

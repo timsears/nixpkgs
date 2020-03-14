@@ -1,8 +1,8 @@
 { stdenv, fetchurl }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
 
-  name = "f-prot-${version}";
+  pname = "f-prot";
   version = "6.2.1";
 
   src = fetchurl {
@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
     cp f-prot.conf.default $out/opt/f-prot/f-prot.conf
     ln -s $out/opt/f-prot/fpupdate $out/bin/fpupdate
 
-    patchelf --interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" $out/opt/f-prot/fpupdate
+    patchelf --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" $out/opt/f-prot/fpupdate
 
     mkdir -p $out/share/man/
     mkdir -p $out/share/man/man1

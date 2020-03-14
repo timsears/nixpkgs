@@ -1,20 +1,31 @@
-{ stdenv, fetchurl, pkgconfig, intltool, gtk2 }:
+{ stdenv, fetchFromGitHub, autoreconfHook
+, gtk2, hicolor-icon-theme, intltool, pkgconfig
+, which, wrapGAppsHook, xdotool }:
 
 stdenv.mkDerivation rec {
-  name = "parcellite-1.1.7";
+  pname = "parcellite";
+  version = "1.2.1";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/parcellite/${name}.tar.gz";
-    sha256 = "0pszw3yd4a08p6jsz7asayr7jir08bxbwvfb16k01cj7ya4kf3w7";
+  src = fetchFromGitHub {
+    owner = "rickyrockrat";
+    repo = "parcellite";
+    rev = version;
+    sha256 = "19q4x6x984s6gxk1wpzaxawgvly5vnihivrhmja2kcxhzqrnfhiy";
   };
 
-  buildInputs = [ pkgconfig intltool gtk2 ];
+  nativeBuildInputs = [ autoreconfHook intltool pkgconfig wrapGAppsHook ];
+  buildInputs = [ gtk2 hicolor-icon-theme ];
+  NIX_LDFLAGS = "-lgio-2.0";
 
-  meta = {
-    description = "Lightweight GTK+ clipboard manager";
-    homepage = "http://parcellite.sourceforge.net";
-    license = stdenv.lib.licenses.gpl3Plus;
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = with stdenv.lib.maintainers; [ iyzsong ];
+  preFixup = ''
+    # Need which and xdotool on path to fix auto-pasting.
+    gappsWrapperArgs+=(--prefix PATH : "${which}/bin:${xdotool}/bin")
+  '';
+
+  meta = with stdenv.lib; {
+    description = "Lightweight GTK clipboard manager";
+    homepage = https://github.com/rickyrockrat/parcellite;
+    license = licenses.gpl3Plus;
+    platforms = platforms.linux;
   };
 }

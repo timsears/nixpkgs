@@ -1,17 +1,41 @@
-{ stdenv, fetchurl, pkgconfig, openssl, libxml2, sqlite, zlib }:
+{ stdenv, fetchpatch, fetchFromGitHub, pkgconfig, autoreconfHook
+, openssl, c-ares, libxml2, sqlite, zlib, libssh2
+, cppunit, sphinx
+, Security
+}:
 
 stdenv.mkDerivation rec {
-  name = "aria2-1.18.8";
+  pname = "aria2";
+  version = "1.35.0";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/aria2/stable/${name}/${name}.tar.bz2";
-    sha256 = "1lpcdpkc22prkzhqrhrd6ccra6vpf2w8mla0z3jv26dqafaxif6b";
+  src = fetchFromGitHub {
+    owner = "aria2";
+    repo = "aria2";
+    rev = "release-${version}";
+    sha256 = "195r3711ly3drf9jkygwdc2m7q99hiqlfrig3ip1127b837gzsf9";
   };
 
-  buildInputs = [ pkgconfig openssl libxml2 sqlite zlib ];
+  nativeBuildInputs = [ pkgconfig autoreconfHook sphinx ];
 
-  meta = {
-    homepage = http://aria2.sourceforge.net/;
+  buildInputs = [ openssl c-ares libxml2 sqlite zlib libssh2 ] ++
+    stdenv.lib.optional stdenv.isDarwin Security;
+
+  configureFlags = [ "--with-ca-bundle=/etc/ssl/certs/ca-certificates.crt" ];
+
+  prePatch = ''
+    patchShebangs doc/manual-src/en/mkapiref.py
+  '';
+
+  checkInputs = [ cppunit ];
+  doCheck = false; # needs the net
+
+  enableParallelBuilding = true;
+
+  meta = with stdenv.lib; {
+    homepage = https://aria2.github.io;
     description = "A lightweight, multi-protocol, multi-source, command-line download utility";
+    license = licenses.gpl2Plus;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ filalex77 koral ];
   };
 }

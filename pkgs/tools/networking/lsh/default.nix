@@ -29,6 +29,8 @@ stdenv.mkDerivation rec {
     export lsh_cv_sys_unix98_ptys=yes
   '';
 
+  NIX_CFLAGS_COMPILE = "-std=gnu90";
+
   buildInputs = [ gperf guile gmp zlib liboop readline gnum4 pam ];
 
   meta = {
@@ -43,7 +45,7 @@ stdenv.mkDerivation rec {
     homepage = http://www.lysator.liu.se/~nisse/lsh/;
     license = stdenv.lib.licenses.gpl2Plus;
 
-    maintainers = [ stdenv.lib.maintainers.ludo ];
+    maintainers = [ ];
     platforms = [ "x86_64-linux" ];
   };
 }

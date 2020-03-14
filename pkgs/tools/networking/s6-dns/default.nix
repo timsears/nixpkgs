@@ -1,53 +1,35 @@
-{ stdenv, fetchurl, skalibs }:
+{ skawarePackages }:
 
-let
+with skawarePackages;
 
-  version = "0.1.0.0";
+buildPackage {
+  pname = "s6-dns";
+  version = "2.3.1.1";
+  sha256 = "0clib10dk3r9rcxv1yfr6gdvqqrx0arzivjpmhz9p8xaif53wpj1";
 
-in stdenv.mkDerivation rec {
+  description = "A suite of DNS client programs and libraries for Unix systems";
 
-  name = "s6-dns-${version}";
+  outputs = [ "bin" "lib" "dev" "doc" "out" ];
 
-  src = fetchurl {
-    url = "http://www.skarnet.org/software/s6-dns/${name}.tar.gz";
-    sha256 = "1r82l5fnz2rrwm5wq2sldqp74lk9fifr0d8hyq98xdyh24hish68";
-  };
+  configureFlags = [
+    "--libdir=\${lib}/lib"
+    "--libexecdir=\${lib}/libexec"
+    "--dynlibdir=\${lib}/lib"
+    "--bindir=\${bin}/bin"
+    "--includedir=\${dev}/include"
+    "--with-sysdeps=${skalibs.lib}/lib/skalibs/sysdeps"
+    "--with-include=${skalibs.dev}/include"
+    "--with-lib=${skalibs.lib}/lib"
+    "--with-dynlib=${skalibs.lib}/lib"
+  ];
 
-  buildInputs = [ skalibs ];
+  postInstall = ''
+    # remove all s6-dns executables from build directory
+    rm $(find -type f -mindepth 1 -maxdepth 1 -executable)
+    rm libs6dns.*
+    rm libskadns.*
 
-  sourceRoot = "web/${name}";
-
-  configurePhase = ''
-    pushd conf-compile
-
-    printf "$out/bin"           > conf-install-command
-    printf "$out/include"       > conf-install-include
-    printf "$out/lib"           > conf-install-library
-    printf "$out/lib"           > conf-install-library.so
-
-    # let nix builder strip things, cross-platform
-    truncate --size 0 conf-stripbins
-    truncate --size 0 conf-striplibs
-
-    printf "${skalibs}/sysdeps"      > import
-    printf "%s" "${skalibs}/include" > path-include
-    printf "%s" "${skalibs}/lib"     > path-library
-
-    rm -f flag-slashpackage
-    touch flag-allstatic
-
-    popd
+    mv doc $doc/share/doc/s6-dns/html
   '';
-
-  preBuild = ''
-    patchShebangs src/sys
-  '';
-
-  meta = {
-    homepage = http://www.skarnet.org/software/s6-dns/;
-    description = "A suite of DNS client programs and libraries for Unix systems.";
-    platforms = stdenv.lib.platforms.all;
-    license = stdenv.lib.licenses.isc;
-  };
 
 }

@@ -1,28 +1,52 @@
-{ stdenv, fetchurl, boost, openssl, pkgconfig, zlib, python, libiconvOrNull, geoip }:
+{ stdenv, lib, fetchFromGitHub, pkgconfig, automake, autoconf
+, zlib, boost, openssl, libtool, python, libiconv, geoip, ncurses
+}:
 
-stdenv.mkDerivation rec {
-  name = "libtorrent-rasterbar-${version}";
-  version = "0.16.16";
-  
-  src = fetchurl {
-    url = mirror://sourceforge/libtorrent/libtorrent-rasterbar-0.16.16.tar.gz;
-    sha256 = "1a3yxwjs4qb0rwx6cfpvar0a8jmavb6ik580b27md08jhvq80if7";
+let
+  version = "1.1.11";
+  formattedVersion = lib.replaceChars ["."] ["_"] version;
+
+  # Make sure we override python, so the correct version is chosen
+  # for the bindings, if overridden
+  boostPython = boost.override { enablePython = true; inherit python; };
+
+in stdenv.mkDerivation {
+  pname = "libtorrent-rasterbar";
+  inherit version;
+
+  src = fetchFromGitHub {
+    owner = "arvidn";
+    repo = "libtorrent";
+    rev = "libtorrent_${formattedVersion}";
+    sha256 = "0nwdsv6d2gkdsh7l5a46g6cqx27xwh3msify5paf02l1qzjy4s5l";
   };
 
-  buildInputs = [ boost boost.lib pkgconfig openssl zlib python libiconvOrNull geoip ];
+  enableParallelBuilding = true;
+  nativeBuildInputs = [ automake autoconf libtool pkgconfig ];
+  buildInputs = [ boostPython openssl zlib python libiconv geoip ncurses ];
+  preConfigure = "./autotool.sh";
 
-  configureFlags = [ 
-    "--with-boost=${boost}/include/boost" 
-    "--with-boost-libdir=${boost.lib}/lib" 
+  postInstall = ''
+    moveToOutput "include" "$dev"
+    moveToOutput "lib/${python.libPrefix}" "$python"
+  '';
+
+  outputs = [ "out" "dev" "python" ];
+
+  configureFlags = [
     "--enable-python-binding"
     "--with-libgeoip=system"
     "--with-libiconv=yes"
- ];
-  
+    "--with-boost=${boostPython.dev}"
+    "--with-boost-libdir=${boostPython.out}/lib"
+    "--with-libiconv=yes"
+  ];
+
   meta = with stdenv.lib; {
-    homepage = http://www.rasterbar.com/products/libtorrent/;
+    homepage = "https://libtorrent.org/";
     description = "A C++ BitTorrent implementation focusing on efficiency and scalability";
     license = licenses.bsd3;
     maintainers = [ maintainers.phreedom ];
+    platforms = platforms.unix;
   };
 }

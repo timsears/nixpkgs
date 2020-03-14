@@ -1,7 +1,16 @@
 let lib = import ../../../lib; in lib.makeOverridable (
 
-{ system, name ? "stdenv", preHook ? "", initialPath, gcc, shell
-, extraAttrs ? {}, overrides ? (pkgs: {}), config
+{ name ? "stdenv", preHook ? "", initialPath
+
+, # If we don't have a C compiler, we might either have `cc = null` or `cc =
+  # throw ...`, but if we do have a C compiler we should definiely have `cc !=
+  # null`.
+  #
+  # TODO(@Ericson2314): Add assert without creating infinite recursion
+  hasCC ? cc != null, cc
+
+, shell
+, allowedRequisites ? null, extraAttrs ? {}, overrides ? (self: super: {}), config
 
 , # The `fetchurl' to use for downloading curl and its dependencies
   # (see all-packages.nix).
@@ -9,181 +18,132 @@ let lib = import ../../../lib; in lib.makeOverridable (
 
 , setupScript ? ./setup.sh
 
+, extraNativeBuildInputs ? []
 , extraBuildInputs ? []
+, __stdenvImpureHostDeps ? []
+, __extraImpureHostDeps ? []
+, stdenvSandboxProfile ? ""
+, extraSandboxProfile ? ""
 
-, skipPaxMarking ? false
+  ## Platform parameters
+  ##
+  ## The "build" "host" "target" terminology below comes from GNU Autotools. See
+  ## its documentation for more information on what those words mean. Note that
+  ## each should always be defined, even when not cross compiling.
+  ##
+  ## For purposes of bootstrapping, think of each stage as a "sliding window"
+  ## over a list of platforms. Specifically, the host platform of the previous
+  ## stage becomes the build platform of the current one, and likewise the
+  ## target platform of the previous stage becomes the host platform of the
+  ## current one.
+  ##
+
+, # The platform on which packages are built. Consists of `system`, a
+  # string (e.g.,`i686-linux') identifying the most import attributes of the
+  # build platform, and `platform` a set of other details.
+  buildPlatform
+
+, # The platform on which packages run.
+  hostPlatform
+
+, # The platform which build tools (especially compilers) build for in this stage,
+  targetPlatform
 }:
 
 let
+  defaultNativeBuildInputs = extraNativeBuildInputs ++
+    [ ../../build-support/setup-hooks/move-docs.sh
+      ../../build-support/setup-hooks/make-symlinks-relative.sh
+      ../../build-support/setup-hooks/compress-man-pages.sh
+      ../../build-support/setup-hooks/strip.sh
+      ../../build-support/setup-hooks/patch-shebangs.sh
+      ../../build-support/setup-hooks/prune-libtool-files.sh
+    ]
+      # FIXME this on Darwin; see
+      # https://github.com/NixOS/nixpkgs/commit/94d164dd7#commitcomment-22030369
+    ++ lib.optional hostPlatform.isLinux ../../build-support/setup-hooks/audit-tmpdir.sh
+    ++ [
+      ../../build-support/setup-hooks/multiple-outputs.sh
+      ../../build-support/setup-hooks/move-sbin.sh
+      ../../build-support/setup-hooks/move-lib64.sh
+      ../../build-support/setup-hooks/set-source-date-epoch-to-latest.sh
+      # TODO use lib.optional instead
+      (if hasCC then cc else null)
+    ];
 
-  allowUnfree = config.allowUnfree or false || builtins.getEnv "NIXPKGS_ALLOW_UNFREE" == "1";
-
-  # Alow granular checks to allow only some unfree packages
-  # Example:
-  # {pkgs, ...}:
-  # {
-  #   allowUnfree = false;
-  #   allowUnfreePredicate = (x: pkgs.lib.hasPrefix "flashplayero-" x.name);
-  # }
-  allowUnfreePredicate = config.allowUnfreePredicate or (x: false);
-
-  allowBroken = config.allowBroken or false || builtins.getEnv "NIXPKGS_ALLOW_BROKEN" == "1";
-
-  forceEvalHelp = unfreeOrBroken:
-    assert (unfreeOrBroken == "Unfree" || unfreeOrBroken == "Broken");
-    ''
-      You can set
-        { nixpkgs.config.allow${unfreeOrBroken} = true; }
-      in configuration.nix to override this. If you use Nix standalone, you can add
-        { allow${unfreeOrBroken} = true; }
-      to ~/.nixpkgs/config.nix.
-    '';
-
-  unsafeGetAttrPos = builtins.unsafeGetAttrPos or (n: as: null);
+  defaultBuildInputs = extraBuildInputs;
 
   # The stdenv that we are producing.
-  result =
+  stdenv =
+    derivation (
+    lib.optionalAttrs (allowedRequisites != null) {
+      allowedRequisites = allowedRequisites
+        ++ defaultNativeBuildInputs ++ defaultBuildInputs;
+    }
+    // {
+      inherit name;
 
-    derivation {
-      inherit system name;
+      # Nix itself uses the `system` field of a derivation to decide where to
+      # build it. This is a bit confusing for cross compilation.
+      inherit (buildPlatform) system;
 
       builder = shell;
 
       args = ["-e" ./builder.sh];
-      /* TODO: special-cased @var@ substitutions are ugly.
-          However, using substituteAll* from setup.sh seems difficult,
-          as setup.sh can't be directly sourced.
-          Suggestion: split similar utility functions into a separate script.
-      */
 
       setup = setupScript;
 
-      inherit preHook initialPath gcc shell;
+      # We pretty much never need rpaths on Darwin, since all library path references
+      # are absolute unless we go out of our way to make them relative (like with CF)
+      # TODO: This really wants to be in stdenv/darwin but we don't have hostPlatform
+      # there (yet?) so it goes here until then.
+      preHook = preHook+ lib.optionalString buildPlatform.isDarwin ''
+        export NIX_BUILD_DONT_SET_RPATH=1
+      '' + lib.optionalString (hostPlatform.isDarwin || (hostPlatform.parsed.kernel.execFormat != lib.systems.parse.execFormats.elf && hostPlatform.parsed.kernel.execFormat != lib.systems.parse.execFormats.macho)) ''
+        export NIX_DONT_SET_RPATH=1
+        export NIX_NO_SELF_RPATH=1
+      ''
+      # TODO this should be uncommented, but it causes stupid mass rebuilds. I
+      # think the best solution would just be to fixup linux RPATHs so we don't
+      # need to set `-rpath` anywhere.
+      # + lib.optionalString targetPlatform.isDarwin ''
+      #   export NIX_TARGET_DONT_SET_RPATH=1
+      # ''
+      ;
 
-      # Whether we should run paxctl to pax-mark binaries
-      needsPax = result.isLinux && !skipPaxMarking;
-
-      propagatedUserEnvPkgs = [gcc] ++
-        lib.filter lib.isDerivation initialPath;
+      inherit initialPath shell
+        defaultNativeBuildInputs defaultBuildInputs;
     }
+    // lib.optionalAttrs buildPlatform.isDarwin {
+      __sandboxProfile = stdenvSandboxProfile;
+      __impureHostDeps = __stdenvImpureHostDeps;
+    })
 
-    // rec {
+    // {
 
       meta = {
         description = "The default build environment for Unix packages in Nixpkgs";
+        platforms = lib.platforms.all;
       };
 
-      # Add a utility function to produce derivations that use this
-      # stdenv and its shell.
-      mkDerivation = attrs:
-        let
-          pos =
-            if attrs.meta.description or null != null then
-              unsafeGetAttrPos "description" attrs.meta
-            else
-              unsafeGetAttrPos "name" attrs;
-          pos' = if pos != null then "‘" + pos.file + ":" + toString pos.line + "’" else "«unknown-file»";
-        in
-        if !allowUnfree && (let l = lib.lists.toList attrs.meta.license or []; in lib.lists.elem "unfree" l || lib.lists.elem "unfree-redistributable" l) && !(allowUnfreePredicate attrs) then
-          throw ''
-            Package ‘${attrs.name}’ in ${pos'} has an unfree license, refusing to evaluate.
-            ${forceEvalHelp "Unfree"}''
-        else if !allowBroken && attrs.meta.broken or false then
-          throw ''
-            Package ‘${attrs.name}’ in ${pos'} is marked as broken, refusing to evaluate.
-            ${forceEvalHelp "Broken"}''
-        else if !allowBroken && attrs.meta.platforms or null != null && !lib.lists.elem result.system attrs.meta.platforms then
-          throw ''
-            Package ‘${attrs.name}’ in ${pos'} is not supported on ‘${result.system}’, refusing to evaluate.
-            ${forceEvalHelp "Broken"}''
-        else
-          lib.addPassthru (derivation (
-            (removeAttrs attrs ["meta" "passthru" "crossAttrs"])
-            // (let
-              buildInputs = attrs.buildInputs or [];
-              nativeBuildInputs = attrs.nativeBuildInputs or [];
-              propagatedBuildInputs = attrs.propagatedBuildInputs or [];
-              propagatedNativeBuildInputs = attrs.propagatedNativeBuildInputs or [];
-              crossConfig = attrs.crossConfig or null;
-            in
-            {
-              builder = attrs.realBuilder or shell;
-              args = attrs.args or ["-e" (attrs.builder or ./default-builder.sh)];
-              stdenv = result;
-              system = result.system;
-              userHook = config.stdenv.userHook or null;
-              __ignoreNulls = true;
+      inherit buildPlatform hostPlatform targetPlatform;
 
-              # Inputs built by the cross compiler.
-              buildInputs = if crossConfig != null then buildInputs ++ extraBuildInputs else [];
-              propagatedBuildInputs = if crossConfig != null then propagatedBuildInputs else [];
-              # Inputs built by the usual native compiler.
-              nativeBuildInputs = nativeBuildInputs ++ (if crossConfig == null then buildInputs ++ extraBuildInputs else []);
-              propagatedNativeBuildInputs = propagatedNativeBuildInputs ++
-                (if crossConfig == null then propagatedBuildInputs else []);
-          }))) (
-          {
-            # The meta attribute is passed in the resulting attribute set,
-            # but it's not part of the actual derivation, i.e., it's not
-            # passed to the builder and is not a dependency.  But since we
-            # include it in the result, it *is* available to nix-env for
-            # queries.  We also a meta.position attribute here to
-            # identify the source location of the package.
-            meta = attrs.meta or {} // (if pos != null then {
-              position = pos.file + ":" + (toString pos.line);
-            } else {});
-            passthru = attrs.passthru or {};
-          } //
-          # Pass through extra attributes that are not inputs, but
-          # should be made available to Nix expressions using the
-          # derivation (e.g., in assertions).
-          (attrs.passthru or {}));
+      inherit extraNativeBuildInputs extraBuildInputs
+        __extraImpureHostDeps extraSandboxProfile;
 
       # Utility flags to test the type of platform.
-      isDarwin = system == "x86_64-darwin";
-      isLinux = system == "i686-linux"
-             || system == "x86_64-linux"
-             || system == "powerpc-linux"
-             || system == "armv5tel-linux"
-             || system == "armv6l-linux"
-             || system == "armv7l-linux"
-             || system == "mips64el-linux";
-      isGNU = system == "i686-gnu"; # GNU/Hurd
-      isGlibc = isGNU # useful for `stdenvNative'
-             || isLinux
-             || system == "x86_64-kfreebsd-gnu";
-      isSunOS = system == "i686-solaris"
-             || system == "x86_64-solaris";
-      isCygwin = system == "i686-cygwin"
-              || system == "x86_64-cygwin";
-      isFreeBSD = system == "i686-freebsd"
-              || system == "x86_64-freebsd";
-      isOpenBSD = system == "i686-openbsd"
-              || system == "x86_64-openbsd";
-      isBSD = system == "i686-freebsd"
-           || system == "x86_64-freebsd"
-           || system == "i686-openbsd"
-           || system == "x86_64-openbsd";
-      isi686 = system == "i686-linux"
-            || system == "i686-gnu"
-            || system == "i686-freebsd"
-            || system == "i686-openbsd"
-            || system == "i386-sunos";
-      isx86_64 = system == "x86_64-linux"
-              || system == "x86_64-darwin"
-              || system == "x86_64-freebsd"
-              || system == "x86_64-openbsd"
-              || system == "x86_64-solaris";
-      is64bit = system == "x86_64-linux"
-             || system == "x86_64-darwin"
-             || system == "x86_64-freebsd"
-             || system == "x86_64-openbsd"
-             || system == "x86_64-solaris";
-      isMips = system == "mips-linux"
-            || system == "mips64el-linux";
-      isArm = system == "armv5tel-linux"
-           || system == "armv6l-linux"
-           || system == "armv7l-linux";
+      inherit (hostPlatform)
+        isDarwin isLinux isSunOS isCygwin isFreeBSD isOpenBSD
+        isi686 isx86_32 isx86_64
+        is32bit is64bit
+        isAarch32 isAarch64 isMips isBigEndian;
+
+      # The derivation's `system` is `buildPlatform.system`.
+      inherit (buildPlatform) system;
+
+      inherit (import ./make-derivation.nix {
+        inherit lib config stdenv;
+      }) mkDerivation;
 
       # For convenience, bring in the library functions in lib/ so
       # packages don't have to do that themselves.
@@ -192,6 +152,8 @@ let
       inherit fetchurlBoot;
 
       inherit overrides;
+
+      inherit cc hasCC;
     }
 
     # Propagate any extra attributes.  For instance, we use this to
@@ -200,4 +162,4 @@ let
     # like curl = if stdenv ? curl then stdenv.curl else ...).
     // extraAttrs;
 
-in result)
+in stdenv)

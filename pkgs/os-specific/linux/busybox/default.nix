@@ -1,4 +1,13 @@
-{stdenv, fetchurl, enableStatic ? false, extraConfig ? ""}:
+{ stdenv, lib, buildPackages, fetchurl
+, enableStatic ? false
+, enableMinimal ? false
+# Allow forcing musl without switching stdenv itself, e.g. for our bootstrapping:
+# nix build -f pkgs/top-level/release.nix stdenvBootstrapTools.x86_64-linux.dist
+, useMusl ? stdenv.hostPlatform.libc == "musl", musl
+, extraConfig ? ""
+}:
+
+assert stdenv.hostPlatform.libc == "musl" -> useMusl;
 
 let
   configParser = ''
@@ -7,14 +16,7 @@ let
             NAME=`echo "$LINE" | cut -d \  -f 1`
             OPTION=`echo "$LINE" | cut -d \  -f 2`
 
-            if test -z "$NAME"; then
-                continue
-            fi
-
-            if test "$NAME" == "CLEAR"; then
-                echo "parseconfig: CLEAR"
-                echo > .config
-            fi
+            if ! [[ "$NAME" =~ ^CONFIG_ ]]; then continue; fi
 
             echo "parseconfig: removing $NAME"
             sed -i /$NAME'\(=\| \)'/d .config
@@ -25,57 +27,87 @@ let
     }
   '';
 
-  nixConfig = ''
+  libcConfig = lib.optionalString useMusl ''
+    CONFIG_FEATURE_UTMP n
+    CONFIG_FEATURE_WTMP n
+  '';
+in
+
+stdenv.mkDerivation rec {
+  name = "busybox-1.31.1";
+
+  # Note to whoever is updating busybox: please verify that:
+  # nix-build pkgs/stdenv/linux/make-bootstrap-tools.nix -A test
+  # still builds after the update.
+  src = fetchurl {
+    url = "https://busybox.net/downloads/${name}.tar.bz2";
+    sha256 = "1659aabzp8w4hayr4z8kcpbk2z1q2wqhw7i1yb0l72b45ykl1yfh";
+  };
+
+  hardeningDisable = [ "format" "pie" ]
+    ++ lib.optionals enableStatic [ "fortify" ];
+
+  patches = [
+    ./busybox-in-store.patch
+  ] ++ stdenv.lib.optional (stdenv.hostPlatform != stdenv.buildPlatform) ./clang-cross.patch;
+
+  postPatch = "patchShebangs .";
+
+  configurePhase = ''
+    export KCONFIG_NOTIMESTAMP=1
+    make ${if enableMinimal then "allnoconfig" else "defconfig"}
+
+    ${configParser}
+
+    cat << EOF | parseconfig
+
     CONFIG_PREFIX "$out"
     CONFIG_INSTALL_NO_USR y
+
+    CONFIG_LFS y
+
+    ${lib.optionalString enableStatic ''
+      CONFIG_STATIC y
+    ''}
 
     # Use the external mount.cifs program.
     CONFIG_FEATURE_MOUNT_CIFS n
     CONFIG_FEATURE_MOUNT_HELPERS y
-  '';
 
-  staticConfig = stdenv.lib.optionalString enableStatic ''
-    CONFIG_STATIC y
-  '';
+    # Set paths for console fonts.
+    CONFIG_DEFAULT_SETFONT_DIR "/etc/kbd"
 
-in
+    # Bump from 4KB, much faster I/O
+    CONFIG_FEATURE_COPYBUF_KB 64
 
-stdenv.mkDerivation rec {
-  name = "busybox-1.22.1";
-
-  src = fetchurl {
-    url = "http://busybox.net/downloads/${name}.tar.bz2";
-    sha256 = "12v7nri79v8gns3inmz4k24q7pcnwi00hybs0wddfkcy1afh42xf";
-  };
-
-  configurePhase = ''
-    make defconfig
-    ${configParser}
-    cat << EOF | parseconfig
-    ${staticConfig}
-    ${nixConfig}
     ${extraConfig}
-    $extraCrossConfig
+    CONFIG_CROSS_COMPILER_PREFIX "${stdenv.cc.targetPrefix}"
+    ${libcConfig}
     EOF
+
     make oldconfig
+
+    runHook postConfigure
   '';
 
-  crossAttrs = {
-    extraCrossConfig = ''
-      CONFIG_CROSS_COMPILER_PREFIX "${stdenv.cross.config}-"
-    '' +
-      (if stdenv.cross.platform.kernelMajor == "2.4" then ''
-        CONFIG_IONICE n
-      '' else "");
-  };
+  postConfigure = lib.optionalString (useMusl && stdenv.hostPlatform.libc != "musl") ''
+    makeFlagsArray+=("CC=${stdenv.cc.targetPrefix}cc -isystem ${musl.dev}/include -B${musl}/lib -L${musl}/lib")
+  '';
+
+  depsBuildBuild = [ buildPackages.stdenv.cc ];
+
+  buildInputs = lib.optionals (enableStatic && !useMusl && stdenv.cc.libc ? static) [ stdenv.cc.libc stdenv.cc.libc.static ];
 
   enableParallelBuilding = true;
 
-  meta = {
+  doCheck = false; # tries to access the net
+
+  meta = with stdenv.lib; {
     description = "Tiny versions of common UNIX utilities in a single small executable";
-    homepage = http://busybox.net/;
-    license = stdenv.lib.licenses.gpl2;
-    maintainers = with stdenv.lib.maintainers; [viric];
-    platforms = with stdenv.lib.platforms; linux;
+    homepage = https://busybox.net/;
+    license = licenses.gpl2;
+    maintainers = with maintainers; [ ];
+    platforms = platforms.linux;
+    priority = 10;
   };
 }

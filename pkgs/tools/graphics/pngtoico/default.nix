@@ -1,6 +1,6 @@
 { stdenv, fetchurl, libpng }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "pngtoico-1.0";
 
   src = fetchurl {
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ libpng ];
 
   meta = {
-    homepage = http://www.kernel.org/pub/software/graphics/pngtoico/;
+    homepage = https://www.kernel.org/pub/software/graphics/pngtoico/;
     description = "Small utility to convert a set of PNG images to Microsoft ICO format";
     license = stdenv.lib.licenses.gpl2Plus;
     platforms = with stdenv.lib.platforms; linux;

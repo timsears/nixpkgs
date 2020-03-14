@@ -1,65 +1,39 @@
-{ stdenv, fetchurl, makeWrapper }:
+{ stdenv, fetchurl, autoPatchelfHook }:
 
 let
-
-  version = "3.0.10.3";
-
   arch = if stdenv.is64bit then "amd64" else "x86";
- 
-  libDir = if stdenv.is64bit then "lib64" else "lib";
-in
-
-stdenv.mkDerivation {
-  name = "teamspeak-server-${version}";
+in stdenv.mkDerivation rec {
+  pname = "teamspeak-server";
+  version = "3.11.0";
 
   src = fetchurl {
-    urls = [
-       "http://dl.4players.de/ts/releases/${version}/teamspeak3-server_linux-${arch}-${version}.tar.gz"
-      "http://teamspeak.gameserver.gamed.de/ts3/releases/${version}/teamspeak3-server_linux-${arch}-${version}.tar.gz"
-    ];
-    sha256 = if stdenv.is64bit 
-      then "9606dd5c0c3677881b1aab833cb99f4f12ba08cc77ef4a97e9e282d9e10b0702"
-      else "8b8921e0df04bf74068a51ae06d744f25d759a8c267864ceaf7633eb3f81dbe5";
+    url = "https://files.teamspeak-services.com/releases/server/${version}/teamspeak3-server_linux_${arch}-${version}.tar.bz2";
+    sha256 = if stdenv.is64bit
+      then "18hsr119dq46rvhz5sb9snn2gfxwiig37g6bfzk24x6wlga3xihq"
+      else "1lyazw328azi0asvgvcsxglc1saqih6ss0g8pc8f5pzqngk9p953";
   };
 
-  buildInputs = [ makeWrapper ];
+  buildInputs = [ stdenv.cc.cc ];
 
-  buildPhase =
-    ''
-      mv ts3server_linux_${arch} ts3server
-      echo "patching ts3server"
-      patchelf \
-        --interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" \
-        --set-rpath $(cat $NIX_GCC/nix-support/orig-gcc)/${libDir} \
-        --force-rpath \
-        ts3server
-    '';
+  nativeBuildInputs = [ autoPatchelfHook ];
 
-  installPhase =
-    ''
-      # Delete unecessary libraries - these are provided by nixos.
-      #rm *.so*
+  installPhase = ''
+    # Install files.
+    mkdir -p $out/lib/teamspeak
+    mv * $out/lib/teamspeak/
 
-      # Install files.
-      mkdir -p $out/lib/teamspeak
-      mv * $out/lib/teamspeak/
+    # Make symlinks to the binaries from bin.
+    mkdir -p $out/bin/
+    ln -s $out/lib/teamspeak/ts3server $out/bin/ts3server
+    ln -s $out/lib/teamspeak/tsdns/tsdnsserver $out/bin/tsdnsserver
+  '';
 
-      # Make a symlink to the binary from bin.
-      mkdir -p $out/bin/
-      ln -s $out/lib/teamspeak/ts3server $out/bin/ts3server
-
-      wrapProgram $out/lib/teamspeak/ts3server --prefix LD_LIBRARY_PATH : $out/lib/teamspeak
-    '';
-
-  dontStrip = true;
-  dontPatchELF = true;
-  
-  meta = { 
+  meta = with stdenv.lib; {
     description = "TeamSpeak voice communication server";
-    homepage = http://teamspeak.com/;
-    license = stdenv.lib.licenses.unfreeRedistributable;
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.arobyn ];
+    homepage = https://teamspeak.com/;
+    license = licenses.unfreeRedistributable;
+    platforms = platforms.linux;
+    maintainers = with maintainers; [ arobyn gerschtli ];
   };
 }
 

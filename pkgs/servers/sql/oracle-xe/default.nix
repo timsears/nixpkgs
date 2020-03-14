@@ -1,15 +1,13 @@
-{ stdenv, makeWrapper, requireFile, patchelf, rpm, cpio, libaio }:
-
-assert stdenv.system == "x86_64-linux";
+{ stdenv, makeWrapper, requireFile, patchelf, rpmextract, libaio }:
 
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  name = "oracle-xe-${version}";
+  pname = "oracle-xe";
   version = "11.2.0";
 
   src = requireFile {
-    name = "${name}-1.0.x86_64.rpm";
+    name = "${pname}-${version}-1.0.x86_64.rpm";
     sha256 = "0s2jj2xn56v5ys6hxb7l7045hw9c1mm1lhj4p2fvqbs02kqchab6";
 
     url = "http://www.oracle.com/technetwork/"
@@ -19,8 +17,8 @@ stdenv.mkDerivation rec {
   buildInputs = [ makeWrapper ];
 
   unpackCmd = ''
-    (mkdir -p "${name}" && cd "${name}" &&
-      ${rpm}/bin/rpm2cpio "$curSrc" | ${cpio}/bin/cpio -id)
+    (mkdir -p "${pname}-${version}" && cd "${pname}-${version}" &&
+      ${rpmextract}/bin/rpmextract "$curSrc")
   '';
 
   buildPhase = let
@@ -54,7 +52,7 @@ stdenv.mkDerivation rec {
       \( -name '*.sh' \
       -o -path "$basedir/bin/*" \
       \) -print -exec "${patchelf}/bin/patchelf" \
-           --interpreter "$(cat "$NIX_GCC/nix-support/dynamic-linker")" \
+           --interpreter "$(cat "$NIX_CC/nix-support/dynamic-linker")" \
            --set-rpath "${libs}:$out/libexec/oracle/lib" \
            --force-rpath '{}' \;
   '';
@@ -70,14 +68,15 @@ stdenv.mkDerivation rec {
       makeWrapper "$i" "$out/bin/''${i##*/}" \
         --set ORACLE_HOME "$out/libexec/oracle" \
         --set ORACLE_SID XE \
-        --set NLS_LANG '$("'"$out"'/libexec/oracle/bin/nls_lang.sh")' \
+        --run "export NLS_LANG=\$($out/libexec/oracle/bin/nls_lang.sh)" \
         --prefix PATH : "$out/libexec/oracle/bin"
     done
   '';
 
   meta = {
     description = "Oracle Database Express Edition";
-    homepage = "http://www.oracle.com/technetwork/products/express-edition/";
+    homepage = http://www.oracle.com/technetwork/products/express-edition/;
     license = licenses.unfree;
+    platforms = [ "x86_64-linux" ];
   };
 }

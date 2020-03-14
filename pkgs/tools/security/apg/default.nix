@@ -1,15 +1,23 @@
-{ stdenv, fetchurl }:
+{ stdenv, fetchurl, openssl }:
 stdenv.mkDerivation rec {
-  name = "apg-2.2.3";
+  name = "apg-2.3.0b";
   src = fetchurl {
     url = "http://www.adel.nursat.kz/apg/download/${name}.tar.gz";
-    sha256 = "1fkxpaifv925i385krsyslrig42ksws5y19hfq5asn1rwv6zmjb9";
+    sha256 = "14lbq81xrcsmpk1b9qmqyz7n6ypf08zcxvcvp6f7ybcyf0lj1rfi";
   };
   configurePhase = ''
     substituteInPlace Makefile --replace /usr/local "$out"
   '';
+  makeFlags = stdenv.lib.optionals stdenv.isDarwin ["CC=cc"];
 
-  patches = [ ./apg.patch ];
+  patches = [
+    ./apg.patch
+    ./phony-install-target.patch
+  ];
+
+  postPatch = stdenv.lib.optionalString stdenv.isDarwin ''
+    sed -i -e 's|APG_CLIBS += -lcrypt|APG_CLIBS += -L${openssl.out}/lib -lcrypto|' Makefile
+  '';
 
   meta = {
     description = "Tools for random password generation";
@@ -59,6 +67,6 @@ stdenv.mkDerivation rec {
     homepage = http://www.adel.nursat.kz/apg/;
     license = stdenv.lib.licenses.bsd3;
     maintainers = with stdenv.lib.maintainers; [ astsmtl ];
-    platforms = stdenv.lib.platforms.linux;
+    platforms = stdenv.lib.platforms.unix;
   };
 }

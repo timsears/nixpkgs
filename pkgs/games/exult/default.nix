@@ -19,16 +19,21 @@ stdenv.mkDerivation rec {
     sha256 = "0a03a2l3ji6h48n106d4w55l8v6lni1axniafnvvv5c5n3nz5bgd";
   };
 
-  configureFlags = "--disable-tools";
+  configureFlags = [ "--disable-tools" ];
 
   patches =
     [ # Arch Linux patch set.
       ./arch.patch
     ];
 
-  buildInputs = [ pkgconfig SDL libogg libvorbis zlib unzip ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ SDL libogg libvorbis zlib unzip ];
 
   enableParallelBuilding = true;
+
+  makeFlags = [ "DESTDIR=$(out)" ];
+
+  NIX_LDFLAGS = "-lX11";
 
   postInstall =
     ''
@@ -41,5 +46,8 @@ stdenv.mkDerivation rec {
     homepage = http://exult.sourceforge.net/;
     description = "A reimplementation of the Ultima VII game engine";
     maintainers = [ stdenv.lib.maintainers.eelco ];
+    platforms = stdenv.lib.platforms.unix;
+    hydraPlatforms = stdenv.lib.platforms.linux; # darwin times out
+    license = stdenv.lib.licenses.gpl2Plus;
   };
 }

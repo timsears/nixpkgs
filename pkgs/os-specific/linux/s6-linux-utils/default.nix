@@ -1,53 +1,32 @@
-{ stdenv, fetchurl, skalibs }:
+{ stdenv, skawarePackages }:
 
-let
+with skawarePackages;
 
-  version = "1.0.3.1";
+buildPackage {
+  pname = "s6-linux-utils";
+  version = "2.5.1.1";
+  sha256 = "00nw2phd9prgv29hzqzwjnh4y0ivkzhx3srn6n1rlyr4ydhikxi5";
 
-in stdenv.mkDerivation rec {
+  description = "A set of minimalistic Linux-specific system utilities";
+  platforms = stdenv.lib.platforms.linux;
 
-  name = "s6-linux-utils-${version}";
+  outputs = [ "bin" "dev" "doc" "out" ];
 
-  src = fetchurl {
-    url = "http://www.skarnet.org/software/s6-linux-utils/${name}.tar.gz";
-    sha256 = "1s17g03z5hfpiz32g001g5wyamyvn9l36fr2csk3k7r0jkqfnl0d";
-  };
+  # TODO: nsss support
+  configureFlags = [
+    "--bindir=\${bin}/bin"
+    "--includedir=\${dev}/include"
+    "--with-sysdeps=${skalibs.lib}/lib/skalibs/sysdeps"
+    "--with-include=${skalibs.dev}/include"
+    "--with-lib=${skalibs.lib}/lib"
+    "--with-dynlib=${skalibs.lib}/lib"
+  ];
 
-  buildInputs = [ skalibs ];
+  postInstall = ''
+    # remove all s6 executables from build directory
+    rm $(find -name "s6-*" -type f -mindepth 1 -maxdepth 1 -executable)
 
-  sourceRoot = "admin/${name}";
-
-  configurePhase = ''
-    pushd conf-compile
-
-    printf "$out/bin"           > conf-install-command
-    printf "$out/include"       > conf-install-include
-    printf "$out/lib"           > conf-install-library
-    printf "$out/lib"           > conf-install-library.so
-
-    # let nix builder strip things, cross-platform
-    truncate --size 0 conf-stripbins
-    truncate --size 0 conf-striplibs
-
-    printf "${skalibs}/sysdeps"      > import
-    printf "%s" "${skalibs}/include" > path-include
-    printf "%s" "${skalibs}/lib"     > path-library
-
-    rm -f flag-slashpackage
-    touch flag-allstatic
-
-    popd
+    mv doc $doc/share/doc/s6-linux-utils/html
   '';
-
-  preBuild = ''
-    patchShebangs src/sys
-  '';
-
-  meta = {
-    homepage = http://www.skarnet.org/software/s6-linux-utils/;
-    description = "A set of minimalistic Linux-specific system utilities.";
-    platforms = stdenv.lib.platforms.linux;
-    license = stdenv.lib.licenses.isc;
-  };
 
 }

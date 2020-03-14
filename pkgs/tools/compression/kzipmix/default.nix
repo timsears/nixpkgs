@@ -12,12 +12,12 @@ stdenv.mkDerivation {
     mkdir -p $out/bin
     cp kzip zipmix $out/bin
     
-    patchelf --set-interpreter ${stdenv.glibc}/lib/ld-linux.so.2 $out/bin/kzip
-    patchelf --set-interpreter ${stdenv.glibc}/lib/ld-linux.so.2 $out/bin/zipmix
+    patchelf --set-interpreter ${stdenv.glibc.out}/lib/ld-linux.so.2 $out/bin/kzip
+    patchelf --set-interpreter ${stdenv.glibc.out}/lib/ld-linux.so.2 $out/bin/zipmix
   '';
 
   meta = {
-    description = "A tool that agressively optimizes the sizes of Zip archives";
+    description = "A tool that aggressively optimizes the sizes of Zip archives";
     license = stdenv.lib.licenses.unfree;
     homepage = http://advsys.net/ken/utils.htm;
     maintainers = [ stdenv.lib.maintainers.sander ];

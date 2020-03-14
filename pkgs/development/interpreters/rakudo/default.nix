@@ -1,27 +1,29 @@
-{ stdenv, fetchurl, perl, jdk, icu, zlib, gmp, readline }:
+{ stdenv, fetchurl, perl, icu, zlib, gmp, lib, nqp }:
 
 stdenv.mkDerivation rec {
-  name = "rakudo-star-${version}";
-  version = "2014.04";
+  pname = "rakudo";
+  version = "2020.02";
 
   src = fetchurl {
-    url    = "http://rakudo.org/downloads/star/${name}.tar.gz";
-    sha256 = "0spdrxc2kiidpgni1vl71brgs4d76h8029w5jxvah3yvjcqixz7l";
+    url    = "https://github.com/rakudo/rakudo/releases/download/${version}/rakudo-${version}.tar.gz";
+    sha256 = "0yhld3ij4mfa42chkfph7lzcl5q9b613hdjmw9rv46appmxvvmrs";
   };
 
-  buildInputs = [ icu zlib gmp readline jdk perl ];
+  buildInputs = [ icu zlib gmp perl ];
   configureScript = "perl ./Configure.pl";
-  configureFlags =
-    [ "--gen-moar"
-      "--gen-nqp"
-      "--gen-parrot"
-    ];
+  configureFlags = [
+    "--backends=moar"
+    "--with-nqp=${nqp}/bin/nqp"
+  ];
 
-  meta = {
-    description = "A Perl 6 implementation";
-    homepage    = "http://www.rakudo.org";
-    license     = stdenv.lib.licenses.artistic2;
-    platforms   = stdenv.lib.platforms.unix;
-    maintainers = [ stdenv.lib.maintainers.thoughtpolice ];
+  # Some tests fail on Darwin
+  doCheck = !stdenv.isDarwin;
+
+  meta = with stdenv.lib; {
+    description = "Raku implementation on top of Moar virtual machine";
+    homepage    = https://www.rakudo.org;
+    license     = licenses.artistic2;
+    platforms   = platforms.unix;
+    maintainers = with maintainers; [ thoughtpolice vrthra sgo ];
   };
 }

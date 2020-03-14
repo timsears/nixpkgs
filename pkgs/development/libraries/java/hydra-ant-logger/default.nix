@@ -1,7 +1,7 @@
 { fetchgit, stdenv, ant, jdk }:
 
-stdenv.mkDerivation rec {
-  name = "hydra-ant-logger-${version}";
+stdenv.mkDerivation {
+  pname = "hydra-ant-logger";
   version = "2010.2";
 
   src = fetchgit {
@@ -18,4 +18,8 @@ stdenv.mkDerivation rec {
     mkdir -p $out/share/java
     cp -v *.jar $out/share/java
   '';
+
+  meta = {
+    platforms = stdenv.lib.platforms.unix;
+  };
 }

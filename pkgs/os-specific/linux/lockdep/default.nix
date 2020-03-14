@@ -1,12 +1,13 @@
 { stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
-  name    = "lockdep-${version}";
-  version = "3.16.1";
+  pname = "lockdep";
+  version = "4.1.2";
+  fullver = "4.1.2";
 
   src = fetchurl {
-    url = "mirror://kernel/linux/kernel/v3.x/linux-${version}.tar.xz";
-    sha256 = "0wbxqlmk7w9047ir51dsz6vi7ww0hpycgrb43mk2a189xaldsdxy";
+    url = "mirror://kernel/linux/kernel/v4.x/linux-${version}.tar.xz";
+    sha256 = "1mdyjhnzhh254cblahqmpsk226z006z6sm9dmwvg6jlhpsw4cjhy";
   };
 
   preConfigure = "cd tools/lib/lockdep";
@@ -16,11 +17,11 @@ stdenv.mkDerivation rec {
     cp -R include/liblockdep $out/include
     make install DESTDIR=$out prefix=""
 
-    substituteInPlace $out/bin/lockdep --replace "./liblockdep.so" "$out/lib/liblockdep.so.$version"
+    substituteInPlace $out/bin/lockdep --replace "./liblockdep.so" "$out/lib/liblockdep.so.$fullver"
   '';
 
   meta = {
-    description = "userspace locking validation tool built on the Linux kernel";
+    description = "Userspace locking validation tool built on the Linux kernel";
     homepage    = "https://kernel.org/";
     license     = stdenv.lib.licenses.gpl2;
     platforms   = stdenv.lib.platforms.linux;

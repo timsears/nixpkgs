@@ -1,38 +1,35 @@
-a @ {libpng, bison, flex, ffmpeg, fullDepEntry, ...} :  
-let 
-  s = import ./src-for-default.nix;
-  buildInputs = with a; [
-    libpng bison flex ffmpeg
-  ];
-in
-rec {
-  src = a.fetchUrlFromSrcInfo s;
+{ stdenv, fetchFromGitHub, libpng, bison, flex, ffmpeg, icu }:
 
-  inherit (s) name;
-  inherit buildInputs;
-  configureFlags = [];
+stdenv.mkDerivation rec {
+  pname = "cfdg";
+  version = "3.2_2";
+  src = fetchFromGitHub {
+    owner = "MtnViewJohn";
+    repo = "context-free";
+    rev = "Version${version}";
+    sha256 = "14v1gya7h0p9dj16hw87wpmjfddmkz537w3kjvaribgxxp0gzyz5";
+  };
 
-  /* doConfigure should be removed if not needed */
-  phaseNames = ["doFixInc" "doMake" "copyFiles"];
- 
-  doFixInc = a.fullDepEntry ''
+  buildInputs = [ libpng bison flex ffmpeg icu ];
+
+  postPatch = ''
     sed -e "/YY_NO_UNISTD/a#include <stdio.h>" -i src-common/cfdg.l
-  '' ["doUnpack" "minInit"];
- 
-  copyFiles = a.fullDepEntry ''
+    sed -e '1i#include <algorithm>' -i src-common/{cfdg,builder,ast}.cpp
+  '';
+
+  installPhase = ''
     mkdir -p $out/bin
     cp cfdg $out/bin/
 
-    mkdir -p $out/share/doc/${name}
-    cp *.txt $out/share/doc/${name}
-  '' ["defEnsureDir" "doMake"];
-      
-  meta = {
+    mkdir -p $out/share/doc/${pname}-${version}
+    cp *.txt $out/share/doc/${pname}-${version}
+  '';
+
+  meta = with stdenv.lib; {
     description = "Context-free design grammar - a tool for graphics generation";
-    maintainers = [
-      a.lib.maintainers.raskin
-    ];
-    platforms = with a.lib.platforms; 
-      linux;
+    maintainers = with maintainers; [ raskin ];
+    platforms = platforms.linux;
+    homepage = "https://contextfreeart.org/";
+    license = licenses.gpl2;
   };
 }

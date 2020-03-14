@@ -1,7 +1,13 @@
 { stdenv, fetchurl }:
 
-stdenv.mkDerivation {
-  name = "capnproto-0.4.1";
+stdenv.mkDerivation rec {
+  pname = "capnproto";
+  version = "0.7.0";
+
+  src = fetchurl {
+    url = "https://capnproto.org/capnproto-c++-${version}.tar.gz";
+    sha256 = "0hfdnhlbskagzgvby8wy6lrxj53zfzpfqimbhga68c0ji2yw1969";
+  };
 
   meta = with stdenv.lib; {
     homepage    = "http://kentonv.github.io/capnproto";
@@ -14,10 +20,5 @@ stdenv.mkDerivation {
     license     = licenses.bsd2;
     platforms   = platforms.all;
     maintainers = with maintainers; [ cstrahan ];
-  };
-
-  src = fetchurl {
-    url = "https://capnproto.org/capnproto-c++-0.4.1.tar.gz";
-    sha256 = "8453e8d508906062f113dbdfff552f41e08083ccf7c9407778a8d107675cd468";
   };
 }

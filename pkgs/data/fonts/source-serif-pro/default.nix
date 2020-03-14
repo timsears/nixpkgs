@@ -1,23 +1,23 @@
-{ stdenv, fetchurl, unzip }:
+{ lib, fetchzip }:
 
-stdenv.mkDerivation {
-  name = "source-serif-pro-1.014";
-  src = fetchurl {
-    url = "mirror://sourceforge/sourceserifpro.adobe/SourceSerifPro_FontsOnly-1.014.zip";
-    sha256 = "1agack195jqq4g2hmga6f9nwg44garii1g3jpbrdlrwr97rwvqsh";
-  };
+let
+  version = "3.000";
+in fetchzip {
+  name = "source-serif-pro-${version}";
 
-  buildInputs = [ unzip ];
+  url = "https://github.com/adobe-fonts/source-serif-pro/releases/download/${version}R/source-serif-pro-${version}R.zip";
 
-  phases = "unpackPhase installPhase";
-
-  installPhase = ''
-    mkdir -p $out/share/fonts/opentype
-    find . -name "*.otf" -exec cp {} $out/share/fonts/opentype \;
+  postFetch = ''
+    mkdir -p $out/share/fonts/{opentype,truetype,variable}
+    unzip -j $downloadedFile "OTF/*.otf" -d $out/share/fonts/opentype
+    unzip -j $downloadedFile "TTF/*.ttf" -d $out/share/fonts/truetype
+    unzip -j $downloadedFile "VAR/*.otf" -d $out/share/fonts/variable
   '';
 
-  meta = with stdenv.lib; {
-    homepage = http://sourceforge.net/adobe/sourceserifpro;
+  sha256 = "06yp8y79mqk02qzp81h8zkmzqqlhicgrkwmzkd0bm338xh8grsiz";
+
+  meta = with lib; {
+    homepage = https://adobe-fonts.github.io/source-serif-pro/;
     description = "A set of OpenType fonts to complement Source Sans Pro";
     license = licenses.ofl;
     platforms = platforms.all;

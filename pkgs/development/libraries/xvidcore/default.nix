@@ -1,42 +1,46 @@
-{ stdenv, fetchurl, nasm, autoconf, automake, libtool }:
+{ stdenv, fetchurl, yasm, autoconf, automake, libtool }:
 
+with stdenv.lib;
 stdenv.mkDerivation rec {
-  name = "xvidcore-1.3.2";
-  
+  pname = "xvidcore";
+  version = "1.3.5";
+
   src = fetchurl {
-    url = "http://downloads.xvid.org/downloads/${name}.tar.bz2";
-    sha256 = "1x0b2rq6fv99ramifhkakycd0prjc93lbzrffbjgjwg7w4s17hfn";
+    url = "http://downloads.xvid.org/downloads/${pname}-${version}.tar.bz2";
+    sha256 = "1d0hy1w9sn6491a3vhyf3vmhq4xkn6yd4ralx1191s6qz5wz483w";
   };
 
   preConfigure = ''
+    # Configure script is not in the root of the source directory
     cd build/generic
-  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+  '' + optionalString stdenv.isDarwin ''
+    # Undocumented darwin hack
     substituteInPlace configure --replace "-no-cpp-precomp" ""
   '';
 
-  configureFlags = stdenv.lib.optionals stdenv.isDarwin
-    [ "--enable-macosx_module" "--disable-assembly" ];
+  configureFlags = [ ]
+    # Undocumented darwin hack (assembly is probably disabled due to an
+    # issue with nasm, however yasm is now used)
+    ++ optional stdenv.isDarwin "--enable-macosx_module --disable-assembly";
 
-  buildInputs = [ nasm ]
-    ++ stdenv.lib.optionals stdenv.isDarwin [ autoconf automake libtool ];
+  nativeBuildInputs = [ ]
+    ++ optional (!stdenv.isDarwin) yasm;
 
-  # don't delete the '.a' files on darwin -- they're needed to compile ffmpeg
-  # (and perhaps other things)
-  postInstall = stdenv.lib.optionalString (!stdenv.isDarwin) ''
+  buildInputs = [ ]
+    # Undocumented darwin hack
+    ++ optionals stdenv.isDarwin [ autoconf automake libtool ];
+
+  # Don't remove static libraries (e.g. 'libs/*.a') on darwin.  They're needed to
+  # compile ffmpeg (and perhaps other things).
+  postInstall = optionalString (!stdenv.isDarwin) ''
     rm $out/lib/*.a
-  '' + ''
-    cd $out/lib
-    ln -s *.so.4.* libxvidcore.so
-    if [ ! -e libxvidcore.so.4 ]; then
-        ln -s *.so.4.* libxvidcore.so.4
-    fi
   '';
-  
-  meta = with stdenv.lib; {
+
+  meta = {
     description = "MPEG-4 video codec for PC";
-    homepage    = http://www.xvid.org/;
+    homepage    = https://www.xvid.com/;
     license     = licenses.gpl2;
-    maintainers = with maintainers; [ lovek323 ];
+    maintainers = with maintainers; [ codyopel lovek323 ];
     platforms   = platforms.all;
   };
 }

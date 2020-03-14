@@ -1,7 +1,7 @@
 { stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
-  name = "libxmp-4.2.7";
+  name = "libxmp-4.4.1";
 
   meta = with stdenv.lib; {
     description = "Extended module player library";
@@ -13,11 +13,10 @@ stdenv.mkDerivation rec {
     '';
     license     = licenses.lgpl21Plus;
     platforms   = platforms.linux;
-    maintainers = with maintainers; [ iyzsong ];
   };
 
   src = fetchurl {
     url = "mirror://sourceforge/xmp/libxmp/${name}.tar.gz";
-    sha256 = "1isv8498869w8wc18lagi1p40z4blx684r21j9cligkfyrmri536";
+    sha256 = "1kycz4jsyvmf7ny9227b497wc7y5ligydi6fvvldmkf8hk63ad9m";
   };
 }

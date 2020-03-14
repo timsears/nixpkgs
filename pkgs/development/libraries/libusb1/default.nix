@@ -1,25 +1,51 @@
-{ stdenv, fetchurl, pkgconfig, udev }:
+{ stdenv
+, fetchFromGitHub
+, autoreconfHook
+, pkgconfig
+, enableSystemd ? stdenv.isLinux && !stdenv.hostPlatform.isMusl
+, systemd ? null
+, libobjc
+, IOKit
+, withStatic ? false
+}:
 
-let
-  version = "1.0.18";
-in
+assert enableSystemd -> systemd != null;
+
 stdenv.mkDerivation rec {
-  name = "libusb-${version}"; # at 1.0.18 libusb joined with libusbx
+  pname = "libusb";
+  version = "1.0.23";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/libusb/libusb-${version}.tar.bz2";
-    sha256 = "081px0j98az0pjwwyjlq4qcmfn194fvm3qd4im0r9pm58pn5qgy7";
+  src = fetchFromGitHub {
+    owner = "libusb";
+    repo = "libusb";
+    rev = "v${version}";
+    sha256 = "0mxbpg01kgbk5nh6524b0m4xk7ywkyzmc3yhi5asqcsd3rbhjj98";
   };
 
-  buildInputs = [ pkgconfig ];
-  propagatedBuildInputs = stdenv.lib.optional (stdenv.isLinux) udev;
+  outputs = [ "out" "dev" ]; # get rid of propagating systemd closure
+
+  nativeBuildInputs = [ pkgconfig autoreconfHook ];
+  propagatedBuildInputs =
+    stdenv.lib.optional enableSystemd systemd ++
+    stdenv.lib.optionals stdenv.isDarwin [ libobjc IOKit ];
+
+  dontDisableStatic = withStatic;
 
   NIX_LDFLAGS = stdenv.lib.optionalString stdenv.isLinux "-lgcc_s";
 
-  meta = {
-    homepage = http://www.libusb.info;
-    description = "User-space USB library";
-    platforms = stdenv.lib.platforms.unix;
-    maintainers = [ stdenv.lib.maintainers.urkud ];
+  preFixup = stdenv.lib.optionalString stdenv.isLinux ''
+    sed 's,-ludev,-L${stdenv.lib.getLib systemd}/lib -ludev,' -i $out/lib/libusb-1.0.la
+  '';
+
+  meta = with stdenv.lib; {
+    homepage = "https://libusb.info/";
+    repositories.git = "https://github.com/libusb/libusb";
+    description = "cross-platform user-mode USB device library";
+    longDescription = ''
+      libusb is a cross-platform user-mode library that provides access to USB devices.
+    '';
+    platforms = platforms.all;
+    license = licenses.lgpl21Plus;
+    maintainers = [ ];
   };
 }

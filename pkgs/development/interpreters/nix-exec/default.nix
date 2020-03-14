@@ -1,25 +1,24 @@
-{ stdenv, fetchurl, pkgconfig, nix }: let
-  version = "1.0.0";
+{ stdenv, fetchurl, pkgconfig, nix, git }: let
+  version = "4.1.6";
 in stdenv.mkDerivation {
-  name = "nix-exec-${version}";
+  pname = "nix-exec";
+  inherit version;
 
   src = fetchurl {
     url = "https://github.com/shlevy/nix-exec/releases/download/v${version}/nix-exec-${version}.tar.xz";
-
-    sha256 = "0w89ma69iil1ki68zvs1l0ii0d87in64791l3a4yzyv9d3ncl3w6";
+    sha256 = "0slpsnzzzdkf5d9za7j4kr15jr4mn1k9klfsxibzy47b2bx1vkar";
   };
 
-  buildInputs = [ pkgconfig nix ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ nix git ];
+
+  NIX_CFLAGS_COMPILE = "-std=c++1y";
 
   meta = {
     description = "Run programs defined in nix expressions";
-
     homepage = https://github.com/shlevy/nix-exec;
-
     license = stdenv.lib.licenses.mit;
-
-    maintainers = [ stdenv.lib.maintainers.shlevy ];
-
     platforms = nix.meta.platforms;
+    broken = true;
   };
 }

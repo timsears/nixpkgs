@@ -3,7 +3,8 @@
 let version = "5.100.138"; in
 
 stdenv.mkDerivation {
-  name = "b43-firmware-${version}";
+  pname = "b43-firmware";
+  inherit version;
 
   src = fetchurl {
     url = "http://www.lwfinger.com/b43-firmware/broadcom-wl-${version}.tar.bz2";
@@ -15,8 +16,8 @@ stdenv.mkDerivation {
   phases = [ "unpackPhase" "installPhase" ];
 
   installPhase = ''
-    mkdir $out
-    b43-fwcutter -w $out linux/wl_apsta.o
+    mkdir -p $out/lib/firmware
+    b43-fwcutter -w $out/lib/firmware linux/wl_apsta.o
   '';
 
   meta = {

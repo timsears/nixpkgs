@@ -1,30 +1,39 @@
-{stdenv, fetchurl, nasm, SDL, zlib, libpng, ncurses, mesa, intltool, gtk, pkgconfig, libxml2, x11, pulseaudio}:
+{ stdenv, fetchFromGitHub, autoreconfHook, wrapGAppsHook, intltool, pkgconfig
+, SDL2, zlib, gtk3, libxml2, libXv, epoxy, minizip, portaudio }:
 
 stdenv.mkDerivation rec {
-  name = "snes9x-gtk-${version}";
-  version = "1.53";
+  pname = "snes9x-gtk";
+  version = "1.57";
 
-  src = fetchurl {
-    url = "http://files.ipherswipsite.com/snes9x/snes9x-${version}-src.tar.bz2";
-    sha256 = "9f7c5d2d0fa3fe753611cf94e8879b73b8bb3c0eab97cdbcb6ab7376efa78dc3";
+  src = fetchFromGitHub {
+    owner = "snes9xgit";
+    repo = "snes9x";
+    rev = version;
+    sha256 = "1jcvj2l03b98iz6aq4x747vfz7i6h6j339z4brj4vz71s11vn31a";
   };
 
-  buildInputs = [ nasm SDL zlib libpng ncurses mesa intltool gtk pkgconfig libxml2 x11 pulseaudio];
+  enableParallelBuilding = true;
+  nativeBuildInputs = [ autoreconfHook wrapGAppsHook intltool pkgconfig ];
+  buildInputs = [ SDL2 zlib gtk3 libxml2 libXv epoxy minizip portaudio ];
 
-  sourceRoot = "snes9x-${version}-src/gtk";
-
-  configureFlags = "--prefix=$out/ --with-opengl";
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp snes9x-gtk $out/bin
+  preAutoreconf = ''
+    cd gtk
+    intltoolize
   '';
 
-  meta = {
-    description = "a portable, freeware Super Nintendo Entertainment System (SNES) emulator";
-    longDescription = "Snes9x is a portable, freeware Super Nintendo Entertainment System (SNES) emulator. It basically allows you to play most games designed for the SNES and Super Famicom Nintendo game systems on your PC or Workstation; which includes some real gems that were only ever released in Japan.";
-    license = stdenv.lib.licenses.lgpl2;
-    maintainers = [ stdenv.lib.maintainers.qknight ];
-    homepage = http://www.snes9x.com/;
+  meta = with stdenv.lib; {
+    homepage = "http://www.snes9x.com";
+    description = "Super Nintendo Entertainment System (SNES) emulator";
+
+    longDescription = ''
+      Snes9x is a portable, freeware Super Nintendo Entertainment System (SNES)
+      emulator. It basically allows you to play most games designed for the SNES
+      and Super Famicom Nintendo game systems on your PC or Workstation; which
+      includes some real gems that were only ever released in Japan.
+    '';
+
+    license = licenses.lgpl2;
+    maintainers = with maintainers; [ qknight ];
+    platforms = platforms.linux;
   };
 }

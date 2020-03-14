@@ -1,47 +1,19 @@
-{ composableDerivation, stdenv, fetchurl, alsaLib, jack2, ncurses }:
+{ stdenv, fetchurl, alsaLib, libjack2, ncurses, pkgconfig }:
 
-let inherit (composableDerivation) edf; in
-
-composableDerivation.composableDerivation {} {
-
-  name = "timidity-2.13.0";
+stdenv.mkDerivation {
+  name = "timidity-2.15.0";
 
   src = fetchurl {
-    url = mirror://sourceforge/timidity/TiMidity++-2.13.0.tar.bz2;
-    sha256 = "1jbmk0m375fh5nj2awqzns7pdjbi7dxpjdwcix04zipfcilppbmf";
+    url = mirror://sourceforge/timidity/TiMidity++-2.15.0.tar.bz2;
+    sha256 = "1xf8n6dqzvi6nr2asags12ijbj1lwk1hgl3s27vm2szib8ww07qn";
   };
 
-  mergeAttrBy.audioModes = a : b : "${a},${b}";
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ alsaLib libjack2 ncurses ];
 
-  preConfigure = ''
-    configureFlags="$configureFlags --enable-audio=$audioModes"
-  '';
+  configureFlags = [ "--enable-audio=oss,alsa,jack" "--enable-alsaseq" "--with-default-output=alsa" "--enable-ncurses" ];
 
-  # configure still has many more options...
-  flags = {
-    oss = {
-      audioModes = "oss";
-    };
-    alsa = {
-      audioModes = "alsa";
-      buildInputs = [alsaLib];
-      # this is better than /dev/dsp !
-      configureFlags = ["--with-default-output-mode=alsa"];
-    };
-    jack = {
-      audioModes = "jack";
-      buildInputs = [jack2];
-      NIX_LDFLAGS = ["-ljack -L${jack2}/lib64"];
-    };
-  } // edf { name = "ncurses"; enable = { buildInputs = [ncurses]; };};
-
-  cfg = {
-    ncursesSupport = true;
-
-    ossSupport = true;
-    alsaSupport = true;
-    jackSupport = true;
-  };
+  NIX_LDFLAGS = "-ljack -L${libjack2}/lib";
 
   instruments = fetchurl {
     url = http://www.csee.umbc.edu/pub/midia/instruments.tar.gz;
@@ -55,8 +27,11 @@ composableDerivation.composableDerivation {} {
     tar --strip-components=1 -xf $instruments -C $out/share/timidity/
   '';
 
-  meta = {
+  meta = with stdenv.lib; {
+    homepage = https://sourceforge.net/projects/timidity/;
+    license = licenses.gpl2;
     description = "A software MIDI renderer";
-    maintainers = [ stdenv.lib.maintainers.marcweber ];
+    maintainers = [ maintainers.marcweber ];
+    platforms = platforms.linux;
   };
 }

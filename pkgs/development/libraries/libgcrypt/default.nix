@@ -1,40 +1,58 @@
-{ fetchurl, stdenv, libgpgerror }:
+{ stdenv, fetchurl, gettext, libgpgerror, enableCapabilities ? false, libcap
+, buildPackages
+}:
 
-stdenv.mkDerivation (rec {
-  name = "libgcrypt-1.5.4";
+assert enableCapabilities -> stdenv.isLinux;
+
+stdenv.mkDerivation rec {
+  pname = "libgcrypt";
+  version = "1.8.5";
 
   src = fetchurl {
-    url = "mirror://gnupg/libgcrypt/${name}.tar.bz2";
-    sha256 = "d5f88d9f41a46953dc250cdb8575129b37ee2208401b7fa338c897f667c7fb33";
+    url = "mirror://gnupg/libgcrypt/${pname}-${version}.tar.bz2";
+    sha256 = "1hvsazms1bfd769q0ngl0r9g5i4m9mpz9jmvvrdzyzk3rfa2ljiv";
   };
 
-  propagatedBuildInputs = [ libgpgerror ];
+  outputs = [ "out" "dev" "info" ];
+  outputBin = "dev";
 
-  doCheck = stdenv.system != "i686-linux"; # "basic" test fails after stdenv+glibc-2.18
+  # The CPU Jitter random number generator must not be compiled with
+  # optimizations and the optimize -O0 pragma only works for gcc.
+  # The build enables -O2 by default for everything else.
+  hardeningDisable = stdenv.lib.optional stdenv.cc.isClang "fortify";
 
-  # For some reason the tests don't find `libgpg-error.so'.
-  checkPhase = ''
-    LD_LIBRARY_PATH="${libgpgerror}/lib:$LD_LIBRARY_PATH" \
-    make check
+  depsBuildBuild = [ buildPackages.stdenv.cc ];
+
+  buildInputs = [ libgpgerror ]
+    ++ stdenv.lib.optional stdenv.isDarwin gettext
+    ++ stdenv.lib.optional enableCapabilities libcap;
+
+  configureFlags = [ "--with-libgpg-error-prefix=${libgpgerror.dev}" ]
+   ++ stdenv.lib.optional stdenv.hostPlatform.isMusl "--disable-asm";
+
+  # Make sure libraries are correct for .pc and .la files
+  # Also make sure includes are fixed for callers who don't use libgpgcrypt-config
+  postFixup = ''
+    sed -i 's,#include <gpg-error.h>,#include "${libgpgerror.dev}/include/gpg-error.h",g' "$dev/include/gcrypt.h"
+  '' + stdenv.lib.optionalString enableCapabilities ''
+    sed -i 's,\(-lcap\),-L${libcap.lib}/lib \1,' $out/lib/libgcrypt.la
   '';
 
-  meta = {
-    description = "General-pupose cryptographic library";
+  # TODO: figure out why this is even necessary and why the missing dylib only crashes
+  # random instead of every test
+  preCheck = stdenv.lib.optionalString stdenv.isDarwin ''
+    mkdir -p $out/lib
+    cp src/.libs/libgcrypt.20.dylib $out/lib
+  '';
 
-    longDescription = ''
-      GNU Libgcrypt is a general purpose cryptographic library based on
-      the code from GnuPG.  It provides functions for all
-      cryptographic building blocks: symmetric ciphers, hash
-      algorithms, MACs, public key algorithms, large integer
-      functions, random numbers and a lot of supporting functions.
-    '';
+  doCheck = true;
 
-    license = stdenv.lib.licenses.lgpl2Plus;
-
-    homepage = http://gnupg.org/;
-    platforms = stdenv.lib.platforms.all;
+  meta = with stdenv.lib; {
+    homepage = https://www.gnu.org/software/libgcrypt/;
+    description = "General-purpose cryptographic library";
+    license = licenses.lgpl2Plus;
+    platforms = platforms.all;
+    maintainers = with maintainers; [ vrthra ];
+    repositories.git = git://git.gnupg.org/libgcrypt.git;
   };
-} # old "as" problem, see #616 and http://gnupg.10057.n7.nabble.com/Fail-to-build-on-freebsd-7-3-td30245.html
-  // stdenv.lib.optionalAttrs (stdenv.isFreeBSD && stdenv.isi686)
-    { configureFlags = [ "--disable-aesni-support" ]; }
-)
+}

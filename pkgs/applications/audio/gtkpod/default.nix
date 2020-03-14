@@ -1,34 +1,25 @@
-{ stdenv, fetchurl, pkgconfig, makeWrapper, intltool, libgpod, curl, flac,
-  gnome3_12, gtk3, glib, gettext, perl, perlXMLParser , libglade, flex, libid3tag,
-  libvorbis, hicolor_icon_theme, gdk_pixbuf }:
+{ stdenv, fetchurl, pkgconfig, wrapGAppsHook, intltool, libgpod, curl, flac,
+  gnome3, gtk3, gettext, perlPackages, flex, libid3tag, gdl,
+  libvorbis, gdk-pixbuf }:
 
-let
-  gnome = gnome3_12;
-
-in stdenv.mkDerivation rec {
-  version = "2.1.4";
-  name = "gtkpod-${version}";
+stdenv.mkDerivation rec {
+  version = "2.1.5";
+  pname = "gtkpod";
 
   src = fetchurl {
-    url = "mirror://sourceforge/gtkpod/${name}.tar.gz";
-    sha256 = "ba12b35f3f24a155b68f0ffdaf4d3c5c7d1b8df04843a53306e1c83fc811dfaa";
+    url = "mirror://sourceforge/gtkpod/${pname}-${version}.tar.gz";
+    sha256 = "0xisrpx069f7bjkyc8vqxb4k0480jmx1wscqxr6cpq1qj6pchzd5";
   };
 
-  propagatedUserEnvPkgs = [ gnome.gnome_themes_standard ];
-
-  buildInputs = [ pkgconfig makeWrapper intltool curl gettext perl perlXMLParser
-    flex libgpod libid3tag flac libvorbis gtk3 gdk_pixbuf libglade gnome.anjuta
-    gnome.gdl gnome.gnome_icon_theme_symbolic gnome.gnome_icon_theme
-    hicolor_icon_theme ];
+  nativeBuildInputs = [ pkgconfig wrapGAppsHook intltool ];
+  buildInputs = [
+    curl gettext
+    flex libgpod libid3tag flac libvorbis gtk3 gdk-pixbuf
+    gdl gnome3.adwaita-icon-theme gnome3.anjuta
+  ] ++ (with perlPackages; [ perl XMLParser ]);
 
   patchPhase = ''
     sed -i 's/which/type -P/' scripts/*.sh
-  '';
-
-  preFixup = ''
-    wrapProgram "$out/bin/gtkpod" \
-      --set GDK_PIXBUF_MODULE_FILE "$GDK_PIXBUF_MODULE_FILE" \
-      --prefix XDG_DATA_DIRS : "$XDG_ICON_DIRS:${gnome.gnome_themes_standard}/share:$out/share:$GSETTINGS_SCHEMAS_PATH"
   '';
 
   enableParallelBuilding = true;

@@ -1,37 +1,36 @@
 { stdenv, fetchurl
-, pkgconfig, cmake, perl, ffmpeg
-, docbook_xml_dtd_45, docbook_xsl, libxslt
-, phonon, automoc4, chromaprint, id3lib
-, taglib, mp4v2, flac, libogg, libvorbis
-, qt, zlib, readline
-, makeWrapper
+, pkgconfig, cmake, python, ffmpeg, phonon, automoc4
+, chromaprint, docbook_xml_dtd_45, docbook_xsl, libxslt
+, id3lib, taglib, mp4v2, flac, libogg, libvorbis
+, zlib, readline , qtbase, qttools, qtmultimedia, qtquickcontrols
+, wrapQtAppsHook
 }:
 
 stdenv.mkDerivation rec {
 
-  name = "kid3-${version}";
-  version = "3.1.1";
+  pname = "kid3";
+  version = "3.8.2";
 
   src = fetchurl {
-    url = "http://downloads.sourceforge.net/project/kid3/kid3/${version}/${name}.tar.gz";
-    sha256 = "0mr617k712zpd99rgsy313jrb6jcjn1malj4lirzqhp7307wsf34";
+    url = "mirror://sourceforge/project/kid3/kid3/${version}/${pname}-${version}.tar.gz";
+    sha256 = "051y77swpi9isx275gwzl4fn3igd2dmixbszv9m3h0h9lqhcjrvr";
   };
 
+  nativeBuildInputs = [ wrapQtAppsHook ];
   buildInputs = with stdenv.lib;
-  [ pkgconfig cmake perl ffmpeg docbook_xml_dtd_45 docbook_xsl libxslt
-    phonon automoc4 chromaprint id3lib taglib mp4v2 flac libogg libvorbis
-    qt zlib readline makeWrapper ];
+  [ pkgconfig cmake python ffmpeg phonon automoc4
+    chromaprint docbook_xml_dtd_45 docbook_xsl libxslt
+    id3lib taglib mp4v2 flac libogg libvorbis zlib readline
+    qtbase qttools qtmultimedia qtquickcontrols ];
 
-  cmakeFlags = [ "-DCMAKE_BUILD_TYPE=Release" "-DWITH_APPS=Qt;CLI" ];
+  cmakeFlags = [ "-DWITH_APPS=Qt;CLI" ];
   NIX_LDFLAGS = "-lm -lpthread";
 
   preConfigure = ''
     export DOCBOOKDIR="${docbook_xsl}/xml/xsl/docbook/"
   '';
 
-  postInstall = ''
-    wrapProgram $out/bin/kid3-qt --prefix QT_PLUGIN_PATH : $out/lib/qt4/plugins
-  '';
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     description = "A simple and powerful audio tag editor";
@@ -68,7 +67,6 @@ stdenv.mkDerivation rec {
     homepage = http://kid3.sourceforge.net/;
     license = licenses.lgpl2Plus;
     maintainers = [ maintainers.AndersonTorres ];
+    platforms = platforms.linux;
   };
 }
-
-# TODO: Qt5 support

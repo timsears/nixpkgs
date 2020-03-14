@@ -18,5 +18,7 @@ stdenv.mkDerivation {
   meta = {
     homepage = http://emma.sourceforge.net/;
     description = "A code coverage tool for Java";
+    platforms = stdenv.lib.platforms.unix;
+    license = stdenv.lib.licenses.cpl10;
   };
 }

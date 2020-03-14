@@ -1,19 +1,33 @@
-{stdenv, fetchurlBoot, openssl, zlib}:
+{ stdenv, fetchurl, openssl, zlib, windows }:
 
 stdenv.mkDerivation rec {
-  name = "libssh2-1.4.3";
+  pname = "libssh2";
+  version = "1.9.0";
 
-  src = fetchurlBoot {
-    url = "${meta.homepage}/download/${name}.tar.gz";
-    sha256 = "eac6f85f9df9db2e6386906a6227eb2cd7b3245739561cad7d6dc1d5d021b96d";
+  src = fetchurl {
+    url = "${meta.homepage}/download/${pname}-${version}.tar.gz";
+    sha256 = "1zfsz9nldakfz61d2j70pk29zlmj7w2vv46s9l3x2prhcgaqpyym";
   };
 
-  buildInputs = [ openssl zlib ];
+  outputs = [ "out" "dev" "devdoc" ];
 
-  meta = {
+  buildInputs = [ openssl zlib ]
+    ++ stdenv.lib.optional stdenv.hostPlatform.isMinGW windows.mingw_w64;
+
+  patches = [
+    # not able to use fetchpatch here: infinite recursion
+    (fetchurl {
+      name = "CVE-2019-17498.patch";
+      url = "https://github.com/libssh2/libssh2/pull/402.patch";
+      sha256 = "1n9s2mcz5dkw0xpm3c5x4hzj8bar4i6z0pr1rmqjplhfg888vdvc";
+    })
+  ];
+
+  meta = with stdenv.lib; {
     description = "A client-side C library implementing the SSH2 protocol";
-    homepage = http://www.libssh2.org;
-    platforms = stdenv.lib.platforms.all;
-    maintainers = [ stdenv.lib.maintainers.urkud ];
+    homepage = https://www.libssh2.org;
+    platforms = platforms.all;
+    license = licenses.bsd3;
+    maintainers = [ ];
   };
 }

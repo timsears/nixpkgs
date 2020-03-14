@@ -1,21 +1,15 @@
-{ stdenv, fetchurl, pcre, pkgconfig, python }:
+{ stdenv, fetchurl, pkgconfig, python3, wafHook }:
 
 stdenv.mkDerivation rec {
-  name = "serd-${version}";
-  version = "0.20.0";
+  pname = "serd";
+  version = "0.30.2";
 
   src = fetchurl {
-    url = "http://download.drobilla.net/${name}.tar.bz2";
-    sha256 = "1gxbzqsm212wmn8qkdd3lbl6wbv7fwmaf9qh2nxa4yxjbr7mylb4";
+    url = "https://download.drobilla.net/${pname}-${version}.tar.bz2";
+    sha256 = "00kjjgs5a8r72khgpya14scvl3n58wqwl5927y14z03j25q04ccx";
   };
 
-  buildInputs = [ pcre pkgconfig python ];
-
-  configurePhase = "python waf configure --prefix=$out";
-
-  buildPhase = "python waf";
-
-  installPhase = "python waf install";
+  nativeBuildInputs = [ pkgconfig python3 wafHook ];
 
   meta = with stdenv.lib; {
     homepage = http://drobilla.net/software/serd;

@@ -1,52 +1,99 @@
-{ stdenv, fetchurl, buildPythonPackage
-, python, cython, pkgconfig
-, xorg, gtk, glib, pango, cairo, gdk_pixbuf, pygtk, atk, pygobject, pycairo
-, ffmpeg, x264, libvpx, pil, libwebp }:
+{ stdenv, lib, fetchurl, callPackage, substituteAll, python3, pkgconfig
+, xorg, gtk3, glib, pango, cairo, gdk-pixbuf, atk
+, wrapGAppsHook, xorgserver, getopt, xauth, utillinux, which
+, ffmpeg_4, x264, libvpx, libwebp, x265
+, libfakeXinerama
+, gst_all_1, pulseaudio, gobject-introspection
+, pam }:
 
-buildPythonPackage rec {
-  name = "xpra-0.11.6";
-  namePrefix = "";
+with lib;
+
+let
+  inherit (python3.pkgs) cython buildPythonApplication;
+
+  xf86videodummy = callPackage ./xf86videodummy { };
+in buildPythonApplication rec {
+  pname = "xpra";
+  version = "3.0.6";
 
   src = fetchurl {
-    url = "http://xpra.org/src/${name}.tar.bz2";
-    sha256 = "0n3lr8nrfmrll83lgi1nzalng902wv0dcmcyx4awnman848dxij0";
+    url = "https://xpra.org/src/${pname}-${version}.tar.xz";
+    sha256 = "0msm53iphb6zr1phb2knkrn94hjcg3a9n1vvbis5sipdvlx50m08";
   };
 
-  buildInputs = [
-    cython pkgconfig
-
-    xorg.libX11 xorg.renderproto xorg.libXrender xorg.libXi xorg.inputproto xorg.kbproto
-    xorg.randrproto xorg.damageproto xorg.compositeproto xorg.xextproto xorg.recordproto
-    xorg.xproto xorg.fixesproto xorg.libXtst xorg.libXfixes xorg.libXcomposite xorg.libXdamage
-    xorg.libXrandr
-
-    pango cairo gdk_pixbuf atk gtk glib
-
-    ffmpeg libvpx x264 libwebp
+  patches = [
+    (substituteAll {
+      src = ./fix-paths.patch;
+      inherit (xorg) xkeyboardconfig;
+    })
   ];
 
-  propagatedBuildInputs = [
-    pil pygtk pygobject
+  postPatch = ''
+    substituteInPlace setup.py --replace '/usr/include/security' '${pam}/include/security'
+  '';
+
+  nativeBuildInputs = [ pkgconfig wrapGAppsHook ];
+  buildInputs = with xorg; [
+    libX11 xorgproto libXrender libXi
+    libXtst libXfixes libXcomposite libXdamage
+    libXrandr libxkbfile
+    ] ++ [
+    cython
+
+    pango cairo gdk-pixbuf atk.out gtk3 glib
+
+    ffmpeg_4 libvpx x264 libwebp x265
+
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-bad
+    gst_all_1.gst-libav
+
+    pam
+    gobject-introspection
+  ];
+  propagatedBuildInputs = with python3.pkgs; [
+    pillow rencode pycrypto cryptography pycups lz4 dbus-python
+    netifaces numpy pygobject3 pycairo gst-python pam
+    pyopengl paramiko opencv4 python-uinput pyxdg
+    ipaddress idna
   ];
 
-  # Even after i tried monkey patching, their tests just fail, looks like
-  # they don't have automated testing out of the box? http://xpra.org/trac/ticket/177
+    # error: 'import_cairo' defined but not used
+  NIX_CFLAGS_COMPILE = "-Wno-error=unused-function";
+
+  setupPyBuildFlags = [
+    "--with-Xdummy"
+    "--without-strict"
+    "--with-gtk3"
+    "--without-gtk2"
+    # Override these, setup.py checks for headers in /usr/* paths
+    "--with-pam"
+    "--with-vsock"
+  ];
+
+  preFixup = ''
+    gappsWrapperArgs+=(
+      --set XPRA_INSTALL_PREFIX "$out"
+      --prefix LD_LIBRARY_PATH : ${libfakeXinerama}/lib
+      --prefix PATH : ${stdenv.lib.makeBinPath [ getopt xorgserver xauth which utillinux pulseaudio ]}
+    )
+  '';
+
   doCheck = false;
 
-  preBuild = ''
-    export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE $(pkg-config --cflags gtk+-2.0) $(pkg-config --cflags pygtk-2.0) $(pkg-config --cflags xtst)"
-  '';
-  setupPyBuildFlags = ["--enable-Xdummy"];
+  enableParallelBuilding = true;
 
-  preInstall = ''
-    # see https://bitbucket.org/pypa/setuptools/issue/130/install_data-doesnt-respect-prefix
-    ${python}/bin/${python.executable} setup.py install_data --install-dir=$out --root=$out
-    sed -i '/ = data_files/d' setup.py
-  '';
+  passthru = { inherit xf86videodummy; };
 
   meta = {
     homepage = http://xpra.org/;
+    downloadPage = "https://xpra.org/src/";
+    downloadURLRegexp = "xpra-.*[.]tar[.]xz$";
     description = "Persistent remote applications for X";
-    platforms = stdenv.lib.platforms.linux;
+    platforms = platforms.linux;
+    license = licenses.gpl2;
+    maintainers = with maintainers; [ tstrobel offline numinit ];
   };
 }

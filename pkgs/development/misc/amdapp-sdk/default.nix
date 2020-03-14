@@ -1,14 +1,14 @@
-{ stdenv, fetchurl, makeWrapper, perl, mesa, xorg,
+{ stdenv, fetchurl, makeWrapper, perl, libGLU, libGL, xorg,
   version? "2.8", # What version
   samples? false # Should samples be installed
 }:
 
 let
 
-  bits = if stdenv.system == "x86_64-linux" then "64"
+  bits = if stdenv.hostPlatform.system == "x86_64-linux" then "64"
          else "32";
 
-  arch = if stdenv.system == "x86_64-linux" then "x86_64"
+  arch = if stdenv.hostPlatform.system == "x86_64-linux" then "x86_64"
          else "x86";
 
   src_info = {
@@ -22,20 +22,22 @@ let
       url = "http://download2-developer.amd.com/amd/APPSDK/AMD-APP-SDK-v2.7-lnx${bits}.tgz";
       x86 = "1v26n7g1xvlg5ralbfk3qiy34gj8fascpnjzm3120b6sgykfp16b";
       x86_64 = "08bi43bgnsxb47vbirh09qy02w7zxymqlqr8iikk9aavfxjlmch1";
+      patches = [ ./gcc-5.patch];
     };
 
     "2.8" = {
-      url = "http://developer.amd.com/wordpress/media/2012/11/AMD-APP-SDK-v2.8-lnx${bits}.tgz";
+      url = "https://developer.amd.com/wordpress/media/2012/11/AMD-APP-SDK-v2.8-lnx${bits}.tgz";
       x86 = "99610737f21b2f035e0eac4c9e776446cc4378a614c7667de03a82904ab2d356";
       x86_64 = "d9c120367225bb1cd21abbcf77cb0a69cfb4bb6932d0572990104c566aab9681";
 
       # TODO: Add support for aparapi, java parallel api
-      patches = [ ./01-remove-aparapi-samples.patch ];
+      patches = [ ./01-remove-aparapi-samples.patch ./gcc-5.patch];
     };
   };
 
-in stdenv.mkDerivation rec {
-  name = "amdapp-sdk-${version}";
+in stdenv.mkDerivation {
+  pname = "amdapp-sdk";
+  inherit version;
 
   src = fetchurl {
     url = stdenv.lib.getAttrFromPath [version "url"] src_info;
@@ -44,9 +46,9 @@ in stdenv.mkDerivation rec {
 
   patches = stdenv.lib.attrByPath [version "patches"] [] src_info;
 
-  patchFlags = "-p0";
-  buildInputs = [ makeWrapper perl mesa xorg.libX11 xorg.libXext xorg.libXaw xorg.libXi xorg.libXxf86vm ];
-  propagatedBuildInputs = [ stdenv.gcc ];
+  patchFlags = [ "-p0" ];
+  buildInputs = [ makeWrapper perl libGLU libGL xorg.libX11 xorg.libXext xorg.libXaw xorg.libXi xorg.libXxf86vm ];
+  propagatedBuildInputs = [ stdenv.cc ];
   NIX_LDFLAGS = "-lX11 -lXext -lXmu -lXi -lXxf86vm";
   doCheck = false;
 
@@ -81,13 +83,13 @@ in stdenv.mkDerivation rec {
       cp -r "./samples/opencl/bin/${arch}/"* "$out/samples/opencl/bin"
       for f in $(find "$out/samples/opencl/bin/" -type f -not -name "*.*");
       do
-        wrapProgram "$f" --prefix PATH ":" "${stdenv.gcc}/bin"
+        wrapProgram "$f" --prefix PATH ":" "${stdenv.cc}/bin"
       done'' else ""
     }
 
     # Create wrappers
-    patchelf --set-interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" $out/bin/clinfo
-    patchelf --set-rpath ${stdenv.gcc.gcc}/lib64:${stdenv.gcc.gcc}/lib $out/bin/clinfo
+    patchelf --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" $out/bin/clinfo
+    patchelf --set-rpath ${stdenv.cc.cc.lib}/lib64:${stdenv.cc.cc.lib}/lib $out/bin/clinfo
 
     # Fix modes
     find "$out/" -type f -exec chmod 644 {} \;
@@ -98,7 +100,7 @@ in stdenv.mkDerivation rec {
 
   meta = with stdenv.lib; {
     description = "AMD Accelerated Parallel Processing (APP) SDK, with OpenCL 1.2 support";
-    homepage = http://developer.amd.com/tools/heterogeneous-computing/amd-accelerated-parallel-processing-app-sdk/;
+    homepage = https://developer.amd.com/amd-accelerated-parallel-processing-app-sdk/;
     license = licenses.amd;
     maintainers = [ maintainers.offline ];
     platforms = [ "i686-linux" "x86_64-linux" ];

@@ -1,34 +1,36 @@
 { stdenv, lib, fetchgit, python, gyp, utillinux }:
 
-stdenv.mkDerivation rec {
-  name = "bud-${version}";
+stdenv.mkDerivation {
+  pname = "bud";
 
-  version = "0.32.0";
+  version = "0.34.1";
 
   src = fetchgit {
     url = "https://github.com/indutny/bud.git";
-    rev = "1bfcc8c73c386f0ac12763949cd6c214058900a6";
-    sha256 = "1lfq6q026yawi0ps0gf0nl9a76qkpcc40r3v7zrj9cxzjb9fcymc";
+    rev = "b112852c9667632f692d2ce3dcd9a8312b61155a";
+    sha256 = "08yr6l4lc2m6rng06253fcaznf6sq0v053wfr8bbym42c32z0xdh";
   };
 
   buildInputs = [
     python gyp
   ] ++ lib.optional stdenv.isLinux utillinux;
- 
+
   buildPhase = ''
     python ./gyp_bud -f make
     make -C out
   '';
 
   installPhase = ''
-    ensureDir $out/bin
+    mkdir -p $out/bin
     cp out/Release/bud $out/bin
   '';
 
   meta = with lib; {
     description = "A TLS terminating proxy";
     license     = licenses.mit;
-    platforms   = with platforms; linux;
+    platforms   = platforms.linux;
+    # Does not build on aarch64-linux.
+    badPlatforms = [ "aarch64-linux" ];
     maintainers = with maintainers; [ cstrahan ];
   };
 }

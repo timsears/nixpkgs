@@ -1,58 +1,65 @@
-{ stdenv, fetchurl, buildEnv, makeDesktopItem, makeWrapper, zlib, glib, alsaLib
-, dbus, gtk, atk, pango, freetype, fontconfig, libgnome_keyring3, gdk_pixbuf
-, cairo, cups, expat, libgpgerror, nspr, gnome3, nss, xlibs, udev
+{ stdenv, fetchurl, zlib, glib, alsaLib, makeDesktopItem
+, dbus, gtk2, atk, pango, freetype, fontconfig, libgnome-keyring3, gdk-pixbuf
+, cairo, cups, expat, libgpgerror, nspr, gnome2, nss, xorg, systemd, libnotify
 }:
 
 let
   libPath = stdenv.lib.makeLibraryPath [
-      stdenv.gcc.gcc zlib glib dbus gtk atk pango freetype libgnome_keyring3 nss
-      fontconfig gdk_pixbuf cairo cups expat libgpgerror alsaLib nspr gnome3.gconf
-      xlibs.libXrender xlibs.libX11 xlibs.libXext xlibs.libXdamage xlibs.libXtst
-      xlibs.libXcomposite xlibs.libXi xlibs.libXfixes
-];
+      stdenv.cc.cc zlib glib dbus gtk2 atk pango freetype libgnome-keyring3 nss
+      fontconfig gdk-pixbuf cairo cups expat libgpgerror alsaLib nspr gnome2.GConf
+      xorg.libXrender xorg.libX11 xorg.libXext xorg.libXdamage xorg.libXtst
+      xorg.libXcomposite xorg.libXi xorg.libXfixes libnotify xorg.libXrandr
+      xorg.libXcursor
+  ];
+  desktopItem = makeDesktopItem {
+    name = "LightTable";
+    exec = "light";
+    comment = "LightTable";
+    desktopName = "LightTable";
+    genericName = "the next generation code editor";
+  };
 in
-assert stdenv.system == "i686-linux" || stdenv.system == "x86_64-linux";
 
 stdenv.mkDerivation rec {
-  name = "LightTable-${version}";
-  version = "0.6.7";
+  pname = "lighttable";
+  version = "0.8.1";
 
-  src = 
-    if stdenv.system == "i686-linux" then
-      fetchurl {
-        name = "LightTableLinux.tar.gz";
-        url = https://d35ac8ww5dfjyg.cloudfront.net/playground/bins/0.6.7/LightTableLinux.tar.gz;
-        sha256 = "3b09f9665ed1b4abb7c1ca16286ac7222caf6dc124059be6db4cb9f5fd041e73";
-      }
-    else
+  src =
       fetchurl {
         name = "LightTableLinux64.tar.gz";
-        url = https://d35ac8ww5dfjyg.cloudfront.net/playground/bins/0.6.7/LightTableLinux64.tar.gz;
-        sha256 = "710d670ccc30aadba521ccb723388679ee6404aac662297a005432c811d59e82";
+        url = "https://github.com/LightTable/LightTable/releases/download/${version}/${pname}-${version}-linux.tar.gz";
+        sha256 = "06fj725xfhf3fwrf7dya7ijmxq3v76kfmd4lr2067a92zhlwr5pv";
       };
 
-  buildInputs = [ makeWrapper ];
   phases = [ "installPhase" ];
 
   installPhase = ''
-    tar xvf ${src}
-    mkdir -p $out/bin
-    mv LightTable $out/
+    tar xf ${src}
+    mkdir -p $out/{bin,share/LightTable}
+    mv ./${pname}-${version}-linux/* $out/share/LightTable
 
     patchelf \
-      --interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" \
-      --set-rpath ${libPath}:${stdenv.gcc.gcc}/lib${stdenv.lib.optionalString stdenv.is64bit "64"} \
-      $out/LightTable/ltbin
+      --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+      --set-rpath ${libPath}:${libPath}/lib64:$out/share/LightTable \
+      $out/share/LightTable/LightTable
 
-    ln -s ${udev}/lib/libudev.so.1 $out/LightTable/libudev.so.0
+    mv $out/share/LightTable/light $out/bin/light
 
-    makeWrapper $out/LightTable/ltbin $out/bin/lighttable \
-      --prefix "LD_LIBRARY_PATH" : $out/LightTable
+    ln -sf ${systemd.lib}/lib/libudev.so.1 $out/share/LightTable/libudev.so.0
+    substituteInPlace $out/bin/light \
+        --replace "/usr/lib/x86_64-linux-gnu" "${systemd.lib}/lib" \
+        --replace "/lib/x86_64-linux-gnu" "$out/share/LightTable" \
+        --replace 'HERE=`dirname $(readlink -f $0)`' "HERE=$out/share/LightTable"
+
+    mkdir -p "$out"/share/applications
+    cp "${desktopItem}/share/applications/LightTable.desktop" "$out"/share/applications/
   '';
 
   meta = with stdenv.lib; {
-    description = "the next generation code editor";
+    description = "The next generation code editor";
     homepage = http://www.lighttable.com/;
-    license = [ licenses.gpl3 ];
+    license = licenses.gpl3;
+    maintainers = [ maintainers.matejc ];
+    platforms = [ "x86_64-linux" ];
   };
 }

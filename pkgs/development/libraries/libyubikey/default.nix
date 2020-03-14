@@ -1,21 +1,17 @@
-{stdenv, fetchurl}:
+{ stdenv, fetchurl }:
 
-stdenv.mkDerivation rec
-{
-  version = "1.12";
-  name = "libyubikey-${version}";
+stdenv.mkDerivation rec {
+  name = "libyubikey-1.13";
 
-  src = fetchurl
-  {
-    url = "http://opensource.yubico.com/yubico-c/releases/${name}.tar.gz";
-    sha256 = "1f0plzmr1gwry4rfgq9q70v6qwqny009hac289ad5m6sj7vqflxr";
+  src = fetchurl {
+    url = "https://developers.yubico.com/yubico-c/Releases/${name}.tar.gz";
+    sha256 = "009l3k2zyn06dbrlja2d4p2vfnzjhlcqxi88v02mlrnb17mx1v84";
   };
 
-  meta =
-  {
-    homepage = "http://opensource.yubico.com/yubico-c/";
+  meta = with stdenv.lib; {
+    homepage = http://opensource.yubico.com/yubico-c/;
     description = "C library for manipulating Yubico YubiKey One-Time Passwords (OTPs)";
-    license = "bsd";
-    maintainers = [ stdenv.lib.maintainers.calrama ];
+    license = licenses.bsd2;
+    platforms = platforms.unix;
   };
 }

@@ -23,9 +23,10 @@ stdenv.mkDerivation {
       ./configure --prefix=$out --with-db-path=$out/nix-support/hddtemp.db
     '';
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "Tool for displaying hard disk temperature";
     homepage = https://savannah.nongnu.org/projects/hddtemp/;
-    license = stdenv.lib.licenses.gpl2;
+    license = licenses.gpl2Plus;
+    platforms = platforms.linux;
   };
 }

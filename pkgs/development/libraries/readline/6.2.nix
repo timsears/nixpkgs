@@ -1,4 +1,5 @@
-{ fetchurl, stdenv, ncurses }:
+{ fetchurl, stdenv, ncurses
+}:
 
 stdenv.mkDerivation (rec {
   name = "readline-6.2";
@@ -10,10 +11,11 @@ stdenv.mkDerivation (rec {
 
   propagatedBuildInputs = [ncurses];
 
-  patchFlags = "-p0";
+  patchFlags = [ "-p0" ];
   patches =
     [ ./link-against-ncurses.patch
       ./no-arch_only.patch
+      ./clang.patch
     ]
     ++
     (let
@@ -37,23 +39,25 @@ stdenv.mkDerivation (rec {
       reedit those lines, and perform csh-like history expansion on
       previous commands.
 
-      The history facilites are also placed into a separate library,
+      The history facilities are also placed into a separate library,
       the History library, as part of the build process.  The History
       library may be used without Readline in applications which
       desire its capabilities.
     '';
 
-    homepage = http://savannah.gnu.org/projects/readline/;
+    homepage = https://savannah.gnu.org/projects/readline/;
 
     license = stdenv.lib.licenses.gpl3Plus;
 
-    maintainers = [ stdenv.lib.maintainers.ludo ];
+    maintainers = [ ];
+    branch = "6.2";
+    platforms = stdenv.lib.platforms.unix;
   };
 }
 
 //
 
 # Don't run the native `strip' when cross-compiling.
-(if (stdenv ? cross)
+(if stdenv.hostPlatform != stdenv.buildPlatform
  then { dontStrip = true; }
  else { }))

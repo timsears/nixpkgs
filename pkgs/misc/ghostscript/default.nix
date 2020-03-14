@@ -1,18 +1,125 @@
-{ stdenv, fetchurl, pkgconfig, zlib, expat, openssl
-, libjpeg, libpng, libtiff, freetype, fontconfig, lcms2, libpaper, jbig2dec
-, libiconvOrEmpty
-, x11Support ? false, x11 ? null
-, cupsSupport ? false, cups ? null
-, gnuFork ? true
+{ config, stdenv, lib, fetchurl, pkgconfig, zlib, expat, openssl, autoconf
+, libjpeg, libpng, libtiff, freetype, fontconfig, libpaper, jbig2dec
+, libiconv, ijs, lcms2, fetchpatch
+, cupsSupport ? config.ghostscript.cups or (!stdenv.isDarwin), cups ? null
+, x11Support ? cupsSupport, xlibsWrapper ? null # with CUPS, X11 only adds very little
 }:
 
-assert x11Support -> x11 != null;
+assert x11Support -> xlibsWrapper != null;
 assert cupsSupport -> cups != null;
 
 let
-  meta_common = {
-    homepage = "http://www.gnu.org/software/ghostscript/";
-    description = "PostScript interpreter (GNU version)";
+  version = "9.${ver_min}";
+  ver_min = "50";
+  sha512 = "3p46kzn6kh7z4qqnqydmmvdlgzy5730z3yyvyxv6i4yb22mgihzrwqmhmvfn3b7lypwf6fdkkndarzv7ly3zndqpyvg89x436sms7iw";
+
+  fonts = stdenv.mkDerivation {
+    name = "ghostscript-fonts";
+
+    srcs = [
+      (fetchurl {
+        url = "mirror://sourceforge/gs-fonts/ghostscript-fonts-std-8.11.tar.gz";
+        sha256 = "00f4l10xd826kak51wsmaz69szzm2wp8a41jasr4jblz25bg7dhf";
+      })
+      (fetchurl {
+        url = "mirror://gnu/ghostscript/gnu-gs-fonts-other-6.0.tar.gz";
+        sha256 = "1cxaah3r52qq152bbkiyj2f7dx1rf38vsihlhjmrvzlr8v6cqil1";
+      })
+      # ... add other fonts here
+    ];
+
+    installPhase = ''
+      mkdir "$out"
+      mv -v * "$out/"
+    '';
+  };
+
+in
+stdenv.mkDerivation rec {
+  pname = "ghostscript";
+  inherit version;
+
+  src = fetchurl {
+    url = "https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs9${ver_min}/${pname}-${version}.tar.xz";
+    inherit sha512;
+  };
+
+  patches = [
+    ./urw-font-files.patch
+    ./doc-no-ref.diff
+    (fetchpatch {
+      name = "CVE-2019-14869.patch";
+      url = "https://git.ghostscript.com/?p=ghostpdl.git;a=patch;h=485904772c5f0aa1140032746e5a0abfc40f4cef";
+      sha256 = "0z5gnvgpp0dlzgvpw9a1yan7qyycv3mf88l93fvb1kyay893rshp";
+    })
+  ];
+
+  outputs = [ "out" "man" "doc" ];
+
+  enableParallelBuilding = true;
+
+  nativeBuildInputs = [ pkgconfig autoconf ];
+  buildInputs =
+    [ zlib expat openssl
+      libjpeg libpng libtiff freetype fontconfig libpaper jbig2dec
+      libiconv ijs lcms2
+    ]
+    ++ lib.optional x11Support xlibsWrapper
+    ++ lib.optional cupsSupport cups
+    ;
+
+  preConfigure = ''
+    # requires in-tree (heavily patched) openjpeg
+    rm -rf jpeg libpng zlib jasper expat tiff lcms2mt jbig2dec freetype cups/libs ijs
+
+    sed "s@if ( test -f \$(INCLUDE)[^ ]* )@if ( true )@; s@INCLUDE=/usr/include@INCLUDE=/no-such-path@" -i base/unix-aux.mak
+    sed "s@^ZLIBDIR=.*@ZLIBDIR=${zlib.dev}/include@" -i configure.ac
+
+    autoconf
+  '';
+
+  configureFlags = [
+    "--with-system-libtiff"
+    "--enable-dynamic"
+  ]
+  ++ lib.optional x11Support "--with-x"
+  ++ lib.optionals cupsSupport [
+    "--enable-cups"
+    "--with-cups-serverbin=$(out)/lib/cups"
+    "--with-cups-serverroot=$(out)/etc/cups"
+    "--with-cups-datadir=$(out)/share/cups"
+  ];
+
+  doCheck = true;
+
+  # don't build/install statically linked bin/gs
+  buildFlags = [ "so" ];
+  installTargets = [ "soinstall" ];
+
+  postInstall = ''
+    ln -s gsc "$out"/bin/gs
+
+    cp -r Resource "$out/share/ghostscript/${version}"
+
+    mkdir -p "$doc/share/doc/ghostscript"
+    mv "$doc/share/doc/${version}" "$doc/share/doc/ghostscript/"
+
+    ln -s "${fonts}" "$out/share/ghostscript/fonts"
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+    for file in $out/lib/*.dylib* ; do
+      install_name_tool -id "$file" $file
+    done
+  '';
+
+  preFixup = lib.optionalString stdenv.isDarwin ''
+    install_name_tool -change libgs.dylib.${version} $out/lib/libgs.dylib.${version} $out/bin/gs
+  '';
+
+  passthru = { inherit version; };
+
+  meta = {
+    homepage = https://www.ghostscript.com/;
+    description = "PostScript interpreter (mainline version)";
 
     longDescription = ''
       Ghostscript is the name of a set of tools that provides (i) an
@@ -23,102 +130,9 @@ let
       of output drivers for various file formats and printers.
     '';
 
-    license = stdenv.lib.licenses.gpl3Plus;
+    license = stdenv.lib.licenses.agpl3;
 
     platforms = stdenv.lib.platforms.all;
     maintainers = [ stdenv.lib.maintainers.viric ];
   };
-
-  gnuForkSrc = rec {
-    name = "ghostscript-9.04.1";
-    src = fetchurl {
-      url = "mirror://gnu/ghostscript/gnu-${name}.tar.bz2";
-      sha256 = "0zqa6ggbkdqiszsywgrra4ij0sddlmrfa50bx2mh568qid4ga0a2";
-    };
-
-    meta = meta_common;
-    patches = [ ./purity.patch ];
-  };
-
-  mainlineSrc = rec {
-    name = "ghostscript-9.06";
-    src = fetchurl {
-      url = "http://downloads.ghostscript.com/public/${name}.tar.bz2";
-      sha256 = "014f10rxn4ihvcr1frby4szd1jvkrwvmdhnbivpp55c9fssx3b05";
-    };
-    meta = meta_common // {
-      homepage = "http://www.ghostscript.com/";
-      description = "PostScript interpreter (mainline version)";
-    };
-
-    preConfigure = ''
-      rm -R libpng jpeg lcms{,2} tiff freetype jbig2dec expat openjpeg
-
-      substituteInPlace base/unix-aux.mak --replace "INCLUDE=/usr/include" "INCLUDE=/no-such-path"
-      sed "s@if ( test -f \$(INCLUDE)[^ ]* )@if ( true )@" -i base/unix-aux.mak
-    '';
-    patches = [];
-  };
-
-  variant = if gnuFork then gnuForkSrc else mainlineSrc;
-
-in
-
-stdenv.mkDerivation rec {
-  inherit (variant) name src meta;
-
-  fonts = [
-    (fetchurl {
-      url = "mirror://sourceforge/gs-fonts/ghostscript-fonts-std-8.11.tar.gz";
-      sha256 = "00f4l10xd826kak51wsmaz69szzm2wp8a41jasr4jblz25bg7dhf";
-    })
-    (fetchurl {
-      url = "mirror://gnu/ghostscript/gnu-gs-fonts-other-6.0.tar.gz";
-      sha256 = "1cxaah3r52qq152bbkiyj2f7dx1rf38vsihlhjmrvzlr8v6cqil1";
-    })
-    # ... add other fonts here
-  ];
-
-  enableParallelBuilding = true;
-
-  buildInputs =
-    [ pkgconfig zlib expat openssl
-      libjpeg libpng libtiff freetype fontconfig lcms2 libpaper jbig2dec
-    ]
-    ++ stdenv.lib.optional x11Support x11
-    ++ stdenv.lib.optional cupsSupport cups
-    ++ libiconvOrEmpty
-    # [] # maybe sometimes jpeg2000 support
-    ;
-
-  CFLAGS = "-fPIC";
-  NIX_LDFLAGS =
-    "-lz -rpath${ if stdenv.isDarwin then " " else "="}${freetype}/lib";
-
-  patches = variant.patches ++ [ ./urw-font-files.patch ];
-
-  preConfigure = ''
-    # "ijs" is impure: it contains symlinks to /usr/share/automake etc.!
-    rm -rf ijs/ltmain.sh
-
-    # Don't install stuff in the Cups store path.
-    makeFlagsArray=(CUPSSERVERBIN=$out/lib/cups CUPSSERVERROOT=$out/etc/cups CUPSDATA=$out/share/cups)
-  '' + stdenv.lib.optionalString (variant ? preConfigure) variant.preConfigure;
-
-  configureFlags =
-    [ "--with-system-libtiff"
-      (if x11Support then "--with-x" else "--without-x")
-      (if cupsSupport then "--enable-cups --with-install-cups" else "--disable-cups")
-    ];
-
-  doCheck = true;
-
-  installTargets="install soinstall";
-
-  # ToDo: web says the fonts should be already included
-  postInstall = ''
-    for i in $fonts; do
-      (cd $out/share/ghostscript && tar xvfz $i)
-    done
-  '';
 }

@@ -1,29 +1,88 @@
-{ stdenv, fetchurl, pkgconfig, which, gettext, intltool
+{ stdenv, fetchurl, pkgconfig, gettext, which
 , glib, gtk2
+, enableSoftening ? true
 }:
 
 stdenv.mkDerivation rec {
-  name = "dvdisaster-0.72.6";
+  pname = "dvdisaster";
+  version = "0.79.5";
 
   src = fetchurl {
-    url = "http://dvdisaster.net/downloads/${name}.tar.bz2";
-    sha256 = "e9787dea39aeafa38b26604752561bc895083c17b588489d857ac05c58be196b";
+    url = "http://dvdisaster.net/downloads/${pname}-${version}.tar.bz2";
+    sha256 = "0f8gjnia2fxcbmhl8b3qkr5b7idl8m855dw7xw2fnmbqwvcm6k4w";
   };
+
+  nativeBuildInputs = [ gettext pkgconfig which ];
+  buildInputs = [ glib gtk2 ];
+
+  patches = stdenv.lib.optional enableSoftening [
+    ./encryption.patch
+    ./dvdrom.patch
+  ];
 
   postPatch = ''
     patchShebangs ./
+    sed -i 's/dvdisaster48.png/dvdisaster/' contrib/dvdisaster.desktop
+    substituteInPlace scripts/bash-based-configure \
+      --replace 'if (make -v | grep "GNU Make") > /dev/null 2>&1 ;' \
+                'if make -v | grep "GNU Make" > /dev/null 2>&1 ;'
   '';
 
-  buildInputs = [
-    pkgconfig which gettext intltool
-    glib gtk2
-  ];
+  configureFlags = [
+    # Explicit --docdir= is required for on-line help to work:
+    "--docdir=share/doc"
+    "--with-nls=yes"
+    "--with-embedded-src-path=no"
+  ] ++ stdenv.lib.optional (stdenv.hostPlatform.isx86_64) "--with-sse2=yes";
 
-  meta = {
+  # fatal error: inlined-icons.h: No such file or directory
+  enableParallelBuilding = false;
+
+  doCheck = true;
+  checkPhase = ''
+    pushd regtest
+
+    mkdir -p "$TMP"/{log,regtest}
+    substituteInPlace common.bash \
+      --replace /dev/shm "$TMP/log" \
+      --replace /var/tmp "$TMP"
+
+    for test in *.bash; do
+      case "$test" in
+      common.bash)
+        echo "Skipping $test"
+        continue ;;
+      *)
+        echo "Running $test"
+        ./"$test"
+      esac
+    done
+
+    popd
+  '';
+
+  postInstall = ''
+    mkdir -pv $out/share/applications
+    cp contrib/dvdisaster.desktop $out/share/applications/
+
+    for size in 16 24 32 48 64; do
+      mkdir -pv $out/share/icons/hicolor/"$size"x"$size"/apps/
+      cp contrib/dvdisaster"$size".png \
+        $out/share/icons/hicolor/"$size"x"$size"/apps/dvdisaster.png
+    done
+  '';
+
+  meta = with stdenv.lib; {
     homepage = http://dvdisaster.net/;
-    description =
-      "Stores data on CD/DVD/BD in a way that it is fully recoverable even " +
-      "after some read errors have developed";
-    license = stdenv.lib.licenses.gpl2;
+    description = "Data loss/scratch/aging protection for CD/DVD media";
+    longDescription = ''
+      Dvdisaster provides a margin of safety against data loss on CD and
+      DVD media caused by scratches or aging media. It creates error correction
+      data which is used to recover unreadable sectors if the disc becomes
+      damaged at a later time.
+    '';
+    license = licenses.gpl3Plus;
+    platforms = platforms.linux;
+    maintainers = with maintainers; [ ];
   };
 }

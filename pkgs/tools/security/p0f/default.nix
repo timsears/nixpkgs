@@ -1,12 +1,12 @@
 { stdenv, fetchurl, libpcap, bash }:
 
 stdenv.mkDerivation rec {
-  name    = "p0f-${version}";
-  version = "3.06b";
+  pname = "p0f";
+  version = "3.09b";
 
   src = fetchurl {
-    url    = "http://lcamtuf.coredump.cx/p0f3/releases/${name}.tgz";
-    sha256 = "1rydqvr78a3rjp9iwfbw4bs7jfb4p22962makdgw8yjmw8dr6lfi";
+    url    = "http://lcamtuf.coredump.cx/p0f3/releases/${pname}-${version}.tgz";
+    sha256 = "0zqfq3gdnha29ckvlqmyp36c0jhj7f69bhqqx31yb6vkirinhfsl";
   };
 
   buildInputs = [ libpcap ];
@@ -28,6 +28,8 @@ stdenv.mkDerivation rec {
     cp ./tools/p0f-sendsyn  $out/sbin
     cp ./tools/p0f-sendsyn6 $out/sbin
   '';
+
+  hardeningDisable = [ "format" ];
 
   meta = {
     description = "Passive network reconnaissance and fingerprinting tool";

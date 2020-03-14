@@ -2,16 +2,17 @@
 , crypto ? false, libgcrypt, gnutls, pkgconfig}:
 
 stdenv.mkDerivation rec {
-  pname = "ntfs-3g";
-  version = "2014.2.15";
-  name = "${pname}-${version}";
+  pname = "ntfs3g";
+  version = "2017.3.23";
 
-  buildInputs = [libuuid] ++ stdenv.lib.optionals crypto [gnutls libgcrypt];
+  outputs = [ "out" "dev" "man" "doc" ];
+
+  buildInputs = [ libuuid ] ++ stdenv.lib.optionals crypto [ gnutls libgcrypt ];
   nativeBuildInputs = stdenv.lib.optional crypto pkgconfig;
 
   src = fetchurl {
-    url = "http://tuxera.com/opensource/ntfs-3g_ntfsprogs-${version}.tgz";
-    sha256 = "0mjv98m2j0kdzkjiqd2ra1akhb8milx8nwcx7hd26jxi1i09jc2c";
+    url = "https://tuxera.com/opensource/ntfs-3g_ntfsprogs-${version}.tgz";
+    sha256 = "1mb228p80hv97pgk3myyvgp975r9mxq56c6bdn1n24kngcfh4niy";
   };
 
   patchPhase = ''
@@ -22,11 +23,15 @@ stdenv.mkDerivation rec {
       --replace /bin/umount ${utillinux}/bin/umount
   '';
 
-  configureFlags =
-    ''
-      --disable-ldconfig --exec-prefix=''${prefix} --enable-mount-helper
-      --enable-posix-acls --enable-xattr-mappings --${if crypto then "enable" else "disable"}-crypto
-    '';
+  configureFlags = [
+    "--disable-ldconfig"
+    "--exec-prefix=\${prefix}"
+    "--enable-mount-helper"
+    "--enable-posix-acls"
+    "--enable-xattr-mappings"
+    "--${if crypto then "enable" else "disable"}-crypto"
+    "--enable-extras"
+  ];
 
   postInstall =
     ''
@@ -35,11 +40,10 @@ stdenv.mkDerivation rec {
     '';
 
   meta = with stdenv.lib; {
-    homepage = http://www.tuxera.com/community/;
-    description = "FUSE-base NTFS driver with full write support";
-    maintainers = [ maintainers.urkud ];
+    homepage = https://www.tuxera.com/community/open-source-ntfs-3g/;
+    description = "FUSE-based NTFS driver with full write support";
+    maintainers = with maintainers; [ dezgeg ];
     platforms = platforms.linux;
     license = licenses.gpl2Plus; # and (lib)fuse-lite under LGPL2+
   };
 }
-

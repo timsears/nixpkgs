@@ -1,33 +1,50 @@
-{ stdenv, fetchurl, cmake, libpcap, libnet, zlib, curl, pcre,
-  openssl, ncurses, glib, gtk, atk, pango, flex, bison }:
+{ stdenv, fetchFromGitHub, cmake, libpcap, libnet, zlib, curl, pcre
+, openssl, ncurses, glib, gtk3, atk, pango, flex, bison, geoip, harfbuzz
+, pkgconfig }:
 
 stdenv.mkDerivation rec {
-  name = "ettercap-${version}";
-  version = "0.8.0";
+  pname = "ettercap";
+  version = "0.8.3";
 
-  src = fetchurl {
-    url = "https://github.com/Ettercap/ettercap/archive/v${version}.tar.gz";
-    sha256 = "1g69782wk2hag8h76jqy81szw5jhvqqnn3m4v0wjkbv9zjxy44w0";
+  src = fetchFromGitHub {
+    owner = "Ettercap";
+    repo = "ettercap";
+    rev = "v${version}";
+    sha256 = "0m40bmbrv9a8qlg54z3b5f8r541gl9vah5hm0bbqcgyyljpg39bz";
   };
 
+  strictDeps = true;
+  nativeBuildInputs = [ cmake flex bison pkgconfig ];
   buildInputs = [
-    cmake libpcap libnet zlib curl pcre openssl ncurses
-    glib gtk atk pango flex bison
+    libpcap libnet zlib curl pcre openssl ncurses
+    glib gtk3 atk pango geoip harfbuzz
   ];
 
   preConfigure = ''
-    substituteInPlace CMakeLists.txt --replace /etc \$\{INSTALL_PREFIX\}/etc
+    substituteInPlace CMakeLists.txt --replace /etc \$\{INSTALL_PREFIX\}/etc \
+                                     --replace /usr \$\{INSTALL_PREFIX\}
   '';
 
   cmakeFlags = [
-    "-DGTK2_GLIBCONFIG_INCLUDE_DIR=${glib}/lib/glib-2.0/include"
-    "-DGTK2_GDKCONFIG_INCLUDE_DIR=${gtk}/lib/gtk-2.0/include"
+    "-DBUNDLED_LIBS=Off"
+    "-DGTK3_GLIBCONFIG_INCLUDE_DIR=${glib.out}/lib/glib-2.0/include"
   ];
 
-  meta = {
+  # TODO: Remove after the next release (0.8.4 should work without this):
+  NIX_CFLAGS_COMPILE = [ "-I${harfbuzz.dev}/include/harfbuzz" ];
+
+  meta = with stdenv.lib; {
     description = "Comprehensive suite for man in the middle attacks";
-    homepage = http://ettercap.github.io/ettercap/;
-    license = stdenv.lib.licenses.gpl2;
-    platforms = stdenv.lib.platforms.unix;
+    longDescription = ''
+      Ettercap is a comprehensive suite for man in the middle attacks. It
+      features sniffing of live connections, content filtering on the fly and
+      many other interesting tricks. It supports active and passive dissection
+      of many protocols and includes many features for network and host
+      analysis.
+    '';
+    homepage = https://www.ettercap-project.org/;
+    license = licenses.gpl2;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ pSub ];
   };
 }

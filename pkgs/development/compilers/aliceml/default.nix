@@ -1,46 +1,13 @@
-{stdenv, fetchurl, pkgsi686Linux, libtool, gnumake381, autoconf, automake111x, file, which, zsh, m4, pkgconfig, perl}:
+{stdenv, gcc, glibc, fetchurl, fetchgit, libtool, autoconf, automake, file, gnumake, which, zsh, m4, pkgconfig, perl, gnome2, pango, sqlite, libxml2, zlib, gmp, smlnj }:
 
 stdenv.mkDerivation {
-  name = "aliceml-1.4";
+  name = "aliceml-1.4-7d44dc8e";
 
-  aliceSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-1.4.tar.gz;
-    sha256 = "1ay8r26g7xm9zlrlpigp6y1zmrl93hzkndb5phx7651wx8j2183r";
-  };
-
-  aliceGecodeSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-gecode-1.4.tar.gz;
-    sha256 = "0yklpsqnm3wwzfz4vvv69dmm7q7pzpl3z7iw7wg33klng85cidl6";
-  };
-
-  aliceGtkSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-gtk-1.4.tar.gz;
-    sha256 = "0zx4ks0pk5wgbcsflcmn0kbpa9j7pjbsc19d1s3jgp4rwb24m1an";
-  };
-
-  aliceRegexSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-regex-1.4.tar.gz;
-    sha256 = "0myjzh3295awamghs4c88ypaa41m8sxh5jys876yq6flslw41s02";
-  };
-
-  aliceRuntimeSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-runtime-1.4.tar.gz;
-    sha256 = "1cbca71vh16l2h0zjvhgzzs0rzq99nc8nx9a97yzw595355nq57f";
-  };
-
-  aliceSqliteSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-sqlite-1.4.tar.gz;
-    sha256 = "0554xbx8zgqmpb7x06d7xvhlbk7bxmc237khgjs6yjcy53yf366b";
-  };
-
-  aliceXmlSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/alice-xml-1.4.tar.gz;
-    sha256 = "058a815a0vajjvjlsmd4ryx2bc71q6zwvyjg2c0v1gba2v3pddm0";
-  };
-
-  seamSrc = fetchurl {
-    url = http://www.ps.uni-saarland.de/alice/download/sources/seam-1.4.tar.gz;
-    sha256 = "1iz98jdv914whaw426d5406shlqgxqwpy3fbyb472x7d3lfra2dz";
+  src = fetchgit {
+    url = "https://github.com/aliceml/aliceml";
+    rev = "7d44dc8e4097c6f85888bbf4ff86d51fe05b0a08";
+    sha256 = "1xpvia00cpig0i7qvz29sx7xjic6kd472ng722x4rapz8mjnf8bk";
+    fetchSubmodules = true;
   };
 
   gecodeSrc = fetchurl {
@@ -48,19 +15,32 @@ stdenv.mkDerivation {
     sha256 = "0mgc6llbq166jmlq3alvagqsg3730670zvbwwkdgsqklw70v9355";
   };
 
-  zlib = pkgsi686Linux.zlib;
-  gmp = pkgsi686Linux.gmp;
-
-
   buildInputs = [
-    stdenv pkgsi686Linux.gcc34 pkgsi686Linux.glibc 
-    libtool gnumake381 autoconf automake111x pkgsi686Linux.zlib
-    file which zsh pkgsi686Linux.gmp m4 pkgsi686Linux.gnome.gtk
-    pkgsi686Linux.gnome.libgnomecanvas pkgsi686Linux.pango pkgsi686Linux.sqlite
-    pkgsi686Linux.libxml2 pkgsi686Linux.lightning pkgconfig perl
+    stdenv gcc glibc
+    libtool gnumake autoconf automake
+    file which zsh m4 gnome2.gtk zlib gmp
+    gnome2.libgnomecanvas pango sqlite
+    libxml2 pkgconfig perl smlnj
   ];
- 
-  builder = ./builder.sh;
+
+  makePatch = ./make.patch;
+  seamPatch = ./seam.patch;
+
+  phases = [ "unpackPhase" "patchPhase" "configurePhase" "buildPhase" ];
+
+  patchPhase = ''
+    sed -i -e "s@wget ..GECODE_URL. -O - | tar xz@tar xf $gecodeSrc@" make/Makefile
+    patch -p1 <$makePatch
+    patch -p1 <$seamPatch
+  '';
+
+  configurePhase = ''
+    make -C make setup PREFIX="$out"
+  '';
+
+  buildPhase = ''
+    gmp="${gmp.dev}" zlib="${zlib.dev}" PATH=$PATH:`pwd`/seam-support/install/bin make -C make all PREFIX="$out"
+  '';
 
   meta = {
     description = "Functional programming language based on Standard ML";
@@ -69,7 +49,9 @@ stdenv.mkDerivation {
       extended with rich support for concurrent, distributed, and constraint
       programming.
     '';
-    homepage = http://www.ps.uni-saarland.de/alice/;
-    license = "BSD";
+    homepage = https://www.ps.uni-saarland.de/alice/;
+    license = stdenv.lib.licenses.mit;
+    maintainers = [ stdenv.lib.maintainers.doublec ];
+    broken = true;
   };
 }

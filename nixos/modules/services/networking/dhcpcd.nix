@@ -8,14 +8,30 @@ let
 
   cfg = config.networking.dhcpcd;
 
+  interfaces = attrValues config.networking.interfaces;
+
+  enableDHCP = config.networking.dhcpcd.enable &&
+        (config.networking.useDHCP || any (i: i.useDHCP == true) interfaces);
+
   # Don't start dhcpcd on explicitly configured interfaces or on
   # interfaces that are part of a bridge, bond or sit device.
   ignoredInterfaces =
-    map (i: i.name) (filter (i: i.ip4 != [ ] || i.ipAddress != null) (attrValues config.networking.interfaces))
+    map (i: i.name) (filter (i: if i.useDHCP != null then !i.useDHCP else i.ipv4.addresses != [ ]) interfaces)
     ++ mapAttrsToList (i: _: i) config.networking.sits
     ++ concatLists (attrValues (mapAttrs (n: v: v.interfaces) config.networking.bridges))
+    ++ flatten (concatMap (i: attrNames (filterAttrs (_: config: config.type != "internal") i.interfaces)) (attrValues config.networking.vswitches))
     ++ concatLists (attrValues (mapAttrs (n: v: v.interfaces) config.networking.bonds))
     ++ config.networking.dhcpcd.denyInterfaces;
+
+  arrayAppendOrNull = a1: a2: if a1 == null && a2 == null then null
+    else if a1 == null then a2 else if a2 == null then a1
+      else a1 ++ a2;
+
+  # If dhcp is disabled but explicit interfaces are enabled,
+  # we need to provide dhcp just for those interfaces.
+  allowInterfaces = arrayAppendOrNull cfg.allowInterfaces
+    (if !config.networking.useDHCP && enableDHCP then
+      map (i: i.name) (filter (i: i.useDHCP == true) interfaces) else null);
 
   # Config file adapted from the one that ships with dhcpcd.
   dhcpcdConf = pkgs.writeText "dhcpcd.conf"
@@ -41,12 +57,21 @@ let
       denyinterfaces ${toString ignoredInterfaces} lo peth* vif* tap* tun* virbr* vnet* vboxnet* sit*
 
       # Use the list of allowed interfaces if specified
-      ${optionalString (cfg.allowInterfaces != null) "allowinterfaces ${toString cfg.allowInterfaces}"}
+      ${optionalString (allowInterfaces != null) "allowinterfaces ${toString allowInterfaces}"}
+
+      # Immediately fork to background if specified, otherwise wait for IP address to be assigned
+      ${{
+        background = "background";
+        any = "waitip";
+        ipv4 = "waitip 4";
+        ipv6 = "waitip 6";
+        both = "waitip 4\nwaitip 6";
+        if-carrier-up = "";
+      }.${cfg.wait}}
 
       ${cfg.extraConfig}
     '';
 
-  # Hook for emitting ip-up/ip-down events.
   exitHook = pkgs.writeText "dhcpcd.exit-hook"
     ''
       if [ "$reason" = BOUND -o "$reason" = REBOOT ]; then
@@ -54,15 +79,10 @@ let
           # will actually do something: if ntpd cannot resolve the
           # server hostnames in its config file, then it will never do
           # anything ever again ("couldn't resolve ..., giving up on
-          # it"), so we silently lose time synchronisation.
-          ${config.systemd.package}/bin/systemctl try-restart ntpd.service
-
-          ${config.systemd.package}/bin/systemctl start ip-up.target
+          # it"), so we silently lose time synchronisation. This also
+          # applies to openntpd.
+          ${config.systemd.package}/bin/systemctl try-reload-or-restart ntpd.service openntpd.service chronyd.service || true
       fi
-
-      #if [ "$reason" = EXPIRE -o "$reason" = RELEASE -o "$reason" = NOCARRIER ] ; then
-      #    ${config.systemd.package}/bin/systemctl start ip-down.target
-      #fi
 
       ${cfg.runHook}
     '';
@@ -74,6 +94,15 @@ in
   ###### interface
 
   options = {
+
+    networking.dhcpcd.enable = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Whether to enable dhcpcd for device configuration. This is mainly to
+        explicitly disable dhcpcd (for example when using networkd).
+      '';
+    };
 
     networking.dhcpcd.persistent = mkOption {
       type = types.bool;
@@ -127,20 +156,41 @@ in
       '';
     };
 
+    networking.dhcpcd.wait = mkOption {
+      type = types.enum [ "background" "any" "ipv4" "ipv6" "both" "if-carrier-up" ];
+      default = "any";
+      description = ''
+        This option specifies when the dhcpcd service will fork to background.
+        If set to "background", dhcpcd will fork to background immediately.
+        If set to "ipv4" or "ipv6", dhcpcd will wait for the corresponding IP
+        address to be assigned. If set to "any", dhcpcd will wait for any type
+        (IPv4 or IPv6) to be assigned. If set to "both", dhcpcd will wait for
+        both an IPv4 and an IPv6 address before forking.
+        The option "if-carrier-up" is equivalent to "any" if either ethernet
+        is plugged nor WiFi is powered, and to "background" otherwise.
+      '';
+    };
+
   };
 
 
   ###### implementation
 
-  config = mkIf config.networking.useDHCP {
+  config = mkIf enableDHCP {
 
-    systemd.services.dhcpcd =
+    systemd.services.dhcpcd = let
+      cfgN = config.networking;
+      hasDefaultGatewaySet = (cfgN.defaultGateway != null && cfgN.defaultGateway.address != "")
+                          && (!cfgN.enableIPv6 || (cfgN.defaultGateway6 != null && cfgN.defaultGateway6.address != ""));
+    in
       { description = "DHCP Client";
 
-        wantedBy = [ "network.target" ];
-        # Work-around to deal with problems where the kernel would remove &
-        # re-create Wifi interfaces early during boot.
-        after = [ "network-interfaces.target" ];
+        wantedBy = [ "multi-user.target" ] ++ optional (!hasDefaultGatewaySet) "network-online.target";
+        wants = [ "network.target" "systemd-udev-settle.service" ];
+        before = [ "network-online.target" ];
+        after = [ "systemd-udev-settle.service" ];
+
+        restartTriggers = [ exitHook ];
 
         # Stopping dhcpcd during a reconfiguration is undesirable
         # because it brings down the network interfaces configured by
@@ -162,13 +212,9 @@ in
 
     environment.systemPackages = [ dhcpcd ];
 
-    environment.etc =
-      [ { source = exitHook;
-          target = "dhcpcd.exit-hook";
-        }
-      ];
+    environment.etc."dhcpcd.exit-hook".source = exitHook;
 
-    powerManagement.resumeCommands =
+    powerManagement.resumeCommands = mkIf config.systemd.services.dhcpcd.enable
       ''
         # Tell dhcpcd to rebind its interfaces if it's running.
         ${config.systemd.package}/bin/systemctl reload dhcpcd.service

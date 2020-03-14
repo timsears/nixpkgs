@@ -1,44 +1,77 @@
-{ stdenv, fetchurl, udev, intltool, pkgconfig, glib, xmlto
-, makeWrapper, pygobject, pygtk, docbook_xml_dtd_412, docbook_xsl
-, pythonDBus, libxml2, desktop_file_utils, libusb1, cups, pycups
-, pythonPackages
-, withGUI ? true
+{ stdenv, fetchFromGitHub, udev, intltool, pkgconfig, glib, xmlto, wrapGAppsHook
+, docbook_xml_dtd_412, docbook_xsl
+, libxml2, desktop-file-utils, libusb1, cups, gdk-pixbuf, pango, atk, libnotify
+, gobject-introspection, libsecret, packagekit
+, cups-filters
+, python3Packages, autoreconfHook, bash
 }:
 
 stdenv.mkDerivation rec {
-  name = "system-config-printer-1.3.12";
+  pname = "system-config-printer";
+  version = "1.5.12";
 
-  src = fetchurl {
-    url = "http://cyberelk.net/tim/data/system-config-printer/1.3/${name}.tar.xz";
-    sha256 = "1cg9n75rg5l9vr1925n2g771kga33imikyl0mf70lww2sfgvs18r";
+  src = fetchFromGitHub {
+    owner = "openPrinting";
+    repo = pname;
+    rev = version;
+    sha256 = "1a812jsd9pb02jbz9bq16qj5j6k2kw44g7s1xdqqkg7061rd7mwf";
   };
 
-  propagatedBuildInputs = [ pythonPackages.pycurl ];
+  prePatch = ''
+    # for automake
+    touch README ChangeLog
+    # for tests
+    substituteInPlace Makefile.am --replace /bin/bash ${bash}/bin/bash
+  '';
 
-  buildInputs =
-    [ intltool pkgconfig glib udev libusb1 cups xmlto
-      libxml2 docbook_xml_dtd_412 docbook_xsl desktop_file_utils
-      pythonPackages.python pythonPackages.wrapPython
-    ];
+  patches = [ ./detect_serverbindir.patch ];
 
-  pythonPath =
-    [ pythonDBus pycups pygobject pythonPackages.pycurl ]
-    ++ stdenv.lib.optionals withGUI [ pygtk pythonPackages.notify ];
+  buildInputs = [
+    glib udev libusb1 cups
+    python3Packages.python
+    libnotify gobject-introspection gdk-pixbuf pango atk packagekit
+    libsecret
+  ];
 
-  configureFlags =
-    [ "--with-udev-rules"
-      "--with-systemdsystemunitdir=$(out)/etc/systemd/system"
-    ];
+  nativeBuildInputs = [
+    intltool pkgconfig
+    xmlto libxml2 docbook_xml_dtd_412 docbook_xsl desktop-file-utils
+    python3Packages.wrapPython
+    wrapGAppsHook autoreconfHook
+  ];
+
+  pythonPath = with python3Packages; requiredPythonModules [ pycups pycurl dbus-python pygobject3 requests pycairo pysmbc ];
+
+  configureFlags = [
+    "--with-udev-rules"
+    "--with-udevdir=${placeholder "out"}/etc/udev"
+    "--with-systemdsystemunitdir=${placeholder "out"}/etc/systemd/system"
+  ];
+
+  stripDebugList = [ "bin" "lib" "etc/udev" ];
+
+  doCheck = true;
 
   postInstall =
     ''
-      wrapPythonPrograms
-      ( cd $out/share/system-config-printer/troubleshoot
-        mv .__init__.py-wrapped __init__.py
+      buildPythonPath "$out $pythonPath"
+      gappsWrapperArgs+=(
+        --prefix PATH : "$program_PATH"
+        --set CUPS_DATADIR "${cups-filters}/share/cups"
       )
+
+      find $out/share/system-config-printer -name \*.py -type f -perm -0100 -print0 | while read -d "" f; do
+        patchPythonScript "$f"
+      done
+      patchPythonScript $out/etc/udev/udev-add-printer
+
+      substituteInPlace $out/etc/udev/rules.d/70-printers.rules \
+        --replace "udev-configure-printer" "$out/etc/udev/udev-configure-printer"
     '';
 
   meta = {
-    homepage = http://cyberelk.net/tim/software/system-config-printer/;
+    homepage = "https://github.com/openprinting/system-config-printer";
+    platforms = stdenv.lib.platforms.linux;
+    license = stdenv.lib.licenses.gpl2;
   };
 }

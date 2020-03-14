@@ -1,11 +1,11 @@
 { stdenv, fetchcvs, autoconf, automake, libtool, flex, bison, pkgconfig
-, zlib, bzip2, lzma, libgcrypt_1_6
+, zlib, bzip2, lzma, libgcrypt
 }:
 
 with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  name = "cygwin-setup-${version}";
+  pname = "cygwin-setup";
   version = "20131101";
 
   src = fetchcvs {
@@ -24,9 +24,9 @@ stdenv.mkDerivation rec {
       buildInputs = map mkStatic (o.buildInputs or []);
       propagatedBuildInputs = map mkStatic (o.propagatedBuildInputs or []);
     });
-  in map mkStatic [ zlib bzip2 lzma libgcrypt_1_6 ];
+  in map mkStatic [ zlib bzip2 lzma libgcrypt ];
 
-  configureFlags = "--disable-shared";
+  configureFlags = [ "--disable-shared" ];
 
   dontDisableStatic = true;
 

@@ -1,7 +1,4 @@
-{ stdenv, fetchurl, compat24 ? false, compat26 ? true, unicode ? true,
-}:
-
-assert stdenv ? cross -> stdenv.cross.libc == "msvcrt";
+{ stdenv, fetchurl, compat24 ? false, compat26 ? true, unicode ? true }:
 
 stdenv.mkDerivation {
   name = "wxMSW-2.8.11";
@@ -19,12 +16,6 @@ stdenv.mkDerivation {
     "--with-opengl"
   ];
 
-  # Cross build only tested for mingw32
-  checkCross = throw "This package can only be cross-built" false;
-  crossAttrs = {
-    checkCross = true;
-  };
-
   preConfigure = "
     substituteInPlace configure --replace /usr /no-such-path
   ";
@@ -37,4 +28,10 @@ stdenv.mkDerivation {
   ";
 
   passthru = {inherit compat24 compat26 unicode;};
+
+  meta = {
+    platforms = stdenv.lib.platforms.windows;
+
+    broken = true;
+  };
 }

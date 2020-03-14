@@ -3,18 +3,18 @@
 }:
 
 stdenv.mkDerivation rec {
-  name = "gphoto2-2.5.3";
+  name = "gphoto2-2.5.23";
 
   src = fetchurl {
     url = "mirror://sourceforge/gphoto/${name}.tar.bz2";
-    sha256 = "0i6qjyvgn3aaspiblmiwv51mfy92gm73xpbd3z41ki8mw7plg53i";
+    sha256 = "1laqwhxr0xhbykmp0dhd3j4rr2lhj5y228s31afnqxp700hhk1yz";
   };
 
-  nativeBuildInputs = [ pkgconfig gettext ];
-  buildInputs = [ libgphoto2 libexif popt libjpeg readline libtool ];
+  nativeBuildInputs = [ pkgconfig gettext libtool ];
+  buildInputs = [ libgphoto2 libexif popt libjpeg readline ];
 
-  meta = {
-    description = "a ready to use set of digital camera software applications";
+  meta = with stdenv.lib; {
+    description = "A ready to use set of digital camera software applications";
     longDescription = ''
 
       A set of command line utilities for manipulating over 1400 different
@@ -22,8 +22,8 @@ stdenv.mkDerivation rec {
 
     '';
     homepage = http://www.gphoto.org/;
-    license = stdenv.lib.licenses.gpl2Plus;
-    platforms = with stdenv.lib.platforms; unix;
-    maintainers = with stdenv.lib.maintainers; [ jcumming ];
+    license = licenses.gpl2Plus;
+    platforms = platforms.unix;
+    maintainers = [ maintainers.jcumming ];
   };
 }

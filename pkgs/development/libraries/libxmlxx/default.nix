@@ -1,22 +1,31 @@
-{ stdenv, fetchurl
-, pkgconfig, libxml2, glibmm, perl }:
+{ stdenv, fetchurl, pkgconfig, libxml2, glibmm, perl, gnome3 }:
+
 stdenv.mkDerivation rec {
-  name = "libxml++-2.37.1";
+  pname = "libxml++";
+  version = "2.40.1";
+
   src = fetchurl {
-    url = "mirror://gnome/sources/libxml++/2.37/${name}.tar.xz";
-    sha256 = "17xkdndcambij33k25cb5c4mg2457wi114kiaprjma9j0mh87cgk";
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "1sb3akryklvh2v6m6dihdnbpf1lkx441v972q9hlz1sq6bfspm2a";
   };
 
-  buildInputs = [ pkgconfig glibmm perl ];
+  outputs = [ "out" "devdoc" ];
 
-  propagatedBuildInputs = [ libxml2 ];
+  nativeBuildInputs = [ pkgconfig perl ];
 
-  configureFlags = "--disable-documentation"; #doesn't build without this for some reason
+  propagatedBuildInputs = [ libxml2 glibmm ];
 
-  meta = {
-    homepage = http://libxmlplusplus.sourceforge.net/;
+  passthru = {
+    updateScript = gnome3.updateScript {
+      packageName = pname;
+    };
+  };
+
+  meta = with stdenv.lib; {
+    homepage = "http://libxmlplusplus.sourceforge.net/";
     description = "C++ wrapper for the libxml2 XML parser library";
-    license = stdenv.lib.licenses.lgpl2Plus;
-    maintainers = [ stdenv.lib.maintainers.phreedom ];
+    license = licenses.lgpl2Plus;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ phreedom ];
   };
 }

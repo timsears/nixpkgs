@@ -1,29 +1,46 @@
-{ stdenv, fetchurl, unzip, ant, jdk, makeWrapper }:
+{ stdenv, fetchurl, jdk11, rlwrap, makeWrapper }:
 
-let version = "1.6.0"; in
-
-stdenv.mkDerivation {
-  name = "clojure-${version}";
+stdenv.mkDerivation rec {
+  pname = "clojure";
+  version = "1.10.1.507";
 
   src = fetchurl {
-    url = "http://repo1.maven.org/maven2/org/clojure/clojure/${version}/clojure-${version}.zip";
-    sha256 = "0yv67gackrzlwn9f8cnpw14y2hwspklxhy1450rl71vdrqjahlwq";
+    url = "https://download.clojure.org/install/clojure-tools-${version}.tar.gz";
+    sha256 = "1k0jwa3481g3mkalwlb9gkcz9aq9zjpwmzckv823fr2d8djp41cc";
   };
 
-  buildInputs = [ unzip ant jdk makeWrapper ];
+  patches = [ ./TDEPS-150.patch ];
 
-  buildPhase = "ant jar";
+  buildInputs = [ makeWrapper ];
 
-  installPhase = ''
-    mkdir -p $out/share/java $out/bin
-    install -t $out/share/java clojure.jar
-    makeWrapper ${jdk.jre}/bin/java $out/bin/clojure --add-flags "-cp $out/share/java/clojure.jar clojure.main"
+  installPhase =
+    let
+      binPath = stdenv.lib.makeBinPath [ rlwrap jdk11 ];
+    in
+      ''
+        mkdir -p $out/libexec
+        cp clojure-tools-${version}.jar $out/libexec
+        cp example-deps.edn $out
+        cp deps.edn $out
+
+        substituteInPlace clojure --replace PREFIX $out
+
+        install -Dt $out/bin clj clojure
+        wrapProgram $out/bin/clj --prefix PATH : $out/bin:${binPath}
+        wrapProgram $out/bin/clojure --prefix PATH : $out/bin:${binPath}
+      '';
+
+  doInstallCheck = true;
+  installCheckPhase = ''
+    CLJ_CONFIG=$out CLJ_CACHE=$out/libexec $out/bin/clojure \
+      -Spath \
+      -Sverbose \
+      -Scp $out/libexec/clojure-tools-${version}.jar
   '';
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "A Lisp dialect for the JVM";
-    homepage = http://clojure.org/;
-    license = stdenv.lib.licenses.bsd3;
+    homepage = https://clojure.org/;
+    license = licenses.epl10;
     longDescription = ''
       Clojure is a dynamic programming language that targets the Java
       Virtual Machine. It is designed to be a general-purpose language,
@@ -43,6 +60,7 @@ stdenv.mkDerivation {
       offers a software transactional memory system and reactive Agent
       system that ensure clean, correct, multithreaded designs.
     '';
-    maintainers = with stdenv.lib.maintainers; [ the-kenny ];
+    maintainers = with maintainers; [ jlesquembre ];
+    platforms = platforms.unix;
   };
 }

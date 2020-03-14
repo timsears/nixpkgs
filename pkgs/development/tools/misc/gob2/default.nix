@@ -1,20 +1,29 @@
-{ stdenv, fetchurlGnome, pkgconfig, glib, bison, flex }:
+{ stdenv, fetchurl, pkgconfig, glib, bison, flex, gnome3 }:
 
 stdenv.mkDerivation rec {
-  name = src.pkgname;
+  pname = "gob2";
+  version = "2.0.20";
 
-  src = fetchurlGnome {
-    project = "gob2";
-    major = "2"; minor = "0"; patchlevel = "18"; extension = "gz";
-    sha256 = "1r242s3rsxyqiw2ic2gdpvvrx903jgjd1aa4mkl26in5k9zk76fa";
+  src = fetchurl {
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "5fe5d7990fd65b0d4b617ba894408ebaa6df453f2781c15a1cfdf2956c0c5428";
   };
 
   # configure script looks for d-bus but it is only needed for tests
-  buildInputs = [ glib bison flex pkgconfig ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ glib bison flex ];
+
+  passthru = {
+    updateScript = gnome3.updateScript {
+      packageName = pname;
+      versionPolicy = "none";
+    };
+  };
 
   meta = {
     description = "Preprocessor for making GObjects with inline C code";
-    homepage = http://www.jirka.org/gob.html;
+    homepage = "https://www.jirka.org/gob.html";
     license = stdenv.lib.licenses.gpl2Plus;
+    platforms = stdenv.lib.platforms.unix;
   };
 }

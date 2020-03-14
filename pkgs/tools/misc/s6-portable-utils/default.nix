@@ -1,55 +1,35 @@
-{ stdenv, fetchurl, skalibs }:
+{ skawarePackages }:
+
+with skawarePackages;
 
 let
+  pname = "s6-portable-utils";
 
-  version = "1.0.3.2";
+in buildPackage {
+  pname = pname;
+  version = "2.2.2.1";
+  sha256 = "074kizkxjwvmxspxg69fr8r0lbiy61l2n5nzgbfvwvhc6lj34iqy";
 
-in stdenv.mkDerivation rec {
+  description = "A set of tiny general Unix utilities optimized for simplicity and small size";
 
-  name = "s6-portable-utils-${version}";
+  outputs = [ "bin" "dev" "doc" "out" ];
 
-  src = fetchurl {
-    url = "http://www.skarnet.org/software/s6-portable-utils/${name}.tar.gz";
-    sha256 = "040nmls7qbgw8yn502lym4kgqh5zxr2ks734bqajpi2ricnasvhl";
-  };
+  configureFlags = [
+    "--bindir=\${bin}/bin"
+    "--includedir=\${dev}/include"
+    "--with-sysdeps=${skalibs.lib}/lib/skalibs/sysdeps"
+    "--with-include=${skalibs.dev}/include"
+    "--with-lib=${skalibs.lib}/lib"
+    "--with-dynlib=${skalibs.lib}/lib"
+  ];
 
-  buildInputs = [ skalibs ];
+  postInstall = ''
+    # remove all s6 executables from build directory
+    rm $(find -name "s6-*" -type f -mindepth 1 -maxdepth 1 -executable)
+    rm seekablepipe
 
-  sourceRoot = "admin/${name}";
-
-  configurePhase = ''
-    pushd conf-compile
-
-    printf "$out/bin"           > conf-install-command
-    printf "$out/libexec"       > conf-install-libexec
-
-    # let nix builder strip things, cross-platform
-    truncate --size 0 conf-stripbins
-    truncate --size 0 conf-striplibs
-
-    printf "${skalibs}/sysdeps"      > import
-    printf "%s" "${skalibs}/include" > path-include
-    printf "%s" "${skalibs}/lib"     > path-library
-
-    rm -f flag-slashpackage
-    touch flag-allstatic
-
-    popd
+    mv doc $doc/share/doc/${pname}/html
   '';
 
-  preBuild = ''
-    patchShebangs src/sys
-  '';
-
-  preInstall = ''
-    mkdir -p "$out/libexec"
-  '';
-
-  meta = {
-    homepage = http://www.skarnet.org/software/s6-portable-utils/;
-    description = "A set of tiny general Unix utilities optimized for simplicity and small size.";
-    platforms = stdenv.lib.platforms.all;
-    license = stdenv.lib.licenses.isc;
-  };
 
 }

@@ -1,22 +1,46 @@
-{ stdenv, fetchurl, which, qt4, x11, pulseaudio, fftwSinglePrec
-, lame, zlib, mesa, alsaLib, freetype, perl, pkgconfig
-, libX11, libXv, libXrandr, libXvMC, libXinerama, libXxf86vm, libXmu
+{ stdenv, mkDerivation, fetchFromGitHub, which, qtbase, qtwebkit, qtscript, xlibsWrapper
+, libpulseaudio, fftwSinglePrec , lame, zlib, libGLU, libGL, alsaLib, freetype
+, perl, pkgconfig , libsamplerate, libbluray, lzo, libX11, libXv, libXrandr, libXvMC, libXinerama, libXxf86vm
+, libXmu , yasm, libuuid, taglib, libtool, autoconf, automake, file, exiv2, linuxHeaders
+, libXNVCtrl, enableXnvctrl ? false
 }:
 
-stdenv.mkDerivation rec {
-  name = "mythtv-0.24.2";
+mkDerivation rec {
+  pname = "mythtv";
+  version = "30.0";
 
-  src = fetchurl {
-    url = "http://ftp.osuosl.org/pub/mythtv/${name}.tar.bz2";
-    sha256 = "14mkyf2b26pc9spx6lg15mml0nqyg1r3qnq8m9dz3110h771y2db";
+  src = fetchFromGitHub {
+    owner = "MythTV";
+    repo = "mythtv";
+    rev = "v${version}";
+    sha256 = "1pfzjb07xwd3mfgmbr4kkiyfyvwy9fkl13ik7bvqds86m0ws5bw4";
   };
 
-  buildInputs = [
-    freetype qt4 lame zlib x11 mesa perl alsaLib pulseaudio fftwSinglePrec
-    libX11 libXv libXrandr libXvMC libXmu libXinerama libXxf86vm libXmu
+  patches = [
+    # Fixes build with exiv2 0.27.1.
+    ./exiv2.patch
+    # Disables OS detection used while checking for xnvctrl support.
+    ./disable-os-detection.patch
   ];
 
-  nativeBuildInputs = [ pkgconfig which ];
+  setSourceRoot = ''sourceRoot=$(echo */mythtv)'';
 
-  patches = [ ./settings.patch ];
+  buildInputs = [
+    freetype qtbase qtwebkit qtscript lame zlib xlibsWrapper libGLU libGL
+    perl libsamplerate libbluray lzo alsaLib libpulseaudio fftwSinglePrec libX11 libXv libXrandr libXvMC
+    libXmu libXinerama libXxf86vm libXmu libuuid taglib exiv2
+  ] ++ stdenv.lib.optional enableXnvctrl libXNVCtrl;
+  nativeBuildInputs = [ pkgconfig which yasm libtool autoconf automake file ];
+
+  configureFlags = 
+    [ "--dvb-path=${linuxHeaders}/include" ]
+    ++ stdenv.lib.optionals (!enableXnvctrl) [  "--disable-xnvctrl" ];
+
+  meta = with stdenv.lib; {
+    homepage = https://www.mythtv.org/;
+    description = "Open Source DVR";
+    license = licenses.gpl2;
+    platforms = platforms.linux;
+    maintainers = [ maintainers.titanous ];
+  };
 }

@@ -1,17 +1,17 @@
 { fetchgit, stdenv, gmp, which, flex, bison, makeWrapper
-, autoconf, automake, libtool, openjdk, perl }:
+, autoconf, automake, libtool, jdk, perl }:
 
 stdenv.mkDerivation {
   name = "aldor-1.2.0";
 
   src = fetchgit {
     url = "https://github.com/pippijn/aldor";
-    sha256 = "1l9fc2cgwabifwbijcp293abc8hcv40nzx2w31jkxh8n0plbiczn";
+    sha256 = "19v07ffq4r1gjnmg7a8ifgjkwan9a3rwbj0qjz8fycwy221844m6";
     rev = "15471e75f3d65b93150f414ebcaf59a03054b68d";
   };
 
   buildInputs = [ gmp which flex bison makeWrapper autoconf automake libtool
-                  openjdk perl ];
+                  jdk perl ];
 
   preConfigure = ''
     cd aldor ;
@@ -22,13 +22,15 @@ stdenv.mkDerivation {
     for prog in aldor unicl javagen ;
     do
       wrapProgram $out/bin/$prog --set ALDORROOT $out \
-        --prefix PATH : ${openjdk}/bin \
-        --prefix PATH : ${stdenv.gcc}/bin ;
+        --prefix PATH : ${jdk}/bin \
+        --prefix PATH : ${stdenv.cc}/bin ;
     done
   '';
 
   meta = {
-    homepage = "http://www.aldor.org/";
+    # Please become a maintainer to fix this package
+    broken = true;
+    homepage = http://www.aldor.org/;
     description = "Programming language with an expressive type system";
     license = stdenv.lib.licenses.asl20;
 
@@ -45,7 +47,6 @@ stdenv.mkDerivation {
       and powerful properties of functional, object-oriented and aspect-oriented styles.
     '';
 
-    maintainers = [ stdenv.lib.maintainers.simons ];
     platforms = stdenv.lib.platforms.linux;
   };
 }

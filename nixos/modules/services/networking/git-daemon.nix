@@ -3,7 +3,6 @@ with lib;
 let
 
   cfg = config.services.gitDaemon;
-  gitUser = "git";
 
 in
 {
@@ -14,9 +13,10 @@ in
     services.gitDaemon = {
 
       enable = mkOption {
+        type = types.bool;
         default = false;
         description = ''
-          Enable Git daemon, which allows public hosting  of git repositories
+          Enable Git daemon, which allows public hosting of git repositories
           without any access controls. This is mostly intended for read-only access.
 
           You can allow write access by setting daemon.receivepack configuration
@@ -28,6 +28,7 @@ in
       };
 
       basePath = mkOption {
+        type = types.str;
         default = "";
         example = "/srv/git/";
         description = ''
@@ -38,6 +39,7 @@ in
       };
 
       exportAll = mkOption {
+        type = types.bool;
         default = false;
         description = ''
           Publish all directories that look like Git repositories (have the objects
@@ -52,6 +54,7 @@ in
       };
 
       repositories = mkOption {
+        type = types.listOf types.str;
         default = [];
         example = [ "/srv/git" "/home/user/git/repo2" ];
         description = ''
@@ -64,19 +67,34 @@ in
       };
 
       listenAddress = mkOption {
+        type = types.str;
         default = "";
         example = "example.com";
         description = "Listen on a specific IP address or hostname.";
       };
 
       port = mkOption {
+        type = types.int;
         default = 9418;
         description = "Port to listen on.";
       };
 
       options = mkOption {
+        type = types.str;
         default = "";
         description = "Extra configuration options to be passed to Git daemon.";
+      };
+
+      user = mkOption {
+        type = types.str;
+        default = "git";
+        description = "User under which Git daemon would be running.";
+      };
+
+      group = mkOption {
+        type = types.str;
+        default = "git";
+        description = "Group under which Git daemon would be running.";
       };
 
     };
@@ -86,25 +104,25 @@ in
 
   config = mkIf cfg.enable {
 
-    users.extraUsers = singleton
-      { name = gitUser;
+    users.users = optionalAttrs (cfg.user == "git") {
+      git = {
         uid = config.ids.uids.git;
         description = "Git daemon user";
       };
+    };
 
-    users.extraGroups = singleton
-      { name = gitUser;
-        gid = config.ids.gids.git;
-      };
+    users.groups = optionalAttrs (cfg.group == "git") {
+      git.gid = config.ids.gids.git;
+    };
 
-    jobs.gitDaemon = {
-      name = "git-daemon";
-      startOn = "ip-up";
-      exec = "${pkgs.git}/bin/git daemon --reuseaddr "
+    systemd.services.git-daemon = {
+      after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
+      script = "${pkgs.git}/bin/git daemon --reuseaddr "
         + (optionalString (cfg.basePath != "") "--base-path=${cfg.basePath} ")
         + (optionalString (cfg.listenAddress != "") "--listen=${cfg.listenAddress} ")
-        + "--port=${toString cfg.port} --user=${gitUser} --group=${gitUser} ${cfg.options} "
-        + "--verbose " + (optionalString cfg.exportAll "--export-all")  + concatStringsSep " " cfg.repositories;
+        + "--port=${toString cfg.port} --user=${cfg.user} --group=${cfg.group} ${cfg.options} "
+        + "--verbose " + (optionalString cfg.exportAll "--export-all ")  + concatStringsSep " " cfg.repositories;
     };
 
   };

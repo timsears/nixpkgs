@@ -1,38 +1,70 @@
-{ stdenv, fetchurl, cmake, kdelibs, attica, perl, zlib, libpng, boost, mesa
-, kdepimlibs, createresources ? null, eigen, qca2, exiv2, soprano, marble, lcms2
-, fontconfig, freetype, sqlite, icu, libwpd, libwpg, pkgconfig, popplerQt4
-, libkdcraw, libxslt, fftw, glew, gsl, shared_desktop_ontologies, okular
-, libvisio, kactivities, mysql, postgresql, freetds, xbase, openexr, ilmbase
- }:
+{
+  mkDerivation, lib, fetchurl, extra-cmake-modules, kdoctools, makeWrapper,
+  boost, qtwebkit, qtx11extras, shared-mime-info,
+  breeze-icons, kactivities, karchive, kcodecs, kcompletion, kconfig, kconfigwidgets,
+  kcoreaddons, kdbusaddons, kdiagram, kguiaddons, khtml, ki18n,
+  kiconthemes, kitemviews, kjobwidgets, kcmutils, kdelibs4support, kio, kross,
+  knotifications, knotifyconfig, kparts, ktextwidgets, kwallet, kwidgetsaddons,
+  kwindowsystem, kxmlgui, sonnet, threadweaver,
+  kcontacts, akonadi, akonadi-calendar, akonadi-contacts,
+  eigen, git, gsl, ilmbase, kproperty, kreport, lcms2, marble, libgit2, libodfgen,
+  librevenge, libvisio, libwpd, libwpg, libwps, okular, openexr, openjpeg, phonon,
+  poppler, pstoedit, qca-qt5, vc
+# TODO: package Spnav, m2mml LibEtonyek, Libqgit2
+}:
 
-stdenv.mkDerivation rec {
-  name = "calligra-2.7.5";
+mkDerivation rec {
+  pname = "calligra";
+  version = "3.1.0";
 
   src = fetchurl {
-    url = "mirror://kde/stable/${name}/${name}.tar.xz";
-    sha256 = "0png8ac10xywxsml1z18as18kc9k9162l6an67hi6lgx0rv27ldi";
+    url = "mirror://kde/stable/${pname}/${version}/${pname}-${version}.tar.xz";
+    sha256 = "0w782k0hprpb6viixnqz34sp0z5csv3prdby46z22qqkcipcs638";
   };
 
-  nativeBuildInputs = [ cmake perl pkgconfig ];
+  patches = [ ./qt5_11.patch ];
 
-#  patches = [ ./fix-kde4.10-build.patch ];
+  enableParallelBuilding = true;
 
-# TODO: package Vc, libWPS, OCIO, OpenShiva, QtShiva, Spnav, m2mml
-# TODO: not found popplerQt4
+  nativeBuildInputs = [ extra-cmake-modules kdoctools makeWrapper ];
 
-  buildInputs = [ kdelibs attica zlib libpng boost mesa kdepimlibs
-    createresources eigen qca2 exiv2 soprano marble lcms2 fontconfig freetype
-    sqlite icu libwpd libwpg popplerQt4 libkdcraw libxslt fftw glew gsl
-    shared_desktop_ontologies okular 
-    libvisio kactivities mysql postgresql freetds xbase openexr
-];
+  buildInputs = [
+    boost qtwebkit qtx11extras shared-mime-info
+    kactivities karchive kcodecs kcompletion kconfig kconfigwidgets kcoreaddons
+    kdbusaddons kdiagram kguiaddons khtml ki18n kiconthemes kitemviews
+    kjobwidgets kcmutils kdelibs4support kio kross knotifications knotifyconfig kparts
+    ktextwidgets kwallet kwidgetsaddons kwindowsystem kxmlgui sonnet threadweaver
+    kcontacts akonadi akonadi-calendar akonadi-contacts
+    eigen git gsl ilmbase kproperty kreport lcms2 marble libgit2 libodfgen librevenge
+    libvisio libwpd libwpg libwps okular openexr openjpeg phonon poppler qca-qt5 vc
+  ];
 
-  NIX_CFLAGS_COMPILE = "-I${ilmbase}/include/OpenEXR";
+  propagatedUserEnvPkgs = [ kproperty ];
 
-  meta = {
-    description = "A Qt/KDE office suite, formely known as koffice";
-    homepage = http://calligra.org;
-    maintainers = with stdenv.lib.maintainers; [ urkud phreedom ];
-    inherit (kdelibs.meta) platforms;
+  NIX_CFLAGS_COMPILE = "-I${ilmbase.dev}/include/OpenEXR";
+
+  postInstall = ''
+    for i in $out/bin/*; do
+      wrapProgram $i \
+        --prefix PATH ':' "${pstoedit.out}/bin" \
+        --prefix XDG_DATA_DIRS ':' "${breeze-icons}/share"
+    done
+  '';
+
+  meta = with lib; {
+    description = "A suite of productivity applications";
+    longDescription = ''
+      Calligra Suite is a set of applications written to help
+      you to accomplish your work. Calligra includes efficient
+      and capable office components: Words for text processing,
+      Sheets for computations, Plan for planning, and Karbon for
+      vector graphics.
+    '';
+    homepage = https://www.calligra.org/;
+    maintainers = with maintainers; [ phreedom ebzzry zraexy ];
+    platforms = platforms.linux;
+    license = with licenses; [ gpl2 lgpl2 ];
+    hydraPlatforms = [];
+    broken = true; # fails to start, kde home not found
   };
 }

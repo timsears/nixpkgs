@@ -1,35 +1,47 @@
-{ stdenv, fetchurl, glib, libxml2, pkgconfig
-, gnomeSupport ? true, libgnome_keyring, sqlite, glib_networking, gobjectIntrospection
-, libintlOrEmpty
-, intltool, python }:
-let
-  majorVersion = "2.45";
-  version = "${majorVersion}.3";
-in
-stdenv.mkDerivation {
-  name = "libsoup-${version}";
+{ stdenv, fetchurl, glib, libxml2, meson, ninja, pkgconfig, gnome3
+, gnomeSupport ? true, sqlite, glib-networking, gobject-introspection, vala
+, libpsl, python3, brotli }:
+
+stdenv.mkDerivation rec {
+  pname = "libsoup";
+  version = "2.68.4";
 
   src = fetchurl {
-    url = "mirror://gnome/sources/libsoup/${majorVersion}/libsoup-${version}.tar.xz";
-    sha256 = "04ma47hcrrbjp90r8jjn686cngnbgac24wgarpwwzlpg66wighva";
+    url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
+    sha256 = "151j5dc84gbl6a917pxvd0b372lw5za48n63lyv6llfc48lv2l1d";
   };
 
-  patchPhase = ''
+  postPatch = ''
     patchShebangs libsoup/
   '';
 
-  buildInputs = libintlOrEmpty ++ [ intltool python ];
-  nativeBuildInputs = [ pkgconfig ];
-  propagatedBuildInputs = [ glib libxml2 gobjectIntrospection ]
-    ++ stdenv.lib.optionals gnomeSupport [ libgnome_keyring sqlite ];
-  passthru.propagatedUserEnvPackages = [ glib_networking ];
+  outputs = [ "out" "dev" ];
 
-  # glib_networking is a runtime dependency, not a compile-time dependency
-  configureFlags = "--disable-tls-check";
+  buildInputs = [ python3 sqlite libpsl brotli ];
+  nativeBuildInputs = [ meson ninja pkgconfig gobject-introspection vala ];
+  propagatedBuildInputs = [ glib libxml2 ];
 
-  NIX_CFLAGS_COMPILE = stdenv.lib.optionalString stdenv.isDarwin "-lintl";
+  mesonFlags = [
+    "-Dtls_check=false" # glib-networking is a runtime dependency, not a compile-time dependency
+    "-Dgssapi=disabled"
+    "-Dvapi=enabled"
+    "-Dgnome=${if gnomeSupport then "true" else "false"}"
+    "-Dntlm=disabled"
+  ];
+
+  doCheck = false; # ERROR:../tests/socket-test.c:37:do_unconnected_socket_test: assertion failed (res == SOUP_STATUS_OK): (2 == 200)
+
+  passthru = {
+    propagatedUserEnvPackages = [ glib-networking.out ];
+    updateScript = gnome3.updateScript {
+      packageName = pname;
+    };
+  };
 
   meta = {
+    description = "HTTP client/server library for GNOME";
+    homepage = "https://wiki.gnome.org/Projects/libsoup";
+    license = stdenv.lib.licenses.gpl2;
     inherit (glib.meta) maintainers platforms;
   };
 }

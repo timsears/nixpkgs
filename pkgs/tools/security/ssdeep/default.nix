@@ -1,17 +1,20 @@
-{ stdenv, fetchurl }:
+{ stdenv, fetchFromGitHub, autoreconfHook }:
 
 stdenv.mkDerivation rec {
-  name    = "ssdeep-${version}";
-  version = "2.10";
+  pname = "ssdeep";
+  version = "2.14.1";
 
-  src = fetchurl {
-    url    = "mirror://sourceforge/ssdeep/${name}.tar.gz";
-    sha256 = "1p7dgchq8hgadnxz5qh95ay17k5j74l4qyd15wspc54lb603p2av";
+  src = fetchFromGitHub {
+    owner = "ssdeep-project";
+    repo = "ssdeep";
+    rev = "release-${version}";
+    sha256 = "1yx6yjkggshw5yl89m4kvyzarjdg2l3hs0bbjbrfzwp1lkfd8i0c";
   };
 
-  postFixup = stdenv.lib.optionalString stdenv.isLinux ''
-    patchelf --set-rpath "$(patchelf --print-rpath $out/bin/ssdeep):$out/lib" $out/bin/ssdeep
-  '';
+  nativeBuildInputs = [ autoreconfHook ];
+
+  # Hack to avoid TMPDIR in RPATHs.
+  preFixup = ''rm -rf "$(pwd)" '';
 
   meta = {
     description = "A program for calculating fuzzy hashes";

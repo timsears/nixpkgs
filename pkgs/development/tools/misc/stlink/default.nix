@@ -1,28 +1,33 @@
-{ stdenv, fetchgit, autoconf, automake, libtool, pkgconfig, libusb1 }:
+{ stdenv, fetchFromGitHub, cmake, libusb1 }:
 
-# IMPORTANT: You need permissions to access the stlink usb devices. Here are
-# example udev rules for stlink v1 and v2 so you don't need to have root
-# permissions (copied from <stlink>/49-stlink*.rules):
-#
-# SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3744", MODE:="0666", SYMLINK+="stlinkv1_%n"
-# SUBSYSTEMS=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="3748", MODE:="0666", SYMLINK+="stlinkv2_%n"
+# IMPORTANT: You need permissions to access the stlink usb devices. 
+# Add services.udev.pkgs = [ pkgs.stlink ] to your configuration.nix
 
-stdenv.mkDerivation {
-  name = "stlink-20130306";
+stdenv.mkDerivation rec {
+  pname = "stlink";
+  version = "1.6.0";
 
-  src = fetchgit {
-    url = git://github.com/texane/stlink.git;
-    rev = "5be889e3feb75fc7f594012c4855b4dc16940050";
-    sha256 = "1xbfr1kz4k6hhl0xpqn1vi83fdynjxx3ymn9gb7b0pb7h6ncjcyr";
+  src = fetchFromGitHub {
+    owner = "texane";
+    repo = "stlink";
+    rev = "v${version}";
+    sha256 = "1mlkrxjxg538335g59hjb0zc739dx4mhbspb26z5gz3lf7d4xv6x";
   };
 
-  buildInputs = [ autoconf automake libtool pkgconfig libusb1 ];
-  preConfigure = "./autogen.sh";
+  buildInputs = [ cmake libusb1 ];
+  patchPhase = ''
+    sed -i 's@/etc/udev/rules.d@$ENV{out}/etc/udev/rules.d@' CMakeLists.txt
+    sed -i 's@/etc/modprobe.d@$ENV{out}/etc/modprobe.d@' CMakeLists.txt
+  '';
+  preInstall = ''
+    mkdir -p $out/etc/udev/rules.d
+    mkdir -p $out/etc/modprobe.d
+  '';
 
   meta = with stdenv.lib; {
     description = "In-circuit debug and programming for ST-Link devices";
     license = licenses.bsd3;
-    platforms = platforms.linux;
-    maintainers = [ maintainers.bjornfor ];
+    platforms = platforms.unix;
+    maintainers = [ maintainers.bjornfor maintainers.rongcuid ];
   };
 }

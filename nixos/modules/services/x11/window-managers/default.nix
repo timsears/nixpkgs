@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 
 with lib;
 
@@ -7,18 +7,35 @@ let
 in
 
 {
-  imports =
-    [ ./compiz.nix
-      ./openbox.nix
-      ./metacity.nix
-      ./none.nix
-      ./twm.nix
-      ./wmii.nix
-      ./xmonad.nix
-      ./i3.nix
-      ./herbstluftwm.nix
-      ./bspwm.nix
-    ];
+  imports = [
+    ./2bwm.nix
+    ./afterstep.nix
+    ./bspwm.nix
+    ./cwm.nix
+    ./dwm.nix
+    ./evilwm.nix
+    ./exwm.nix
+    ./fluxbox.nix
+    ./fvwm.nix
+    ./herbstluftwm.nix
+    ./i3.nix
+    ./jwm.nix
+    ./leftwm.nix
+    ./metacity.nix
+    ./mwm.nix
+    ./openbox.nix
+    ./pekwm.nix
+    ./notion.nix
+    ./ratpoison.nix
+    ./sawfish.nix
+    ./stumpwm.nix
+    ./spectrwm.nix
+    ./twm.nix
+    ./windowmaker.nix
+    ./wmii.nix
+    ./xmonad.nix
+    ./qtile.nix
+    ./none.nix ];
 
   options = {
 
@@ -42,15 +59,14 @@ in
       };
 
       default = mkOption {
-        type = types.str;
-        default = "none";
+        type = types.nullOr types.str;
+        default = null;
         example = "wmii";
-        description = "Default window manager loaded if none have been chosen.";
-        apply = defaultWM:
-          if any (w: w.name == defaultWM) cfg.session then
-            defaultWM
-          else
-            throw "Default window manager (${defaultWM}) not found.";
+        description = ''
+          <emphasis role="strong">Deprecated</emphasis>, please use <xref linkend="opt-services.xserver.displayManager.defaultSession"/> instead.
+
+          Default window manager loaded if none have been chosen.
+        '';
       };
 
     };

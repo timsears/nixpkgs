@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, qt48, flex, cmake }:
+{ stdenv, fetchgit, qt48, qmake4Hook, flex }:
 
 # At the time of committing this, the expression fails for me to cross-build in
 # both mingw32 and mingw64.
@@ -13,20 +13,15 @@ stdenv.mkDerivation {
   };
 
   buildInputs = [ qt48 ];
-  nativeBuildInputs = [ flex /*cmake*/ ];
+  nativeBuildInputs = [ flex qmake4Hook ];
 
   QTDIR = qt48;
-  configurePhase = ''
-    qmake PREFIX=$out
+
+  # cmakeFlags = [ "-DWIN32=1" "-DCMAKE_SYSTEM_NAME=Windows" "-DCMAKE_RC_COMPILER=${stdenv.cc.targetPrefix}windres" ];
+
+  preBuild = stdenv.lib.optionalString (stdenv.hostPlatform != stdenv.buildPlatform) ''
+    export NIX_CROSS_CFLAGS_COMPILE=-fpermissive
   '';
-  
-  crossAttrs = {
-    # cmakeFlags = "-DWIN32=1 -DCMAKE_SYSTEM_NAME=Windows -DCMAKE_RC_COMPILER=${stdenv.cross.config}-windres";
-    QTDIR = qt48.crossDrv;
-    preBuild = ''
-      export NIX_CROSS_CFLAGS_COMPILE=-fpermissive
-    '';
-  };
 
   meta = {
     homepage = http://qt-project.org/wiki/jom;

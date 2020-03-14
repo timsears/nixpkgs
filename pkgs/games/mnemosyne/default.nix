@@ -1,33 +1,55 @@
-{ stdenv
-, fetchurl
-, buildPythonPackage
-, pyqt4
-, matplotlib
-, cherrypy
-, sqlite3
+{ fetchurl
+, python
+, anki
 }:
-let 
-  version = "2.2.1";
-in buildPythonPackage rec {
-  name = "mnemosyne-${version}";
+
+python.pkgs.buildPythonApplication rec {
+  pname = "mnemosyne";
+  version = "2.7.1";
+
   src = fetchurl {
-    url    = "http://sourceforge.net/projects/mnemosyne-proj/files/mnemosyne/${name}/Mnemosyne-${version}.tar.gz";
-    sha256 = "7f5dd06a879b9ab059592355412182ee286e78e124aa25d588cacf9e4ab7c423";
+    url    = "mirror://sourceforge/project/mnemosyne-proj/mnemosyne/mnemosyne-${version}/Mnemosyne-${version}.tar.gz";
+    sha256 = "0dhvg9cxc6m6kzk75h363h1g0bl80cqz11cijh0zpz9f4w6lnqsq";
   };
-  pythonPath = [
-    pyqt4
+
+  nativeBuildInputs = with python.pkgs; [ wrapPython pyqtwebengine.wrapQtAppsHook ];
+
+  buildInputs = [ anki ];
+
+  propagatedBuildInputs = with python.pkgs; [
+    googletrans
+    gtts
+    pyqtwebengine
+    pyqt5
     matplotlib
     cherrypy
-    sqlite3
+    cheroot
+    webob
   ];
-  preConfigure = ''
+
+  prePatch = ''
     substituteInPlace setup.py --replace /usr $out
     find . -type f -exec grep -H sys.exec_prefix {} ';' | cut -d: -f1 | xargs sed -i s,sys.exec_prefix,\"$out\",
   '';
-  installCommand = "python setup.py install --prefix=$out";
+
+  # No tests/ directrory in tarball
+  doCheck = false;
+
+  postInstall = ''
+    mkdir -p $out/share
+    mv $out/${python.sitePackages}/$out/share/locale $out/share
+    rm -r $out/${python.sitePackages}/nix
+  '';
+
+  dontWrapQtApps = true;
+
+  preFixup = ''
+    makeWrapperArgs+=("''${qtWrapperArgs[@]}")
+  '';
+
   meta = {
-    homepage = "http://mnemosyne-proj.org/";
-    description = "Spaced-repetition software.";
+    homepage = "https://mnemosyne-proj.org/";
+    description = "Spaced-repetition software";
     longDescription = ''
       The Mnemosyne Project has two aspects:
 
@@ -51,7 +73,7 @@ in buildPythonPackage rec {
       uploaded to a central server for analysis. This data will be valuable to
       study the behaviour of our memory over a very long time period. The
       results will be used to improve the scheduling algorithms behind the
-      software even further.  
+      software even further.
     '';
   };
 }

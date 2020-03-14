@@ -5,27 +5,30 @@
 # http://marc.info/?l=silc-devel&m=125610477802211
 
 let
-  basename = "silc-client-1.1.8";
+  basename = "silc-client-1.1.11";
 in
 stdenv.mkDerivation {
   name = basename + stdenv.lib.optionalString enablePlugin "-irssi-plugin";
 
   src = fetchurl {
-    url = "http://silcnet.org/download/client/sources/${basename}.tar.bz2";
-    sha256 = "1qnk35g8sbnfps3bq2k9sy0ymlsijh5n8z59m2ccq4pkmqbfqgv2";
+    url = "mirror://sourceforge/silc/silc/client/sources/${basename}.tar.bz2";
+    sha256 = "13cp3fmdnj8scjak0d2xal3bfvs2k7ssrwdhp0zl6jar5rwc7prn";
   };
+
+  enableParallelBuilding = true;
 
   dontDisableStatic = true;
 
-  patches = [ ./server_setup.patch ];
+  hardeningDisable = [ "format" ];
 
-  configureFlags = "--with-ncurses=${ncurses}";
+  configureFlags = [ "--with-ncurses=${ncurses.dev}" ];
 
   preConfigure = stdenv.lib.optionalString enablePlugin ''
     configureFlags="$configureFlags --with-silc-plugin=$out/lib/irssi"
   '';
 
-  buildInputs = [ perl pkgconfig glib ncurses ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ perl glib ncurses ];
 
   meta = {
     homepage = http://silcnet.org/;

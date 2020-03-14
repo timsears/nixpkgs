@@ -1,8 +1,8 @@
-{ stdenv, fetchurl, m4, cxx ? true, withStatic ? false }:
+{ stdenv, fetchurl, m4, cxx ? true, withStatic ? true }:
 
-with { inherit (stdenv.lib) optional; };
+let inherit (stdenv.lib) optional; in
 
-stdenv.mkDerivation (rec {
+let self = stdenv.mkDerivation rec {
   name = "gmp-5.1.3";
 
   src = fetchurl { # we need to use bz2, others aren't in bootstrapping stdenv
@@ -10,25 +10,41 @@ stdenv.mkDerivation (rec {
     sha256 = "0q5i39pxrasgn9qdxzpfbwhh11ph80p57x6hf48m74261d97j83m";
   };
 
+  #outputs TODO: split $cxx due to libstdc++ dependency
+  # maybe let ghc use a version with *.so shared with rest of nixpkgs and *.a added
+  # - see #5855 for related discussion
+  outputs = [ "out" "dev" "info" ];
+  passthru.static = self.out;
+
   nativeBuildInputs = [ m4 ];
 
-  configureFlags =
+  patches = if stdenv.isDarwin then [ ./need-size-t.patch ] else null;
+
+  configureFlags = [
+    "--with-pic"
+    (stdenv.lib.enableFeature cxx "cxx")
     # Build a "fat binary", with routines for several sub-architectures
     # (x86), except on Solaris where some tests crash with "Memory fault".
     # See <http://hydra.nixos.org/build/2760931>, for instance.
-    optional (!stdenv.isSunOS) "--enable-fat"
-    ++ (if cxx then [ "--enable-cxx"  ]
-               else [ "--disable-cxx" ])
-    ++ optional (cxx && stdenv.isDarwin) "CPPFLAGS=-fexceptions"
-    ++ optional stdenv.is64bit "--with-pic"
+    #
+    # no darwin because gmp uses ASM that clang doesn't like
+    (stdenv.lib.enableFeature (!stdenv.isSunOS && stdenv.hostPlatform.isx86) "fat")
+    # The config.guess in GMP tries to runtime-detect various
+    # ARM optimization flags via /proc/cpuinfo (and is also
+    # broken on multicore CPUs). Avoid this impurity.
+    "--build=${stdenv.buildPlatform.config}"
+  ] ++ optional (cxx && stdenv.isDarwin) "CPPFLAGS=-fexceptions"
+    ++ optional (stdenv.isDarwin && stdenv.is64bit) "ABI=64"
     ;
 
   doCheck = true;
 
+  dontDisableStatic = withStatic;
+
   enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
-    homepage = "http://gmplib.org/";
+    homepage = https://gmplib.org/;
     description = "GNU multiple precision arithmetic library";
     license = licenses.gpl3Plus;
 
@@ -55,9 +71,8 @@ stdenv.mkDerivation (rec {
       '';
 
     platforms = platforms.all;
-    maintainers = [ maintainers.simons ];
+    badPlatforms = [ "x86_64-darwin" ];
+    maintainers = [ maintainers.peti ];
   };
-}
-  // stdenv.lib.optionalAttrs withStatic { dontDisableStatic = true; }
-)
-
+};
+  in self

@@ -1,24 +1,32 @@
-{ stdenv, fetchurl, gdal, wxGTK30, proj, libiodbc, lzma, jasper,
-  libharu, opencv, vigra, postgresql }:
+{ stdenv, fetchurl, gdal, wxGTK30, proj, libiodbc, lzma,
+  libharu, opencv, vigra, postgresql, Cocoa,
+  unixODBC , poppler, hdf4, hdf5, netcdf, sqlite, qhull, giflib }:
 
-stdenv.mkDerivation rec {
-  name = "saga-2.1.2";
+stdenv.mkDerivation {
+  pname = "saga";
+  version = "7.5.0";
 
-  buildInputs = [ gdal wxGTK30 proj libharu opencv vigra postgresql libiodbc lzma jasper ];
+  # See https://groups.google.com/forum/#!topic/nix-devel/h_vSzEJAPXs
+  # for why the have additional buildInputs on darwin
+  buildInputs = [ gdal wxGTK30 proj libharu opencv vigra postgresql libiodbc lzma
+                  qhull giflib ]
+                ++ stdenv.lib.optionals stdenv.isDarwin
+                  [ Cocoa unixODBC poppler hdf4.out hdf5 netcdf sqlite ];
 
   enableParallelBuilding = true;
 
+  CXXFLAGS = stdenv.lib.optionalString stdenv.cc.isClang "-std=c++11 -Wno-narrowing";
+
   src = fetchurl {
-    url = "http://sourceforge.net/projects/saga-gis/files/SAGA%20-%202.1/SAGA%202.1.2/saga_2.1.2.tar.gz";
-    sha256 = "51885446f717191210c4b13f0c35a1c5194c9d696d4f9b8f594bc1014809b2f5";
+    url = "https://sourceforge.net/projects/saga-gis/files/SAGA%20-%207/SAGA%20-%207.5.0/saga-7.5.0.tar.gz";
+    sha256 = "0s5195802xwlkb2w4i4vd9ys95d7fnzn5cnnixh1csaqc2x1qp6r";
   };
 
-  meta = {
-    description = "SAGA - System for Automated Geoscientific Analyses";
+  meta = with stdenv.lib; {
+    description = "System for Automated Geoscientific Analyses";
     homepage = http://www.saga-gis.org;
-    license = stdenv.lib.licenses.gpl2Plus;
-    maintainers = [ stdenv.lib.maintainers.michelk ];
-    platforms = with stdenv.lib.platforms; linux;
-    broken = true;
+    license = licenses.gpl2Plus;
+    maintainers = with maintainers; [ michelk mpickering ];
+    platforms = with platforms; unix;
   };
 }

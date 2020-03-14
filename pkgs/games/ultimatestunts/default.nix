@@ -1,14 +1,15 @@
-{stdenv, fetchurl, SDL, mesa, SDL_image, freealut, openal, libvorbis,
+{stdenv, fetchurl, SDL, libGLU, libGL, SDL_image, freealut, openal, libvorbis,
 pkgconfig}:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "ultimate-stunts-0.7.6.1";
   src = fetchurl {
     url = mirror://sourceforge/ultimatestunts/ultimatestunts-srcdata-0761.tar.gz;
     sha256 = "0rd565ml6l927gyq158klhni7myw8mgllhv0xl1fg9m8hlzssgrv";
   };
 
-  buildInputs = [ SDL mesa SDL_image freealut openal libvorbis pkgconfig ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ SDL libGLU libGL SDL_image freealut openal libvorbis ];
 
   postPatch = ''
     sed -e '1i#include <unistd.h>' -i $(find . -name '*.c' -o -name '*.cpp')

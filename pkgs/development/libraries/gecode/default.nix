@@ -1,21 +1,26 @@
-{ stdenv, fetchurl, perl }:
+{ stdenv, fetchFromGitHub, bison, flex, perl, gmp, mpfr, enableGist ? true, qtbase }:
 
 stdenv.mkDerivation rec {
-  name = "gecode-${version}";
-  version = "4.3.0";
+  pname = "gecode";
+  version = "6.2.0";
 
-  src = fetchurl {
-    url = "http://www.gecode.org/download/${name}.tar.gz";
-    sha256 = "18a1nd6sxqqh05hd9zwcgq9qhqrr6hi0nbzpwpay1flkv5gvg2d7";
+  src = fetchFromGitHub {
+    owner = "Gecode";
+    repo = "gecode";
+    rev = "release-${version}";
+    sha256 = "0b1cq0c810j1xr2x9y9996p894571sdxng5h74py17c6nr8c6dmk";
   };
 
-  buildInputs = [ perl ];
+  enableParallelBuilding = true;
+  nativeBuildInputs = [ bison flex ];
+  buildInputs = [ perl gmp mpfr ]
+    ++ stdenv.lib.optional enableGist qtbase;
 
   meta = with stdenv.lib; {
     license = licenses.mit;
-    homepage = http://www.gecode.org;
+    homepage = https://www.gecode.org;
     description = "Toolkit for developing constraint-based systems";
     platforms = platforms.all;
-    maintainers = [ maintainers.manveru ];
+    maintainers = [ ];
   };
 }

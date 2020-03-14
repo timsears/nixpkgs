@@ -1,29 +1,32 @@
 { stdenv, fetchurl, jre }:
 
 stdenv.mkDerivation rec {
-  name = "sbt-${version}";
-  version = "0.13.5";
+  pname = "sbt";
+  version = "1.3.8";
 
   src = fetchurl {
-    url = "http://repo.typesafe.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/${version}/sbt-launch.jar";
-    sha256 = "05zvb3j7xxswpz7fz2nwbl4dwfdf0cyx5xzjis5fyi2dbzmfdrmp";
+    urls = [
+      "https://piccolo.link/sbt-${version}.tgz"
+      "https://github.com/sbt/sbt/releases/download/v${version}/sbt-${version}.tgz"
+    ];
+    sha256 = "0pcrbpsvccyxdwc7f8h87rkn0kalar0iypnh3gygw4c0fm4yvci7";
   };
 
-  phases = [ "installPhase" ];
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cat > $out/bin/sbt << EOF
-    #! ${stdenv.shell}
-    ${jre}/bin/java \$SBT_OPTS -jar ${src} "\$@"
-    EOF
-    chmod +x $out/bin/sbt
+  patchPhase = ''
+    echo -java-home ${jre.home} >>conf/sbtopts
   '';
 
-  meta = {
-    homepage = http://www.scala-sbt.org/;
-    license = stdenv.lib.licenses.bsd3;
+  installPhase = ''
+    mkdir -p $out/share/sbt $out/bin
+    cp -ra . $out/share/sbt
+    ln -s $out/share/sbt/bin/sbt $out/bin/
+  '';
+
+  meta = with stdenv.lib; {
+    homepage = https://www.scala-sbt.org/;
+    license = licenses.bsd3;
     description = "A build tool for Scala, Java and more";
-    maintainers = [ stdenv.lib.maintainers.rickynils ];
+    maintainers = with maintainers; [ nequissimus ];
+    platforms = platforms.unix;
   };
 }

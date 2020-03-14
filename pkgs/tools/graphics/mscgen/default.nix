@@ -1,21 +1,22 @@
-{ stdenv, fetchurl, flex, bison, gd, libpng, freetype, zlib }:
+{ stdenv, fetchurl, flex, bison, gd, libpng, libjpeg, freetype, zlib, libwebp, runtimeShell }:
 
 let
   version = "0.20";
 in
 stdenv.mkDerivation {
-  name = "mscgen-${version}";
+  pname = "mscgen";
+  inherit version;
 
   src = fetchurl {
     url = "http://www.mcternan.me.uk/mscgen/software/mscgen-src-${version}.tar.gz";
     sha256 = "3c3481ae0599e1c2d30b7ed54ab45249127533ab2f20e768a0ae58d8551ddc23";
   };
 
-  buildInputs = [ flex bison gd libpng freetype zlib ];
+  buildInputs = [ flex bison gd libjpeg libpng freetype zlib libwebp ];
 
   doCheck = true;
   preCheck = ''
-    sed -i -e "s|#!/bin/bash|#!${stdenv.shell}|" test/renderercheck.sh
+    sed -i -e "s|#!/bin/bash|#!${runtimeShell}|" test/renderercheck.sh
   '';
 
   meta = {
@@ -36,7 +37,7 @@ stdenv.mkDerivation {
       printing.
     '';
 
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.simons ];
+    platforms = stdenv.lib.platforms.unix;
+    maintainers = [ stdenv.lib.maintainers.peti ];
   };
 }

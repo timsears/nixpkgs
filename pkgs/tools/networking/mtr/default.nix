@@ -1,49 +1,54 @@
-x@{builderDefsPackage, ncurses
-  , ...}:
-builderDefsPackage
-(a :  
-let 
-  helperArgNames = ["stdenv" "fetchurl" "builderDefsPackage"] ++ 
-    [];
+{ stdenv, lib, fetchFromGitHub, fetchpatch, autoreconfHook, pkgconfig
+, libcap, ncurses
+, withGtk ? false, gtk2 ? null }:
 
-  buildInputs = map (n: builtins.getAttr n x)
-    (builtins.attrNames (builtins.removeAttrs x helperArgNames));
-  sourceInfo = rec {
-    baseName="mtr";
-    version="0.85";
-    name="${baseName}-${version}";
-    url="ftp://ftp.bitwizard.nl/${baseName}/${name}.tar.gz";
-    hash="1jqrz8mil3lraaqgc87dyvx8d4bf3vq232pfx9mksxnkbphp4qvd";
+assert withGtk -> gtk2 != null;
+
+stdenv.mkDerivation rec {
+  pname = "mtr${lib.optionalString withGtk "-gui"}";
+  version = "0.93";
+
+  src = fetchFromGitHub {
+    owner  = "traviscross";
+    repo   = "mtr";
+    rev    = "v${version}";
+    sha256 = "0n0zr9k61w7a9psnzgp7xnc7ll1ic2xzcvqsbbbyndg3v9rff6bw";
   };
-in
-rec {
-  src = a.fetchurl {
-    url = sourceInfo.url;
-    sha256 = sourceInfo.hash;
-  };
+  
+  patches = [
+    # https://github.com/traviscross/mtr/pull/315
+    (fetchpatch {
+      url = https://github.com/traviscross/mtr/pull/315.patch?full_index=1;
+      sha256 = "18qcsj9058snc2qhq6v6gdbqhz021gi5fgw9h7vfczv45gf0qasa";
+    })
+  ];
 
-  inherit (sourceInfo) name version;
-  inherit buildInputs;
+  # we need this before autoreconfHook does its thing
+  postPatch = ''
+    echo ${version} > .tarball-version
+  '';
 
-  patches = [ ./edd425.patch ];
+  # and this after autoreconfHook has generated Makefile.in
+  preConfigure = ''
+    substituteInPlace Makefile.in \
+      --replace ' install-exec-hook' ""
+  '';
 
-  /* doConfigure should be removed if not needed */
-  phaseNames = ["doConfigure" "doPatch" "doMakeInstall"];
+  configureFlags = stdenv.lib.optional (!withGtk) "--without-gtk";
 
-  meta = {
+  nativeBuildInputs = [ autoreconfHook pkgconfig ];
+
+  buildInputs = [ ncurses ]
+    ++ stdenv.lib.optional withGtk gtk2
+    ++ stdenv.lib.optional stdenv.isLinux libcap;
+
+  enableParallelBuilding = true;
+
+  meta = with stdenv.lib; {
     description = "A network diagnostics tool";
-    maintainers = with a.lib.maintainers;
-    [
-      raskin
-    ];
-    platforms = with a.lib.platforms;
-      unix;
-    license = a.lib.licenses.gpl2;
+    homepage    = "https://www.bitwizard.nl/mtr/";
+    license     = licenses.gpl2;
+    maintainers = with maintainers; [ koral orivej raskin globin ];
+    platforms   = platforms.unix;
   };
-  passthru = {
-    updateInfo = {
-      downloadPage = "ftp://ftp.bitwizard.nl/mtr/";
-    };
-  };
-}) x
-
+}

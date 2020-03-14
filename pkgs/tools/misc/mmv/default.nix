@@ -1,19 +1,21 @@
 { stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
-  name = "mmv-${version}";
+  pname = "mmv";
   version = "1.01b";
 
   src = fetchurl {
-    url = "http://ftp.debian.org/debian/pool/main/m/mmv/mmv_${version}.orig.tar.gz";
+    url = "mirror://debian/pool/main/m/mmv/mmv_${version}.orig.tar.gz";
     sha256 = "0399c027ea1e51fd607266c1e33573866d4db89f64a74be8b4a1d2d1ff1fdeef";
   };
+
+  hardeningDisable = [ "format" ];
 
   patches = [
     # Use Debian patched version, as upstream is no longer maintained and it
     # contains a _lot_ of fixes.
     (fetchurl {
-      url = "http://ftp.debian.org/debian/pool/main/m/mmv/mmv_${version}-15.diff.gz";
+      url = "mirror://debian/pool/main/m/mmv/mmv_${version}-15.diff.gz";
       sha256 = "9ad3e3d47510f816b4a18bae04ea75913588eec92248182f85dd09bc5ad2df13";
     })
   ];
@@ -39,8 +41,9 @@ stdenv.mkDerivation rec {
   '';
 
   meta = {
-    homepage = "http://linux.maruhn.com/sec/mmv.html";
+    homepage = http://linux.maruhn.com/sec/mmv.html;
     description = "Utility for wildcard renaming, copying, etc";
     license = stdenv.lib.licenses.gpl2;
+    platforms = stdenv.lib.platforms.linux;
   };
 }

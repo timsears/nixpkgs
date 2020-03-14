@@ -15,7 +15,7 @@ let
     slides.intro = 3DOVID:addons/3dovideo/intro/intro.duk
   '' + concatMapStrings makeSpin (range 0 24));
 
-  helper = with haskellPackages; cabal.mkDerivation (self: {
+  helper = with haskellPackages; mkDerivation {
     pname = "uqm3donix";
     version = "0.1.0.0";
 
@@ -27,14 +27,11 @@ let
     isLibrary = false;
     isExecutable = true;
 
-    buildDepends = [ binary filepath tar ];
+    buildDepends = [ base binary bytestring filepath tar ];
 
-    meta = {
-      description = "Extract video files from a Star Control II 3DO image";
-      license = self.stdenv.lib.licenses.bsd3;
-      platforms = self.ghc.meta.platforms;
-    };
-  });
+    description = "Extract video files from a Star Control II 3DO image";
+    license = stdenv.lib.licenses.bsd3;
+  };
 
 in stdenv.mkDerivation {
   name = "uqm-3dovideo";
@@ -44,11 +41,12 @@ in stdenv.mkDerivation {
     sha256 = "044h0cl69r0kc43vk4n0akk0prwzb7inq324h5yfqb38sd4zkds1";
     message = ''
       In order to get the intro and ending sequences from the 3DO version, you
-      need to have the original 3DO Star Control II CD. Create an image from the
-      CD and use uqm3donix* to extract a tarball with the videos from it. The
-      reason for this is because the 3DO uses its own proprietary disk format.
+      need to have the original 3DO Star Control II CD. Create an image from
+      the CD and use uqm3donix* to extract a tarball with the videos from it.
+      The reason for this is because the 3DO uses its own proprietary disk
+      format.
 
-      Save the file as videos.tar and use "nix-prefetch-url file://${name}" to
+      Save the file as videos.tar and use "nix-prefetch-url file://\$PWD/${name}" to
       add it to the Nix store.
 
       [*] ${helper}/bin/uqm3donix CDIMAGE ${name}

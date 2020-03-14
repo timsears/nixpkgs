@@ -1,5 +1,5 @@
-{ fetchurl, stdenv, pkgconfig, glib, gstreamer, gst_plugins_base
-, libmad, libdvdread, libmpeg2, libcdio, a52dec, x264, orc }:
+{ fetchurl, stdenv, pkgconfig, glib, gstreamer, gst-plugins-base
+, libmad, libdvdread, a52dec, x264, orc, lame, libintl }:
 
 stdenv.mkDerivation rec {
   name = "gst-plugins-ugly-0.10.19";
@@ -13,17 +13,17 @@ stdenv.mkDerivation rec {
   };
 
   buildInputs =
-    [ pkgconfig glib gstreamer gst_plugins_base libmad libdvdread a52dec x264 orc ];
+    [ pkgconfig glib gstreamer gst-plugins-base libmad libdvdread a52dec x264 orc lame libintl ];
 
   enableParallelBuilding = true;
 
   meta = {
-    homepage = http://gstreamer.freedesktop.org;
+    homepage = https://gstreamer.freedesktop.org;
 
     description = "‘Ugly’ (potentially patent-encumbered) plug-ins for GStreamer";
 
     maintainers = [stdenv.lib.maintainers.raskin];
-    platforms = stdenv.lib.platforms.linux;
+    platforms = stdenv.lib.platforms.unix;
 
     license = stdenv.lib.licenses.lgpl2Plus;
   };

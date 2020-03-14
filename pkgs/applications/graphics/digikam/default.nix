@@ -1,32 +1,132 @@
-{ stdenv, fetchurl, cmake, qt4, kdelibs, automoc4, phonon, qimageblitz, qca2, eigen,
-lcms, jasper, libgphoto2, kdepimlibs, gettext, soprano, libjpeg, libtiff,
-liblqr1, lensfun, pkgconfig, qjson, libkdcraw, opencv, libkexiv2, libkipi, boost,
-shared_desktop_ontologies, marble, mysql }:
+{ mkDerivation, lib, fetchFromGitHub, cmake, doxygen, extra-cmake-modules, wrapGAppsHook
 
-stdenv.mkDerivation rec {
-  name = "digikam-3.5.0";
+# For `digitaglinktree`
+, perl, sqlite
 
-  src = fetchurl {
-    url = "http://download.kde.org/stable/digikam/${name}.tar.bz2";
-    sha256 = "0an4awlg0b8pwl6v8p5zfl3aghgnxck2pc322cyk6i6yznj2mgap";
+, qtbase
+, qtxmlpatterns
+, qtsvg
+, qtwebengine
+
+, akonadi-contacts
+, kcalendarcore
+, kconfigwidgets
+, kcoreaddons
+, kdoctools
+, kfilemetadata
+, knotifications
+, knotifyconfig
+, ktextwidgets
+, kwidgetsaddons
+, kxmlgui
+
+, bison
+, boost
+, eigen
+, exiv2
+, ffmpeg
+, flex
+, jasper ? null, withJpeg2k ? false  # disable JPEG2000 support, jasper has unfixed CVE
+, lcms2
+, lensfun
+, libgphoto2
+, libkipi
+, libksane
+, liblqr1
+, libqtav
+, libusb1
+, marble
+, libGL
+, libGLU
+, opencv3
+, pcre
+, threadweaver
+
+# For panorama and focus stacking
+, enblend-enfuse
+, hugin
+, gnumake
+
+, oxygen
+}:
+
+mkDerivation rec {
+  pname   = "digikam";
+  version = "6.2.0";
+
+  src = fetchFromGitHub {
+    owner  = "KDE";
+    repo   = "digikam";
+    rev    = "v${version}";
+    sha256 = "1l1nb1nwicmip2jxhn5gzr7h60igvns0zs3kzp36r6qf4wvg3v2z";
   };
 
-  nativeBuildInputs = [ cmake automoc4 pkgconfig ];
+  nativeBuildInputs = [ cmake doxygen extra-cmake-modules kdoctools wrapGAppsHook ];
 
-  buildInputs = [ qt4 kdelibs phonon qimageblitz qca2 eigen lcms libjpeg libtiff
-    jasper libgphoto2 kdepimlibs gettext soprano liblqr1 lensfun qjson libkdcraw
-    opencv libkexiv2 libkipi boost shared_desktop_ontologies marble mysql ];
+  buildInputs = [
+    bison
+    boost
+    eigen
+    exiv2
+    ffmpeg
+    flex
+    lcms2
+    lensfun
+    libgphoto2
+    libkipi
+    libksane
+    liblqr1
+    libqtav
+    libusb1
+    libGL
+    libGLU
+    opencv3
+    pcre
 
-  # Make digikam find some FindXXXX.cmake
-  KDEDIRS="${marble}:${qjson}";
+    qtbase
+    qtxmlpatterns
+    qtsvg
+    qtwebengine
+
+    akonadi-contacts
+    kcalendarcore
+    kconfigwidgets
+    kcoreaddons
+    kfilemetadata
+    knotifications
+    knotifyconfig
+    ktextwidgets
+    kwidgetsaddons
+    kxmlgui
+
+    marble
+    oxygen
+    threadweaver
+  ]
+  ++ lib.optionals withJpeg2k [ jasper ];
 
   enableParallelBuilding = true;
 
-  meta = {
+  cmakeFlags = [
+    "-DENABLE_MYSQLSUPPORT=1"
+    "-DENABLE_INTERNALMYSQL=1"
+    "-DENABLE_MEDIAPLAYER=1"
+    "-DENABLE_QWEBENGINE=on"
+  ];
+
+  preFixup = ''
+    gappsWrapperArgs+=(--prefix PATH : ${lib.makeBinPath [ gnumake hugin enblend-enfuse ]})
+    gappsWrapperArgs+=(--suffix DK_PLUGIN_PATH : ${placeholder "out"}/${qtbase.qtPluginPrefix}/${pname})
+    substituteInPlace $out/bin/digitaglinktree \
+      --replace "/usr/bin/perl" "${perl}/bin/perl" \
+      --replace "/usr/bin/sqlite3" "${sqlite}/bin/sqlite3"
+  '';
+
+  meta = with lib; {
     description = "Photo Management Program";
-    license = "GPL";
-    homepage = http://www.digikam.org;
-    maintainers = with stdenv.lib.maintainers; [ viric urkud ];
-    inherit (kdelibs.meta) platforms;
+    license = licenses.gpl2;
+    homepage = https://www.digikam.org;
+    maintainers = with maintainers; [ the-kenny ];
+    platforms = platforms.linux;
   };
 }

@@ -1,9 +1,10 @@
 { stdenv, fetchurl, pkgconfig, libX11, libXft, libXinerama, libXpm }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "dzen2-0.9.5";
 
-  buildInputs = [ pkgconfig libX11 libXft libXinerama libXpm ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ libX11 libXft libXinerama libXpm ];
 
   src = fetchurl {
     url = "https://github.com/robm/dzen/tarball/master/dzen2-0.9.5git.tar.gz";

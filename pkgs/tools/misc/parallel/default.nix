@@ -1,28 +1,25 @@
-{ fetchurl, stdenv, perl }:
+{ fetchurl, stdenv, perl, makeWrapper, procps }:
 
 stdenv.mkDerivation rec {
-  name = "parallel-20140922";
+  name = "parallel-20200222";
 
   src = fetchurl {
     url = "mirror://gnu/parallel/${name}.tar.bz2";
-    sha256 = "0hxx1h2ba6y2y1vy02r2hzndid2b469hj08f0vlmpjqw5g4f52a5";
+    sha256 = "077b72h2d191bmsb78fmzcynxj5mi5v3axmwwxz1d1q8xhv756r6";
   };
 
-  patchPhase =
-    '' sed -i "src/parallel" -e's|/usr/bin/perl|${perl}/bin/perl|g'
-    '';
+  nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [ perl procps ];
 
-  preBuild =
-    # The `sem' program wants to write to `~/.parallel'.
-    '' export HOME="$PWD"
-    '';
+  postInstall = ''
+    wrapProgram $out/bin/parallel \
+      --prefix PATH : "${stdenv.lib.makeBinPath [ procps perl ]}"
+  '';
 
-  buildInputs = [ perl ];
   doCheck = true;
 
   meta = with stdenv.lib; {
     description = "Shell tool for executing jobs in parallel";
-
     longDescription =
       '' GNU Parallel is a shell tool for executing jobs in parallel.  A job
          is typically a single command or a small script that has to be run
@@ -40,12 +37,9 @@ stdenv.mkDerivation rec {
          it possible to use output from GNU Parallel as input for other
          programs.
       '';
-
-    homepage = http://www.gnu.org/software/parallel/;
-
+    homepage = "https://www.gnu.org/software/parallel/";
     license = licenses.gpl3Plus;
-
     platforms = platforms.all;
-    maintainers = with maintainers; [ pSub ];
+    maintainers = with maintainers; [ pSub vrthra ];
   };
 }

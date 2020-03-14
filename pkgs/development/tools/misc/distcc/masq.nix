@@ -36,6 +36,9 @@ stdenv.mkDerivation {
         ln -sf $bbin/*-as $out/bin/as
       done
     fi
-    
   '';
+
+  meta = {
+    platforms = stdenv.lib.platforms.linux;
+  };
 }

@@ -1,32 +1,57 @@
-{ stdenv, fetchurl, gfortran, openblas }:
+{ stdenv, fetchFromGitHub, cmake
+, gfortran, openblas, eigen }:
 
-let version = "3.1.5";
+with stdenv.lib;
+
+let
+  version = "3.7.0";
 in
 stdenv.mkDerivation {
-  name = "arpack-${version}";
-  src = fetchurl {
-    url = "http://forge.scilab.org/index.php/p/arpack-ng/downloads/get/arpack-ng_${version}.tar.gz";
-    sha256 = "05fmg4m0yri47rzgsl2mnr1qbzrs7qyd557p3v9wwxxw0rwcwsd2";
+  pname = "arpack";
+  inherit version;
+
+  src = fetchFromGitHub {
+    owner = "opencollab";
+    repo = "arpack-ng";
+    rev = version;
+    sha256 = "1x7a1dj3dg43nlpvjlh8jzzbadjyr3mbias6f0256qkmgdyk4izr";
   };
 
-  buildInputs = [ gfortran ];
-  propagatedBuildInputs = [ openblas ];
+  nativeBuildInputs = [ cmake ];
+  buildInputs = [ gfortran openblas eigen ];
 
-  preConfigure = ''
-    substituteInPlace arpack.pc.in \
-      --replace "@BLAS_LIBS@" "-L${openblas}/lib @BLAS_LIBS@"
+  doCheck = true;
+
+  BLAS_LIBS = "-L${openblas}/lib -lopenblas";
+
+  cmakeFlags = [
+    "-DBUILD_SHARED_LIBS=ON"
+    "-DINTERFACE64=${optionalString openblas.blas64 "1"}"
+  ];
+
+  preCheck = if stdenv.isDarwin then ''
+    export DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH''${DYLD_LIBRARY_PATH:+:}`pwd`/lib
+  '' else ''
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH''${LD_LIBRARY_PATH:+:}`pwd`/lib
+  '' + ''
+    # Prevent tests from using all cores
+    export OMP_NUM_THREADS=2
   '';
 
-  # Auto-detection fails because gfortran brings in BLAS by default
-  configureFlags="--with-blas=-lopenblas --with-lapack=-lopenblas";
+  postInstall = ''
+    mkdir -p $out/lib/pkgconfig
+    cp arpack.pc $out/lib/pkgconfig/
+  '';
+
 
   meta = {
-    homepage = "http://forge.scilab.org/index.php/p/arpack-ng/";
-    description = "A collection of Fortran77 subroutines to solve large scale eigenvalue problems";
-    # Looks like OpenBLAS is not that easy to build
-    # there is a sgemm_itcopy undefined reference on 32-bit, for example
-    platforms = ["x86_64-linux"];
+    homepage = https://github.com/opencollab/arpack-ng;
+    description = ''
+      A collection of Fortran77 subroutines to solve large scale eigenvalue
+      problems.
+    '';
     license = stdenv.lib.licenses.bsd3;
     maintainers = [ stdenv.lib.maintainers.ttuegel ];
+    platforms = stdenv.lib.platforms.unix;
   };
 }

@@ -9,20 +9,22 @@
 
 # known impurity: test cases seem to bu using /tmp/storeBackup.lock ..
 
-let dummyMount = writeScriptBin "mount" "#!/bin/sh";
+let dummyMount = writeScriptBin "mount" "#!${stdenv.shell}";
 in
 
-stdenv.mkDerivation {
+stdenv.mkDerivation rec {
 
-  name = "store-backup-3.4";
+  version = "3.5";
+
+  pname = "store-backup";
 
   enableParallelBuilding = true;
 
   buildInputs = [ perl makeWrapper ];
 
   src = fetchurl {
-    url = http://download.savannah.gnu.org/releases/storebackup/storeBackup-3.4.tar.bz2;
-    sha256 = "101k3nhyfjj8y8hg0v0xqxsr4vlcfkmlczgbihvlv722fb7n5gi3";
+    url = "https://download.savannah.gnu.org/releases/storebackup/storeBackup-${version}.tar.bz2";
+    sha256 = "0y4gzssc93x6y93mjsxm5b5cdh68d7ffa43jf6np7s7c99xxxz78";
   };
 
   installPhase = ''
@@ -38,8 +40,8 @@ stdenv.mkDerivation {
 
     for p in $out/bin/*
       do wrapProgram "$p" \
-      --prefix PERL5LIB ":" "${perlPackages.DBFile}/lib/perl5/site_perl" \
-      --prefix PATH ":" "${which}/bin:${bzip2}/bin"
+      --prefix PERL5LIB ":" "${perlPackages.DBFile}/${perlPackages.perl.libPrefix}" \
+      --prefix PATH ":" "${stdenv.lib.makeBinPath [ which bzip2 ]}"
     done
 
     patchShebangs $out
@@ -100,8 +102,8 @@ stdenv.mkDerivation {
   '';
 
   meta = {
-    description = "Storebackup is a backup suite that stores files on other disks";
-    homepage = http://savannah.nongnu.org/projects/storebackup;
+    description = "A backup suite that stores files on other disks";
+    homepage = https://savannah.nongnu.org/projects/storebackup;
     license = stdenv.lib.licenses.gpl3Plus;
     maintainers = [stdenv.lib.maintainers.marcweber];
     platforms = stdenv.lib.platforms.linux;

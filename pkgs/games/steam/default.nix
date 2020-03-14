@@ -1,22 +1,25 @@
-{stdenv, fetchurl}:
+{ pkgs, newScope }:
 
-stdenv.mkDerivation {
-  name = "steam-1.0.0.48";
+let
+  callPackage = newScope self;
 
-  src = fetchurl {
-    url = http://repo.steampowered.com/steam/pool/steam/s/steam/steam_1.0.0.48.tar.gz;
-    sha256 = "08y5qf75ssk4fnazyv2yz1c5zs7gjiwigaibv8yz1gbr290r0b52";
+  self = rec {
+    steamArch = if pkgs.stdenv.hostPlatform.system == "x86_64-linux" then "amd64"
+                else if pkgs.stdenv.hostPlatform.system == "i686-linux" then "i386"
+                else throw "Unsupported platform: ${pkgs.stdenv.hostPlatform.system}";
+
+    steam-runtime = callPackage ./runtime.nix { };
+    steam-runtime-wrapped = callPackage ./runtime-wrapped.nix { };
+    steam = callPackage ./steam.nix { };
+    steam-fonts = callPackage ./fonts.nix { };
+    steam-chrootenv = callPackage ./chrootenv.nix {
+      glxinfo-i686 = pkgs.pkgsi686Linux.glxinfo;
+      steam-runtime-wrapped-i686 =
+        if steamArch == "amd64"
+        then pkgs.pkgsi686Linux.steamPackages.steam-runtime-wrapped
+        else null;
+    };
+    steamcmd = callPackage ./steamcmd.nix { };
   };
 
-  installPhase = ''
-    make DESTDIR=$out install
-    mv $out/usr/* $out #*/
-    rmdir $out/usr
-  '';
-
-  meta = {
-    description = "A digital distribution platform";
-    homepage = http://store.steampowered.com/;
-    license = stdenv.lib.licenses.unfree;
-  };
-}
+in self

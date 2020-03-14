@@ -1,6 +1,6 @@
 { stdenv, fetchurl, unzip }:
 
-let 
+let
 
   src = fetchurl {
     url = http://www.oasis-open.org/docbook/sgml/4.1/docbk41.zip;
@@ -17,9 +17,9 @@ in
 stdenv.mkDerivation {
   name = "docbook-sgml-4.1";
 
-  unpackPhase = "true";
+  dontUnpack = true;
 
-  buildInputs = [ unzip ];
+  nativeBuildInputs = [ unzip ];
 
   installPhase =
     ''
@@ -30,4 +30,8 @@ stdenv.mkDerivation {
       unzip ${isoents}
       sed -e "s/iso-/ISO/" -e "s/.gml//" -i docbook.cat
     '';
+
+  meta = {
+    platforms = stdenv.lib.platforms.unix;
+  };
 }

@@ -1,20 +1,41 @@
-{ stdenv, fetchurl, kdelibs, grantlee, qca2, libofx, gettext }:
+{ mkDerivation, lib, fetchpatch, fetchurl,
+  cmake, extra-cmake-modules, qtwebengine, qtscript, grantlee,
+  kxmlgui, kwallet, kparts, kdoctools, kjobwidgets, kdesignerplugin,
+  kiconthemes, knewstuff, sqlcipher, qca-qt5, kactivities, karchive,
+  kguiaddons, knotifyconfig, krunner, kwindowsystem, libofx, shared-mime-info
+}:
 
-stdenv.mkDerivation rec {
-  name = "skrooge-1.3.2";
+mkDerivation rec {
+  pname = "skrooge";
+  version = "2.21.1";
 
   src = fetchurl {
-    url = "http://skrooge.org/files/${name}.tar.bz2";
-    sha256 = "18j36yamxzfwpnnnjiach22q9088c2nlcilzh2p24gjhgnnd0v6r";
+    url = "http://download.kde.org/stable/skrooge/${pname}-${version}.tar.xz";
+    sha256 = "0lv953i7cybzbxr5gx6g4libdcjj086jf152mwrwvx1avrpjavb8";
   };
 
-  buildInputs = [ kdelibs grantlee qca2 libofx ];
+  nativeBuildInputs = [
+    cmake extra-cmake-modules kdoctools shared-mime-info
+  ];
 
-  nativeBuildInputs = [ gettext ];
+  buildInputs = [
+    qtwebengine qtscript grantlee kxmlgui kwallet kparts
+    kjobwidgets kdesignerplugin kiconthemes knewstuff sqlcipher qca-qt5
+    kactivities karchive kguiaddons knotifyconfig krunner kwindowsystem libofx
+  ];
 
-  meta = {
-    inherit (kdelibs.meta) platforms;
-    description = "A personal finance manager for KDE";
-    maintainers = [ stdenv.lib.maintainers.urkud ];
+  # SKG_DESIGNER must be used to generate the needed library for QtDesigner.
+  # This is needed ONLY for developers. So NOT NEEDED for end user.
+  # Source: https://forum.kde.org/viewtopic.php?f=210&t=143375#p393675
+  cmakeFlags = [
+    "-DSKG_DESIGNER=OFF"
+    "-DSKG_WEBENGINE=ON"
+  ];
+
+  meta = with lib; {
+    description = "A personal finances manager, powered by KDE";
+    license = with licenses; [ gpl3 ];
+    maintainers = with maintainers; [ joko ];
+    homepage = https://skrooge.org/;
   };
 }

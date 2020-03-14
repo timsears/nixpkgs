@@ -1,29 +1,30 @@
-{ stdenv, fetchurl, SDL, ftgl, pkgconfig, libpng, libjpeg, pcre
-, SDL_image, glew, mesa, boost, glm
+{ stdenv, fetchurl, SDL2, ftgl, pkgconfig, libpng, libjpeg, pcre
+, SDL2_image, freetype, glew, libGLU, libGL, boost, glm
 }:
 
 stdenv.mkDerivation rec {
-  version = "0.42";
-  name = "gource-${version}";
+  version = "0.51";
+  pname = "gource";
 
   src = fetchurl {
-    url = "https://github.com/acaudwell/Gource/releases/download/${name}/${name}.tar.gz";
-    sha256 = "08ab57z44y8b5wxg1193j6hiy50njbpi6dwafjh6nb0apcq8ziz5";
+    url = "https://github.com/acaudwell/Gource/releases/download/${pname}-${version}/${pname}-${version}.tar.gz";
+    sha256 = "16p7b1x4r0915w883lp374jcdqqja37fnb7m8vnsfnl2n64gi8qr";
   };
 
+  nativeBuildInputs = [ pkgconfig ];
   buildInputs = [
-    glew SDL ftgl pkgconfig libpng libjpeg pcre SDL_image mesa
-    boost boost.lib glm
+    glew SDL2 ftgl libpng libjpeg pcre SDL2_image libGLU libGL
+    boost glm freetype
   ];
 
-  configureFlags = "--with-boost-libdir=${boost.lib}/lib";
+  configureFlags = [ "--with-boost-libdir=${boost.out}/lib" ];
 
-  NIX_CFLAGS_COMPILE = "-fpermissive"; # fix build with newer gcc versions
+  enableParallelBuilding = true;
 
-  meta = {
-    homepage = "http://code.google.com/p/gource/";
-    description = "software version control visualization tool";
-    license = stdenv.lib.licenses.gpl3Plus;
+  meta = with stdenv.lib; {
+    homepage = https://gource.io/;
+    description = "A Software version control visualization tool";
+    license = licenses.gpl3Plus;
     longDescription = ''
       Software projects are displayed by Gource as an animated tree with
       the root directory of the project at its centre. Directories
@@ -34,6 +35,7 @@ stdenv.mkDerivation rec {
       Mercurial and Bazaar and SVN. Gource can also parse logs produced
       by several third party tools for CVS repositories.
     '';
-    platforms = stdenv.lib.platforms.linux;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ pSub ];
   };
 }

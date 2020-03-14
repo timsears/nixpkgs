@@ -6,8 +6,11 @@ source $stdenv/setup
 
 header "exporting $url (rev $rev) into $out"
 
-$fetcher --builder --url "$url" --out "$out" --rev "$rev" \
+$SHELL $fetcher --builder --url "$url" --out "$out" --rev "$rev" \
   ${leaveDotGit:+--leave-dotGit} \
-  ${fetchSubmodules:+--fetch-submodules}
+  ${deepClone:+--deepClone} \
+  ${fetchSubmodules:+--fetch-submodules} \
+  ${branchName:+--branch-name "$branchName"}
 
+runHook postFetch
 stopNest

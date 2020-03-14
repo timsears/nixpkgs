@@ -1,21 +1,30 @@
-{ stdenv, fetchurl, openssl }:
+{ stdenv, fetchurl, openssl, zlib }:
 
 stdenv.mkDerivation rec {
-  name = "siege-3.0.6";
+  name = "siege-4.0.5";
 
   src = fetchurl {
-    url = "http://www.joedog.org/pub/siege/${name}.tar.gz";
-    sha256 = "0nwcj2s804z7yd20pa0cl010m0qgf22a02305i9jwxynwdj9kdvq";
+    url = "http://download.joedog.org/siege/${name}.tar.gz";
+    sha256 = "0c82h0idkvfbzspy7h6w97wyk671694nl1ir94zhzn54mw0p0jrv";
   };
 
   NIX_LDFLAGS = stdenv.lib.optionalString stdenv.isLinux "-lgcc_s";
 
-  configureFlags = [ "--with-ssl=${openssl}" ];
+  buildInputs = [ openssl zlib ];
+
+  prePatch = ''
+    sed -i -e 's/u_int32_t/uint32_t/g' -e '1i#include <stdint.h>' src/hash.c
+  '';
+
+  configureFlags = [
+    "--with-ssl=${openssl.dev}"
+    "--with-zlib=${zlib.dev}"
+  ];
 
   meta = with stdenv.lib; {
     description = "HTTP load tester";
     maintainers = with maintainers; [ ocharles raskin ];
-    platforms = platforms.linux;
+    platforms = platforms.unix;
     license = licenses.gpl2Plus;
   };
 }

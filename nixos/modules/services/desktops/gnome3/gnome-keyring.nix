@@ -4,9 +4,6 @@
 
 with lib;
 
-let
-  gnome3 = config.environment.gnome3.packageSet;
-in
 {
 
   ###### interface
@@ -21,7 +18,7 @@ in
         description = ''
           Whether to enable GNOME Keyring daemon, a service designed to
           take care of the user's security credentials,
-          such as user names and passwordsa search engine.
+          such as user names and passwords.
         '';
       };
 
@@ -34,9 +31,16 @@ in
 
   config = mkIf config.services.gnome3.gnome-keyring.enable {
 
-    environment.systemPackages = [ gnome3.gnome_keyring ];
+    environment.systemPackages = [ pkgs.gnome3.gnome-keyring ];
 
-    services.dbus.packages = [ gnome3.gnome_keyring ];
+    services.dbus.packages = [ pkgs.gnome3.gnome-keyring pkgs.gcr ];
+
+    security.pam.services.login.enableGnomeKeyring = true;
+
+    security.wrappers.gnome-keyring-daemon = {
+      source = "${pkgs.gnome3.gnome-keyring}/bin/gnome-keyring-daemon";
+      capabilities = "cap_ipc_lock=ep";
+    };
 
   };
 

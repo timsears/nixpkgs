@@ -1,29 +1,51 @@
-{ stdenv, fetchFromGitHub, pkgconfig, libtoxcore, qt5, openal, opencv }:
+{ stdenv, mkDerivation, lib, fetchFromGitHub, cmake, pkgconfig
+, libtoxcore
+, libpthreadstubs, libXdmcp, libXScrnSaver
+, qtbase, qtsvg, qttools, qttranslations
+, ffmpeg, filter-audio, libexif, libsodium, libopus
+, libvpx, openal, pcre, qrencode, sqlcipher
+, AVFoundation ? null }:
 
+let
+  version = "1.16.3";
+  rev = "v${version}";
 
-stdenv.mkDerivation rec {
-  name = "qtox-dev-20140918";
+in mkDerivation {
+  pname = "qtox";
+  inherit version;
 
   src = fetchFromGitHub {
-    owner = "tux3";
-    repo = "qTox";
-    rev = "f06ec65bca";
-    sha256 = "0r7qc444bgsxawyya5nw3xk1c50b90307lcwazs8mn35h4snr97m";
+    owner  = "qTox";
+    repo   = "qTox";
+    sha256 = "0qd4nvbrjnnfnk8ghsxq3cd1n1qf1ck5zg6ib11ij2pg03s146pa";
+    inherit rev;
   };
 
-  buildInputs = [ pkgconfig libtoxcore qt5 openal opencv ];
+  buildInputs = [
+    libtoxcore
+    libpthreadstubs libXdmcp libXScrnSaver
+    qtbase qtsvg qttranslations
+    ffmpeg filter-audio libexif libopus libsodium
+    libvpx openal pcre qrencode sqlcipher
+  ] ++ lib.optionals stdenv.isDarwin [ AVFoundation] ;
 
-  configurePhase = "qmake";
+  nativeBuildInputs = [ cmake pkgconfig qttools ];
 
-  installPhase = ''
-    ensureDir $out/bin
-    cp qtox $out/bin
-  '';
+  enableParallelBuilding = true;
 
-  meta = with stdenv.lib; {
-    description = "QT Tox client";
-    license = licenses.gpl3;
-    maintainers = with stdenv.lib.maintainers; [ viric ];
-    platforms = stdenv.lib.platforms.all;
+  cmakeFlags = [
+    "-DGIT_DESCRIBE=${rev}"
+    "-DENABLE_STATUSNOTIFIER=False"
+    "-DENABLE_GTK_SYSTRAY=False"
+    "-DENABLE_APPINDICATOR=False"
+    "-DTIMESTAMP=1"
+  ];
+
+  meta = with lib; {
+    description = "Qt Tox client";
+    homepage    = https://tox.chat;
+    license     = licenses.gpl3;
+    maintainers = with maintainers; [ akaWolf peterhoeg ];
+    platforms   = platforms.all;
   };
 }

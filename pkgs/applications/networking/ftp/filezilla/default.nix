@@ -1,33 +1,64 @@
-{ stdenv, fetchurl, dbus, gnutls, wxGTK28, libidn, tinyxml, gettext
-, pkgconfig, xdg_utils, gtk2, sqlite }:
+{ stdenv
+, fetchurl
 
-let version = "3.8.1"; in
-stdenv.mkDerivation {
-  name = "filezilla-${version}";
+, dbus
+, gettext
+, gnutls
+, gtk2
+, libfilezilla
+, libidn
+, nettle
+, pkgconfig
+, pugixml
+, sqlite
+, tinyxml
+, wxGTK30
+, xdg_utils
+}:
+
+stdenv.mkDerivation rec {
+  pname = "filezilla";
+  version = "3.46.3";
 
   src = fetchurl {
-    url = "mirror://sourceforge/project/filezilla/FileZilla_Client/${version}/FileZilla_${version}_src.tar.bz2";
-    sha256 = "0kqyz8yb15kbzx02l3riswg95prbp402k4672nwxrzs35049rg36";
+    url = "https://download.filezilla-project.org/client/FileZilla_${version}_src.tar.bz2";
+    sha256 = "15bkg9qs07h4pzkxba1gymp8f264dk0zrzd9brx48fcwm7qbzigi";
   };
 
   configureFlags = [
     "--disable-manualupdatecheck"
+    "--disable-autoupdatecheck"
   ];
 
+  nativeBuildInputs = [ pkgconfig ];
   buildInputs = [
-    dbus gnutls wxGTK28 libidn tinyxml gettext pkgconfig xdg_utils gtk2 sqlite
+    dbus
+    gettext
+    gnutls
+    gtk2
+    libfilezilla
+    libidn
+    nettle
+    pugixml
+    sqlite
+    tinyxml
+    wxGTK30
+    xdg_utils
   ];
+
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
-    homepage = "http://filezilla-project.org/";
+    homepage = "https://filezilla-project.org/";
     description = "Graphical FTP, FTPS and SFTP client";
-    license = licenses.gpl2;
     longDescription = ''
       FileZilla Client is a free, open source FTP client. It supports
       FTP, SFTP, and FTPS (FTP over SSL/TLS). The client is available
-      under many platforms, binaries for Windows, Linux and Mac OS X are
+      under many platforms, binaries for Windows, Linux and macOS are
       provided.
     '';
+    license = licenses.gpl2;
     platforms = platforms.linux;
+    maintainers = with maintainers; [ pSub ];
   };
 }

@@ -1,11 +1,12 @@
 { stdenv, fetchurl, readline }:
 
 stdenv.mkDerivation rec {
-  name = "rlwrap-0.41";
+  pname = "rlwrap";
+  version = "0.43";
 
   src = fetchurl {
-    url = "http://utopia.knoware.nl/~hlub/uck/rlwrap/${name}.tar.gz";
-    sha256 = "02n22yy9wgz1cj59is17j0my17y7146ghkng381yxx4dnr3pcj9l";
+    url = "https://github.com/hanslub42/rlwrap/releases/download/v${version}/${pname}-${version}.tar.gz";
+    sha256 = "0bzb7ylk2770iv59v2d0gypb21y2xn87m299s9rqm6rdi2vx11lf";
   };
 
   buildInputs = [ readline ];
@@ -17,9 +18,9 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Readline wrapper for console programs";
-    homepage = http://utopia.knoware.nl/~hlub/uck/rlwrap/;
+    homepage = https://github.com/hanslub42/rlwrap;
     license = stdenv.lib.licenses.gpl2Plus;
-    platform = stdenv.lib.platforms.unix;
-    maintainers = with stdenv.lib.maintainers; [ fuuzetsu ];
+    platforms = stdenv.lib.platforms.unix;
+    maintainers = with stdenv.lib.maintainers; [ ];
   };
 }

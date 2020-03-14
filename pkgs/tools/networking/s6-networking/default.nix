@@ -1,63 +1,67 @@
-{ stdenv
-, execline
-, fetchurl
-, s6Dns
-, skalibs
+{ stdenv, skawarePackages
+
+# Whether to build the TLS/SSL tools and what library to use
+# acceptable values: "libressl", false
+# TODO: add bearssl
+, sslSupport ? "libressl" , libressl
 }:
 
+with skawarePackages;
 let
-
-  version = "0.1.0.0";
-
-in stdenv.mkDerivation rec {
-
-  name = "s6-networking-${version}";
-
-  src = fetchurl {
-    url = "http://www.skarnet.org/software/s6-networking/${name}.tar.gz";
-    sha256 = "1np9m2j1i2450mbcjvpbb56kv3wc2fbyvmv2a039q61j2lk6vjz7";
+  inherit (stdenv) lib;
+  sslSupportEnabled = sslSupport != false;
+  sslLibs = {
+    libressl = libressl;
   };
 
-  buildInputs = [ skalibs s6Dns execline ];
+in
+assert sslSupportEnabled -> sslLibs ? ${sslSupport};
 
-  sourceRoot = "net/${name}";
 
-  configurePhase = ''
-    pushd conf-compile
+buildPackage {
+  pname = "s6-networking";
+  version = "2.3.1.1";
+  sha256 = "127i7ig5wdgjbkjf0py0g96llc6cbxij22ns2j7bwa95figinhcx";
 
-    printf "$out/bin"           > conf-install-command
-    printf "$out/include"       > conf-install-include
-    printf "$out/lib"           > conf-install-library
-    printf "$out/lib"           > conf-install-library.so
+  description = "A suite of small networking utilities for Unix systems";
 
-    # let nix builder strip things, cross-platform
-    truncate --size 0 conf-stripbins
-    truncate --size 0 conf-striplibs
+  outputs = [ "bin" "lib" "dev" "doc" "out" ];
 
-    printf "${skalibs}/sysdeps"      > import
+  # TODO: nsss support
+  configureFlags = [
+    "--libdir=\${lib}/lib"
+    "--libexecdir=\${lib}/libexec"
+    "--dynlibdir=\${lib}/lib"
+    "--bindir=\${bin}/bin"
+    "--includedir=\${dev}/include"
+    "--with-sysdeps=${skalibs.lib}/lib/skalibs/sysdeps"
+    "--with-include=${skalibs.dev}/include"
+    "--with-include=${execline.dev}/include"
+    "--with-include=${s6.dev}/include"
+    "--with-include=${s6-dns.dev}/include"
+    "--with-lib=${skalibs.lib}/lib"
+    "--with-lib=${execline.lib}/lib"
+    "--with-lib=${s6.out}/lib"
+    "--with-lib=${s6-dns.lib}/lib"
+    "--with-dynlib=${skalibs.lib}/lib"
+    "--with-dynlib=${execline.lib}/lib"
+    "--with-dynlib=${s6.out}/lib"
+    "--with-dynlib=${s6-dns.lib}/lib"
+  ]
+  ++ (lib.optionals sslSupportEnabled [
+       "--enable-ssl=${sslSupport}"
+       "--with-include=${lib.getDev sslLibs.${sslSupport}}/include"
+       "--with-lib=${lib.getLib sslLibs.${sslSupport}}/lib"
+       "--with-dynlib=${lib.getLib sslLibs.${sslSupport}}/lib"
+     ]);
 
-    rm -f path-include
-    rm -f path-library
-    for dep in "${execline}" "${s6Dns}" "${skalibs}"; do
-      printf "%s\n" "$dep/include" >> path-include
-      printf "%s\n" "$dep/lib"     >> path-library
-    done
+  postInstall = ''
+    # remove all s6 executables from build directory
+    rm $(find -name "s6-*" -type f -mindepth 1 -maxdepth 1 -executable)
+    rm minidentd
+    rm libs6net.* libstls.*
 
-    rm -f flag-slashpackage
-    touch flag-allstatic
-
-    popd
+    mv doc $doc/share/doc/s6-networking/html
   '';
-
-  preBuild = ''
-    patchShebangs src/sys
-  '';
-
-  meta = {
-    homepage = http://www.skarnet.org/software/s6-networking/;
-    description = "A suite of small networking utilities for Unix systems.";
-    platforms = stdenv.lib.platforms.all;
-    license = stdenv.lib.licenses.isc;
-  };
 
 }

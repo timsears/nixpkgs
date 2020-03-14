@@ -1,64 +1,94 @@
-{ stdenv, fetchurl, lib, makeWrapper
+{ stdenv
+, fetchurl
+, makeDesktopItem
 , jre
-, gtk, glib
+, gtk3
+, glib
+, gnome3
+, wrapGAppsHook
 , libXtst
-, git, mercurial, subversion
 , which
 }:
 
-let
-  the_version = "6_0_6";
-
-in
-
 stdenv.mkDerivation rec {
-  name = "smartgithg-${the_version}";
+  pname = "smartgithg";
+  version = "19.1.1";
 
   src = fetchurl {
-    url = "http://www.syntevo.com/download/smartgithg/" +
-          "smartgithg-generic-${the_version}.tar.gz";
-    sha256 = "13e41560138ef18395fbe0bf56d4d29e8614eee004d51d7dd03381080d8426e6";
+    url = "https://www.syntevo.com/downloads/smartgit/smartgit-linux-${builtins.replaceStrings [ "." ] [ "_" ] version}.tar.gz";
+    sha256 = "0i0dvyy9d63f4hk8czlyk83ai0ywhqp7wbdkq3s87l7irwgs42jy";
   };
 
-  buildInputs = [
-    makeWrapper
-    jre
-  ];
+  nativeBuildInputs = [ wrapGAppsHook ];
 
-  buildCommand = let
-    pkg_path = "$out/${name}";
-    bin_path = "$out/bin";
-    runtime_paths = lib.makeSearchPath "bin" [
-      jre
-      git mercurial subversion
-      which
-    ];
-    runtime_lib_paths = lib.makeLibraryPath [
-      gtk glib
-      libXtst
-    ];
-  in ''
-    tar xvzf $src
-    mkdir -pv $out
-    # unpacking should have produced a dir named ${name}
-    cp -a ${name} $out
-    mkdir -pv ${bin_path}
-    [ -d ${jre}/lib/openjdk ] \
-      && jre=${jre}/lib/openjdk \
-      || jre=${jre}
-    makeWrapper ${pkg_path}/bin/smartgithg.sh ${bin_path}/smartgithg \
-      --prefix PATH : ${runtime_paths} \
-      --prefix LD_LIBRARY_PATH : ${runtime_lib_paths} \
+  buildInputs = [ jre gnome3.adwaita-icon-theme gtk3 ];
+
+  preFixup = with stdenv.lib; ''
+    gappsWrapperArgs+=( \
+      --prefix PATH : ${makeBinPath [ jre which ]} \
+      --prefix LD_LIBRARY_PATH : ${makeLibraryPath [
+        gtk3
+        glib
+        libXtst
+      ]} \
       --prefix JRE_HOME : ${jre} \
       --prefix JAVA_HOME : ${jre} \
-      --prefix SMARTGITHG_JAVA_HOME : ${jre}
-    patchShebangs $out
+      --prefix SMARTGITHG_JAVA_HOME : ${jre} \
+    ) \
   '';
+
+  installPhase = ''
+    runHook preInstall
+
+    sed -i '/ --login/d' bin/smartgit.sh
+    mkdir -pv $out/{bin,share/applications,share/icons/hicolor/scalable/apps/}
+    cp -av ./{dictionaries,lib} $out/
+    cp -av bin/smartgit.sh $out/bin/smartgit
+    ln -sfv $out/bin/smartgit $out/bin/smartgithg
+
+    cp -av $desktopItem/share/applications/* $out/share/applications/
+    for icon_size in 32 48 64 128 256; do
+        path=$icon_size'x'$icon_size
+        icon=bin/smartgit-$icon_size.png
+        mkdir -p $out/share/icons/hicolor/$path/apps
+        cp $icon $out/share/icons/hicolor/$path/apps/smartgit.png
+    done
+
+    cp -av bin/smartgit.svg $out/share/icons/hicolor/scalable/apps/
+
+    runHook postInstall
+  '';
+
+  desktopItem = with stdenv.lib; makeDesktopItem rec {
+    name = "smartgit";
+    exec = "smartgit";
+    comment = meta.description;
+    icon = "smartgit";
+    desktopName = "SmartGit";
+    categories = concatStringsSep ";" [
+      "Application"
+      "Development"
+      "RevisionControl"
+    ];
+    mimeType = concatStringsSep ";" [
+      "x-scheme-handler/git"
+      "x-scheme-handler/smartgit"
+      "x-scheme-handler/sourcetree"
+    ];
+    startupNotify = "true";
+    extraEntries = ''
+      Keywords=git
+      StartupWMClass=${name}
+      Version=1.0
+      Encoding=UTF-8
+    '';
+  };
 
   meta = with stdenv.lib; {
     description = "GUI for Git, Mercurial, Subversion";
-    homepage = http://www.syntevo.com/smartgithg/;
+    homepage = https://www.syntevo.com/smartgit/;
     license = licenses.unfree;
     platforms = platforms.linux;
+    maintainers = with stdenv.lib.maintainers; [ jraygauthier ];
   };
 }

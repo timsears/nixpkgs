@@ -1,24 +1,20 @@
-{ stdenv, fetchurl, unzip }:
+{ lib, fetchzip }:
 
-stdenv.mkDerivation {
-  name = "junicode-0.6.15";
+fetchzip {
+  name = "junicode-0.7.8";
 
-  src = fetchurl {
-    url = mirror://sourceforge/junicode/junicode-0.6.15.zip;
-    sha256 = "0p16r5s6qwyz0hayb6k61s5r2sfachlx7r6gpqqx5myx6ipbfdns";
-  };
+  url = mirror://sourceforge/junicode/junicode/junicode-0-7-8/junicode-0-7-8.zip;
 
-  buildInputs = [ unzip ];
+  postFetch = ''
+    mkdir -p $out/share/fonts
+    unzip -j $downloadedFile \*.ttf -d $out/share/fonts/junicode-ttf
+  '';
 
-  sourceRoot = ".";
-
-  installPhase =
-    ''
-      mkdir -p $out/share/fonts/junicode-ttf
-      cp *.ttf $out/share/fonts/junicode-ttf
-    '';
+  sha256 = "0q4si9pnbif36154sv49kzc7ygivgflv81nzmblpz3b2p77g9956";
 
   meta = {
-    description = "A Unicode font";
+    homepage = http://junicode.sourceforge.net/;
+    description = "A Unicode font for medievalists";
+    license = lib.licenses.gpl2Plus;
   };
 }

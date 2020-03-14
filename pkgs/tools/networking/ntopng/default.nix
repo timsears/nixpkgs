@@ -1,71 +1,67 @@
-{ stdenv, fetchurl, libpcap, gnutls, libgcrypt, libxml2, glib, geoip, sqlite
-, which, autoreconfHook, subversion, pkgconfig, groff
+{ stdenv, fetchurl, libpcap,/* gnutls, libgcrypt,*/ libxml2, glib
+, geoip, geolite-legacy, sqlite, which, autoreconfHook, git
+, pkgconfig, groff, curl, json_c, luajit, zeromq, rrdtool
 }:
 
 # ntopng includes LuaJIT, mongoose, rrdtool and zeromq in its third-party/
-# directory.
+# directory, but we use luajit, zeromq, and rrdtool from nixpkgs
 
 stdenv.mkDerivation rec {
-  name = "ntopng-1.2.1";
-
-  geoLiteCity = fetchurl {
-    url = "http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz";
-    sha256 = "1sqskc8nh9k46nif4i6abjil9nfl4x6na4gadzbxp0929lbzyh0f";
-  };
-
-  geoLiteCityV6 = fetchurl {
-    url = "http://geolite.maxmind.com/download/geoip/database/GeoLiteCityv6-beta/GeoLiteCityv6.dat.gz";
-    sha256 = "1427zljjhbixjcihinj7l79v1daii7ikcmxgkmwdp4rbr25qxlhz";
-  };
-
-  geoIPASNum = fetchurl {
-    url = "http://geolite.maxmind.com/download/geoip/database/asnum/GeoIPASNum.dat.gz";
-    sha256 = "1rh2920sdciqn3pifl4rz0jl3m32ww4gjx495p5xd6ldpy95gn31";
-  };
-
-  geoIPASNumV6 = fetchurl {
-    url = "http://geolite.maxmind.com/download/geoip/database/asnum/GeoIPASNumv6.dat.gz";
-    sha256 = "1064arl40c80kwhbdylhwk6gn2xs36dr0aq3634i1rdpd4jm1a41";
-  };
+  name = "ntopng-2.0";
 
   src = fetchurl {
-    url = "mirror://sourceforge/project/ntop/ntopng/${name}.tgz";
-    sha256 = "1db83cd1v4ivl8hxzzdvvdcgk22ji7mwrfnd5nnwll6kb11i364v";
+    urls = [
+      "mirror://sourceforge/project/ntop/ntopng/old/${name}.tar.gz"
+      "mirror://sourceforge/project/ntop/ntopng/${name}.tar.gz"
+    ];
+    sha256 = "0l82ivh05cmmqcvs26r6y69z849d28njipphqzvnakf43ggddgrw";
   };
 
   patches = [
     ./0001-Undo-weird-modification-of-data_dir.patch
     ./0002-Remove-requirement-to-have-writeable-callback-dir.patch
+    ./0003-New-libpcap-defines-SOCKET.patch
   ];
 
-  buildInputs = [ libpcap gnutls libgcrypt libxml2 glib geoip sqlite which autoreconfHook subversion pkgconfig groff ];
+  buildInputs = [ libpcap/* gnutls libgcrypt*/ libxml2 glib geoip geolite-legacy
+    sqlite which autoreconfHook git pkgconfig groff curl json_c luajit zeromq
+    rrdtool ];
+
+
+  autoreconfPhase = ''
+    substituteInPlace autogen.sh --replace "/bin/rm" "rm"
+    substituteInPlace nDPI/autogen.sh --replace "/bin/rm" "rm"
+    $shell autogen.sh
+  '';
 
   preConfigure = ''
-    find . -name Makefile.in | xargs sed -i "s|/bin/rm|rm|"
+    substituteInPlace Makefile.in --replace "/bin/rm" "rm"
   '';
 
   preBuild = ''
-    sed -e "s|/usr/local|$out|g" \
-        -i Ntop.cpp
+    substituteInPlace src/Ntop.cpp --replace "/usr/local" "$out"
 
     sed -e "s|\(#define CONST_DEFAULT_DATA_DIR\).*|\1 \"/var/lib/ntopng\"|g" \
         -e "s|\(#define CONST_DEFAULT_DOCS_DIR\).*|\1 \"$out/share/ntopng/httpdocs\"|g" \
         -e "s|\(#define CONST_DEFAULT_SCRIPTS_DIR\).*|\1 \"$out/share/ntopng/scripts\"|g" \
         -e "s|\(#define CONST_DEFAULT_CALLBACKS_DIR\).*|\1 \"$out/share/ntopng/scripts/callbacks\"|g" \
         -e "s|\(#define CONST_DEFAULT_INSTALL_DIR\).*|\1 \"$out/share/ntopng\"|g" \
-        -i ntop_defines.h
+        -i include/ntop_defines.h
 
-    gunzip -c $geoLiteCity > httpdocs/geoip/GeoLiteCity.dat
-    gunzip -c $geoLiteCityV6 > httpdocs/geoip/GeoLiteCityv6.dat
-    gunzip -c $geoIPASNum > httpdocs/geoip/GeoIPASNum.dat
-    gunzip -c $geoIPASNumV6 > httpdocs/geoip/GeoIPASNumv6.dat
+    rm -rf httpdocs/geoip
+    ln -s ${geolite-legacy}/share/GeoIP httpdocs/geoip
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+    sed 's|LIBS += -lstdc++.6||' -i Makefile
   '';
+
+  NIX_CFLAGS_COMPILE = "-fpermissive"
+    + stdenv.lib.optionalString stdenv.cc.isClang " -Wno-error=reserved-user-defined-literal";
 
   meta = with stdenv.lib; {
     description = "High-speed web-based traffic analysis and flow collection tool";
     homepage = http://www.ntop.org/products/ntop/;
     license = licenses.gpl3Plus;
-    platforms = platforms.linux;
+    platforms = platforms.linux ++ platforms.darwin;
     maintainers = [ maintainers.bjornfor ];
   };
 }

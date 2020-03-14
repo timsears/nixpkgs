@@ -1,33 +1,31 @@
-{ stdenv, fetchurl, openssl }:
+{ stdenv, fetchurl, openssl, pkgconfig }:
 
-let
-  ver_maj = "0.3.11";
-  ver_min = "2";
-in
 stdenv.mkDerivation rec {
-  name = "trousers-${ver_maj}.${ver_min}";
+  pname = "trousers";
+  version = "0.3.14";
 
   src = fetchurl {
-    url = "mirror://sourceforge/trousers/trousers/${ver_maj}/${name}.tar.gz";
-    sha256 = "1m9qi4452jr5yy4y9zyfi5ndwam5krq7ny8z2q3f91v1hcjgk5la";
+    url = "mirror://sourceforge/trousers/trousers/${version}/${pname}-${version}.tar.gz";
+    sha256 = "0iwgsbrbb7nfqgl61x8aailwxm8akxh9gkcwxhsvf50x4qx72l6f";
   };
 
+  sourceRoot = ".";
+
+  nativeBuildInputs = [ pkgconfig ];
   buildInputs = [ openssl ];
 
-  patches = [ # ./double-installed-man-page.patch
-              ./disable-install-rule.patch
-              ./allow-non-tss-config-file-owner.patch
-            ];
+  patches = [ ./allow-non-tss-config-file-owner.patch ];
 
-  NIX_CFLAGS_COMPILE = "-DALLOW_NON_TSS_CONFIG_FILE";
-  NIX_LDFLAGS = "-lgcc_s";
+  configureFlags = [ "--disable-usercheck" ];
+
+  NIX_CFLAGS_COMPILE = [ "-DALLOW_NON_TSS_CONFIG_FILE" ];
+  enableParallelBuilding = true;
 
   meta = with stdenv.lib; {
     description = "Trusted computing software stack";
     homepage    = http://trousers.sourceforge.net/;
-    license     = licenses.cpl10;
+    license     = licenses.bsd3;
     maintainers = [ maintainers.ak ];
-    platforms   = platforms.unix;
+    platforms   = platforms.linux;
   };
 }
-

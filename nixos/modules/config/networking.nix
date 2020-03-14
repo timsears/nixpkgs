@@ -7,89 +7,219 @@ with lib;
 let
 
   cfg = config.networking;
-  dnsmasqResolve = config.services.dnsmasq.enable &&
-                   config.services.dnsmasq.resolveLocalQueries;
-  hasLocalResolver = config.services.bind.enable || dnsmasqResolve;
+
+  localhostMapped4 = cfg.hosts ? "127.0.0.1" && elem "localhost" cfg.hosts."127.0.0.1";
+  localhostMapped6 = cfg.hosts ? "::1"       && elem "localhost" cfg.hosts."::1";
+
+  localhostMultiple = any (elem "localhost") (attrValues (removeAttrs cfg.hosts [ "127.0.0.1" "::1" ]));
 
 in
 
 {
+  imports = [
+    (mkRemovedOptionModule [ "networking" "hostConf" ] "Use environment.etc.\"host.conf\" instead.")
+  ];
 
   options = {
+
+    networking.hosts = lib.mkOption {
+      type = types.attrsOf (types.listOf types.str);
+      example = literalExample ''
+        {
+          "127.0.0.1" = [ "foo.bar.baz" ];
+          "192.168.0.2" = [ "fileserver.local" "nameserver.local" ];
+        };
+      '';
+      description = ''
+        Locally defined maps of hostnames to IP addresses.
+      '';
+    };
+
+    networking.hostFiles = lib.mkOption {
+      type = types.listOf types.path;
+      defaultText = lib.literalExample "Hosts from `networking.hosts` and `networking.extraHosts`";
+      example = lib.literalExample ''[ "''${pkgs.my-blocklist-package}/share/my-blocklist/hosts" ]'';
+      description = ''
+        Files that should be concatenated together to form <filename>/etc/hosts</filename>.
+      '';
+    };
 
     networking.extraHosts = lib.mkOption {
       type = types.lines;
       default = "";
       example = "192.168.0.1 lanlocalhost";
       description = ''
-        Additional entries to be appended to <filename>/etc/hosts</filename>.
+        Additional verbatim entries to be appended to <filename>/etc/hosts</filename>.
+        For adding hosts from derivation results, use <option>networking.hostFiles</option> instead.
       '';
     };
 
-    networking.dnsSingleRequest = lib.mkOption {
-      type = types.bool;
-      default = false;
+    networking.timeServers = mkOption {
+      default = [
+        "0.nixos.pool.ntp.org"
+        "1.nixos.pool.ntp.org"
+        "2.nixos.pool.ntp.org"
+        "3.nixos.pool.ntp.org"
+      ];
       description = ''
-        Recent versions of glibc will issue both ipv4 (A) and ipv6 (AAAA)
-        address queries at the same time, from the same port. Sometimes upstream
-        routers will systemically drop the ipv4 queries. The symptom of this problem is
-        that 'getent hosts example.com' only returns ipv6 (or perhaps only ipv4) addresses. The
-        workaround for this is to specify the option 'single-request' in
-        /etc/resolv.conf. This option enables that.
+        The set of NTP servers from which to synchronise.
       '';
     };
 
+    networking.proxy = {
+
+      default = lib.mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = ''
+          This option specifies the default value for httpProxy, httpsProxy, ftpProxy and rsyncProxy.
+        '';
+        example = "http://127.0.0.1:3128";
+      };
+
+      httpProxy = lib.mkOption {
+        type = types.nullOr types.str;
+        default = cfg.proxy.default;
+        description = ''
+          This option specifies the http_proxy environment variable.
+        '';
+        example = "http://127.0.0.1:3128";
+      };
+
+      httpsProxy = lib.mkOption {
+        type = types.nullOr types.str;
+        default = cfg.proxy.default;
+        description = ''
+          This option specifies the https_proxy environment variable.
+        '';
+        example = "http://127.0.0.1:3128";
+      };
+
+      ftpProxy = lib.mkOption {
+        type = types.nullOr types.str;
+        default = cfg.proxy.default;
+        description = ''
+          This option specifies the ftp_proxy environment variable.
+        '';
+        example = "http://127.0.0.1:3128";
+      };
+
+      rsyncProxy = lib.mkOption {
+        type = types.nullOr types.str;
+        default = cfg.proxy.default;
+        description = ''
+          This option specifies the rsync_proxy environment variable.
+        '';
+        example = "http://127.0.0.1:3128";
+      };
+
+      allProxy = lib.mkOption {
+        type = types.nullOr types.str;
+        default = cfg.proxy.default;
+        description = ''
+          This option specifies the all_proxy environment variable.
+        '';
+        example = "http://127.0.0.1:3128";
+      };
+
+      noProxy = lib.mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = ''
+          This option specifies the no_proxy environment variable.
+          If a default proxy is used and noProxy is null,
+          then noProxy will be set to 127.0.0.1,localhost.
+        '';
+        example = "127.0.0.1,localhost,.localdomain";
+      };
+
+      envVars = lib.mkOption {
+        type = types.attrs;
+        internal = true;
+        default = {};
+        description = ''
+          Environment variables used for the network proxy.
+        '';
+      };
+    };
   };
 
   config = {
 
+    assertions = [{
+      assertion = localhostMapped4;
+      message = ''`networking.hosts` doesn't map "127.0.0.1" to "localhost"'';
+    } {
+      assertion = !cfg.enableIPv6 || localhostMapped6;
+      message = ''`networking.hosts` doesn't map "::1" to "localhost"'';
+    } {
+      assertion = !localhostMultiple;
+      message = ''
+        `networking.hosts` maps "localhost" to something other than "127.0.0.1"
+        or "::1". This will break some applications. Please use
+        `networking.extraHosts` if you really want to add such a mapping.
+      '';
+    }];
+
+    networking.hosts = {
+      "127.0.0.1" = [ "localhost" ];
+    } // optionalAttrs (cfg.hostName != "") {
+      "127.0.1.1" = [ cfg.hostName ];
+    } // optionalAttrs cfg.enableIPv6 {
+      "::1" = [ "localhost" ];
+    };
+
+    networking.hostFiles = let
+      stringHosts =
+        let
+          oneToString = set: ip: ip + " " + concatStringsSep " " set.${ip} + "\n";
+          allToString = set: concatMapStrings (oneToString set) (attrNames set);
+        in pkgs.writeText "string-hosts" (allToString (filterAttrs (_: v: v != []) cfg.hosts));
+      extraHosts = pkgs.writeText "extra-hosts" cfg.extraHosts;
+    in mkBefore [ stringHosts extraHosts ];
+
     environment.etc =
       { # /etc/services: TCP/UDP port assignments.
-        "services".source = pkgs.iana_etc + "/etc/services";
+        services.source = pkgs.iana-etc + "/etc/services";
 
         # /etc/protocols: IP protocol numbers.
-        "protocols".source  = pkgs.iana_etc + "/etc/protocols";
-
-        # /etc/rpc: RPC program numbers.
-        "rpc".source = pkgs.glibc + "/etc/rpc";
+        protocols.source  = pkgs.iana-etc + "/etc/protocols";
 
         # /etc/hosts: Hostname-to-IP mappings.
-        "hosts".text =
-          ''
-            127.0.0.1 localhost
-            ${optionalString cfg.enableIPv6 ''
-              ::1 localhost
-            ''}
-            ${cfg.extraHosts}
-          '';
+        hosts.source = pkgs.runCommandNoCC "hosts" {} ''
+          cat ${escapeShellArgs cfg.hostFiles} > $out
+        '';
 
-        # /etc/resolvconf.conf: Configuration for openresolv.
-        "resolvconf.conf".text =
-            ''
-              # This is the default, but we must set it here to prevent
-              # a collision with an apparently unrelated environment
-              # variable with the same name exported by dhcpcd.
-              interface_order='lo lo[0-9]*'
-            '' + optionalString config.services.nscd.enable ''
-              # Invalidate the nscd cache whenever resolv.conf is
-              # regenerated.
-              libc_restart='${pkgs.systemd}/bin/systemctl try-restart --no-block nscd.service'
-            '' + optionalString cfg.dnsSingleRequest ''
-              # only send one DNS request at a time
-              resolv_conf_options='single-request'
-            '' + optionalString hasLocalResolver ''
-              # This hosts runs a full-blown DNS resolver.
-              name_servers='127.0.0.1'
-            '' + optionalString dnsmasqResolve ''
-              dnsmasq_conf=/etc/dnsmasq-conf.conf
-              dnsmasq_resolv=/etc/dnsmasq-resolv.conf
-            '';
+        # /etc/host.conf: resolver configuration file
+        "host.conf".text = ''
+          multi on
+        '';
+
+      } // optionalAttrs (pkgs.stdenv.hostPlatform.libc == "glibc") {
+        # /etc/rpc: RPC program numbers.
+        rpc.source = pkgs.glibc.out + "/etc/rpc";
       };
 
-    # The ‘ip-up’ target is started when we have IP connectivity.  So
-    # services that depend on IP connectivity (like ntpd) should be
-    # pulled in by this target.
-    systemd.targets.ip-up.description = "Services Requiring IP Connectivity";
+      networking.proxy.envVars =
+        optionalAttrs (cfg.proxy.default != null) {
+          # other options already fallback to proxy.default
+          no_proxy = "127.0.0.1,localhost";
+        } // optionalAttrs (cfg.proxy.httpProxy != null) {
+          http_proxy  = cfg.proxy.httpProxy;
+        } // optionalAttrs (cfg.proxy.httpsProxy != null) {
+          https_proxy = cfg.proxy.httpsProxy;
+        } // optionalAttrs (cfg.proxy.rsyncProxy != null) {
+          rsync_proxy = cfg.proxy.rsyncProxy;
+        } // optionalAttrs (cfg.proxy.ftpProxy != null) {
+          ftp_proxy   = cfg.proxy.ftpProxy;
+        } // optionalAttrs (cfg.proxy.allProxy != null) {
+          all_proxy   = cfg.proxy.allProxy;
+        } // optionalAttrs (cfg.proxy.noProxy != null) {
+          no_proxy    = cfg.proxy.noProxy;
+        };
+
+    # Install the proxy environment variables
+    environment.sessionVariables = cfg.proxy.envVars;
 
   };
 

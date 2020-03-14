@@ -1,33 +1,46 @@
-{ stdenv, fetchurl, xz, zlib, pkgconfig, libxslt }:
+{ stdenv, lib, fetchurl, autoreconfHook, pkgconfig
+, libxslt, xz, elf-header
+, withStatic ? false }:
 
-stdenv.mkDerivation rec {
-  name = "kmod-18";
+let
+  systems = [ "/run/current-system/kernel-modules" "/run/booted-system/kernel-modules" "" ];
+  modulesDirs = lib.concatMapStringsSep ":" (x: "${x}/lib/modules") systems;
+
+in stdenv.mkDerivation rec {
+  pname = "kmod";
+  version = "26";
 
   src = fetchurl {
-    url = "mirror://kernel/linux/utils/kernel/kmod/${name}.tar.xz";
-    sha256 = "e16e57272b54acb219c465b334715cfdddb5d97ff5d8948d4830ca1a372a868e";
+    url = "mirror://kernel/linux/utils/kernel/${pname}/${pname}-${version}.tar.xz";
+    sha256 = "17dvrls70nr3b3x1wm8pwbqy4r8a5c20m0dhys8mjhsnpg425fsp";
   };
 
-  # Disable xz/zlib support to prevent needing them in the initrd.
-  
-  buildInputs = [ pkgconfig libxslt /* xz zlib */ ];
+  nativeBuildInputs = [ autoreconfHook pkgconfig libxslt ];
+  buildInputs = [ xz ] ++ lib.optional stdenv.isDarwin elf-header;
 
-  configureFlags = [ "--sysconfdir=/etc" /* "--with-xz" "--with-zlib" */ ];
+  configureFlags = [
+    "--sysconfdir=/etc"
+    "--with-xz"
+    "--with-modulesdirs=${modulesDirs}"
+  ] ++ lib.optional withStatic "--enable-static";
 
-  patches = [ ./module-dir.patch ];
+  patches = [ ./module-dir.patch ]
+    ++ lib.optional stdenv.isDarwin ./darwin.patch
+    ++ lib.optional withStatic ./enable-static.patch;
 
   postInstall = ''
-    ln -s kmod $out/bin/lsmod
-    mkdir -p $out/sbin
-    for prog in rmmod insmod modinfo modprobe depmod; do
-      ln -sv $out/bin/kmod $out/sbin/$prog
+    for prog in rmmod insmod lsmod modinfo modprobe depmod; do
+      ln -sv $out/bin/kmod $out/bin/$prog
     done
+
+    # Backwards compatibility
+    ln -s bin $out/sbin
   '';
 
-  meta = {
-    homepage = http://www.kernel.org/pub/linux/utils/kernel/kmod/;
+  meta = with stdenv.lib; {
+    homepage = https://www.kernel.org/pub/linux/utils/kernel/kmod/;
     description = "Tools for loading and managing Linux kernel modules";
-    maintainers = [ stdenv.lib.maintainers.shlevy ];
-    platforms = stdenv.lib.platforms.linux;
+    license = licenses.lgpl21;
+    platforms = platforms.unix;
   };
 }

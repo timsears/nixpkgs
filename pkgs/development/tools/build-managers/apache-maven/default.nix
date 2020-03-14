@@ -2,14 +2,16 @@
 
 assert jdk != null;
 
-stdenv.mkDerivation {
-  name = "apache-maven-3.2.3";
+let version = "3.6.3"; in
+stdenv.mkDerivation rec {
+  pname = "apache-maven";
+  inherit version;
 
   builder = ./builder.sh;
 
   src = fetchurl {
-    url = mirror://apache/maven/maven-3/3.2.3/binaries/apache-maven-3.2.3-bin.tar.gz;
-    sha256 = "1vd81bhj68mhnkb0zlarshlk61i2n160pyxxmrc739p3vsm08gxz";
+    url = "mirror://apache/maven/maven-3/${version}/binaries/${pname}-${version}-bin.tar.gz";
+    sha256 = "1i9qlj3vy4j1yyf22nwisd0pg88n9qzp9ymfhwqabadka7br3b96";
   };
 
   buildInputs = [ makeWrapper ];
@@ -20,5 +22,7 @@ stdenv.mkDerivation {
     description = "Build automation tool (used primarily for Java projects)";
     homepage = http://maven.apache.org/;
     license = licenses.asl20;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ cko ];
   };
 }

@@ -1,30 +1,35 @@
-{stdenv, fetchurl, cmake, libX11, libuuid, xz}:
+{ stdenv, fetchFromGitHub, cmake, libX11, libuuid, xz, vtk, darwin }:
 
 stdenv.mkDerivation rec {
-  name = "itk-4.0.0";
+  pname = "itk";
+  version = "5.0.1";
 
-  src = fetchurl {
-    url = mirror://sourceforge/itk/InsightToolkit-4.0.0.tar.xz;
-    sha256 = "05z49sw612cbyiaghcsda0xylrkf06jh81ql79si5632w1hpgbd9";
+  src = fetchFromGitHub {
+    owner = "InsightSoftwareConsortium";
+    repo = "ITK";
+    rev = "v${version}";
+    sha256 = "0dcjsn5frjnrphfgw8alnd2ahrvicpx2a2ngb5ixaa9anaicz9z1";
   };
 
   cmakeFlags = [
-    "-DBUILD_TESTING=OFF"
     "-DBUILD_EXAMPLES=OFF"
     "-DBUILD_SHARED_LIBS=ON"
-    "-DCMAKE_CXX_FLAGS=-fPIC"
+    "-DModule_ITKMINC=ON"
+    "-DModule_ITKIOMINC=ON"
+    "-DModule_ITKIOTransformMINC=ON"
+    "-DModule_ITKVtkGlue=ON"
+    "-DModule_ITKReview=ON"
   ];
 
   enableParallelBuilding = true;
 
   nativeBuildInputs = [ cmake xz ];
-  buildInputs = [ libX11 libuuid ];
+  buildInputs = [ libX11 libuuid vtk ] ++ stdenv.lib.optionals stdenv.isDarwin [ darwin.apple_sdk.frameworks.Cocoa ];
 
   meta = {
     description = "Insight Segmentation and Registration Toolkit";
     homepage = http://www.itk.org/;
-    license = "BSD";
+    license = stdenv.lib.licenses.asl20;
     maintainers = with stdenv.lib.maintainers; [viric];
-    platforms = with stdenv.lib.platforms; linux;
   };
 }

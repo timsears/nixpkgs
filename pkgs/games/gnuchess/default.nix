@@ -3,17 +3,16 @@ let
   s = # Generated upstream information
   rec {
     baseName="gnuchess";
-    version="6.1.2";
+    version="6.2.5";
     name="${baseName}-${version}";
-    hash="15k6w9gycp566i0pa7ccajj9v3pw1mz1v62g1ni7czgs3j7i588l";
-    url="http://ftp.gnu.org/gnu/chess/gnuchess-6.1.2.tar.gz";
-    sha256="15k6w9gycp566i0pa7ccajj9v3pw1mz1v62g1ni7czgs3j7i588l";
+    url="mirror://gnu/chess/${name}.tar.gz";
+    sha256="00j8s0npgfdi41a0mr5w9qbdxagdk2v41lcr42rwl1jp6miyk6cs";
   };
   buildInputs = [
     flex
   ];
 in
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   inherit (s) name version;
   src = fetchurl {
     inherit (s) url sha256;
@@ -23,7 +22,7 @@ stdenv.mkDerivation rec {
     inherit (s) version;
     description = "GNU Chess engine";
     maintainers = [stdenv.lib.maintainers.raskin];
-    platforms = stdenv.lib.platforms.linux;
+    platforms = stdenv.lib.platforms.unix;
     license = stdenv.lib.licenses.gpl3Plus;
   };
 }

@@ -1,13 +1,17 @@
 { config, lib, pkgs, ... }:
 
-with pkgs;
 with lib;
 
 let
 
   cfg = config.services.opensmtpd;
-  conf = writeText "smtpd.conf" cfg.serverConfiguration;
+  conf = pkgs.writeText "smtpd.conf" cfg.serverConfiguration;
   args = concatStringsSep " " cfg.extraServerArgs;
+
+  sendmail = pkgs.runCommand "opensmtpd-sendmail" { preferLocalBuild = true; } ''
+    mkdir -p $out/bin
+    ln -s ${cfg.package}/sbin/smtpctl $out/bin/sendmail
+  '';
 
 in {
 
@@ -23,8 +27,24 @@ in {
         description = "Whether to enable the OpenSMTPD server.";
       };
 
+      package = mkOption {
+        type = types.package;
+        default = pkgs.opensmtpd;
+        defaultText = "pkgs.opensmtpd";
+        description = "The OpenSMTPD package to use.";
+      };
+
+      addSendmailToSystemPath = mkOption {
+        type = types.bool;
+        default = true;
+        description = ''
+          Whether to add OpenSMTPD's sendmail binary to the
+          system path or not.
+        '';
+      };
+
       extraServerArgs = mkOption {
-        type = types.listOf types.string;
+        type = types.listOf types.str;
         default = [];
         example = [ "-v" "-P mta" ];
         description = ''
@@ -34,16 +54,25 @@ in {
       };
 
       serverConfiguration = mkOption {
-        type = types.string;
-        default = "";
+        type = types.lines;
         example = ''
           listen on lo
           accept for any deliver to lmtp localhost:24
-        ''; 
+        '';
         description = ''
           The contents of the smtpd.conf configuration file. See the
-          OpenSMTPD documentation for syntax information. If this option
-          is left empty, the OpenSMTPD server will not start.
+          OpenSMTPD documentation for syntax information.
+        '';
+      };
+
+      procPackages = mkOption {
+        type = types.listOf types.package;
+        default = [];
+        description = ''
+          Packages to search for filters, tables, queues, and schedulers.
+
+          Add OpenSMTPD-extras here if you want to use the filters, etc. from
+          that package.
         '';
       };
     };
@@ -53,13 +82,13 @@ in {
 
   ###### implementation
 
-  config = mkIf config.services.opensmtpd.enable {
-    users.extraGroups = {
+  config = mkIf cfg.enable {
+    users.groups = {
       smtpd.gid = config.ids.gids.smtpd;
       smtpq.gid = config.ids.gids.smtpq;
     };
 
-    users.extraUsers = {
+    users.users = {
       smtpd = {
         description = "OpenSMTPD process user";
         uid = config.ids.uids.smtpd;
@@ -72,17 +101,25 @@ in {
       };
     };
 
-    systemd.services.opensmtpd = {
+    systemd.tmpfiles.rules = [
+      "d /var/spool/smtpd 711 root - - -"
+      "d /var/spool/smtpd/offline 770 root smtpq - -"
+      "d /var/spool/smtpd/purge 700 smtpq root - -"
+    ];
+
+    systemd.services.opensmtpd = let
+      procEnv = pkgs.buildEnv {
+        name = "opensmtpd-procs";
+        paths = [ cfg.package ] ++ cfg.procPackages;
+        pathsToLink = [ "/libexec/opensmtpd" ];
+      };
+    in {
       wantedBy = [ "multi-user.target" ];
-      wants = [ "network.target" ];
       after = [ "network.target" ];
-      preStart = "mkdir -p /var/spool";
-      serviceConfig.ExecStart = "${opensmtpd}/sbin/smtpd -d -f ${conf} ${args}";
+      serviceConfig.ExecStart = "${cfg.package}/sbin/smtpd -d -f ${conf} ${args}";
+      environment.OPENSMTPD_PROC_PATH = "${procEnv}/libexec/opensmtpd";
     };
 
-    environment.systemPackages = [ (pkgs.runCommand "opensmtpd-sendmail" {} ''
-      mkdir -p $out/bin
-      ln -s ${opensmtpd}/sbin/smtpctl $out/bin/sendmail
-    '') ];
+    environment.systemPackages = mkIf cfg.addSendmailToSystemPath [ sendmail ];
   };
 }

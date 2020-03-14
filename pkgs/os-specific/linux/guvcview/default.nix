@@ -1,21 +1,21 @@
-{ stdenv, fetchgit, intltool, autoreconfHook, gettext, pkgconfig
-, gtk3, portaudio, libpng, SDL, ffmpeg, udev, libusb1, libv4l, alsaLib }:
+{ config, stdenv, fetchurl, intltool, pkgconfig
+, gtk3, portaudio, SDL2, ffmpeg, udev, libusb1, libv4l, alsaLib, gsl
+, pulseaudioSupport ? config.pulseaudio or stdenv.isLinux, libpulseaudio ? null }:
+
+assert pulseaudioSupport -> libpulseaudio != null;
 
 stdenv.mkDerivation rec {
-  version = "1.7.2";
-  rev = "ab84b0b1ed358f0504e1218a0ef792a02b307af8";
-  name = "guvcview-${version}_${rev}";
+  version = "2.0.6";
+  pname = "guvcview";
 
-  src = fetchgit {
-    inherit rev;
-    url = "git://git.code.sf.net/p/guvcview/git-master";
-    sha256 = "08cpbxq3dh2mlsgzk5dj3vfrgap4q281n9h6xzpbsvyifcj1a9n1";
+  src = fetchurl {
+    url = "mirror://sourceforge/project/guvcview/source/guvcview-src-${version}.tar.gz";
+    sha256 = "11byyfpkcik7wvf2qic77zjamfr2rhji97dpj1gy2fg1bvpiqf4m";
   };
 
   buildInputs =
-    [ SDL
+    [ SDL2
       alsaLib
-      autoreconfHook
       ffmpeg
       gtk3
       intltool
@@ -24,16 +24,14 @@ stdenv.mkDerivation rec {
       pkgconfig
       portaudio
       udev
-    ];
+      gsl
+    ] ++ stdenv.lib.optional pulseaudioSupport libpulseaudio;
 
-  preConfigure = ''
-    ./bootstrap.sh
-  '';
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "A simple interface for devices supported by the linux UVC driver";
     homepage = http://guvcview.sourceforge.net;
-    maintainers = [ stdenv.lib.maintainers.coconnor ];
-    platforms = stdenv.lib.platforms.linux;
+    maintainers = [ maintainers.coconnor ];
+    license = licenses.gpl3;
+    platforms = platforms.linux;
   };
 }

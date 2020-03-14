@@ -1,30 +1,36 @@
-{ stdenv, fetchurl, pkgconfig, intltool, glib, libxml2, gtk3, gtkvnc, gmp
-, libgcrypt, gnupg, cyrus_sasl, spiceSupport ? true, spice_gtk, shared_mime_info
-, libvirt, libcap_ng, yajl
+{ stdenv, fetchurl, pkgconfig, intltool, shared-mime-info, wrapGAppsHook
+, glib, gsettings-desktop-schemas, gtk-vnc, gtk3, libvirt, libvirt-glib, libxml2, vte
+, spiceSupport ? true
+, spice-gtk ? null, spice-protocol ? null, libcap ? null, gdbm ? null
 }:
+
+assert spiceSupport ->
+  spice-gtk != null && spice-protocol != null && libcap != null && gdbm != null;
 
 with stdenv.lib;
 
-let sourceInfo = rec {
-    baseName="virt-viewer";
-    version="0.6.0";
-    name="${baseName}-${version}";
-    url="http://virt-manager.org/download/sources/${baseName}/${name}.tar.gz";
-    hash="0svalnr6k8rjadysnxixygk3bdx04asmwx75bhrbljyicba216v6";
-}; in
-
-stdenv.mkDerivation  {
-  inherit (sourceInfo) name version;
+stdenv.mkDerivation rec {
+  baseName = "virt-viewer";
+  version = "8.0";
+  name = "${baseName}-${version}";
 
   src = fetchurl {
-    url = sourceInfo.url;
-    sha256 = sourceInfo.hash;
+    url = "http://virt-manager.org/download/sources/${baseName}/${name}.tar.gz";
+    sha256 = "1vdnjmhrva7r1n9nv09j8gc12hy0j9j5l4rka4hh0jbsbpnmiwyw";
   };
 
-  buildInputs = [ 
-    pkgconfig intltool glib libxml2 gtk3 gtkvnc gmp libgcrypt gnupg cyrus_sasl
-    shared_mime_info libvirt libcap_ng yajl
-  ] ++ optional spiceSupport spice_gtk;
+  nativeBuildInputs = [ pkgconfig intltool shared-mime-info wrapGAppsHook glib ];
+  buildInputs = [
+    glib gsettings-desktop-schemas gtk-vnc gtk3 libvirt libvirt-glib libxml2 vte
+  ] ++ optionals spiceSupport [
+    spice-gtk spice-protocol libcap gdbm
+  ];
+
+  # Required for USB redirection PolicyKit rules file
+  propagatedUserEnvPkgs = optional spiceSupport spice-gtk;
+
+  strictDeps = true;
+  enableParallelBuilding = true;
 
   meta = {
     description = "A viewer for remote virtual machines";

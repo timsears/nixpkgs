@@ -1,61 +1,174 @@
-{ stdenv, fetchurl, perl, python, ruby, bison, gperf, flex
-, pkgconfig, which, gettext, gobjectIntrospection
-, gtk2, gtk3, wayland, libwebp, enchant
-, libxml2, libsoup, libsecret, libxslt, harfbuzz
+{ stdenv
+, fetchurl
+, perl
+, python3
+, ruby
+, bison
+, gperf
+, cmake
+, ninja
+, pkgconfig
+, gettext
+, gobject-introspection
+, libnotify
+, gnutls
+, libgcrypt
+, gtk3
+, wayland
+, libwebp
+, enchant2
+, xorg
+, libxkbcommon
+, epoxy
+, at-spi2-core
+, libxml2
+, libsoup
+, libsecret
+, libxslt
+, harfbuzz
+, libpthreadstubs
+, pcre
+, nettle
+, libtasn1
+, p11-kit
+, libidn
+, libedit
+, readline
+, libGL
+, libGLU
+, libintl
+, openjpeg
+, enableGeoLocation ? true
+, geoclue2
+, sqlite
+, enableGtk2Plugins ? false
+, gtk2 ? null
 , gst-plugins-base
-, withGtk2 ? false
-, enableIntrospection ? true
+, gst-plugins-bad
+, woff2
+, bubblewrap
+, libseccomp
+, xdg-dbus-proxy
+, substituteAll
+, gnome3
 }:
 
-stdenv.mkDerivation rec {
-  name = "webkitgtk-2.4.6";
+assert enableGeoLocation -> geoclue2 != null;
+assert enableGtk2Plugins -> gtk2 != null;
+assert stdenv.isDarwin -> !enableGtk2Plugins;
 
-  meta = {
-    description = "Web content rendering engine, GTK+ port";
-    homepage = "http://webkitgtk.org/";
-    license = stdenv.lib.licenses.bsd2;
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = with stdenv.lib.maintainers; [ iyzsong ];
-  };
+with stdenv.lib;
+
+stdenv.mkDerivation rec {
+  pname = "webkitgtk";
+  version = "2.26.4";
+
+  outputs = [ "out" "dev" ];
 
   src = fetchurl {
-    url = "http://webkitgtk.org/releases/${name}.tar.xz";
-    sha256 = "0mqlq4ivh921k92xjsp5pdvbg9vf75qjliqmx81qwrm2sjl4mvvg";
+    url = "https://webkitgtk.org/releases/${pname}-${version}.tar.xz";
+    sha256 = "0gqi9f9njrdn8vad1zvr59b25arwc8r0n8bp25sgkbfz2c3r11j3";
   };
 
-  patches = [ ./webcore-svg-libxml-cflags.patch ];
-
-  CC = "cc";
-
-  prePatch = ''
-    patchShebangs Tools/gtk
-  '';
-
-  configureFlags = with stdenv.lib; [
-    "--disable-geolocation"
-    (optionalString enableIntrospection "--enable-introspection")
-  ] ++ stdenv.lib.optional withGtk2 [
-    "--with-gtk=2.0"
-    "--disable-webkit2"
+  patches = optionals stdenv.isLinux [
+    (substituteAll {
+      src = ./fix-bubblewrap-paths.patch;
+      inherit (builtins) storeDir;
+    })
+    ./libglvnd-headers.patch
   ];
 
-  dontAddDisableDepTrack = true;
-
   nativeBuildInputs = [
-    perl python ruby bison gperf flex
-    pkgconfig which gettext gobjectIntrospection
+    bison
+    cmake
+    gettext
+    gobject-introspection
+    gperf
+    ninja
+    perl
+    pkgconfig
+    python3
+    ruby
   ];
 
   buildInputs = [
-    gtk2 wayland libwebp enchant
-    libxml2 libsecret libxslt harfbuzz
+    at-spi2-core
+    enchant2
+    epoxy
+    gnutls
+    gst-plugins-bad
     gst-plugins-base
-  ];
+    harfbuzz
+    libGL
+    libGLU
+    libgcrypt
+    libidn
+    libintl
+    libnotify
+    libpthreadstubs
+    libsecret
+    libtasn1
+    libwebp
+    libxkbcommon
+    libxml2
+    libxslt
+    nettle
+    openjpeg
+    p11-kit
+    pcre
+    sqlite
+    woff2
+  ] ++ (with xorg; [
+    libXdamage
+    libXdmcp
+    libXt
+    libXtst
+  ]) ++ optionals stdenv.isDarwin [
+    libedit
+    readline
+  ] ++ optionals stdenv.isLinux [
+    bubblewrap
+    libseccomp
+    wayland
+    xdg-dbus-proxy
+  ] ++ optional enableGeoLocation geoclue2
+    ++ optional enableGtk2Plugins gtk2;
 
   propagatedBuildInputs = [
+    gtk3
     libsoup
-    (if withGtk2 then gtk2 else gtk3)
   ];
 
-  #enableParallelBuilding = true; # build problems on Hydra
+  cmakeFlags = [
+    "-DENABLE_INTROSPECTION=ON"
+    "-DPORT=GTK"
+    "-DUSE_LIBHYPHEN=OFF"
+    "-DUSE_WPE_RENDERER=OFF"
+  ] ++ optionals stdenv.isDarwin [
+    "-DENABLE_GRAPHICS_CONTEXT_3D=OFF"
+    "-DENABLE_GTKDOC=OFF"
+    "-DENABLE_MINIBROWSER=OFF"
+    "-DENABLE_OPENGL=OFF"
+    "-DENABLE_QUARTZ_TARGET=ON"
+    "-DENABLE_VIDEO=ON"
+    "-DENABLE_WEBGL=OFF"
+    "-DENABLE_WEB_AUDIO=OFF"
+    "-DENABLE_X11_TARGET=OFF"
+    "-DUSE_ACCELERATE=0"
+    "-DUSE_SYSTEM_MALLOC=ON"
+  ] ++ optional (!enableGtk2Plugins) "-DENABLE_PLUGIN_PROCESS_GTK2=OFF"
+    ++ optional stdenv.isLinux "-DENABLE_GLES2=ON";
+
+  postPatch = ''
+    patchShebangs .
+  '';
+
+  meta = {
+    description = "Web content rendering engine, GTK port";
+    homepage = https://webkitgtk.org/;
+    license = licenses.bsd2;
+    platforms = platforms.linux;
+    hydraPlatforms = [];
+    maintainers = gnome3.maintainers;
+  };
 }

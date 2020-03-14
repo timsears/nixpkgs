@@ -1,6 +1,6 @@
-{ stdenv, fetchurl, zlib, curl, automake, libtool, autoconf, unzip }:
+{ stdenv, fetchurl, zlib, curl, autoreconfHook, unzip }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "funambol-client-cpp-9.0.0";
 
   src = fetchurl {
@@ -10,21 +10,14 @@ stdenv.mkDerivation rec {
 
   postUnpack = ''sourceRoot+="/sdk/cpp/build/autotools"'';
 
-  # Upstream guys forgotten to run autoreconf...
-  preConfigure=''
-    libtoolize -c -f
-    aclocal
-    autoheader
-    automake -a -c -f --add-missing
-    autoconf -f'';
-
   propagatedBuildInputs = [ zlib curl ];
 
-  nativeBuildInputs = [ automake libtool autoconf unzip ];
+  nativeBuildInputs = [ autoreconfHook unzip ];
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "SyncML client sdk by Funambol project";
     homepage = http://www.funambol.com;
-    maintainers = [ stdenv.lib.maintainers.urkud ];
+    license = licenses.agpl3;
+    platforms = platforms.unix;
   };
 }

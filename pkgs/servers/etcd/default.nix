@@ -1,30 +1,33 @@
-{ stdenv, lib, go, fetchurl, fetchgit, fetchhg, fetchbzr, fetchFromGitHub }:
+{ lib, libpcap, buildGoPackage, fetchFromGitHub }:
 
-stdenv.mkDerivation rec {
-  version = "0.4.3";
-  name = "etcd-${version}";
+with lib;
 
-  src = import ./deps.nix {
-    inherit stdenv lib fetchgit fetchhg fetchbzr fetchFromGitHub;
+buildGoPackage rec {
+  pname = "etcd";
+  version = "3.3.13"; # After updating check that nixos tests pass
+  rev = "v${version}";
+
+  goPackagePath = "github.com/coreos/etcd";
+
+  src = fetchFromGitHub {
+    inherit rev;
+    owner = "coreos";
+    repo = "etcd";
+    sha256 = "1kac4qfr83f2hdz35403f1ald05wc85vvhw79vxb431n61jvyaqy";
   };
 
-  buildInputs = [ go ];
+  subPackages = [
+    "cmd/etcd"
+    "cmd/etcdctl"
+  ];
 
-  buildPhase = ''
-    export GOPATH=$src
-    go build -v -o etcd github.com/coreos/etcd
-  '';
+  buildInputs = [ libpcap ];
 
-  installPhase = ''
-    mkdir -p $out/bin
-    mv etcd $out/bin/etcd
-  '';
-
-  meta = with stdenv.lib; {
-    description = "A highly-available key value store for shared configuration and service discovery";
-    homepage = http://coreos.com/using-coreos/etcd/;
+  meta = {
+    description = "Distributed reliable key-value store for the most critical data of a distributed system";
     license = licenses.asl20;
-    maintainers = with maintainers; [ cstrahan ];
-    platforms = platforms.unix;
+    homepage = https://coreos.com/etcd/;
+    maintainers = with maintainers; [offline];
+    platforms = with platforms; linux;
   };
 }

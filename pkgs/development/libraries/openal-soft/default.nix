@@ -1,31 +1,49 @@
-{ stdenv, fetchurl, cmake
-, alsaSupport ? true, alsaLib ? null
-, pulseSupport ? true, pulseaudio ? null
+{ stdenv, fetchFromGitHub, cmake
+, alsaSupport ? !stdenv.isDarwin, alsaLib ? null
+, pulseSupport ? !stdenv.isDarwin, libpulseaudio ? null
+, CoreServices, AudioUnit, AudioToolbox
 }:
 
+with stdenv.lib;
+
 assert alsaSupport -> alsaLib != null;
-assert pulseSupport -> pulseaudio != null;
+assert pulseSupport -> libpulseaudio != null;
 
 stdenv.mkDerivation rec {
-  version = "1.15.1";
-  name = "openal-soft-${version}";
+  version = "1.19.1";
+  pname = "openal-soft";
 
-  src = fetchurl {
-    url = "http://kcat.strangesoft.net/openal-releases/${name}.tar.bz2";
-    sha256 = "0mmhdqiyb3c9dzvxspm8h2v8jibhi8pfjxnf6m0wn744y1ia2a8f";
+  src = fetchFromGitHub {
+    owner = "kcat";
+    repo = "openal-soft";
+    rev = "${pname}-${version}";
+    sha256 = "0b0g0q1c36nfb289xcaaj3cmyfpiswvvgky3qyalsf9n4dj7vnzi";
   };
 
-  buildInputs = [ cmake ]
-    ++ stdenv.lib.optional alsaSupport alsaLib
-    ++ stdenv.lib.optional pulseSupport pulseaudio;
+  # this will make it find its own data files (e.g. HRTF profiles)
+  # without any other configuration
+  patches = [ ./search-out.patch ];
+  postPatch = ''
+    substituteInPlace Alc/helpers.c \
+      --replace "@OUT@" $out
+  '';
 
-  NIX_LDFLAGS = []
-    ++ stdenv.lib.optional alsaSupport "-lasound"
-    ++ stdenv.lib.optional pulseSupport "-lpulse";
+  nativeBuildInputs = [ cmake ];
+
+  buildInputs = []
+    ++ optional alsaSupport alsaLib
+    ++ optional pulseSupport libpulseaudio
+    ++ optionals stdenv.isDarwin [ CoreServices AudioUnit AudioToolbox ];
+
+  NIX_LDFLAGS = toString ([]
+    ++ optional alsaSupport "-lasound"
+    ++ optional pulseSupport "-lpulse");
 
   meta = {
     description = "OpenAL alternative";
-    homepage = http://kcat.strangesoft.net/openal.html;
-    license = stdenv.lib.licenses.gpl2;
+    homepage = https://kcat.strangesoft.net/openal.html;
+    license = licenses.lgpl2;
+    maintainers = with maintainers; [ftrvxmtrx];
+    platforms = platforms.unix;
   };
 }

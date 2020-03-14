@@ -11,7 +11,7 @@ stdenv.mkDerivation rec {
   doCheck = true;
 
   meta = {
-    homepage = http://savannah.gnu.org/projects/cppi/;
+    homepage = https://savannah.gnu.org/projects/cppi/;
 
     description = "A C preprocessor directive indenter";
 
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
 
     license = stdenv.lib.licenses.gpl3Plus;
 
-    maintainers = [ stdenv.lib.maintainers.ludo ];
+    maintainers = [ ];
     platforms = stdenv.lib.platforms.all;
   };
 }

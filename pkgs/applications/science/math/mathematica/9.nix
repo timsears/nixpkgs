@@ -7,18 +7,16 @@
 , freetype
 , gcc
 , glib
-, libpng
 , ncurses
 , opencv
 , openssl
 , unixODBC
-, xlibs
-, zlib
+, xorg
 }:
 
 let
   platform =
-    if stdenv.system == "i686-linux" || stdenv.system == "x86_64-linux" then
+    if stdenv.hostPlatform.system == "i686-linux" || stdenv.hostPlatform.system == "x86_64-linux" then
       "Linux"
     else
       throw "Mathematica requires i686-linux or x86_64 linux";
@@ -27,7 +25,7 @@ stdenv.mkDerivation rec {
 
   name = "mathematica-9.0.0";
 
-  src = requireFile rec {
+  src = requireFile {
     name = "Mathematica_9.0.0_LINUX.sh";
     message = '' 
       This nix expression requires that Mathematica_9.0.0_LINUX.sh is
@@ -44,14 +42,14 @@ stdenv.mkDerivation rec {
     coreutils
     fontconfig
     freetype
-    gcc.gcc
+    gcc.cc
     gcc.libc
     glib
     ncurses
     opencv
     openssl
     unixODBC
-  ] ++ (with xlibs; [
+  ] ++ (with xorg; [
     libX11
     libXext
     libXtst
@@ -62,8 +60,8 @@ stdenv.mkDerivation rec {
   ]);
 
   ldpath = stdenv.lib.makeLibraryPath buildInputs
-    + stdenv.lib.optionalString (stdenv.system == "x86_64-linux")
-      (":" + stdenv.lib.makeSearchPath "lib64" buildInputs);
+    + stdenv.lib.optionalString (stdenv.hostPlatform.system == "x86_64-linux")
+      (":" + stdenv.lib.makeSearchPathOutput "lib" "lib64" buildInputs);
 
   phases = "unpackPhase installPhase fixupPhase";
 
@@ -86,14 +84,14 @@ stdenv.mkDerivation rec {
 
   preFixup = ''
     echo "=== PatchElfing away ==="
-    find $out/libexec/Mathematica/SystemFiles -type f -perm +100 | while read f; do
+    find $out/libexec/Mathematica/SystemFiles -type f -perm -0100 | while read f; do
       type=$(readelf -h "$f" 2>/dev/null | grep 'Type:' | sed -e 's/ *Type: *\([A-Z]*\) (.*/\1/')
       if [ -z "$type" ]; then
         :
       elif [ "$type" == "EXEC" ]; then
         echo "patching $f executable <<"
         patchelf \
-            --set-interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" \
+            --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
             --set-rpath "${ldpath}" \
             "$f"
         patchelf --shrink-rpath "$f"
@@ -118,7 +116,7 @@ stdenv.mkDerivation rec {
 
   meta = {
     description = "Wolfram Mathematica computational software system";
-    homepage = "http://www.wolfram.com/mathematica/";
+    homepage = http://www.wolfram.com/mathematica/;
     license = stdenv.lib.licenses.unfree;
   };
 }

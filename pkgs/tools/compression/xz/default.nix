@@ -1,20 +1,31 @@
-{ stdenv, fetchurl }:
+{ stdenv, fetchurl, enableStatic ? false }:
 
 stdenv.mkDerivation rec {
-  name = "xz-5.0.5";
+  name = "xz-5.2.4";
 
   src = fetchurl {
-    url = "http://tukaani.org/xz/${name}.tar.bz2";
-    sha256 = "1404i59bp6rzxya0br1q9njdv32z4sggyfrkjr7vq695hk94hv0n";
+    url = "https://tukaani.org/xz/${name}.tar.bz2";
+    sha256 = "1gxpayfagb4v7xfhs2w6h7k56c6hwwav1rk48bj8hggljlmgs4rk";
   };
+
+  outputs = [ "bin" "dev" "out" "man" "doc" ];
+
+  configureFlags = stdenv.lib.optional enableStatic "--disable-shared";
 
   doCheck = true;
 
-  # In stdenv-linux, prevent a dependency on bootstrap-tools.
-  preHook = "unset CONFIG_SHELL";
+  preCheck = ''
+    # Tests have a /bin/sh dependency...
+    patchShebangs tests
+  '';
 
-  meta = {
-    homepage = http://tukaani.org/xz/;
+  # In stdenv-linux, prevent a dependency on bootstrap-tools.
+  preConfigure = "CONFIG_SHELL=/bin/sh";
+
+  postInstall = "rm -rf $out/share/doc";
+
+  meta = with stdenv.lib; {
+    homepage = https://tukaani.org/xz/;
     description = "XZ, general-purpose data compression software, successor of LZMA";
 
     longDescription =
@@ -31,8 +42,8 @@ stdenv.mkDerivation rec {
          bzip2.
       '';
 
-    license = [ "GPLv2+" "LGPLv2.1+" ];
-    maintainers = with stdenv.lib.maintainers; [ sander ];
-    platforms = stdenv.lib.platforms.all;
+    license = with licenses; [ gpl2Plus lgpl21Plus ];
+    maintainers = with maintainers; [ sander ];
+    platforms = platforms.all;
   };
 }

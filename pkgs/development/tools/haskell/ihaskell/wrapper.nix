@@ -1,26 +1,28 @@
-{ stdenv, makeWrapper, ihaskell, ipython, ghc }:
-
-stdenv.mkDerivation rec {
-
-  name = "ihaskell-" + ihaskell.version ;
-
-  buildInputs = [ makeWrapper ];
-
-  preferLocalBuild = true;
-
-  buildCommand = ''
-    makeWrapper "${ihaskell}/bin/IHaskell" "$out/bin/ihaskell" \
-      --prefix PATH : "${ghc}/bin:${ihaskell}/bin:${ipython}/bin" \
-      --prefix LD_LIBRARY_PATH : "${ihaskell}/lib/ghc-${ghc.version}/${name}/" \
-      --add-flags "--ipython=${ipython}/bin/ipython" \
-      --set PROFILE_DIR "\$HOME/.ipython/profile_haskell" \
-      --set PROFILE_TAR "$(find ${ihaskell} -iname "profile.tar")" \
-      --set PROFILE_INIT "\$([ ! -d \$PROFILE_DIR ] && mkdir -p \$PROFILE_DIR && tar xvf \$PROFILE_TAR -C \$PROFILE_DIR)" \
-      --prefix GHC_PACKAGE_PATH : "\$(${ghc.GHCGetPackages} ${ghc.version}|sed -e 's, -package-db ,:,g'|cut -b 2-):${ihaskell}/lib/ghc-${ghc.version}/package.conf.d/${name}.installedconf" \
-      --set GHC_PACKAGE_PATH "\$GHC_PACKAGE_PATH:" # always end with : to include base packages
+{ stdenv, writeScriptBin, makeWrapper, buildEnv, haskell, ghcWithPackages, jupyter, packages }:
+let
+  ihaskellEnv = ghcWithPackages (self: [
+    self.ihaskell
+    (haskell.lib.doJailbreak self.ihaskell-blaze)
+    (haskell.lib.doJailbreak self.ihaskell-diagrams)
+    (haskell.lib.doJailbreak self.ihaskell-display)
+  ] ++ packages self);
+  ihaskellSh = writeScriptBin "ihaskell-notebook" ''
+    #! ${stdenv.shell}
+    export GHC_PACKAGE_PATH="$(echo ${ihaskellEnv}/lib/*/package.conf.d| tr ' ' ':'):$GHC_PACKAGE_PATH"
+    export PATH="${stdenv.lib.makeBinPath ([ ihaskellEnv jupyter ])}\${PATH:+':'}$PATH"
+    ${ihaskellEnv}/bin/ihaskell install -l $(${ihaskellEnv}/bin/ghc --print-libdir) && ${jupyter}/bin/jupyter notebook
   '';
-
-  meta = {
-    description = ihaskell.meta.description;
-  };
+in
+buildEnv {
+  name = "ihaskell-with-packages";
+  buildInputs = [ makeWrapper ];
+  paths = [ ihaskellEnv jupyter ];
+  postBuild = ''
+    ln -s ${ihaskellSh}/bin/ihaskell-notebook $out/bin/
+    for prg in $out/bin"/"*;do
+      if [[ -f $prg && -x $prg ]]; then
+        wrapProgram $prg --set PYTHONPATH "$(echo ${jupyter}/lib/*/site-packages)"
+      fi
+    done
+  '';
 }

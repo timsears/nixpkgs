@@ -1,30 +1,32 @@
-{ stdenv, fetchsvn, wine, perl, which, coreutils, zenity, curl
+{ stdenv, callPackage, wine, perl, which, coreutils, zenity, curl
 , cabextract, unzip, p7zip, gnused, gnugrep, bash } :
 
 stdenv.mkDerivation rec {
-  rev = "1199";
-  name = "winetricks-${rev}";
+  name = "winetricks-${src.version}";
 
-  src = fetchsvn {
-    url = "http://winetricks.googlecode.com/svn/trunk";
-    inherit rev;
-    sha256 = "1kji1n6ps09g8xnl9m7vqk3vkl03abzwnc43c52i8p0adnv06khb";
-  };
+  src = (callPackage ./sources.nix {}).winetricks;
 
   buildInputs = [ perl which ];
 
-  pathAdd = stdenv.lib.concatStringsSep "/bin:" # coreutils is for sha1sum
-    [ wine perl which coreutils zenity curl cabextract unzip p7zip gnused gnugrep bash ]
-    + "/bin";
+  # coreutils is for sha1sum
+  pathAdd = stdenv.lib.concatMapStringsSep ":" (x: x + "/bin")
+    [ wine perl which coreutils zenity curl cabextract unzip p7zip gnused gnugrep bash ];
 
-  patch = ./winetricks.patch;
+  makeFlags = [ "PREFIX=$(out)" ];
 
-  builder = ./build_winetricks.sh;
+  doCheck = false; # requires "bashate"
+
+  postInstall = ''
+    sed -i \
+      -e '2i PATH="${pathAdd}:$PATH"' \
+      "$out/bin/winetricks"
+  '';
 
   meta = {
     description = "A script to install DLLs needed to work around problems in Wine";
     license = stdenv.lib.licenses.lgpl21;
-    homepage = http://code.google.com/p/winetricks/;
+    homepage = https://github.com/Winetricks/winetricks;
     maintainers = with stdenv.lib.maintainers; [ the-kenny ];
+    platforms = with stdenv.lib.platforms; linux;
   };
 }

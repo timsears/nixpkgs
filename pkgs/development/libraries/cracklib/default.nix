@@ -1,18 +1,40 @@
-{ stdenv, fetchurl, libintlOrEmpty }:
+let version = "2.9.7"; in
+{ stdenv, lib, buildPackages, fetchurl, zlib, gettext
+, wordlists ? [ (fetchurl {
+  url = "https://github.com/cracklib/cracklib/releases/download/v${version}/cracklib-words-${version}.gz";
+  sha256 = "12fk8w06q628v754l357cf8kfjna98wj09qybpqr892az3x4a33z";
+}) ]
+}:
 
 stdenv.mkDerivation rec {
-  name = "cracklib-2.9.1";
+  pname = "cracklib";
+  inherit version;
 
   src = fetchurl {
-    url = "mirror://sourceforge/cracklib/${name}.tar.gz";
-    sha256 = "0mni2sz7350d4acs7gdl8nilfmnb8qhcvmxnpf6dr5wsag10b2a0";
+    url = "https://github.com/${pname}/${pname}/releases/download/v${version}/${pname}-${version}.tar.bz2";
+    sha256 = "1rimpjsdnmw8f5b7k558cic41p2qy2n2yrlqp5vh7mp4162hk0py";
   };
 
-  buildInputs = libintlOrEmpty;
+  nativeBuildInputs = lib.optional (stdenv.hostPlatform != stdenv.buildPlatform) buildPackages.cracklib;
+  buildInputs = [ zlib gettext ];
 
-  meta = with stdenv.lib; {
-    homepage    = http://sourceforge.net/projects/cracklib;
+  postPatch = ''
+    chmod +x util/cracklib-format
+    patchShebangs util
+
+    ln -vs ${toString wordlists} dicts/
+  '';
+
+  postInstall = ''
+    make dict-local
+  '';
+  doInstallCheck = true;
+  installCheckTarget = "test";
+
+  meta = with lib; {
+    homepage    = https://github.com/cracklib/cracklib;
     description = "A library for checking the strength of passwords";
+    license = licenses.lgpl21; # Different license for the wordlist: http://www.openwall.com/wordlists
     maintainers = with maintainers; [ lovek323 ];
     platforms   = platforms.unix;
   };

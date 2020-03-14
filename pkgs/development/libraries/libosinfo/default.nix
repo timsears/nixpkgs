@@ -1,22 +1,43 @@
-{ stdenv, fetchurl, pkgconfig, intltool, gobjectIntrospection, libsoup
-, libxslt, check, vala ? null
+{ stdenv, fetchurl, fetchpatch, pkgconfig, gettext, gobject-introspection, gtk-doc, docbook_xsl
+, glib, libsoup, libxml2, libxslt, check, curl, perl, hwdata, osinfo-db, substituteAll
+, vala ? null
 }:
 
 stdenv.mkDerivation rec {
-  name = "libosinfo-0.2.10";
+  pname = "libosinfo";
+  version = "1.6.0";
 
   src = fetchurl {
-    url = "https://fedorahosted.org/releases/l/i/libosinfo/${name}.tar.gz";
-    sha256 = "564bd487a39dc09a10917c1d7a95f739ee7701d9cd0fbabcacea64f615e20a2d";
+    url = "https://releases.pagure.org/${pname}/${pname}-${version}.tar.gz";
+    sha256 = "1iwh35mahch1ls3sgq7wz8kamxrxisrff5ciqzyh2qxlrqf5qf1w";
   };
 
-  buildInputs = [
-    pkgconfig intltool gobjectIntrospection libsoup libxslt check vala
+  outputs = [ "out" "dev" "devdoc" ];
+
+  nativeBuildInputs = [
+    pkgconfig vala gettext gobject-introspection gtk-doc docbook_xsl
+  ];
+  buildInputs = [ glib libsoup libxml2 libxslt ];
+  checkInputs = [ check curl perl ];
+
+  patches = [
+    (substituteAll {
+      src = ./osinfo-db-data-dir.patch;
+      osinfo_db_data_dir = "${osinfo-db}/share";
+    })
   ];
 
+  configureFlags = [
+    "--with-usb-ids-path=${hwdata}/share/hwdata/usb.ids"
+    "--with-pci-ids-path=${hwdata}/share/hwdata/pci.ids"
+    "--enable-gtk-doc"
+  ];
+
+  doCheck = true;
+
   meta = with stdenv.lib; {
-    description = "Info about OSs, hypervisors and (virtual) hardware devices";
-    homepage = http://libosinfo.org/;
+    description = "GObject based library API for managing information about operating systems, hypervisors and the (virtual) hardware devices they can support";
+    homepage = https://libosinfo.org/;
     license = licenses.lgpl2Plus;
     platforms = platforms.linux;
     maintainers = [ maintainers.bjornfor ];

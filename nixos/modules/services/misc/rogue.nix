@@ -40,7 +40,7 @@ in
 
   config = mkIf cfg.enable {
 
-    boot.extraTTYs = [ cfg.tty ];
+    console.extraTTYs = [ cfg.tty ];
 
     systemd.services.rogue =
       { description = "Rogue dungeon crawling game";
@@ -52,6 +52,7 @@ in
             TTYPath = "/dev/${cfg.tty}";
             TTYReset = true;
             TTYVTDisallocate = true;
+            WorkingDirectory = "/tmp";
             Restart = "always";
           };
       };

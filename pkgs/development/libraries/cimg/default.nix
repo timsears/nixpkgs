@@ -1,26 +1,32 @@
-{ stdenv, fetchurl
-, unzip }:
+{ stdenv, fetchurl, unzip }:
 
 stdenv.mkDerivation rec {
-
-  name = "cimg-${version}";
-  version = "1.5.9";
+  pname = "cimg";
+  version = "2.8.4";
 
   src = fetchurl {
-    url = "http://downloads.sourceforge.net/project/cimg/CImg-${version}.zip";
-    sha256 = "1xn20643gcbl76kvy9ajhwbyjjb73mg65q32ma8mdkwn1qhn7f7c";
+    url = "http://cimg.eu/files/CImg_${version}.zip";
+    sha256 = "1y4j2dmk4nnc5rx65c2px7r0nfq5117pmqpvi7klp9wmgcjs29gf";
   };
 
-  buildInputs = with stdenv.lib;
-  [ unzip ];
+  nativeBuildInputs = [ unzip ];
 
-  builder = ./builder.sh;
-  
+  installPhase = ''
+    install -dm 755 $out/include/CImg/plugins $doc/share/doc/cimg/examples
+
+    install -m 644 CImg.h $out/include/
+    cp -dr --no-preserve=ownership examples/* $doc/share/doc/cimg/examples/
+    cp -dr --no-preserve=ownership plugins/* $out/include/CImg/plugins/
+    cp README.txt $doc/share/doc/cimg/
+  '';
+
+  outputs = [ "out" "doc" ];
+
   meta = with stdenv.lib; {
     description = "A small, open source, C++ toolkit for image processing";
-    homepage = http://cimg.sourceforge.net/;
+    homepage = "http://cimg.eu/";
     license = licenses.cecill-c;
     maintainers = [ maintainers.AndersonTorres ];
-    platforms = platforms.linux;
+    platforms = platforms.unix;
   };
 }

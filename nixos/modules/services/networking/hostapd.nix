@@ -1,22 +1,20 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, utils, ... }:
 
 # TODO:
 #
-# asserts 
+# asserts
 #   ensure that the nl80211 module is loaded/compiled in the kernel
-#   hwMode must be a/b/g
-#   channel must be between 1 and 13 (maybe)
 #   wpa_supplicant and hostapd on the same wireless interface doesn't make any sense
-#   perhaps an assertion that there is a dhcp server and a dns server on the IP address serviced by the hostapd?
 
 with lib;
 
 let
 
   cfg = config.services.hostapd;
-  
-  configFile = pkgs.writeText "hostapd.conf"  
-    ''
+
+  escapedInterface = utils.escapeSystemdPath cfg.interface;
+
+  configFile = pkgs.writeText "hostapd.conf" ''
     interface=${cfg.interface}
     driver=${cfg.driver}
     ssid=${cfg.ssid}
@@ -29,16 +27,17 @@ let
     logger_stdout=-1
     logger_stdout_level=2
 
-    ctrl_interface=/var/run/hostapd
+    ctrl_interface=/run/hostapd
     ctrl_interface_group=${cfg.group}
 
-    ${if cfg.wpa then ''
-      wpa=1
+    ${optionalString cfg.wpa ''
+      wpa=2
       wpa_passphrase=${cfg.wpaPassphrase}
-      '' else ""}
+    ''}
+    ${optionalString cfg.noScan "noscan=1"}
 
-    ${cfg.extraCfg}
-    '' ;
+    ${cfg.extraConfig}
+  '' ;
 
 in
 
@@ -53,88 +52,107 @@ in
         default = false;
         description = ''
           Enable putting a wireless interface into infrastructure mode,
-          allowing other wireless devices to associate with the wireless interface and do
-          wireless networking. A simple access point will enable hostapd.wpa, and
-          hostapd.wpa_passphrase, hostapd.ssid, dhcpd on the wireless interface to
-          provide IP addresses to the associated stations, and nat (from the wireless
-          interface to an upstream interface). 
+          allowing other wireless devices to associate with the wireless
+          interface and do wireless networking. A simple access point will
+          <option>enable hostapd.wpa</option>,
+          <option>hostapd.wpaPassphrase</option>, and
+          <option>hostapd.ssid</option>, as well as DHCP on the wireless
+          interface to provide IP addresses to the associated stations, and
+          NAT (from the wireless interface to an upstream interface).
         '';
       };
 
       interface = mkOption {
         default = "";
-        example = "wlan0";
+        example = "wlp2s0";
         description = ''
-          The interfaces <command>hostapd</command> will use. 
+          The interfaces <command>hostapd</command> will use.
+        '';
+      };
+
+      noScan = mkOption {
+        default = false;
+        description = ''
+          Do not scan for overlapping BSSs in HT40+/- mode.
+          Caution: turning this on will violate regulatory requirements!
         '';
       };
 
       driver = mkOption {
         default = "nl80211";
         example = "hostapd";
-        type = types.string;
-        description = "Which driver hostapd will use. Most things will probably use the default.";
+        type = types.str;
+        description = ''
+          Which driver <command>hostapd</command> will use.
+          Most applications will probably use the default.
+        '';
       };
 
       ssid = mkOption {
         default = "nixos";
         example = "mySpecialSSID";
-        type = types.string;
+        type = types.str;
         description = "SSID to be used in IEEE 802.11 management frames.";
       };
 
       hwMode = mkOption {
-        default = "b";
-        example = "g";
-        type = types.string;
-        description = "Operation mode (a = IEEE 802.11a, b = IEEE 802.11b, g = IEEE 802.11g";
+        default = "g";
+        type = types.enum [ "a" "b" "g" ];
+        description = ''
+          Operation mode.
+          (a = IEEE 802.11a, b = IEEE 802.11b, g = IEEE 802.11g).
+        '';
       };
 
-      channel = mkOption { 
+      channel = mkOption {
         default = 7;
         example = 11;
         type = types.int;
-        description = 
-          ''
+        description = ''
           Channel number (IEEE 802.11)
-          Please note that some drivers do not use this value from hostapd and the
-          channel will need to be configured separately with iwconfig.
-          '';
+          Please note that some drivers do not use this value from
+          <command>hostapd</command> and the channel will need to be configured
+          separately with <command>iwconfig</command>.
+        '';
       };
 
       group = mkOption {
         default = "wheel";
         example = "network";
-        type = types.string;
-        description = "members of this group can control hostapd";
+        type = types.str;
+        description = ''
+          Members of this group can control <command>hostapd</command>.
+        '';
       };
 
       wpa = mkOption {
         default = true;
-        description = "enable WPA (IEEE 802.11i/D3.0) to authenticate to the access point";
+        description = ''
+          Enable WPA (IEEE 802.11i/D3.0) to authenticate with the access point.
+        '';
       };
 
       wpaPassphrase = mkOption {
         default = "my_sekret";
         example = "any_64_char_string";
-        type = types.string;
-        description = 
-          ''
+        type = types.str;
+        description = ''
           WPA-PSK (pre-shared-key) passphrase. Clients will need this
-          passphrase to associate with this access point. Warning: This passphrase will
-          get put into a world-readable file in the nix store. 
-          '';
+          passphrase to associate with this access point.
+          Warning: This passphrase will get put into a world-readable file in
+          the Nix store!
+        '';
       };
 
-      extraCfg = mkOption {
+      extraConfig = mkOption {
         default = "";
         example = ''
           auth_algo=0
           ieee80211n=1
           ht_capab=[HT40-][SHORT-GI-40][DSSS_CCK-40]
           '';
-        type = types.string;
-        description = "Extra configuration options to put in the hostapd.conf";
+        type = types.lines;
+        description = "Extra configuration options to put in hostapd.conf.";
       };
     };
   };
@@ -149,12 +167,13 @@ in
     systemd.services.hostapd =
       { description = "hostapd wireless AP";
 
-        path = [ pkgs.hostapd ]; 
-        wantedBy = [ "network.target" ];
+        path = [ pkgs.hostapd ];
+        after = [ "sys-subsystem-net-devices-${escapedInterface}.device" ];
+        bindsTo = [ "sys-subsystem-net-devices-${escapedInterface}.device" ];
+        requiredBy = [ "network-link-${cfg.interface}.service" ];
+        wantedBy = [ "multi-user.target" ];
 
-        after = [ "${cfg.interface}-cfg.service" "nat.service" "bind.service" "dhcpd.service"];
-
-        serviceConfig = 
+        serviceConfig =
           { ExecStart = "${pkgs.hostapd}/bin/hostapd ${configFile}";
             Restart = "always";
           };

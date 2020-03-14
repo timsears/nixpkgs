@@ -1,25 +1,33 @@
-{ stdenv, fetchurl, libpcap, openssl, zlib, wirelesstools, libnl, pkgconfig }:
+{ stdenv, fetchurl, libpcap, openssl, zlib, wirelesstools
+, iw, ethtool, pciutils, libnl, pkgconfig, makeWrapper
+, autoreconfHook, usbutils }:
 
 stdenv.mkDerivation rec {
-  name = "aircrack-ng-1.2-beta3";
+  name = "aircrack-ng-1.5.2";
 
   src = fetchurl {
-    url = "http://download.aircrack-ng.org/${name}.tar.gz";
-    sha256 = "13g9xz9djjgfc2xi88vnx7zhgy751hqb3739y7znyihd6q9sw8id";
+    url = "https://download.aircrack-ng.org/${name}.tar.gz";
+    sha256 = "0hc2x17bxk2n00z8jj5jfwq3z41681fd19n018724il0cpkjyncy";
   };
 
-  buildInputs = [ libpcap openssl zlib libnl pkgconfig ];
+  nativeBuildInputs = [ pkgconfig makeWrapper autoreconfHook ];
+  buildInputs = [ libpcap openssl zlib libnl iw ethtool pciutils ];
 
   patchPhase = ''
-    sed -e 's@^prefix.*@prefix = '$out@ -i common.mak
-    sed -e 's@/usr/local/bin@'${wirelesstools}@ -i src/osdep/linux.c
-    '';
+    sed -e 's@/usr/local/bin@'${wirelesstools}@ -i src/aircrack-osdep/linux.c
+  '';
+
+  postFixup = ''
+    wrapProgram $out/bin/airmon-ng --prefix PATH : ${stdenv.lib.makeBinPath [
+      ethtool iw pciutils usbutils
+    ]}
+  '';
 
   meta = with stdenv.lib; {
-    description = "Wireless encryption crackign tools";
+    description = "Wireless encryption cracking tools";
     homepage = http://www.aircrack-ng.org/;
-    license = stdenv.lib.licenses.gpl2Plus;
-    maintainers = [ maintainers.iElectric maintainers.viric maintainers.garbas maintainers.chaoflow ];
+    license = licenses.gpl2Plus;
+    maintainers = with maintainers; [ domenkozar ];
     platforms = platforms.linux;
   };
 }

@@ -1,19 +1,25 @@
-{stdenv, fetchurl, srtp, libzrtpcpp, pkgconfig }:
+{ stdenv, cmake, fetchFromGitHub, bctoolbox }:
 
 stdenv.mkDerivation rec {
-  name = "ortp-0.22.0";
+  pname = "ortp";
+  version = "1.0.2";
 
-  src = fetchurl {
-    url = "mirror://savannah/linphone/ortp/sources/${name}.tar.gz";
-    sha256 = "02rdm6ymgblbx8fnjfvivkl4qkgbdizrf35fyb0vln9m7jdy4dvf";
+  src = fetchFromGitHub {
+    owner = "BelledonneCommunications";
+    repo = pname;
+    rev = version;
+    sha256 = "12cwv593bsdnxs0zfcp07vwyk7ghlz2wv7vdbs1ksv293w3vj2rv";
   };
 
-  configureFlags = "--enable-zrtp";
+  NIX_CFLAGS_COMPILE = "-Wno-error=stringop-truncation";
 
-  propagatedBuildInputs = [ srtp libzrtpcpp pkgconfig ];
+  buildInputs = [ bctoolbox ];
+  nativeBuildInputs = [ cmake ];
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "A Real-Time Transport Protocol (RFC3550) stack";
-    homepage = http://www.linphone.org/index.php/eng/code_review/ortp;
+    homepage = https://linphone.org/technical-corner/ortp;
+    license = licenses.gpl2Plus;
+    platforms = platforms.all;
   };
 }

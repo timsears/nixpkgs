@@ -1,42 +1,38 @@
-{ stdenv, fetchurl }:
+{ stdenv, buildPackages, fetchurl, fetchpatch, pciutils }:
+
+with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  name = "gnu-efi_${version}";
-  version = "3.0u";
+  pname = "gnu-efi";
+  version = "3.0.11";
 
   src = fetchurl {
-    url = "mirror://sourceforge/gnu-efi/${name}.orig.tar.gz";
-    sha256 = "0klkdxh1aqwwfm393q67nxww6liffyp2lfybbnh4q819b06la39w";
+    url = "mirror://sourceforge/gnu-efi/${pname}-${version}.tar.bz2";
+    sha256 = "1ffnc4xbzfggs37ymrgfx76j56kk2644c081ivhr2bjkla9ag3gj";
   };
 
-  arch = with stdenv.lib; head (splitString "-" stdenv.system);
-
-  makeFlags = [
-    "CC=gcc"
-    "AS=as"
-    "LD=ld"
-    "AR=ar"
-    "RANLIB=ranlib"
-    "OBJCOPY=objcopy"
+  patches = [
+    # Fix build on armv6l
+    (fetchpatch {
+      url = "https://sourceforge.net/p/gnu-efi/patches/_discuss/thread/25bb273a18/9c4d/attachment/0001-Fix-ARCH-on-armv6-and-other-32-bit-ARM-platforms.patch";
+      sha256 = "0pj03h20g2bbz6fr753bj1scry6919h57l1h86z3b6q7hqfj0b4r";
+    })
   ];
 
-  buildPhase = ''
-    make $makeFlags
-    make $makeFlags -C apps clean all
-  '';
+  buildInputs = [ pciutils ];
 
-  installPhase = ''
-    mkdir -pv $out/include/efi/{protocol,$arch}
-    make PREFIX="$out" $makeFlags install
-    mkdir -pv $out/share/gnu-efi
-    install -D -m644 apps/*.efi $out/share/gnu-efi
-  '';
+  hardeningDisable = [ "stackprotector" ];
+
+  makeFlags = [
+    "PREFIX=\${out}"
+    "HOSTCC=${buildPackages.stdenv.cc.targetPrefix}cc"
+    "CROSS_COMPILE=${stdenv.cc.targetPrefix}"
+  ];
 
   meta = with stdenv.lib; {
     description = "GNU EFI development toolchain";
-    homepage = http://sourceforge.net/projects/gnu-efi/;
+    homepage = https://sourceforge.net/projects/gnu-efi/;
     license = licenses.bsd3;
-    maintainers = [ stdenv.lib.maintainers.shlevy ];
     platforms = platforms.linux;
   };
 }

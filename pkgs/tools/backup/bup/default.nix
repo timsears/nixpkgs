@@ -1,31 +1,37 @@
-{ stdenv, fetchgit, python, pyxattr, pylibacl, setuptools, fuse, git, perl, pandoc, makeWrapper
-, par2cmdline, par2Support ? false }:
+{ stdenv, fetchFromGitHub, makeWrapper
+, perl, pandoc, python2Packages, git
+, par2cmdline ? null, par2Support ? true
+}:
 
 assert par2Support -> par2cmdline != null;
 
-let rev = "96c6fa2a70425fff1e73d2e0945f8e242411ab58"; in
+let version = "0.30"; in
 
 with stdenv.lib;
 
 stdenv.mkDerivation {
-  name = "bup-0.25-rc1-107-${stdenv.lib.strings.substring 0 7 rev}";
+  pname = "bup";
+  inherit version;
 
-  src = fetchgit {
-    url = "https://github.com/bup/bup.git";
-    inherit rev;
-    sha256 = "0d9hgyh1g5qcpdvnqv3a5zy67x79yx9qx557rxrnxyzqckp9v75n";
+  src = fetchFromGitHub {
+    repo = "bup";
+    owner = "bup";
+    rev = version;
+    sha256 = "0kzi9mzgmx1kjv3aldawapz7bk73f02bysiwh8rngqnirmm0vxdp";
   };
 
-  buildInputs = [ python git ];
+  buildInputs = [
+    git
+    (python2Packages.python.withPackages
+      (p: with p; [ setuptools tornado ]
+        ++ stdenv.lib.optionals (!stdenv.isDarwin) [ pyxattr pylibacl fuse ]))
+  ];
   nativeBuildInputs = [ pandoc perl makeWrapper ];
 
-  patchPhase = ''
+  postPatch = ''
+    patchShebangs .
     substituteInPlace Makefile --replace "-Werror" ""
-    for f in "cmd/"* "lib/tornado/"* "lib/tornado/test/"* "t/"* wvtest.py main.py; do
-      test -f $f || continue
-      substituteInPlace $f --replace "/usr/bin/env python" "${python}/bin/python"
-    done
-    substituteInPlace Makefile --replace "./format-subst.pl" "perl ./format-subst.pl"
+    substituteInPlace Makefile --replace "./format-subst.pl" "${perl}/bin/perl ./format-subst.pl"
   '' + optionalString par2Support ''
     substituteInPlace cmd/fsck-cmd.py --replace "['par2'" "['${par2cmdline}/bin/par2'"
   '';
@@ -39,22 +45,22 @@ stdenv.mkDerivation {
     "LIBDIR=$(out)/lib/bup"
   ];
 
-  postInstall = optionalString (elem stdenv.system platforms.linux) ''
-    wrapProgram $out/bin/bup --prefix PYTHONPATH : \
-      ${stdenv.lib.concatStringsSep ":"
-          (map (path: "$(toPythonPath ${path})") [ pyxattr pylibacl setuptools fuse ])}
+  postInstall = ''
+    wrapProgram $out/bin/bup \
+      --prefix PATH : ${git}/bin
   '';
 
   meta = {
-    homepage = "https://github.com/bup/bup";
-    description = "efficient file backup system based on the git packfile format";
-    license = stdenv.lib.licenses.gpl2Plus;
+    homepage = https://github.com/bup/bup;
+    description = "Efficient file backup system based on the git packfile format";
+    license = licenses.gpl2Plus;
 
     longDescription = ''
       Highly efficient file backup system based on the git packfile format.
       Capable of doing *fast* incremental backups of virtual machine images.
     '';
 
-    hydraPlatforms = stdenv.lib.platforms.linux;
+    platforms = platforms.linux ++ platforms.darwin;
+    maintainers = with maintainers; [ muflax ];
   };
 }

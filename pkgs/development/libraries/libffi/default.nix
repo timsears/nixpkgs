@@ -1,33 +1,41 @@
-{ fetchurl, stdenv, dejagnu }:
+{ stdenv, fetchurl, fetchpatch
+, autoreconfHook
+
+# libffi is used in darwin and linux with glibc stdenv
+# we cannot run checks within it
+, doCheck ? stdenv.hostPlatform.isMusl, dejagnu
+}:
 
 stdenv.mkDerivation rec {
-  name = "libffi-3.0.13";
+  name = "libffi-3.3";
 
   src = fetchurl {
-    url = "ftp://sourceware.org/pub/libffi/${name}.tar.gz";
-    sha256 = "077ibkf84bvcd6rw1m6jb107br63i2pp301rkmsbgg6300adxp8x";
+    url = "https://sourceware.org/pub/libffi/${name}.tar.gz";
+    sha256 = "0mi0cpf8aa40ljjmzxb7im6dbj45bb0kllcd09xgmp834y9agyvj";
   };
 
-  patches = stdenv.lib.optional (stdenv.needsPax) ./libffi-3.0.13-emutramp_pax_proc.patch;
+  patches = [];
 
-  buildInputs = stdenv.lib.optional doCheck dejagnu;
+  outputs = [ "out" "dev" "man" "info" ];
 
   configureFlags = [
     "--with-gcc-arch=generic" # no detection of -march= or -mtune=
-  ] ++ stdenv.lib.optional (stdenv.needsPax) "--enable-pax_emutramp";
+    "--enable-pax_emutramp"
+  ];
 
-  doCheck = stdenv.isLinux; # until we solve dejagnu problems on darwin and expect on BSD
+  preCheck = ''
+    # The tests use -O0 which is not compatible with -D_FORTIFY_SOURCE.
+    NIX_HARDENING_ENABLE=''${NIX_HARDENING_ENABLE/fortify/}
+  '';
 
-  dontStrip = stdenv ? cross; # Don't run the native `strip' when cross-compiling.
+  checkInputs = [ dejagnu ];
 
-  postInstall =
-    # Install headers in the right place.
-    '' ln -s${if stdenv.isFreeBSD then "" else "r"}v "$out/lib/"libffi*/include "$out/include"
-    '';
+  inherit doCheck;
 
-  meta = {
+  dontStrip = stdenv.hostPlatform != stdenv.buildPlatform; # Don't run the native `strip' when cross-compiling.
+
+  meta = with stdenv.lib; {
     description = "A foreign function call interface library";
-
     longDescription = ''
       The libffi library provides a portable, high level programming
       interface to various calling conventions.  This allows a
@@ -42,14 +50,9 @@ stdenv.mkDerivation rec {
       interface.  A layer must exist above libffi that handles type
       conversions for values passed between the two languages.
     '';
-
     homepage = http://sourceware.org/libffi/;
-
-    # See http://github.com/atgreen/libffi/blob/master/LICENSE .
-    license = "free, non-copyleft";
-
-    maintainers = [ stdenv.lib.maintainers.ludo ];
-    platforms = stdenv.lib.platforms.all;
+    license = licenses.mit;
+    maintainers = with maintainers; [ matthewbauer ];
+    platforms = platforms.all;
   };
 }
-

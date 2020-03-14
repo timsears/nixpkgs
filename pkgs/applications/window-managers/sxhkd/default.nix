@@ -1,27 +1,27 @@
-{ stdenv, fetchurl, asciidoc, libxcb, xcbutil, xcbutilkeysyms, xcbutilwm }:
+{ stdenv, fetchFromGitHub, asciidoc, libxcb, xcbutil, xcbutilkeysyms
+, xcbutilwm
+}:
 
 stdenv.mkDerivation rec {
-  name = "sxhkd-0.5.4";
- 
-  src = fetchurl {
-    url = "https://github.com/baskerville/sxhkd/archive/0.5.4.tar.gz";
-    sha256 = "de95f97155319ded41ece9403ac9e9f18bfdd914a09f553ab09b331bbfe5d332";
+  pname = "sxhkd";
+  version = "0.6.1";
+
+  src = fetchFromGitHub {
+    owner = "baskerville";
+    repo = "sxhkd";
+    rev = version;
+    sha256 = "0j7bl2l06r0arrjzpz7al9j6cwzc730knbsijp7ixzz96pq7xa2h";
   };
-  
+
   buildInputs = [ asciidoc libxcb xcbutil xcbutilkeysyms xcbutilwm ];
 
-  buildPhase = ''
-     make PREFIX=$out
-  '';
+  makeFlags = [ "PREFIX=$(out)" ];
 
-  installPhase = ''
-     make PREFIX=$out install
-  '';
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "Simple X hotkey daemon";
-    homepage = "http://github.com/baskerville/sxhkd";
-    license = "BSD";
-    platforms = stdenv.lib.platforms.linux;
+    homepage = "https://github.com/baskerville/sxhkd";
+    license = licenses.bsd2;
+    maintainers = with maintainers; [ vyp ];
+    platforms = platforms.linux;
   };
 }

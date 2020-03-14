@@ -1,81 +1,93 @@
-x@{builderDefsPackage
-  , readline
-  , ...}:
-builderDefsPackage
-(a :  
-let 
-  helperArgNames = ["stdenv" "fetchurl" "builderDefsPackage"] ++ 
-    [];
+{ stdenv, fetchFromGitHub, readline, libedit, bc }:
 
-  buildInputs = map (n: builtins.getAttr n x)
-    (builtins.attrNames (builtins.removeAttrs x helperArgNames));
-  sourceInfo = rec {
-    baseName="j";
-    version="701_b";
-    name="${baseName}-${version}";
-    url="http://www.jsoftware.com/download/${baseName}${version}_source.tar.gz";
-    hash="1gmjlpxcd647x690c4dxnf8h6ays8ndir6cib70h3zfnkrc34cys";
-  };
-in
-rec {
-  src = a.fetchurl {
-    url = sourceInfo.url;
-    sha256 = sourceInfo.hash;
+stdenv.mkDerivation rec {
+  pname = "j";
+  version = "807";
+  jtype = "release";
+  src = fetchFromGitHub {
+    owner = "jsoftware";
+    repo = "jsource";
+    rev = "j${version}-${jtype}";
+    sha256 = "1qciw2yg9x996zglvj2461qby038x89xcmfb3qyrh3myn8m1nq2n";
   };
 
-  inherit (sourceInfo) name version;
-  inherit buildInputs;
+  buildInputs = [ readline libedit bc ];
+  bits = if stdenv.is64bit then "64" else "32";
+  platform =
+    if (stdenv.isAarch32 || stdenv.isAarch64) then "raspberry" else
+    if stdenv.isLinux then "linux" else
+    if stdenv.isDarwin then "darwin" else
+    "unknown";
 
-  /* doConfigure should be removed if not needed */
-  phaseNames = ["doUnpack" "doBuildJ" "doDeploy"];
+  doCheck = true;
 
-  bits = if a.stdenv.system == "i686-linux" then 
-    "32"
-  else if a.stdenv.system == "x86_64-linux" then
-    "64"
-  else 
-    throw "Oops, unknown system: ${a.stdenv.system}";
+  buildPhase = ''
+    export SOURCE_DIR=$(pwd)
+    export HOME=$TMPDIR
+    export JLIB=$SOURCE_DIR/jlibrary
 
-  doBuildJ = a.fullDepEntry ''
-    sed -i bin/jconfig -e 's@bits=32@bits=${bits}@g; s@readline=0@readline=1@; s@LIBREADLINE=""@LIBREADLINE=" -lreadline "@'
-    sed -i bin/build_libj -e 's@>& make.txt@ 2>\&1 | tee make.txt@'
+    export jbld=$HOME/bld
+    export jplatform=${platform}
+    export jmake=$SOURCE_DIR/make
+    export jgit=$SOURCE_DIR
+    export JBIN=$jbld/j${bits}/bin
+    mkdir -p $JBIN
 
-    touch *.c *.h
-    sh bin/build_jconsole
-    sh bin/build_libj
-    sh bin/build_defs
-    sh bin/build_tsdll
+    echo $OUT_DIR
 
-    sed -i j/bin/profile.ijs -e "s@userx=[.] *'.j'@userx=. '/.j'@; 
-        s@bin,'/profilex.ijs'@user,'/profilex.ijs'@ ;
-	/install=./ainstall=. install,'/share/j'
-	"
-  '' ["doUnpack" "addInputs" "minInit"];
+    cd make
 
-  doDeploy = a.fullDepEntry ''
+    patchShebangs .
+    sed -i jvars.sh -e "
+      s@~/git/jsource@$SOURCE_DIR@;
+      s@~/jbld@$HOME@;
+      "
+
+    sed -i $JLIB/bin/profile.ijs -e "s@'/usr/share/j/.*'@'$out/share/j'@;"
+
+    # For future versions, watch
+    # https://github.com/jsoftware/jsource/pull/4
+    cp ./jvars.sh $HOME
+
+    echo '
+      #define jversion   "${version}"
+      #define jplatform  "${platform}"
+      #define jtype      "${jtype}"         // release,beta,...
+      #define jlicense   "GPL3"
+      #define jbuilder   "nixpkgs"  // website or email
+      ' > ../jsrc/jversion.h
+
+    ./build_jconsole.sh j${bits}
+    ./build_libj.sh j${bits}
+  '';
+
+  checkPhase = ''
+    echo 'i. 5' | $JBIN/jconsole | fgrep "0 1 2 3 4"
+
+    # Now run the real tests
+    cd $SOURCE_DIR/test
+    for f in *.ijs
+    do
+      echo $f
+      $JBIN/jconsole < $f > /dev/null || echo FAIL && echo PASS
+    done
+  '';
+
+  installPhase = ''
     mkdir -p "$out"
-    cp -r j/bin "$out/bin"
-    rm "$out/bin/profilex_template.ijs"
-    
+    cp -r $JBIN "$out/bin"
+    rm $out/bin/*.txt # Remove logs from the bin folder
+
     mkdir -p "$out/share/j"
+    cp -r $JLIB/{addons,system} "$out/share/j"
+    cp -r $JLIB/bin "$out"
+  '';
 
-    cp -r docs j/addons j/system "$out/share/j"
-  '' ["doUnpack" "doBuildJ" "minInit" "defEnsureDir"];
-      
-  meta = {
+  meta = with stdenv.lib; {
     description = "J programming language, an ASCII-based APL successor";
-    maintainers = with a.lib.maintainers;
-    [
-      raskin
-    ];
-    platforms = with a.lib.platforms;
-      linux;
-    license = a.lib.licenses.gpl3Plus;
+    maintainers = with maintainers; [ raskin synthetica ];
+    platforms = with platforms; linux ++ darwin;
+    license = licenses.gpl3Plus;
+    homepage = http://jsoftware.com/;
   };
-  passthru = {
-    updateInfo = {
-      downloadPage = "http://jsoftware.com/source.htm";
-    };
-  };
-}) x
-
+}

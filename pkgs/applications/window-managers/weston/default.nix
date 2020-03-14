@@ -1,33 +1,54 @@
-{ stdenv, fetchurl, pkgconfig, wayland, mesa, libxkbcommon
-, cairo, libxcb, libXcursor, x11, udev, libdrm, mtdev
-, libjpeg, pam, autoconf, automake, libtool, dbus }:
+{ stdenv, fetchurl, meson, ninja, pkgconfig
+, wayland, libGL, mesa, libxkbcommon, cairo, libxcb
+, libXcursor, xlibsWrapper, udev, libdrm, mtdev, libjpeg, pam, dbus, libinput, libevdev
+, colord, lcms2, pipewire ? null
+, pango ? null, libunwind ? null, freerdp ? null, vaapi ? null, libva ? null
+, libwebp ? null, xwayland ? null, wayland-protocols
+# beware of null defaults, as the parameters *are* supplied by callPackage by default
+}:
 
-let version = "1.5.0"; in
-
+with stdenv.lib;
 stdenv.mkDerivation rec {
-  name = "weston-${version}";
+  pname = "weston";
+  version = "8.0.0";
 
   src = fetchurl {
-    url = "http://wayland.freedesktop.org/releases/${name}.tar.xz";
-    sha256 = "113nig2dmbgrjhi79k0zw77vicnx8vkaihawd0nsg6n79ah8nf06";
+    url = "https://wayland.freedesktop.org/releases/${pname}-${version}.tar.xz";
+    sha256 = "0j3q0af3595g4wcicldgy749zm2g2b6bswa6ya8k075a5sdv863m";
   };
 
-  #ToDo: libinput can be split away
+  nativeBuildInputs = [ meson ninja pkgconfig ];
   buildInputs = [
-    pkgconfig wayland mesa libxkbcommon
-    cairo libxcb libXcursor x11 udev libdrm mtdev libjpeg pam dbus.libs
+    wayland libGL mesa libxkbcommon cairo libxcb libXcursor xlibsWrapper udev libdrm
+    mtdev libjpeg pam dbus libinput libevdev pango libunwind freerdp vaapi libva
+    libwebp wayland-protocols
+    colord lcms2 pipewire
   ];
 
-  NIX_CFLAGS_COMPILE = "-I${libdrm}/include/libdrm";
-
-  configureFlags = [
-    "--disable-setuid-install" # prevent install target to chown root weston-launch, which fails
+  mesonFlags= [
+    "-Dbackend-drm-screencast-vaapi=${boolToString (vaapi != null)}"
+    "-Dbackend-rdp=${boolToString (freerdp != null)}"
+    "-Dxwayland=${boolToString (xwayland != null)}" # Default is true!
+    "-Dremoting=false" # TODO
+    "-Dpipewire=${boolToString (pipewire != null)}"
+    "-Dimage-webp=${boolToString (libwebp != null)}"
+    "-Ddemo-clients=false"
+    "-Dsimple-clients="
+    "-Dtest-junit-xml=false"
+    # TODO:
+    #"--enable-clients"
+    #"--disable-setuid-install" # prevent install target to chown root weston-launch, which fails
+  ] ++ optionals (xwayland != null) [
+    "-Dxwayland-path=${xwayland.out}/bin/Xwayland"
   ];
+
+  passthru.providedSessions = [ "weston" ];
 
   meta = {
     description = "Reference implementation of a Wayland compositor";
-    homepage = http://wayland.freedesktop.org/;
-    license = stdenv.lib.licenses.mit;
-    platforms = stdenv.lib.platforms.linux;
+    homepage = https://wayland.freedesktop.org/;
+    license = licenses.mit;
+    platforms = platforms.linux;
+    maintainers = with maintainers; [ primeos ];
   };
 }

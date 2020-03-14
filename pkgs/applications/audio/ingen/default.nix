@@ -1,32 +1,45 @@
-{ stdenv, fetchsvn, boost, ganv, glibmm, gtk, gtkmm, jack2, lilv
-, lv2, pkgconfig, python, raul, serd, sord, sratom, suil
+{ stdenv, fetchgit, boost, ganv, glibmm, gtkmm2, libjack2, lilv
+, lv2, makeWrapper, pkgconfig, python, raul, rdflib, serd, sord, sratom
+, wafHook
+, suil
 }:
 
 stdenv.mkDerivation  rec {
-  name = "ingen-svn-${rev}";
-  rev = "5464";
+  pname = "ingen";
+  version = "unstable-2019-12-09";
+  name = "${pname}-${version}";
 
-  src = fetchsvn {
-    url = "http://svn.drobilla.net/lad/trunk/ingen";
-    rev = rev;
-    sha256 = "1p5rsxwanpj3kj5yai7zqbharj2ldvn78x3p739vkgpr3dinp506";
+  src = fetchgit {
+    url = "https://gitlab.com/drobilla/ingen.git";
+    rev = "e32f32a360f2bf8f017ea347b6d1e568c0beaf68";
+    sha256 = "0wjn2i3j7jb0bmxymg079xpk4iplb91q0xqqnvnpvyldrr7gawlb";
+    deepClone = true;
   };
 
+  nativeBuildInputs = [ pkgconfig wafHook ];
   buildInputs = [
-    boost boost.lib ganv glibmm gtk gtkmm jack2 lilv lv2 pkgconfig python
-    raul serd sord sratom suil
+    boost ganv glibmm gtkmm2 libjack2 lilv lv2 makeWrapper
+    python raul serd sord sratom suil
   ];
 
-  configurePhase = "python waf configure --prefix=$out";
+  preConfigure = ''
+    sed -e "s@{PYTHONDIR}/'@out/'@" -i wscript
+  '';
 
-  buildPhase = "python waf";
+  propagatedBuildInputs = [ rdflib ];
 
-  installPhase = "python waf install";
+  postInstall = ''
+    for program in ingenams ingenish
+    do
+      wrapProgram $out/bin/$program \
+        --prefix PYTHONPATH : $out/${python.sitePackages}:$PYTHONPATH
+    done
+  '';
 
   meta = with stdenv.lib; {
     description = "A modular audio processing system using JACK and LV2 or LADSPA plugins";
     homepage = http://drobilla.net/software/ingen;
-    license = licenses.gpl3;
+    license = licenses.agpl3Plus;
     maintainers = [ maintainers.goibhniu ];
     platforms = platforms.linux;
   };

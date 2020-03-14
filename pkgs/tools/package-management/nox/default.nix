@@ -1,31 +1,32 @@
-{ lib, pythonPackages, git, fetchgit, makeWrapper, nix }:
+{ lib, python3Packages, fetchurl, git }:
 
-pythonPackages.buildPythonPackage rec {
-  name = "nox-0.0.1";
+python3Packages.buildPythonApplication rec {
+  name = "nox-${version}";
+  version = "0.0.6";
   namePrefix = "";
 
-  src = fetchgit {
-    url = "git://github.com/madjar/nox.git";
-    rev = "088249aa766c9fa929aa08a60f1a7eb41008da40";
-    sha256 = "0dscnmhm1va2h0jz7hh60nvjwxv5a92n5pp8c0g7hz76g67mi5xs";
-    leaveDotGit = true; # required by pbr
+  src = fetchurl {
+    url = "mirror://pypi/n/nix-nox/nix-nox-${version}.tar.gz";
+    sha256 = "1qcbhdnhdhhv7q6cqdgv0q55ic8fk18526zn2yb12x9r1s0lfp9z";
   };
 
-  buildInputs = [ git pythonPackages.pbr makeWrapper ];
+  patches = [ ./nox-review-wip.patch ];
 
-  pythonPath = with pythonPackages; [
+  buildInputs = [ python3Packages.pbr git ];
+
+  propagatedBuildInputs = with python3Packages; [
       dogpile_cache
       click
-      requests2
+      requests
       characteristic
+      setuptools
     ];
-
-  postInstall = "wrapProgram $out/bin/nox --prefix PATH : ${nix}/bin";
 
   meta = {
     homepage = https://github.com/madjar/nox;
     description = "Tools to make nix nicer to use";
     maintainers = [ lib.maintainers.madjar ];
+    license = lib.licenses.mit;
     platforms = lib.platforms.all;
   };
 }

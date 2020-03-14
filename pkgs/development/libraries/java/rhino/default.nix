@@ -2,7 +2,6 @@
 
 let
   version = "1.7R2";
-  options = "-Dbuild.compiler=gcj";   # FIXME: We assume GCJ here.
 
   xbeans  = fetchurl {
     url = "http://archive.apache.org/dist/xmlbeans/binaries/xmlbeans-2.2.0.zip";
@@ -11,14 +10,17 @@ let
 in
 
 stdenv.mkDerivation {
-  name = "rhino-${version}";
+  pname = "rhino";
+  inherit version;
 
   src = fetchurl {
-    url = "ftp://ftp.mozilla.org/pub/mozilla.org/js/rhino1_7R2.zip";
+    url = "mirror://mozilla/js/rhino1_7R2.zip";
     sha256 = "1p32hkghi6bkc3cf2dcqyaw5cjj7403mykcp0fy8f5bsnv0pszv7";
   };
 
   patches = [ ./gcj-type-mismatch.patch ];
+
+  hardeningDisable = [ "fortify" "format" ];
 
   preConfigure =
     ''
@@ -31,7 +33,7 @@ stdenv.mkDerivation {
 
   buildInputs = [ unzip ant javac jvm ];
 
-  buildPhase = "ant ${options} jar";
+  buildPhase = "ant jar";
   doCheck    = false;
 
   # FIXME: Install javadoc as well.
@@ -41,7 +43,7 @@ stdenv.mkDerivation {
       cp -v *.jar "$out/share/java"
     '';
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "An implementation of JavaScript written in Java";
 
     longDescription =
@@ -52,6 +54,7 @@ stdenv.mkDerivation {
 
     homepage = http://www.mozilla.org/rhino/;
 
-    license = [ "MPLv1.1" /* or */ "GPLv2+" ];
+    license = with licenses; [ mpl11 /* or */ gpl2Plus ];
+    platforms = platforms.linux ++ platforms.darwin;
   };
 }

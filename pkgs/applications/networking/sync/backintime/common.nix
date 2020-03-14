@@ -1,20 +1,20 @@
-{stdenv, fetchurl, makeWrapper, gettext, python2, python2Packages }:
+{stdenv, fetchFromGitHub, makeWrapper, gettext, python3Packages, rsync, cron, openssh, sshfs-fuse, encfs }:
 
-stdenv.mkDerivation rec {
-  version = "1.0.36";
+let
+  inherit (python3Packages) python dbus-python keyring;
+in stdenv.mkDerivation rec {
+  version = "1.1.24";
 
-  name = "backintime-common-${version}";
+  pname = "backintime-common";
 
-  src = fetchurl {
-    url = "https://launchpad.net/backintime/1.0/${version}/+download/backintime-${version}.tar.gz";
-    md5 = "28630bc7bd5f663ba8fcfb9ca6a742d8";
+  src = fetchFromGitHub {
+    owner = "bit-team";
+    repo = "backintime";
+    rev = "v${version}";
+    sha256 = "0g6gabnr60ns8854hijdddbanks7319q4n3fj5l6rc4xsq0qck18";
   };
 
-  # because upstream tarball has no top-level directory.
-  # https://bugs.launchpad.net/backintime/+bug/1359076
-  sourceRoot = ".";
-
-  buildInputs = [ makeWrapper gettext python2 python2Packages.dbus ];
+  buildInputs = [ makeWrapper gettext python dbus-python keyring openssh cron rsync sshfs-fuse encfs ];
 
   installFlags = [ "DEST=$(out)" ];
 
@@ -32,10 +32,10 @@ stdenv.mkDerivation rec {
     '';
 
   meta = {
-    homepage = https://launchpad.net/backintime;
+    homepage = https://github.com/bit-team/backintime;
     description = "Simple backup tool for Linux";
     license = stdenv.lib.licenses.gpl2;
-    maintainers = [ stdenv.lib.maintainers.DamienCassou ];
+    maintainers = [ ];
     platforms = stdenv.lib.platforms.all;
     longDescription = ''
       Back In Time is a simple backup tool (on top of rsync) for Linux

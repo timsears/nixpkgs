@@ -1,15 +1,17 @@
-{ stdenv, fetchurl, pkgconfig, utillinux, kmod }:
+{ stdenv, fetchurl, pkgconfig, utillinux, bash }:
 
 stdenv.mkDerivation rec {
-  name = "bcache-tools-${version}";
+  pname = "bcache-tools";
   version = "1.0.7";
 
   src = fetchurl {
+    name = "${pname}-${version}.tar.gz";
     url = "https://github.com/g2p/bcache-tools/archive/v${version}.tar.gz";
     sha256 = "1gbsh2qw0a7kgck6w0apydiy37nnz5xvdgipa0yqrfmghl86vmv4";
   };
 
-  buildInputs = [ pkgconfig utillinux ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ utillinux ];
 
   # * Remove broken install rules (they ignore $PREFIX) for stuff we don't need
   #   anyway (it's distro specific stuff).
@@ -19,12 +21,16 @@ stdenv.mkDerivation rec {
         -e "/INSTALL.*initcpio\/install/d" \
         -e "/INSTALL.*dracut\/module-setup.sh/d" \
         -i Makefile
-
-    sed -e "s|/sbin/modprobe|${kmod}/sbin/modprobe|" -i bcache-register
   '';
+
+  patches = [
+    ./bcache-udev-modern.patch
+    ./fix-static.patch
+  ];
 
   preBuild = ''
     export makeFlags="$makeFlags PREFIX=\"$out\" UDEVLIBDIR=\"$out/lib/udev/\"";
+    sed -e "s|/bin/sh|${bash}/bin/sh|" -i *.rules
   '';
 
   preInstall = ''
@@ -43,7 +49,7 @@ stdenv.mkDerivation rec {
       User documentation is in Documentation/bcache.txt in the Linux kernel
       tree.
     '';
-    homepage = http://bcache.evilpiepirate.org/;
+    homepage = https://bcache.evilpiepirate.org/;
     license = licenses.gpl2;
     platforms = platforms.linux;
     maintainers = [ maintainers.bjornfor ];

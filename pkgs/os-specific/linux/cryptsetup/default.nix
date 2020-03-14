@@ -1,28 +1,52 @@
-{ stdenv, fetchurl, devicemapper, libgcrypt, libuuid, pkgconfig, popt
-, enablePython ? false, python ? null
-}:
+{ stdenv, fetchurl, lvm2, json_c
+, openssl, libuuid, pkgconfig, popt
+, enablePython ? false, python2 ? null }:
 
-assert enablePython -> python != null;
+assert enablePython -> python2 != null;
 
 stdenv.mkDerivation rec {
-  name = "cryptsetup-1.6.3";
+  name = "cryptsetup-2.1.0";
+
+  outputs = [ "out" "dev" "man" ];
 
   src = fetchurl {
-    url = "http://cryptsetup.googlecode.com/files/${name}.tar.bz2";
-    sha256 = "1n1qk5chyjspbiianrdb55fhb4wl0vfyqz2br05vfb24v4qlgbx2";
+    url = "mirror://kernel/linux/utils/cryptsetup/v2.1/${name}.tar.xz";
+    sha256 = "15y8n547garz0x5kqv09gscdsrz0c0y1y6c5cp8pccwg3xsb5vm3";
   };
 
-  configureFlags = [ "--enable-cryptsetup-reencrypt" ]
-                ++ stdenv.lib.optional enablePython "--enable-python";
+  # Disable 4 test cases that fail in a sandbox
+  patches = [ ./disable-failing-tests.patch ];
 
-  buildInputs = [ devicemapper libgcrypt libuuid pkgconfig popt ]
-             ++ stdenv.lib.optional enablePython python;
+  postPatch = ''
+    patchShebangs tests
+    ${stdenv.lib.optionalString enablePython ''
+      patchShebangs ./python/pycryptsetup-test.py
+    ''}
+
+    # O_DIRECT is filesystem dependent and fails in a sandbox (on tmpfs)
+    # and on several filesystem types (btrfs, zfs) without sandboxing.
+    # Remove it, see discussion in #46151
+    substituteInPlace tests/unit-utils-io.c --replace "| O_DIRECT" ""
+  '';
+
+  NIX_LDFLAGS = "-lgcc_s";
+
+  configureFlags = [
+    "--enable-cryptsetup-reencrypt"
+    "--with-crypto_backend=openssl"
+  ] ++ stdenv.lib.optional enablePython "--enable-python";
+
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ lvm2 json_c openssl libuuid popt ]
+    ++ stdenv.lib.optional enablePython python2;
+
+  doCheck = true;
 
   meta = {
-    homepage = http://code.google.com/p/cryptsetup/;
+    homepage = https://gitlab.com/cryptsetup/cryptsetup/;
     description = "LUKS for dm-crypt";
     license = stdenv.lib.licenses.gpl2;
-    maintainers = with stdenv.lib.maintainers; [ viric chaoflow ];
+    maintainers = with stdenv.lib.maintainers; [ ];
     platforms = with stdenv.lib.platforms; linux;
   };
 }

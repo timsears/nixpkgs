@@ -1,22 +1,22 @@
-{stdenv, fetchurl}:
+{ stdenv, fetchurl }:
 
 let
-  version = "1.7.0";
+  version = "1.8.0";
 
   # These settings are found in the Makefile, but there seems to be no
   # way to select one ore the other setting other than editing the file
   # manually, so we have to duplicate the know how here.
-  systemFlags =
-    if stdenv.isDarwin then ''
+  systemFlags = with stdenv;
+    if isDarwin then ''
       CFLAGS="-O2 -Wall -fomit-frame-pointer"
       LDFLAGS=
       EXTRA_OBJS=strverscmp.o
-    '' else if stdenv.isCygwin then ''
+    '' else if isCygwin then ''
       CFLAGS="-O2 -Wall -fomit-frame-pointer -DCYGWIN"
       LDFLAGS=-s
       TREE_DEST=tree.exe
       EXTRA_OBJS=strverscmp.o
-    '' else if stdenv.isBSD then ''
+    '' else if (isFreeBSD || isOpenBSD) then ''
       CFLAGS="-O2 -Wall -fomit-frame-pointer"
       LDFLAGS=-s
       EXTRA_OBJS=strverscmp.o
@@ -24,11 +24,12 @@ let
     ""; # use linux flags by default
 in
 stdenv.mkDerivation {
-  name = "tree-${version}";
+  pname = "tree";
+  inherit version;
 
   src = fetchurl {
     url = "http://mama.indstate.edu/users/ice/tree/src/tree-${version}.tgz";
-    sha256 = "04kviw799qxly08zb8n5mgxfd96gyis6x69q2qiw86jnh87c4mv9";
+    sha256 = "1hmpz6k0mr6salv0nprvm1g0rdjva1kx03bdf1scw8a38d5mspbi";
   };
 
   configurePhase = ''
@@ -37,12 +38,13 @@ stdenv.mkDerivation {
       prefix=$out
       MANDIR=$out/share/man/man1
       ${systemFlags}
+      CC="$CC"
     )
   '';
 
   meta = {
-    homepage = "http://mama.indstate.edu/users/ice/tree/";
-    description = "command to produce a depth indented directory listing";
+    homepage = http://mama.indstate.edu/users/ice/tree/;
+    description = "Command to produce a depth indented directory listing";
     license = stdenv.lib.licenses.gpl2;
 
     longDescription = ''
@@ -52,6 +54,6 @@ stdenv.mkDerivation {
     '';
 
     platforms = stdenv.lib.platforms.all;
-    maintainers = [stdenv.lib.maintainers.simons];
+    maintainers = [stdenv.lib.maintainers.peti];
   };
 }

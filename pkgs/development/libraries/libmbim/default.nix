@@ -1,23 +1,37 @@
-{ stdenv, fetchurl, pkgconfig, glib, python, udev }:
+{ stdenv, fetchurl, pkgconfig, glib, python3, systemd, libgudev }:
 
 stdenv.mkDerivation rec {
-  name = "libmbim-1.6.0";
+  pname = "libmbim";
+  version = "1.22.0";
 
   src = fetchurl {
-    url = "http://www.freedesktop.org/software/libmbim/${name}.tar.xz";
-    sha256 = "10mh1b8jfxg6y6nhr7swbi9wx4acjgvx1if7nhrw1ppd5apvvvz0";
+    url = "https://www.freedesktop.org/software/libmbim/${pname}-${version}.tar.xz";
+    sha256 = "0f0zmbvnhdsqbf3hw5bimq67n57mhd8yad1ia823cb6i3kmph1sw";
   };
 
-  preConfigure = ''
-    for f in build-aux/mbim-codegen/*; do
-       substituteInPlace $f --replace "/usr/bin/env python" "${python}/bin/python"
-    done
-  '';
+  outputs = [ "out" "dev" "man" ];
 
-  buildInputs = [ pkgconfig glib udev ];
+  configureFlags = [
+    "--with-udev-base-dir=${placeholder "out"}/lib/udev"
+  ];
+
+  nativeBuildInputs = [
+    pkgconfig
+    python3
+  ];
+
+  buildInputs = [
+    glib
+    libgudev
+    systemd
+  ];
+
+  doCheck = true;
 
   meta = with stdenv.lib; {
-    description = "talking to WWAN modems and devices which speak the Mobile Interface Broadband Model (MBIM) protocol";
+    homepage = https://www.freedesktop.org/wiki/Software/libmbim/;
+    description = "Library for talking to WWAN modems and devices which speak the Mobile Interface Broadband Model (MBIM) protocol";
     platforms = platforms.linux;
+    license = licenses.gpl2;
   };
 }

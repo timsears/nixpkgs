@@ -1,30 +1,45 @@
-{ pkgs, fetchurl, stdenv, ncurses, utillinux, file, libX11 }:
+{ stdenv, fetchurl, makeWrapper
+, pkgconfig
+, ncurses, libX11
+, utillinux, file, which, groff
 
-let
-  name = "vifm-${version}";
-  version = "0.7.7";
+  # adds support for handling removable media (vifm-media). Linux only!
+, mediaSupport ? false, python3 ? null, udisks2 ? null, lib ? null 
+}:
 
-in stdenv.mkDerivation {
-  inherit name;
+let isFullPackage = mediaSupport;
+in stdenv.mkDerivation rec {
+  pname = if isFullPackage then "vifm-full" else "vifm";
+  version = "0.10.1";
 
   src = fetchurl {
-    url = "mirror://sourceforge/project/vifm/vifm/${name}.tar.bz2";
-    sha256 = "1lflmkd5q7qqi9d44py0y41pcx5bsadkihn3gc0x5cka04f2gh0d";
+    url = "https://github.com/vifm/vifm/releases/download/v${version}/vifm-${version}.tar.bz2";
+    sha256 = "0fyhxh7ndjn8fyjhj14ymkr3pjcs3k1xbs43g7xvvq85vdb6y04r";
   };
 
-  buildInputs = [ utillinux ncurses file libX11 ];
+  nativeBuildInputs = [ pkgconfig makeWrapper ];
+  buildInputs = [ ncurses libX11 utillinux file which groff ];
 
-  meta = {
-    description = "A vi-like file manager";
-    maintainers = with pkgs.lib.maintainers; [ raskin garbas ];
-    platforms = pkgs.lib.platforms.linux;
-    license = pkgs.lib.licenses.gpl2;
-  };
+  postFixup = let
+    path = lib.makeBinPath 
+      [ udisks2 
+        (python3.withPackages (p: [p.dbus-python]))
+      ];
 
-  passthru = {
-    updateInfo = {
-      downloadPage = "http://vifm.sf.net";
-    };
+    wrapVifmMedia = "wrapProgram $out/share/vifm/vifm-media --prefix PATH : ${path}";
+  in ''
+    ${if mediaSupport then wrapVifmMedia else ""}
+  '';
+
+  meta = with stdenv.lib; {
+    description = ''A vi-like file manager${if isFullPackage then "; Includes support for optional features" else ""}'';
+    maintainers = with maintainers; [ raskin ];
+    platforms = if mediaSupport then platforms.linux else platforms.unix;
+    license = licenses.gpl2;
+    downloadPage = "https://vifm.info/downloads.shtml";
+    homepage = https://vifm.info/;
+    inherit version;
+    updateWalker = true;
   };
 }
 

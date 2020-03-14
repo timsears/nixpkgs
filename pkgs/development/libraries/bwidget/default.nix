@@ -1,12 +1,12 @@
 { stdenv, fetchurl, tcl }:
 
 stdenv.mkDerivation rec {
-  name = "bwidget-${version}";
-  version = "1.9.7";
+  pname = "bwidget";
+  version = "1.9.14";
 
   src = fetchurl {
     url = "mirror://sourceforge/tcllib/bwidget-${version}.tar.gz";
-    sha256 = "1z2z77l41g01ra7v716c0q3x8s2kx30l4p1kf21ma8bdqa98arp6";
+    sha256 = "0knlnpmwam74v0qa1h9gg4f32vzzz7ays2wbslflf51ilg7nw6jk";
   };
 
   dontBuild = true;
@@ -23,8 +23,9 @@ stdenv.mkDerivation rec {
   buildInputs = [ tcl ];
 
   meta = {
-    homepage = "http://tcl.activestate.com/software/tcllib/";
+    homepage = https://sourceforge.net/projects/tcllib;
     description = "High-level widget set for Tcl/Tk";
     license = stdenv.lib.licenses.tcltk;
+    platforms = stdenv.lib.platforms.linux;
   };
 }

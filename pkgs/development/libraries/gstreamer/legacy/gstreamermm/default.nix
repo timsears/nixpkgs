@@ -1,10 +1,10 @@
-{ stdenv, fetchurl, glibmm, gstreamer, gst_plugins_base, libsigcxx, libxmlxx, pkgconfig }:
+{ stdenv, fetchurl, glibmm, gstreamer, gst-plugins-base, libsigcxx, libxmlxx, pkgconfig }:
 
 let
   ver_maj = "0.10";
   ver_min = "11";
 in
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "gstreamermm-${ver_maj}.${ver_min}";
 
   src = fetchurl {
@@ -15,17 +15,17 @@ stdenv.mkDerivation rec {
   doCheck = false; # Tests require pulseaudio in /homeless-shelter
 
   propagatedBuildInputs = [
-    glibmm gstreamer gst_plugins_base libsigcxx libxmlxx
+    glibmm gstreamer gst-plugins-base libsigcxx libxmlxx
   ];
 
   nativeBuildInputs = [ pkgconfig ];
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "C++ bindings for the GStreamer streaming multimedia library";
-    homepage = http://www.gtkmm.org/;
-    license = stdenv.lib.licenses.lgpl2Plus;
-    maintainers = "Philip Lykke Carlsen <plcplc@gmail.com>";
-    platforms = stdenv.lib.platforms.linux;
+    homepage = https://www.gtkmm.org/;
+    license = licenses.lgpl2Plus;
+    maintainers = with maintainers; [ plcplc ];
+    platforms = platforms.unix;
   };
 
 }

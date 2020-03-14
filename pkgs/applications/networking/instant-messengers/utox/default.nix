@@ -1,28 +1,43 @@
-{ stdenv, fetchFromGitHub, pkgconfig, libtoxcore, dbus, libvpx, libX11, openal, freetype, libv4l
-, libXrender, fontconfig, libXext, libXft }:
-
+{ stdenv, fetchFromGitHub, check, cmake, pkgconfig
+, libtoxcore, filter-audio, dbus, libvpx, libX11, openal, freetype, libv4l
+, libXrender, fontconfig, libXext, libXft, libsodium, libopus }:
 
 stdenv.mkDerivation rec {
-  name = "utox-dev-20140921";
+  pname = "utox";
+
+  version = "0.17.0";
 
   src = fetchFromGitHub {
-    owner = "notsecure";
-    repo = "uTox";
-    rev = "c0afc95cf3";
-    sha256 = "0a6i0c9crj6b27alm8q0fcfj8q425khg5305sp57r7pj505l4d1f";
+    owner  = "uTox";
+    repo   = "uTox";
+    rev    = "v${version}";
+    sha256 = "12wbq883il7ikldayh8hm0cjfrkp45vn05xx9s1jbfz6gmkidyar";
+    fetchSubmodules = true;
   };
 
-  buildInputs = [ pkgconfig libtoxcore dbus libvpx libX11 openal freetype
-                  libv4l libXrender fontconfig libXext libXft ];
+  buildInputs = [
+    libtoxcore dbus libvpx libX11 openal freetype
+    libv4l libXrender fontconfig libXext libXft filter-audio
+    libsodium libopus
+  ];
 
-  doCheck = false;
-  
-  makeFlags = "PREFIX=$(out)";
+  nativeBuildInputs = [
+    cmake pkgconfig
+  ];
+
+  cmakeFlags = [
+    "-DENABLE_AUTOUPDATE=OFF"
+    "-DENABLE_TESTS=${if doCheck then "ON" else "OFF"}"
+  ];
+
+  doCheck = stdenv.hostPlatform == stdenv.buildPlatform;
+  checkInputs = [ check ];
 
   meta = with stdenv.lib; {
     description = "Lightweight Tox client";
+    homepage = https://github.com/uTox/uTox;
     license = licenses.gpl3;
-    maintainers = with stdenv.lib.maintainers; [ iElectric ];
-    platforms = stdenv.lib.platforms.all;
+    maintainers = with maintainers; [ domenkozar ];
+    platforms = platforms.all;
   };
 }

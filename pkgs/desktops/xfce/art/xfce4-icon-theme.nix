@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, pkgconfig, intltool, gtk }:
+{ stdenv, fetchurl, pkgconfig, intltool, gtk2 }:
 
 stdenv.mkDerivation rec {
   p_name  = "xfce4-icon-theme";
@@ -11,10 +11,11 @@ stdenv.mkDerivation rec {
   };
   name = "${p_name}-${ver_maj}.${ver_min}";
 
-  buildInputs = [ pkgconfig intltool gtk ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ intltool gtk2 ];
 
   meta = {
-    homepage = http://www.xfce.org/;
+    homepage = https://www.xfce.org/;
     description = "Icons for Xfce";
     platforms = stdenv.lib.platforms.linux;
     maintainers = [ stdenv.lib.maintainers.eelco ];

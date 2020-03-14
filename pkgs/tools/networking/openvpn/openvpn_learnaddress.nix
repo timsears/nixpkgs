@@ -1,6 +1,6 @@
 { stdenv, fetchgit, makeWrapper,  coreutils, gawk, utillinux }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "openvpn-learnaddress-19b03c3";
 
   src = fetchgit {
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
     install -Dm555 ovpn-learnaddress $out/libexec/openvpn/openvpn-learnaddress
 
     wrapProgram $out/libexec/openvpn/openvpn-learnaddress \
-        --prefix PATH : ${coreutils}/bin:${gawk}/bin:${utillinux}/bin
+        --prefix PATH : ${stdenv.lib.makeBinPath [ coreutils gawk utillinux ]}
   '';
 
   meta = {

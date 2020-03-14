@@ -1,14 +1,15 @@
-{stdenv, fetchurl, libiconv, ocaml, findlib, ncurses}:
+{ stdenv, fetchzip, libiconv, ocaml, findlib, ocamlbuild, ncurses }:
 
-stdenv.mkDerivation {
-  name = "ocaml-text-0.6";
+stdenv.mkDerivation rec {
+  pname = "ocaml-text";
+  version = "0.8";
 
-  src = fetchurl {
-    url = https://forge.ocamlcore.org/frs/download.php/937/ocaml-text-0.6.tar.gz;
-    sha256 = "0j8gaak0ajnlmn8knvfygqwwzs7awjv5rfn5cbj6qxqbxhjd5m6g";
+  src = fetchzip {
+    url = "https://github.com/vbmithr/ocaml-text/archive/${version}.tar.gz";
+    sha256 = "11jamdfn5s19a0yvl012q1xvdk1grkp4rkrn819imqrvdplqkn1y";
   };
 
-  buildInputs = [ocaml findlib libiconv ncurses];
+  buildInputs = [ ocaml findlib ocamlbuild ncurses libiconv ];
 
   configurePhase = "iconv_prefix=${libiconv} ocaml setup.ml -configure";
 
@@ -16,11 +17,9 @@ stdenv.mkDerivation {
 
 
   meta = {
-    homepage = "http://ocaml-text.forge.ocamlcore.org/";
-    description = "OCaml-Text is a library for dealing with ``text'', i.e. sequence of unicode characters, in a convenient way. ";
-    license = "BSD";
-    platforms = ocaml.meta.platforms;
-    maintainers = [
-    ];
+    homepage = http://ocaml-text.forge.ocamlcore.org/;
+    description = "A library for convenient text manipulation";
+    license = stdenv.lib.licenses.bsd3;
+    platforms = ocaml.meta.platforms or [];
   };
 }

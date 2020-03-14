@@ -1,65 +1,45 @@
-{ stdenv, fetchurl, fetchgit, openssl, zlib, pcre, libxml2, libxslt, gd, geoip
-, perl }:
+{ callPackage
+, runCommand
+, lib
+, fetchurl
+, postgresql
+, ...
+}@args:
 
-assert stdenv.isLinux;
-
-with stdenv.lib;
-
-stdenv.mkDerivation rec {
-  name = "openresty-${version}";
-  version = "1.7.4.1rc2";
+callPackage ../nginx/generic.nix args rec {
+  pname = "openresty";
+  nginxVersion = "1.15.8";
+  version = "${nginxVersion}.2";
 
   src = fetchurl {
-    url = "http://openresty.org/download/ngx_openresty-${version}.tar.gz";
-    sha256 = "1208snm0g1x2p9ybl8br7mmcl5c4g4xzhm80n5jfjprr85gb7ajx";
+    url = "https://openresty.org/download/openresty-${version}.tar.gz";
+    sha256 = "05jxrb8hv758nm38jil8n63q1nhrz3d249bsrwc7maa7sn24wss3";
   };
 
-  buildInputs = [ openssl zlib pcre libxml2 libxslt gd geoip perl ];
+  fixPatch = patch:
+    runCommand "openresty-${patch.name}" { src = patch; } ''
+      substitute $src $out \
+        --replace "src/" "bundle/nginx-${nginxVersion}/src/"
+    '';
 
-  configureFlags = [
-    "--with-pcre-jit"
-    "--with-http_ssl_module"
-    "--with-http_spdy_module"
-    "--with-http_realip_module"
-    "--with-http_addition_module"
-    "--with-http_xslt_module"
-    "--with-http_image_filter_module"
-    "--with-http_geoip_module"
-    "--with-http_sub_module"
-    "--with-http_dav_module"
-    "--with-http_flv_module"
-    "--with-http_mp4_module"
-    "--with-http_gunzip_module"
-    "--with-http_gzip_static_module"
-    "--with-http_auth_request_module"
-    "--with-http_random_index_module"
-    "--with-http_secure_link_module"
-    "--with-http_degradation_module"
-    "--with-http_stub_status_module"
-    "--with-ipv6"
-  ];
+  buildInputs = [ postgresql ];
 
-  postInstall = ''
-    mv $out/nginx/sbin $out/bin
-    mv $out/bin/sbin $out/sbin
-
-    mv $out/luajit/bin/luajit-2.1.0-alpha $out/bin/luajit-openresty
-    ln -s $out/sbin/nginx $out/sbin/openresty
-    ln -s $out/sbin/nginx $out/bin/openresty
-    ln -s $out/sbin/nginx $out/bin/nginx
-  '';
+  configureFlags = [ "--with-http_postgres_module" ];
 
   preConfigure = ''
-    export NIX_CFLAGS_COMPILE="$NIX_CFLAGS_COMPILE -I${libxml2}/include/libxml2 $additionalFlags"
-    export PATH="$PATH:${stdenv.gcc.libc}/sbin"
     patchShebangs .
+  '';
+
+  postInstall = ''
+    ln -s $out/luajit/bin/luajit-2.1.0-beta3 $out/bin/luajit-openresty
+    ln -s $out/nginx/sbin/nginx $out/bin/nginx
   '';
 
   meta = {
     description = "A fast web application server built on Nginx";
     homepage    = http://openresty.org;
-    license     = licenses.bsd2;
-    platforms   = platforms.linux;
-    maintainers = with maintainers; [ thoughtpolice ];
+    license     = lib.licenses.bsd2;
+    platforms   = lib.platforms.all;
+    maintainers = with lib.maintainers; [ thoughtpolice lblasc emily ];
   };
 }

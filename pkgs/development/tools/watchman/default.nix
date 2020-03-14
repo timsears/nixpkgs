@@ -1,26 +1,37 @@
 { stdenv, lib, config, fetchFromGitHub, autoconf, automake, pcre
+, libtool, pkgconfig, openssl
 , confFile ? config.watchman.confFile or null
+, withApple ? stdenv.isDarwin, CoreServices
 }:
 
 stdenv.mkDerivation rec {
-  name = "watchman-${version}";
-
-  version = "2.9.8";
+  pname = "watchman";
+  version = "4.9.0";
 
   src = fetchFromGitHub {
     owner = "facebook";
     repo = "watchman";
     rev = "v${version}";
-    sha256 = "196d71ci7ki4p6xx49w55cqd0bqrx19nf79na3a91mrfa6f22sp6";
+    sha256 = "0fdaj5pmicm6j17d5q7px800m5rmam1a400x3hv1iiifnmhgnkal";
   };
 
-  buildInputs = [ autoconf automake pcre ];
+  nativeBuildInputs = [ autoconf automake pkgconfig libtool ];
+  buildInputs = [ pcre openssl ]
+    ++ lib.optionals withApple [ CoreServices ];
 
   configureFlags = [
-      "--enable-lenient"
-      "--enable-conffile=${if confFile == null then "no" else confFile}"
-      "--with-pcre=yes"
+    "--enable-lenient"
+    "--enable-conffile=${if confFile == null then "no" else confFile}"
+    "--with-pcre=yes"
+
+    # For security considerations re: --disable-statedir, see:
+    # https://github.com/facebook/watchman/issues/178
+    "--disable-statedir"
   ];
+
+  prePatch = ''
+    patchShebangs .
+  '';
 
   preConfigure = ''
     ./autogen.sh

@@ -1,17 +1,19 @@
-{ fetchurl, stdenv, pkgconfig, intltool, pulseaudio, gtkmm3
-, libcanberra_gtk3 }:
+{ fetchurl, stdenv, pkgconfig, intltool, libpulseaudio, gtkmm3
+, libcanberra-gtk3, gnome3, wrapGAppsHook }:
 
 stdenv.mkDerivation rec {
-  name = "pavucontrol-2.0";
+  pname = "pavucontrol";
+  version = "4.0";
 
   src = fetchurl {
-    url = "http://freedesktop.org/software/pulseaudio/pavucontrol/${name}.tar.xz";
-    sha256 = "02s775m1531sshwlbvfddk3pz8zjmwkv1sgzggn386ja3gc9vwi2";
+    url = "https://freedesktop.org/software/pulseaudio/${pname}/${pname}-${version}.tar.xz";
+    sha256 = "1qhlkl3g8d7h72xjskii3g1l7la2cavwp69909pzmbi2jyn5pi4g";
   };
 
-  buildInputs = [ pulseaudio gtkmm3 libcanberra_gtk3 ];
+  buildInputs = [ libpulseaudio gtkmm3 libcanberra-gtk3
+                  gnome3.adwaita-icon-theme ];
 
-  nativeBuildInputs = [ pkgconfig intltool ];
+  nativeBuildInputs = [ pkgconfig intltool wrapGAppsHook ];
 
   configureFlags = [ "--disable-lynx" ];
 
@@ -19,16 +21,16 @@ stdenv.mkDerivation rec {
     description = "PulseAudio Volume Control";
 
     longDescription = ''
-      PulseAudio Volume Control (pavucontrol) provides a GTK+
+      PulseAudio Volume Control (pavucontrol) provides a GTK
       graphical user interface to connect to a PulseAudio server and
       easily control the volume of all clients, sinks, etc.
     '';
 
-    homepage = http://freedesktop.org/software/pulseaudio/pavucontrol/ ;
+    homepage = http://freedesktop.org/software/pulseaudio/pavucontrol/;
 
     license = stdenv.lib.licenses.gpl2Plus;
 
-    maintainers = [ maintainers.abbradar ];
+    maintainers = with maintainers; [ abbradar globin ];
     platforms = platforms.linux;
   };
 }

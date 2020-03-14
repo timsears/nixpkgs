@@ -1,12 +1,12 @@
 {stdenv, fetchurl, ocaml, findlib, camlp4}:
 
-let
-  ocaml_version = (builtins.parseDrvName ocaml.name).version;
-  version = "0.8.2";
-in
+if stdenv.lib.versionAtLeast ocaml.version "4.05"
+then throw "camomile-0.8.2 is not available for OCaml ${ocaml.version}"
+else
 
-stdenv.mkDerivation {
-  name = "camomile-${version}";
+stdenv.mkDerivation rec {
+  pname = "camomile";
+  version = "0.8.2";
 
   src = fetchurl {
     url = "mirror://sourceforge/camomile/camomile-${version}.tar.bz2";
@@ -20,10 +20,11 @@ stdenv.mkDerivation {
   meta = {
     homepage = http://camomile.sourceforge.net/;
     description = "A comprehensive Unicode library for OCaml";
-    license = "LGPL";
-    platforms = ocaml.meta.platforms;
+    license = stdenv.lib.licenses.lgpl21;
+    branch = "0.8.2";
+    platforms = ocaml.meta.platforms or [];
     maintainers = [
-      stdenv.lib.maintainers.z77z
+      stdenv.lib.maintainers.maggesi
     ];
   };
 }

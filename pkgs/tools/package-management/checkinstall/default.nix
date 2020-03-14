@@ -32,14 +32,19 @@ stdenv.mkDerivation {
 
     # Fix a `conflicting types for 'readlink'' error since Glibc 2.19
     ./readlink-types.patch
+
+    # Fix BuildRoot handling in RPM builds.
+    ./set-buildroot.patch
   ]
 
-  ++ stdenv.lib.optional (stdenv.system == "x86_64-linux") 
+  ++ stdenv.lib.optional (stdenv.hostPlatform.system == "x86_64-linux") 
     # Force use of old memcpy so that installwatch works on Glibc <
     # 2.14.
     ./use-old-memcpy.patch;
 
   buildInputs = [gettext];
+
+  hardeningDisable = [ "fortify" ];
 
   preBuild = ''
     makeFlagsArray=(PREFIX=$out)
@@ -48,7 +53,7 @@ stdenv.mkDerivation {
     substituteInPlace checkinstallrc-dist --replace /usr/local $out
 
     substituteInPlace installwatch/create-localdecls \
-      --replace /usr/include/unistd.h ${stdenv.glibc}/include/unistd.h
+      --replace /usr/include/unistd.h ${stdenv.glibc.dev}/include/unistd.h
   '';
 
   postInstall =
@@ -64,5 +69,6 @@ stdenv.mkDerivation {
     description = "A tool for automatically generating Slackware, RPM or Debian packages when doing `make install'";
     maintainers = [ stdenv.lib.maintainers.eelco ];
     platforms = stdenv.lib.platforms.linux;
+    license = stdenv.lib.licenses.gpl2;
   };
 }

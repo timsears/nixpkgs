@@ -1,48 +1,30 @@
-{ stdenv, fetchurl, gyp, utillinux, python, fixDarwinDylibNames }:
+{ stdenv, fetchFromGitHub }:
 
 let
-  version = "2.2.1";
+  version = "2.9.3";
 in stdenv.mkDerivation {
-  name = "http-parser-${version}";
+  pname = "http-parser";
+  inherit version;
 
-  src = fetchurl {
-    url = "https://github.com/joyent/http-parser/archive/v${version}.tar.gz";
-    sha256 = "0p8wmchqsj9kwa8pg2is7v0h83q5lqns3vnm6sxrld7gaz979zh5";
+  src = fetchFromGitHub {
+    owner = "nodejs";
+    repo = "http-parser";
+    rev = "v${version}";
+    sha256 = "189zi61vczqgmqjd2myjcjbbi5icrk7ccs0kn6nj8hxqiv5j3811";
   };
 
+  NIX_CFLAGS_COMPILE = "-Wno-error";
   patches = [ ./build-shared.patch ];
+  makeFlags = [ "DESTDIR=" "PREFIX=$(out)" ];
+  buildFlags = [ "library" ];
+  doCheck = true;
+  checkTarget = "test";
 
-  configurePhase = "gyp -f make --depth=`pwd` http_parser.gyp";
-
-  buildFlags = [ "BUILDTYPE=Release" ];
-
-  buildInputs =
-    [ gyp ]
-    ++ stdenv.lib.optional stdenv.isLinux utillinux
-    ++ stdenv.lib.optionals stdenv.isDarwin [ python fixDarwinDylibNames ];
-
-  doCheck = !stdenv.isDarwin;
-
-  checkPhase = ''
-    out/Release/test-nonstrict
-    out/Release/test-strict
-  '';
-
-  installPhase = ''
-    mkdir -p $out/lib
-    mv out/Release/${if stdenv.isDarwin then "*.dylib" else "lib.target/*"} $out/lib
-
-    mkdir -p $out/include
-    mv http_parser.h $out/include
-  '';
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "An HTTP message parser written in C";
-
-    homepage = https://github.com/joyent/http-parser;
-
-    license = stdenv.lib.licenses.mit;
-
-    maintainers = [ stdenv.lib.maintainers.shlevy ];
+    homepage = https://github.com/nodejs/http-parser;
+    maintainers = with maintainers; [ matthewbauer ];
+    license = licenses.mit;
+    platforms = platforms.unix;
   };
 }

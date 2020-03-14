@@ -1,28 +1,37 @@
-{ fetchurl, stdenv, libxslt, libxml2, docbook_xsl }:
+{ stdenv, fetchurl, wafHook, pkgconfig, readline, libxslt
+, docbook_xsl, docbook_xml_dtd_42
+}:
 
 stdenv.mkDerivation rec {
-  name = "tdb-1.2.1";
+  name = "tdb-1.3.18";
 
   src = fetchurl {
-    url = "http://samba.org/ftp/tdb/${name}.tar.gz";
-    sha256 = "1yndfc2hn28v78vgvrds7cjggmmhf9q5dcfklgdfvpsx9j9knhpg";
+    url = "mirror://samba/tdb/${name}.tar.gz";
+    sha256 = "1drnsdh1w0px35r0y7l7g59yvyr67mvcsdrli4wab0mwi07b8mn1";
   };
 
-  buildInputs = [ libxslt libxml2 docbook_xsl ];
+  nativeBuildInputs = [ pkgconfig wafHook ];
+  buildInputs = [
+    readline libxslt docbook_xsl docbook_xml_dtd_42
+  ];
 
-  meta = {
+  wafPath = "buildtools/bin/waf";
+
+  wafConfigureFlags = [
+    "--bundled-libraries=NONE"
+    "--builtin-libraries=replace"
+  ];
+
+  meta = with stdenv.lib; {
     description = "The trivial database";
-    longDescription =
-      '' TDB is a Trivial Database. In concept, it is very much like GDBM,
-         and BSD's DB except that it allows multiple simultaneous writers and
-         uses locking internally to keep writers from trampling on each
-         other.  TDB is also extremely small.
-      '';
-
-    homepage = http://tdb.samba.org/;
-    license = stdenv.lib.licenses.lgpl3Plus;
-
-    maintainers = [ ];
-    platforms = stdenv.lib.platforms.all;
+    longDescription = ''
+      TDB is a Trivial Database. In concept, it is very much like GDBM,
+      and BSD's DB except that it allows multiple simultaneous writers
+      and uses locking internally to keep writers from trampling on each
+      other. TDB is also extremely small.
+    '';
+    homepage = https://tdb.samba.org/;
+    license = licenses.lgpl3Plus;
+    platforms = platforms.all;
   };
 }

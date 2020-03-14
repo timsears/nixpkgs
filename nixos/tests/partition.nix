@@ -65,10 +65,10 @@ let
 in {
   name = "partitiion";
 
-  machine = { config, pkgs, ... }: {
+  machine = { pkgs, ... }: {
     environment.systemPackages = [
-      pkgs.pythonPackages.nixpart
-      pkgs.file pkgs.btrfsProgs pkgs.xfsprogs pkgs.lvm2
+      pkgs.pythonPackages.nixpart0
+      pkgs.file pkgs.btrfs-progs pkgs.xfsprogs pkgs.lvm2
     ];
     virtualisation.emptyDiskImages = [ 4096 4096 ];
   };
@@ -209,7 +209,7 @@ in {
       ensurePartition("swap", "swap");
       ensurePartition("boot", "f2fs");
       ensurePartition("root", "f2fs");
-      remoteAndCheck;
+      remountAndCheck;
       ensureMountPoint("/mnt/boot", "f2fs");
     };
 

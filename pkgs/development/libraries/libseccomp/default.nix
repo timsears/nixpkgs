@@ -1,31 +1,38 @@
-{ stdenv, fetchurl, getopt, bash }:
+{ stdenv, fetchurl, getopt, makeWrapper, utillinux }:
 
 stdenv.mkDerivation rec {
-  name    = "libseccomp-${version}";
-  version = "2.1.1";
+  pname = "libseccomp";
+  version = "2.4.3";
 
   src = fetchurl {
-    url    = "mirror://sourceforge/libseccomp/libseccomp-${version}.tar.gz";
-    sha256 = "0744mjx5m3jl1hzz13zypivl88m0wn44mf5gsrd3yf3w80gc24l8";
+    url = "https://github.com/seccomp/libseccomp/releases/download/v${version}/libseccomp-${version}.tar.gz";
+    sha256 = "07crwxqzvl5k2b90a47ii9wgvi09s9hsy5b5jddw9ylp351d25fg";
   };
 
-  # This fixes the check for 'getopt' to function appropriately.
-  # Additionally, this package can optionally include the kernel
-  # headers if they exist, or use its own inline copy of the source
-  # for talking to the seccomp filter - we opt to always use the
-  # inline copy
+  outputs = [ "out" "lib" "dev" "man" ];
+
+  buildInputs = [ getopt makeWrapper ];
+
   patchPhase = ''
-    substituteInPlace ./configure --replace "/bin/bash" "${bash}/bin/bash"
-    substituteInPlace ./configure --replace "verify_deps getopt" ""
-    substituteInPlace ./configure --replace getopt ${getopt}/bin/getopt
-    substituteInPlace ./configure --replace 'opt_sysinc_seccomp="yes"' 'opt_sysinc_seccomp="no"'
+    patchShebangs .
   '';
 
-  meta = {
-    description = "high level library for the Linux Kernel seccomp filter";
-    homepage    = "http://sourceforge.net/projects/libseccomp";
-    license     = stdenv.lib.licenses.lgpl2;
-    platforms   = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.thoughtpolice ];
+  checkInputs = [ utillinux ];
+  doCheck = false; # dependency cycle
+
+  # Hack to ensure that patchelf --shrink-rpath get rids of a $TMPDIR reference.
+  preFixup = "rm -rfv src";
+
+  meta = with stdenv.lib; {
+    description = "High level library for the Linux Kernel seccomp filter";
+    homepage    = "https://github.com/seccomp/libseccomp";
+    license     = licenses.lgpl21;
+    platforms   = platforms.linux;
+    badPlatforms = [
+      "alpha-linux"
+      "riscv64-linux" "riscv32-linux"
+      "sparc-linux" "sparc64-linux"
+    ];
+    maintainers = with maintainers; [ thoughtpolice ];
   };
 }

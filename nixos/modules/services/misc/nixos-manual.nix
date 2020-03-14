@@ -1,66 +1,21 @@
-# This module includes the NixOS man-pages in the system environment,
-# and optionally starts a browser that shows the NixOS manual on one
-# of the virtual consoles.  The latter is useful for the installation
+# This module optionally starts a browser that shows the NixOS manual
+# on one of the virtual consoles which is useful for the installation
 # CD.
 
-{ config, lib, pkgs, baseModules, ... } @ extraArgs:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
 let
-
   cfg = config.services.nixosManual;
-
-  versionModule =
-    { system.nixosVersionSuffix = config.system.nixosVersionSuffix;
-      system.nixosRevision = config.system.nixosRevision;
-    };
-
-  eval = evalModules {
-    modules = [ versionModule ] ++ baseModules;
-    args = (removeAttrs extraArgs ["config" "options"]) // { modules = [ ]; };
-  };
-
-  manual = import ../../../doc/manual {
-    inherit pkgs;
-    version = config.system.nixosVersion;
-    revision = config.system.nixosRevision;
-    options = eval.options;
-  };
-
-  entry = "${manual.manual}/share/doc/nixos/index.html";
-
-  help = pkgs.writeScriptBin "nixos-help"
-    ''
-      #! ${pkgs.stdenv.shell} -e
-      browser="$BROWSER"
-      if [ -z "$browser" ]; then
-        browser="$(type -P xdg-open || true)"
-        if [ -z "$browser" ]; then
-          browser="$(type -P w3m || true)"
-          if [ -z "$browser" ]; then
-            echo "$0: unable to start a web browser; please set \$BROWSER"
-            exit 1
-          fi
-        fi
-      fi
-      exec "$browser" ${entry}
-    '';
-
+  cfgd = config.documentation;
 in
 
 {
 
   options = {
 
-    services.nixosManual.enable = mkOption {
-      type = types.bool;
-      default = true;
-      description = ''
-        Whether to build the NixOS manual pages.
-      '';
-    };
-
+    # TODO(@oxij): rename this to `.enable` eventually.
     services.nixosManual.showManual = mkOption {
       type = types.bool;
       default = false;
@@ -71,7 +26,8 @@ in
     };
 
     services.nixosManual.ttyNumber = mkOption {
-      default = "8";
+      type = types.int;
+      default = 8;
       description = ''
         Virtual console on which to show the manual.
       '';
@@ -79,7 +35,7 @@ in
 
     services.nixosManual.browser = mkOption {
       type = types.path;
-      default = "${pkgs.w3m}/bin/w3m";
+      default = "${pkgs.w3m-nographics}/bin/w3m";
       description = ''
         Browser used to show the manual.
       '';
@@ -88,33 +44,30 @@ in
   };
 
 
-  config = mkIf cfg.enable {
+  config = mkMerge [
+    (mkIf cfg.showManual {
+      assertions = singleton {
+        assertion = cfgd.enable && cfgd.nixos.enable;
+        message   = "Can't enable `services.nixosManual.showManual` without `documentation.nixos.enable`";
+      };
+    })
+    (mkIf (cfg.showManual && cfgd.enable && cfgd.nixos.enable) {
+      console.extraTTYs = [ "tty${toString cfg.ttyNumber}" ];
 
-    system.build.manual = manual;
-
-    environment.systemPackages = [ manual.manpages help ];
-
-    boot.extraTTYs = mkIf cfg.showManual ["tty${cfg.ttyNumber}"];
-
-    systemd.services = optionalAttrs cfg.showManual
-      { "nixos-manual" =
-        { description = "NixOS Manual";
-          wantedBy = [ "multi-user.target" ];
-          serviceConfig =
-            { ExecStart = "${cfg.browser} ${entry}";
-              StandardInput = "tty";
-              StandardOutput = "tty";
-              TTYPath = "/dev/tty${cfg.ttyNumber}";
-              TTYReset = true;
-              TTYVTDisallocate = true;
-              Restart = "always";
-            };
+      systemd.services.nixos-manual = {
+        description = "NixOS Manual";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStart = "${cfg.browser} ${config.system.build.manual.manualHTMLIndex}";
+          StandardInput = "tty";
+          StandardOutput = "tty";
+          TTYPath = "/dev/tty${toString cfg.ttyNumber}";
+          TTYReset = true;
+          TTYVTDisallocate = true;
+          Restart = "always";
         };
       };
-
-    services.mingetty.helpLine = mkIf cfg.showManual
-      "\nPress <Alt-F${toString cfg.ttyNumber}> for the NixOS manual.";
-
-  };
+    })
+  ];
 
 }

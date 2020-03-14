@@ -1,25 +1,25 @@
-{ stdenv, fetchurl, cmake, ffmpeg, boost }:
+{ stdenv, fetchurl, cmake, boost, ffmpeg }:
 
 stdenv.mkDerivation rec {
-  name = "chromaprint-${version}";
-  version = "1.1";
+  pname = "chromaprint";
+  version = "1.4.3";
 
   src = fetchurl {
-    url = "http://bitbucket.org/acoustid/chromaprint/downloads/${name}.tar.gz";
-    sha256 = "04nd8xmy4kgnpfffj6hw893f80bwhp43i01zpmrinn3497mdf53b";
+    url = "https://github.com/acoustid/chromaprint/releases/download/v${version}/${pname}-${version}.tar.gz";
+    sha256 = "10kz8lncal4s2rp2rqpgc6xyjp0jzcrihgkx7chf127vfs5n067a";
   };
 
-  buildInputs = [ cmake ffmpeg boost ];
+  nativeBuildInputs = [ cmake ];
 
-  cmakeFlags = [ "-DBUILD_EXAMPLES=ON" ];
+  buildInputs = [ boost ffmpeg ];
 
-  postInstall = "installBin examples/fpcalc";
+  cmakeFlags = [ "-DBUILD_EXAMPLES=ON" "-DBUILD_TOOLS=ON" ];
 
   meta = with stdenv.lib; {
-    homepage = "http://acoustid.org/chromaprint";
+    homepage = https://acoustid.org/chromaprint;
     description = "AcoustID audio fingerprinting library";
-    maintainers = with maintainers; [ emery ];
+    maintainers = with maintainers; [ ehmry ];
     license = licenses.lgpl21Plus;
-    platforms = platforms.all;
+    platforms = platforms.linux;
   };
 }

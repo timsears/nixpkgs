@@ -1,32 +1,42 @@
-{ stdenv, fetchgit, openssl
+{ stdenv, fetchurl, libressl
 , privsepPath ? "/var/empty"
 , privsepUser ? "ntp"
 }:
 
 stdenv.mkDerivation rec {
-  name = "openntpd-${version}";
-  version = "20080406p-10";
+  pname = "openntpd";
+  version = "6.2p3";
 
-  src = fetchgit {
-    url = "git://git.debian.org/collab-maint/openntpd.git";
-    rev = "refs/tags/debian/${version}";
-    sha256 = "0gd6j4sw4x4adlz0jzbp6lblx5vlnk6l1034hzbj2xd95k8hjhh8";
+  src = fetchurl {
+    url = "mirror://openbsd/OpenNTPD/${pname}-${version}.tar.gz";
+    sha256 = "0fn12i4kzsi0zkr4qp3dp9bycmirnfapajqvdfx02zhr4hanj0kv";
   };
 
-  postPatch = ''
-    sed -i -e '/^install:/,/^$/{/@if.*PRIVSEP_PATH/,/^$/d}' Makefile.in
+  prePatch = ''
+    sed -i '20i#include <sys/cdefs.h>' src/ntpd.h
+    sed -i '19i#include <sys/cdefs.h>' src/log.c
   '';
 
   configureFlags = [
     "--with-privsep-path=${privsepPath}"
     "--with-privsep-user=${privsepUser}"
+    "--sysconfdir=/etc"
+    "--localstatedir=/var"
+    "--with-cacert=/etc/ssl/certs/ca-certificates.crt"
   ];
 
-  buildInputs = [ openssl ];
+  buildInputs = [ libressl ];
 
-  meta = {
-    homepage = "http://www.openntpd.org/";
-    license = stdenv.lib.licenses.bsd3;
+  installFlags = [
+    "sysconfdir=\${out}/etc"
+    "localstatedir=\${TMPDIR}"
+  ];
+
+  meta = with stdenv.lib; {
+    homepage = http://www.openntpd.org/;
+    license = licenses.bsd3;
     description = "OpenBSD NTP daemon (Debian port)";
+    platforms = platforms.all;
+    maintainers = with maintainers; [ thoughtpolice ];
   };
 }

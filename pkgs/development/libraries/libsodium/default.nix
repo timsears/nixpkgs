@@ -1,21 +1,25 @@
 { stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
-  name = "libsodium-0.7.0";
+  name = "libsodium-1.0.18";
 
   src = fetchurl {
     url = "https://download.libsodium.org/libsodium/releases/${name}.tar.gz";
-    sha256 = "0s4iis5h7yh27kamwic3rddyp5ra941bcqcawa37grjvl78zzjjc";
+    sha256 = "1h9ncvj23qbbni958knzsli8dvybcswcjbx0qjjgi922nf848l3g";
   };
 
-  NIX_LDFLAGS = "-lssp";
+  outputs = [ "out" "dev" ];
+  separateDebugInfo = stdenv.isLinux && stdenv.hostPlatform.libc != "musl";
+
+  enableParallelBuilding = true;
 
   doCheck = true;
 
-  meta = {
-    description = "Version of NaCl with harwdare tests at runtime, not build time";
-    license = "ISC";
-    maintainers = with stdenv.lib.maintainers; [ viric ];
-    platforms = stdenv.lib.platforms.all;
+  meta = with stdenv.lib; {
+    description = "A modern and easy-to-use crypto library";
+    homepage = http://doc.libsodium.org/;
+    license = licenses.isc;
+    maintainers = with maintainers; [ raskin ];
+    platforms = platforms.all;
   };
 }

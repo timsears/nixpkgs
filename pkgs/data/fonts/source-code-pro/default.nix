@@ -1,42 +1,24 @@
-x@{builderDefsPackage
-  , unzip
-  , ...}:
-builderDefsPackage
-(a :
+{ lib, fetchzip }:
+
 let
-  helperArgNames = ["stdenv" "fetchurl" "builderDefsPackage"] ++
-    [];
+  version = "2.030";
+in fetchzip {
+  name = "source-code-pro-${version}";
 
-  buildInputs = map (n: builtins.getAttr n x)
-    (builtins.attrNames (builtins.removeAttrs x helperArgNames));
-  sourceInfo = rec {
-    version="1.017";
-    name="SourceCodePro";
-    url="mirror://sourceforge/sourcecodepro.adobe/${name}_FontsOnly-${version}.zip";
-    hash="07xjfxin883a3g3admdddxxqyzigihbsnmik0zpjii09cdlb8dl1";
-  };
-in
-rec {
-  src = a.fetchurl {
-    url = sourceInfo.url;
-    sha256 = sourceInfo.hash;
-  };
+  url = https://github.com/adobe-fonts/source-code-pro/archive/2.030R-ro/1.050R-it.zip;
 
-  name = "source-code-pro-${sourceInfo.version}";
-  inherit buildInputs;
+  postFetch = ''
+    mkdir -p $out/share/fonts
+    unzip -j $downloadedFile \*.otf -d $out/share/fonts/opentype
+  '';
 
-  phaseNames = ["doUnpack" "installFonts"];
-
-  doUnpack = a.fullDepEntry (''
-    unzip ${src}
-    cd ${sourceInfo.name}*/OTF/
-  '') ["addInputs"];
+  sha256 = "0d8qwzjgnz264wlm4qim048z3236z4hbblvc6yplw13f6b65j6fv";
 
   meta = {
     description = "A set of monospaced OpenType fonts designed for coding environments";
-    maintainers = with a.lib.maintainers; [ relrod ];
-    platforms = with a.lib.platforms; all;
-    homepage = "http://blog.typekit.com/2012/09/24/source-code-pro/";
-    license = "OFL";
+    maintainers = with lib.maintainers; [ relrod ];
+    platforms = with lib.platforms; all;
+    homepage = https://adobe-fonts.github.io/source-code-pro/;
+    license = lib.licenses.ofl;
   };
-}) x
+}

@@ -13,6 +13,7 @@ in
   options = {
     services.logrotate = {
       enable = mkOption {
+        type = lib.types.bool;
         default = false;
         description = ''
           Enable the logrotate cron job
@@ -21,6 +22,7 @@ in
 
       config = mkOption {
         default = "";
+        type = types.lines;
         description = ''
           The contents of the logrotate config file
         '';

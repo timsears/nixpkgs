@@ -1,4 +1,4 @@
-{stdenv, clwrapper, pkgs}:
+{stdenv, clwrapper, pkgs, sbcl, coreutils, nix, asdf}:
 let lispPackages = rec {
   inherit pkgs clwrapper stdenv;
   nixLib = pkgs.lib;
@@ -6,98 +6,76 @@ let lispPackages = rec {
 
   buildLispPackage =  callPackage ./define-package.nix;
 
-  cl-ppcre = buildLispPackage rec {
-    baseName = "cl-ppcre";
-    version = "2.0.4";
-    description = "Regular expression library for Common Lisp";
-    deps = [];
-    src = pkgs.fetchurl {
-      url = "https://github.com/edicl/cl-ppcre/archive/v${version}.tar.gz";
-      sha256 = "16nkfg6j7nn8qkzxn462kqpdlbajpz2p55pdl12sia6yqkj3lh97";
-    };
-  };
+  quicklisp = buildLispPackage rec {
+    baseName = "quicklisp";
+    version = "2017-03-06";
 
-  clx = buildLispPackage rec {
-    baseName = "clx";
-    version = "2013-09";
-    description = "X11 bindings for Common Lisp";
+    buildSystems = [];
+
+    description = "The Common Lisp package manager";
     deps = [];
     src = pkgs.fetchgit {
-      url = "https://github.com/sharplispers/clx.git";
-      rev = "e2b762ac93d78d6eeca4f36698c8dfd1537ce998";
-      sha256 = "0jcrmlaayz7m8ixgriq7id3pdklyk785qvpcxdpcp4aqnfiiqhij";
+      url = "https://github.com/quicklisp/quicklisp-client/";
+      rev = "refs/tags/version-${version}";
+      sha256 = "11ywk7ggc1axivpbqvrd7m1lxsj4yp38d1h9w1d8i9qnn7zjpqj4";
+    };
+    overrides = x: rec {
+      inherit clwrapper;
+      quicklispdist = pkgs.fetchurl {
+        # Will usually be replaced with a fresh version anyway, but needs to be
+        # a valid distinfo.txt
+        url = "https://beta.quicklisp.org/dist/quicklisp/2019-07-11/distinfo.txt";
+        sha256 = "0r7ga5gkiy6va1v7a01fnj1yp97pifl9v8fnqpvbiv33dwdvbx2w";
+      };
+      buildPhase = '' true; '';
+      postInstall = ''
+        substituteAll ${./quicklisp.sh} "$out"/bin/quicklisp
+        chmod a+x "$out"/bin/quicklisp
+        cp "${quicklispdist}" "$out/lib/common-lisp/quicklisp/quicklisp-distinfo.txt"
+      '';
     };
   };
 
-  iterate = buildLispPackage rec {
-    baseName = "iterate";
-    version = "1.4.3";
-    description = "Iteration package for Common Lisp";
+  quicklisp-to-nix-system-info = stdenv.mkDerivation {
+    pname = "quicklisp-to-nix-system-info";
+    version = "1.0.0";
+    src = ./quicklisp-to-nix;
+    nativeBuildInputs = [sbcl];
+    buildInputs = [
+      lispPackages.quicklisp coreutils
+    ];
+    touch = coreutils;
+    nix-prefetch-url = nix;
+    inherit quicklisp;
+    buildPhase = ''
+      ${sbcl}/bin/sbcl --eval '(load #P"${asdf}/lib/common-lisp/asdf/build/asdf.lisp")' --load $src/system-info.lisp --eval '(ql-to-nix-system-info::dump-image)'
+    '';
+    installPhase = ''
+      mkdir -p $out/bin
+      cp quicklisp-to-nix-system-info $out/bin
+    '';
+    dontStrip = true;
+  };
+
+  quicklisp-to-nix = stdenv.mkDerivation {
+    pname = "quicklisp-to-nix";
+    version = "1.0.0";
+    src = ./quicklisp-to-nix;
+    buildDependencies = [sbcl quicklisp-to-nix-system-info];
+    buildInputs = with pkgs.lispPackages; [md5 cl-emb alexandria external-program];
+    touch = coreutils;
+    nix-prefetch-url = nix;
+    inherit quicklisp;
     deps = [];
-    src = pkgs.fetchdarcs {
-      url = "http://common-lisp.net/project/iterate/darcs/iterate";
-      sha256 = "0m3q0s7h5s8varwx584m2akgdslj14df7kg4w1bj1fbgzsag5m1w";
-      rev = version;
-    };
-    overrides = x: {
-      configurePhase="buildPhase(){ true; }";
-    };
-  };
-
-  stumpwm = callPackage ./stumpwm {};
-
-  alexandria = buildLispPackage rec {
-    baseName = "alexandria";
-    version = "git-20131029";
-    description = "Alexandria is a collection of portable public domain utilities.";
-    deps = [];
-    src = pkgs.fetchgit {
-      url = "git://common-lisp.net/projects/alexandria/alexandria.git";
-      sha256 = "1d981a243f9d4d3c9fd86cc47698050507ff615b87b9a710449abdb4234e501b";
-      rev = ''2b1eb4067fb34bc501e527de75d09166a8ba9ceb'';
-    };
-  };
-
-  esrap-peg = buildLispPackage rec {
-    baseName = "esrap-peg";
-    version = "git-20131029";
-    description = "A wrapper around Esrap to allow generating Esrap grammars from PEG definitions";
-    deps = [alexandria cl-unification esrap iterate];
-    src = pkgs.fetchgit {
-      url = "https://github.com/fb08af68/esrap-peg.git";
-      sha256 = "48e616a697aca95e90e55052fdc9a7f96bf29b3208b1b4012fcd3189c2eceeb1";
-      rev = ''1f2f21e32e618f71ed664cdc5e7005f8b6b0f7c8'';
-      
-      
-    };
-  };
-
-  cl-unification = buildLispPackage rec {
-    baseName = "cl-unification";
-    version = "cvs-2013-10-28";
-    description = "";
-    deps = [];
-    src = pkgs.fetchcvs {
-      sha256 = "a574b7f9615232366e3e5e7ee400d60dbff23f6d0e1def5a3c77aafdfd786e6a";
-      
-      date = ''2013-10-28'';
-      module = ''cl-unification'';
-      cvsRoot = '':pserver:anonymous:anonymous@common-lisp.net:/project/cl-unification/cvsroot'';
-    };
-  };
-
-  esrap = buildLispPackage rec {
-    baseName = "esrap";
-    version = "git-20131029";
-    description = "A Packrat / Parsing Grammar / TDPL parser for Common Lisp.";
-    deps = [alexandria];
-    src = pkgs.fetchgit {
-      url = "https://github.com/scymtym/esrap.git";
-      sha256 = "c56616ac01be0f69e72902f9fd830a8af2c2fa9018b66747a5da3988ae38817f";
-      rev = ''c71933b84e220f21e8a509ec26afe3e3871e2e26'';
-      
-      
-    };
+    system-info = quicklisp-to-nix-system-info;
+    buildPhase = ''
+      ${clwrapper}/bin/cl-wrapper.sh "${sbcl}/bin/sbcl" --eval '(load #P"${asdf}/lib/common-lisp/asdf/build/asdf.lisp")' --load $src/ql-to-nix.lisp --eval '(ql-to-nix::dump-image)'
+    '';
+    installPhase = ''
+      mkdir -p $out/bin
+      cp quicklisp-to-nix $out/bin
+    '';
+    dontStrip = true;
   };
 };
 in lispPackages

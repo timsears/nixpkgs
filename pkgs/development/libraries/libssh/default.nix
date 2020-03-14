@@ -1,23 +1,29 @@
-{ stdenv, fetchurl, pkgconfig, cmake, zlib, libgcrypt }:
+{ stdenv, fetchurl, pkgconfig, cmake, zlib, openssl, libsodium }:
 
 stdenv.mkDerivation rec {
-  name = "libssh-0.6.3";
+  name = "libssh-0.8.7";
 
   src = fetchurl {
-    url = "https://red.libssh.org/attachments/download/87/${name}.tar.xz";
-    sha256 = "1jyaj9h1iglvn02hrvcchbx8ycjpj8b91h8mi459k7q5jp2xgd9b";
+    url = "https://www.libssh.org/files/0.8/${name}.tar.xz";
+    sha256 = "14nmwfnnrhkwcfk5hn7azl905ivbh4wllmsbw5abd80b5yi4qc23";
   };
 
-  buildInputs = [ zlib libgcrypt ];
+  postPatch = ''
+    # Fix headers to use libsodium instead of NaCl
+    sed -i 's,nacl/,sodium/,g' ./include/libssh/curve25519.h src/curve25519.c
+  '';
+
+  # single output, otherwise cmake and .pc files point to the wrong directory
+  # outputs = [ "out" "dev" ];
+
+  buildInputs = [ zlib openssl libsodium ];
 
   nativeBuildInputs = [ cmake pkgconfig ];
 
-  cmakeFlags = "-DWITH_GCRYPT=ON";
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "SSH client library";
-    license = "LGPL";
-    maintainers = with stdenv.lib.maintainers; [ sander urkud ];
-    platforms = stdenv.lib.platforms.all;
+    license = licenses.lgpl2Plus;
+    maintainers = with maintainers; [ sander ];
+    platforms = platforms.all;
   };
 }

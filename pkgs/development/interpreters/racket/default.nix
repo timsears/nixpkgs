@@ -1,65 +1,111 @@
-{ stdenv, fetchurl, cairo, file, pango, glib, gtk
-, which, libtool, makeWrapper, libjpeg, libpng
-, fontconfig, liberation_ttf, sqlite, openssl } :
+{ stdenv, fetchurl, makeFontsConf
+, cacert
+, cairo, coreutils, fontconfig, freefont_ttf
+, glib, gmp
+, gtk3
+, libedit, libffi
+, libiconv
+, libGL
+, libGLU
+, libjpeg
+, libpng, libtool, mpfr, openssl, pango, poppler
+, readline, sqlite
+, disableDocs ? false
+, CoreFoundation
+, gsettings-desktop-schemas
+, wrapGAppsHook
+}:
+
+let
+
+  fontsConf = makeFontsConf {
+    fontDirectories = [ freefont_ttf ];
+  };
+
+  libPath = stdenv.lib.makeLibraryPath [
+    cairo
+    fontconfig
+    glib
+    gmp
+    gtk3
+    gsettings-desktop-schemas
+    libedit
+    libGL
+    libGLU
+    libjpeg
+    libpng
+    mpfr
+    openssl
+    pango
+    poppler
+    readline
+    sqlite
+  ];
+
+in
 
 stdenv.mkDerivation rec {
   pname = "racket";
-  version = "6.0.1";
-  name = "${pname}-${version}";
+  version = "7.6"; # always change at once with ./minimal.nix
 
-  src = fetchurl {
-    url = "http://mirror.racket-lang.org/installers/${version}/${name}-src.tgz";
-    sha256 = "e2bc0d4d0fcdfc3327a58c931f203c07a06d4724703f9708ba2e4c8ea0f9694d";
+  src = (stdenv.lib.makeOverridable ({ name, sha256 }:
+    fetchurl {
+      url = "https://mirror.racket-lang.org/installers/${version}/${name}-src.tgz";
+      inherit sha256;
+    }
+  )) {
+    name = "${pname}-${version}";
+    sha256 = "0yagy7qrnz96gwafnj3whh2vs54788k1ci3vkm100h68gsw638b8";
   };
 
-  # Various racket executables do run-time searches for these.
-  ffiSharedLibs = "${glib}/lib:${cairo}/lib:${pango}/lib:${gtk}/lib:${libjpeg}/lib:${libpng}/lib:${sqlite}/lib:${openssl}/lib";
+  FONTCONFIG_FILE = fontsConf;
+  LD_LIBRARY_PATH = libPath;
+  NIX_LDFLAGS = stdenv.lib.concatStringsSep " " [
+    (stdenv.lib.optionalString (stdenv.cc.isGNU && ! stdenv.isDarwin) "-lgcc_s")
+    (stdenv.lib.optionalString stdenv.isDarwin "-framework CoreFoundation")
+  ];
 
-  buildInputs = [ file libtool which makeWrapper fontconfig liberation_ttf sqlite ];
+  nativeBuildInputs = [ cacert wrapGAppsHook ];
+
+  buildInputs = [ fontconfig libffi libtool sqlite gsettings-desktop-schemas gtk3 ]
+    ++ stdenv.lib.optionals stdenv.isDarwin [ libiconv CoreFoundation ];
 
   preConfigure = ''
-    export LD_LIBRARY_PATH=${ffiSharedLibs}:$LD_LIBRARY_PATH
-
-    # Chroot builds do not have access to /etc/fonts/fonts.conf, but the Racket bootstrap
-    # needs a working fontconfig, so here a simple standin is used.
-    mkdir chroot-fontconfig
-    cat ${fontconfig}/etc/fonts/fonts.conf > chroot-fontconfig/fonts.conf
-    sed -e 's@</fontconfig>@@' -i chroot-fontconfig/fonts.conf
-    echo "<dir>${liberation_ttf}</dir>" >> chroot-fontconfig/fonts.conf
-    echo "</fontconfig>" >> chroot-fontconfig/fonts.conf
-
-    export FONTCONFIG_FILE=$(pwd)/chroot-fontconfig/fonts.conf
-
-    cd src
-    sed -e 's@/usr/bin/uname@'"$(which uname)"'@g' -i configure
-    sed -e 's@/usr/bin/file@'"$(which file)"'@g' -i foreign/libffi/configure 
-  '';
-
-  configureFlags = [ "--enable-shared" "--enable-lt=${libtool}/bin/libtool" ];
-
-  NIX_LDFLAGS = "-lgcc_s";
-
-  postInstall = ''
-    for p in $(ls $out/bin/) ; do
-      wrapProgram $out/bin/$p --prefix LD_LIBRARY_PATH ":" "${ffiSharedLibs}" ;
+    unset AR
+    for f in src/lt/configure src/cs/c/configure src/racket/src/string.c; do
+      substituteInPlace "$f" --replace /usr/bin/uname ${coreutils}/bin/uname
     done
+    mkdir src/build
+    cd src/build
+
+    gappsWrapperArgs+=("--prefix" "LD_LIBRARY_PATH" ":" ${LD_LIBRARY_PATH})
   '';
 
-  meta = {
-    description = "Programming language derived from Scheme (formerly called PLT Scheme)";
-    longDescription = ''
-      Racket (formerly called PLT Scheme) is a programming language derived
-      from Scheme. The Racket project has four primary components: the
-      implementation of Racket, a JIT compiler; DrRacket, the Racket program
-      development environment; the TeachScheme! outreach, an attempt to turn
-      Computing and Programming into "an indispensable part of the liberal
-      arts curriculum"; and PLaneT, Racket's web-based package
-      distribution system for user-contributed packages.
-    '';
+  shared = if stdenv.isDarwin then "dylib" else "shared";
+  configureFlags = [ "--enable-${shared}"  "--enable-lt=${libtool}/bin/libtool" ]
+                   ++ stdenv.lib.optional disableDocs [ "--disable-docs" ]
+                   ++ stdenv.lib.optional stdenv.isDarwin [ "--enable-xonx" ];
 
-    homepage = http://racket-lang.org/;
-    license = stdenv.lib.licenses.lgpl2Plus; # and licenses of contained libraries
-    maintainers = [ stdenv.lib.maintainers.kkallio ];
-    platforms = stdenv.lib.platforms.linux;
+  configureScript = "../configure";
+
+  enableParallelBuilding = false;
+
+
+  meta = with stdenv.lib; {
+    description = "A programmable programming language";
+    longDescription = ''
+      Racket is a full-spectrum programming language. It goes beyond
+      Lisp and Scheme with dialects that support objects, types,
+      laziness, and more. Racket enables programmers to link
+      components written in different dialects, and it empowers
+      programmers to create new, project-specific dialects. Racket's
+      libraries support applications from web servers and databases to
+      GUIs and charts.
+    '';
+    homepage = https://racket-lang.org/;
+    license = with licenses; [ asl20 /* or */ mit ];
+    maintainers = with maintainers; [ kkallio henrytill vrthra ];
+    platforms = [ "x86_64-darwin" "x86_64-linux" ];
+    broken = stdenv.isDarwin; # No support yet for setting FFI lookup path
   };
 }

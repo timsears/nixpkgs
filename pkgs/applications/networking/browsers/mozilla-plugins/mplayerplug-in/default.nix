@@ -17,7 +17,8 @@ stdenv.mkDerivation rec {
      ''
      else "");
 
-  buildInputs = [ pkgconfig browser (browser.gtk) libXpm gettext ];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ browser (browser.gtk) libXpm gettext ];
   
   installPhase = ''
     mkdir -p $out/lib/mozilla/plugins
@@ -28,9 +29,9 @@ stdenv.mkDerivation rec {
     mozillaPlugin = "/lib/mozilla/plugins";
   };
 
-  meta = {
+  meta = with stdenv.lib; {
     description = "A browser plugin that uses mplayer to play digital media from websites";
     homepage = http://mplayerplug-in.sourceforge.net/;
-    license = [ "GPLv2+" "LGPLv2+" "MPLv1+" ];
+    license = with licenses; [ gpl2Plus lgpl2Plus "MPLv1+" ];
   };
 }

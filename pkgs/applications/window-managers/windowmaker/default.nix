@@ -1,16 +1,28 @@
-{ stdenv, fetchurl, pkgconfig, libX11, libXft, libXmu }:
+{ stdenv, fetchurl, pkgconfig
+, libX11, libXext, libXft, libXmu, libXinerama, libXrandr, libXpm
+, imagemagick, libpng, libjpeg, libexif, libtiff, libungif, libwebp }:
 
 stdenv.mkDerivation rec {
-  name = "windowmaker-${version}";
-  version = "0.95.6";
+  pname = "windowmaker";
+  version = "0.95.8";
   srcName = "WindowMaker-${version}";
 
   src = fetchurl {
     url = "http://windowmaker.org/pub/source/release/${srcName}.tar.gz";
-    sha256 = "1i3dw1yagsa3rs9x2na2ynqlgmbahayws0kz4vl00fla6550nns3";
+    sha256 = "12p8kljqgx5hnic0zvs5mxwp7kg21sb6qjagb2qw8ydvf5amrgwx";
   };
 
-  buildInputs = [ pkgconfig libX11 libXft libXmu ];
+  nativeBuildInputs = [ pkgconfig ];
+
+  buildInputs = [ libX11 libXext libXft libXmu libXinerama libXrandr libXpm
+                  imagemagick libpng libjpeg libexif libtiff libungif libwebp ];
+
+  configureFlags = [
+    "--with-x"
+    "--enable-modelock"
+    "--enable-randr"
+    "--enable-magick"
+  ];
 
   meta = with stdenv.lib; {
     homepage = http://windowmaker.org/;
@@ -24,6 +36,9 @@ stdenv.mkDerivation rec {
       contributions being made by programmers from around the world.
     '';
     license = licenses.gpl2Plus;
+    platforms = platforms.linux;
     maintainers = [ maintainers.AndersonTorres ];
   };
 }
+
+# TODO: investigate support for WEBP (its autodetection is failing)

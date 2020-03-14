@@ -1,4 +1,4 @@
-{stdenv, fetchurl, unzip}:
+{ stdenv, fetchurl, unzip, runtimeShell }:
 
 stdenv.mkDerivation {
   name = "openjump-1.3.1";
@@ -17,9 +17,9 @@ stdenv.mkDerivation {
     s=$out/bin/OpenJump
     dir=$(echo $out/openjump-*)
     cat >> $s << EOF
-    #!/bin/sh
+    #!${runtimeShell}
     cd $dir/bin
-    exec /bin/sh openjump.sh
+    exec ${stdenv.shell} openjump.sh
     EOF
     chmod +x $s
     ln -s /tmp/openjump.log $dir/bin/jump.log
@@ -30,7 +30,7 @@ stdenv.mkDerivation {
   buildInputs = [unzip];
 
   meta = {
-    description = "open source Geographic Information System (GIS) written in the Java programming language";
+    description = "Open source Geographic Information System (GIS) written in the Java programming language";
     homepage = http://www.openjump.org/index.html;
     license = stdenv.lib.licenses.gpl2;
     maintainers = [stdenv.lib.maintainers.marcweber];

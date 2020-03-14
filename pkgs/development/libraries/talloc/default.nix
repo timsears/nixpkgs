@@ -1,24 +1,42 @@
-{ fetchurl, stdenv }:
+{ stdenv, fetchurl, python, pkgconfig, readline, libxslt
+, docbook_xsl, docbook_xml_dtd_42, fixDarwinDylibNames
+, wafHook
+}:
 
 stdenv.mkDerivation rec {
-  name = "talloc-2.0.1";
+  pname = "talloc";
+  version = "2.3.1";
 
   src = fetchurl {
-    url = "http://samba.org/ftp/talloc/${name}.tar.gz";
-    md5 = "c6e736540145ca58cb3dcb42f91cf57b";
+    url = "mirror://samba/talloc/${pname}-${version}.tar.gz";
+    sha256 = "0xwzgzrqamfdlklwacp9d219pqkah0yfrhxb1j7bxlmgzp924j7g";
   };
 
-  configureFlags = "--enable-talloc-compat1 --enable-largefile";
-  
-  # https://bugzilla.samba.org/show_bug.cgi?id=7000
-  postConfigure = if stdenv.isDarwin then ''
-    substituteInPlace "Makefile" --replace "SONAMEFLAG = #" "SONAMEFLAG = -install_name"
-  '' else "";
+  nativeBuildInputs = [ pkgconfig fixDarwinDylibNames python wafHook
+                        docbook_xsl docbook_xml_dtd_42 ];
+  buildInputs = [ readline libxslt ];
 
-  meta = {
+  wafPath = "buildtools/bin/waf";
+
+  wafConfigureFlags = [
+    "--enable-talloc-compat1"
+    "--bundled-libraries=NONE"
+    "--builtin-libraries=replace"
+  ];
+
+  # this must not be exported before the ConfigurePhase otherwise waf whines
+  preBuild = stdenv.lib.optionalString stdenv.hostPlatform.isMusl ''
+    export NIX_CFLAGS_LINK="-no-pie -shared";
+  '';
+
+  postInstall = ''
+    ${stdenv.cc.targetPrefix}ar q $out/lib/libtalloc.a bin/default/talloc.c.[0-9]*.o
+  '';
+
+  meta = with stdenv.lib; {
     description = "Hierarchical pool based memory allocator with destructors";
-    homepage = http://tdb.samba.org/;
-    license = stdenv.lib.licenses.gpl3;
-    platforms = stdenv.lib.platforms.all;
+    homepage = "https://tdb.samba.org/";
+    license = licenses.gpl3;
+    platforms = platforms.all;
   };
 }

@@ -1,6 +1,6 @@
 { stdenv, fetchurl, pcre }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "leafnode-2.0.0.alpha20121101a.12";
 
   src = fetchurl {
@@ -8,7 +8,11 @@ stdenv.mkDerivation rec {
     sha256 = "096w4gxj08m3vwmyv4sxpmbl8dn6mzqfmrhc32jgyca6qzlrdin8";
   };
 
-  configureFlags = "--enable-runas-user=nobody";
+  configureFlags = [ "--enable-runas-user=nobody" ];
+
+  prePatch = ''
+    substituteInPlace Makefile.in --replace 02770 0770
+  '';
 
   preConfigure = ''
     # configure uses id to check environment; we don't want this check
@@ -25,7 +29,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ pcre];
 
   meta = {
-    homepage = "http://leafnode.sourceforge.net/";
+    homepage = http://leafnode.sourceforge.net/;
     description = "Leafnode implements a store & forward NNTP proxy";
     license = stdenv.lib.licenses.mit;
     platforms = stdenv.lib.platforms.unix;

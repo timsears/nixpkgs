@@ -1,25 +1,24 @@
-{ stdenv, fetchurl, writeText, zlib, rpm, cpio, patchelf, which }:
-
-assert stdenv.isLinux;
+{ stdenv, fetchurl, writeText, zlib, rpmextract, patchelf, which }:
 
 let
   p = if stdenv.is64bit then {
       arch = "x86_64";
-      gcclib = "${stdenv.gcc.gcc}/lib64";
-      sha256 = "09kw7f0qsvx3vx1c1zb117yf3yk7kkz66agspz5xx9b0zh6i82jw";
+      gcclib = "${stdenv.cc.cc.lib}/lib64";
+      sha256 = "14bpc5ddhxvgfxkxhj5q9z443s7z4nn1zf4k1hxj7rbf13rcpg00";
     }
     else {
       arch = "i386";
-      gcclib = "${stdenv.gcc.gcc}/lib";
-      sha256 = "0f2230c91120f05159281b39c620ab6bad6559ce8a17a0874d0a82350ebba426";
+      gcclib = "${stdenv.cc.cc.lib}/lib";
+      sha256 = "1s829q8gy9xgz0jm7w70aljqs2h49x402blqfr9zvn806aprmrm5";
     };
-in 
+in
 stdenv.mkDerivation rec {
 
-  name = "yandex-disk-0.1.4.504";
+  pname = "yandex-disk";
+  version = "0.1.5.1039";
 
   src = fetchurl {
-    url = "http://repo.yandex.ru/yandex-disk/rpm/stable/${p.arch}/${name}-1.fedora.${p.arch}.rpm";
+    url = "https://repo.yandex.ru/yandex-disk/rpm/stable/${p.arch}/${pname}-${version}-1.fedora.${p.arch}.rpm";
     sha256 = p.sha256;
   };
 
@@ -31,7 +30,7 @@ stdenv.mkDerivation rec {
 
     mkdir -pv unpacked
     cd unpacked
-    ${rpm}/bin/rpm2cpio $src | ${cpio}/bin/cpio -imd
+    ${rpmextract}/bin/rpmextract $src
 
     cp -r -t $out/bin usr/bin/*
     cp -r -t $out/share usr/share/*
@@ -41,15 +40,15 @@ stdenv.mkDerivation rec {
       $out/etc/bash_completion.d/yandex-disk-completion.bash
 
     ${patchelf}/bin/patchelf \
-      --set-interpreter "$(cat $NIX_GCC/nix-support/dynamic-linker)" \
-      --set-rpath "${zlib}/lib:${p.gcclib}" \
+      --set-interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+      --set-rpath "${zlib.out}/lib:${p.gcclib}" \
       $out/bin/yandex-disk
   '';
 
   meta = {
-    homepage = http://help.yandex.com/disk/cli-clients.xml;
-    description = "Yandex.Disk is a free cloud file storage service";
-    maintainers = with stdenv.lib.maintainers; [smironov];
+    homepage = https://help.yandex.com/disk/cli-clients.xml;
+    description = "A free cloud file storage service";
+    maintainers = with stdenv.lib.maintainers; [ smironov jagajaga ];
     platforms = ["i686-linux" "x86_64-linux"];
     license = stdenv.lib.licenses.unfree;
     longDescription = ''
@@ -63,4 +62,3 @@ stdenv.mkDerivation rec {
     '';
   };
 }
-

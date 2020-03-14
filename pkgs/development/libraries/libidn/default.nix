@@ -1,17 +1,26 @@
-{ fetchurl, stdenv }:
+{ fetchurl, stdenv, libiconv }:
 
 stdenv.mkDerivation rec {
-  name = "libidn-1.29";
+  name = "libidn-1.35";
 
   src = fetchurl {
     url = "mirror://gnu/libidn/${name}.tar.gz";
-    sha256 = "fb82747dbbf9b36f703ed27293317d818d7e851d4f5773dedf3efa4db32a7c7c";
+    sha256 = "07pyy0afqikfq51z5kbzbj9ldbd12mri0zvx0mfv3ds6bc0g26pi";
   };
 
-  doCheck = ! stdenv.isDarwin;
+  outputs = [ "bin" "dev" "out" "info" "devdoc" ];
+
+  # broken with gcc-7
+  #doCheck = !stdenv.isDarwin && !stdenv.hostPlatform.isMusl;
+
+  hardeningDisable = [ "format" ];
+
+  buildInputs = stdenv.lib.optional stdenv.isDarwin libiconv;
+
+  doCheck = false; # fails
 
   meta = {
-    homepage = http://www.gnu.org/software/libidn/;
+    homepage = https://www.gnu.org/software/libidn/;
     description = "Library for internationalized domain names";
 
     longDescription = ''

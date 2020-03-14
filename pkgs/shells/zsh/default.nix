@@ -1,34 +1,43 @@
-{ stdenv, fetchurl, ncurses, coreutils, pcre }:
+{ stdenv, fetchurl, ncurses, pcre, buildPackages }:
 
 let
-
-  version = "5.0.6";
+  version = "5.8";
 
   documentation = fetchurl {
-    url = "mirror://sourceforge/zsh/zsh-${version}-doc.tar.bz2";
-    sha256 = "1mngi85q56szzlrdzv60vg7wl03lih8vlnl800gwr0i6d1laawxj";
+    url = "mirror://sourceforge/zsh/zsh-${version}-doc.tar.xz";
+    sha256 = "1i6wdzq6rfjx5yjrpzan1jf50hk2pfzy5qib9mb7cnnbjfar6klv";
   };
-
 in
 
 stdenv.mkDerivation {
-  name = "zsh-${version}";
+  pname = "zsh";
+  inherit version;
 
   src = fetchurl {
-    url = "mirror://sourceforge/zsh/zsh-${version}.tar.bz2";
-    sha256 = "0ic86y35v82d87ixjzdb6zrnzf002b7gn573jnva6cqm2jdm1jl4";
+    url = "mirror://sourceforge/zsh/zsh-${version}.tar.xz";
+    sha256 = "09yyaadq738zlrnlh1hd3ycj1mv3q5hh4xl1ank70mjnqm6bbi6w";
   };
 
-  buildInputs = [ ncurses coreutils pcre ];
+  buildInputs = [ ncurses pcre ];
 
-  preConfigure = ''
-    configureFlags="--enable-maildir-support --enable-multibyte --enable-zprofile=$out/etc/zprofile --with-tcsetpgrp --enable-pcre"
-  '';
+  configureFlags = [
+    "--enable-maildir-support"
+    "--enable-multibyte"
+    "--with-tcsetpgrp"
+    "--enable-pcre"
+    "--enable-zprofile=${placeholder "out"}/etc/zprofile"
+  ];
+
+  # the zsh/zpty module is not available on hydra
+  # so skip groups Y Z
+  checkFlags = map (T: "TESTNUM=${T}") (stdenv.lib.stringToCharacters "ABCDEVW");
 
   # XXX: think/discuss about this, also with respect to nixos vs nix-on-X
   postInstall = ''
-    mkdir -p $out/share/
+    mkdir -p $out/share/info
     tar xf ${documentation} -C $out/share
+    ln -s $out/share/zsh-*/Doc/zsh.info* $out/share/info/
+
     mkdir -p $out/etc/
     cat > $out/etc/zprofile <<EOF
 if test -e /etc/NIXOS; then
@@ -52,7 +61,11 @@ else
   fi
 fi
 EOF
-    $out/bin/zsh -c "zcompile $out/etc/zprofile"
+    ${if stdenv.hostPlatform == stdenv.buildPlatform then ''
+      $out/bin/zsh -c "zcompile $out/etc/zprofile"
+    '' else ''
+      ${stdenv.lib.getBin buildPackages.zsh}/bin/zsh -c "zcompile $out/etc/zprofile"
+    ''}
     mv $out/etc/zprofile $out/etc/zprofile_zwc_is_used
   '';
   # XXX: patch zsh to take zwc if newer _or equal_
@@ -68,8 +81,12 @@ EOF
       a host of other features.
     '';
     license = "MIT-like";
-    homePage = "http://www.zsh.org/";
-    maintainers = with stdenv.lib.maintainers; [ chaoflow ];
+    homepage = http://www.zsh.org/;
+    maintainers = with stdenv.lib.maintainers; [ pSub ];
     platforms = stdenv.lib.platforms.unix;
+  };
+
+  passthru = {
+    shellPath = "/bin/zsh";
   };
 }

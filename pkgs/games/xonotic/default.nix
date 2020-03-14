@@ -2,47 +2,43 @@
 , # required for both
   unzip, libjpeg, zlib, libvorbis, curl
 , # glx
-  libX11, mesa, libXpm, libXext, libXxf86vm, alsaLib
+  libX11, libGLU, libGL, libXpm, libXext, libXxf86vm, alsaLib
 , # sdl
-  SDL
+  SDL2
 }:
 
 stdenv.mkDerivation rec {
-  name = "xonotic-0.7.0";
+  name = "xonotic-0.8.2";
 
   src = fetchurl {
-    url = "http://dl.xonotic.org/${name}.zip";
-    sha256 = "21a5fb5493c269cd3843789cb8598f952d4196e8bc71804b9bd5808b646542c6";
+    url = "https://dl.xonotic.org/${name}.zip";
+    sha256 = "1mcs6l4clvn7ibfq3q69k2p0z6ww75rxvnngamdq5ic6yhq74bx2";
   };
 
   buildInputs = [
     # required for both
     unzip libjpeg
     # glx
-    libX11 mesa libXpm libXext libXxf86vm alsaLib
+    libX11 libGLU libGL libXpm libXext libXxf86vm alsaLib
     # sdl
-    SDL
+    SDL2
+    zlib libvorbis curl
   ];
 
   sourceRoot = "Xonotic/source/darkplaces";
 
-  #patchPhase = ''
-  #  substituteInPlace glquake.h \
-  #    --replace 'typedef char GLchar;' '/*typedef char GLchar;*/'
-  #'';
+  # "debug", "release", "profile"
+  target = "release";
 
-  NIX_LDFLAGS = ''
-    -rpath ${zlib}/lib
-    -rpath ${libvorbis}/lib
-    -rpath ${curl}/lib
-  '';
+  dontStrip = target != "release";
 
   buildPhase = ''
     DP_FS_BASEDIR="$out/share/xonotic"
-    make DP_FS_BASEDIR=$DP_FS_BASEDIR cl-release
-    make DP_FS_BASEDIR=$DP_FS_BASEDIR sdl-release
-    make DP_FS_BASEDIR=$DP_FS_BASEDIR sv-release
+    make DP_FS_BASEDIR=$DP_FS_BASEDIR cl-${target}
+    make DP_FS_BASEDIR=$DP_FS_BASEDIR sdl-${target}
+    make DP_FS_BASEDIR=$DP_FS_BASEDIR sv-${target}
   '';
+  enableParallelBuilding = true;
 
   installPhase = ''
     mkdir -p "$out/bin"
@@ -57,21 +53,35 @@ stdenv.mkDerivation rec {
     ln -s "$out/bin/xonotic-sdl" "$out/bin/xonotic"
   '';
 
+  # Xonotic needs to find libcurl.so at runtime for map downloads
   dontPatchELF = true;
+  postFixup = ''
+    patchelf --add-needed ${curl.out}/lib/libcurl.so $out/bin/xonotic-dedicated
+    patchelf \
+        --add-needed ${curl.out}/lib/libcurl.so \
+        --add-needed ${libvorbis}/lib/libvorbisfile.so \
+        --add-needed ${libvorbis}/lib/libvorbis.so \
+        $out/bin/xonotic-glx
+    patchelf \
+        --add-needed ${curl.out}/lib/libcurl.so \
+        --add-needed ${libvorbis}/lib/libvorbisfile.so \
+        --add-needed ${libvorbis}/lib/libvorbis.so \
+        $out/bin/xonotic-sdl
+  '';
 
   meta = {
     description = "A free fast-paced first-person shooter";
     longDescription = ''
       Xonotic is a free, fast-paced first-person shooter that works on
-      Windows, OS X and Linux. The project is geared towards providing
+      Windows, macOS and Linux. The project is geared towards providing
       addictive arena shooter gameplay which is all spawned and driven
       by the community itself. Xonotic is a direct successor of the
       Nexuiz project with years of development between them, and it
       aims to become the best possible open-source FPS of its kind.
     '';
     homepage = http://www.xonotic.org;
-    license = with stdenv.lib.licenses; gpl2Plus;
-    maintainers = with stdenv.lib.maintainers; [ astsmtl ];
+    license = stdenv.lib.licenses.gpl2Plus;
+    maintainers = with stdenv.lib.maintainers; [ astsmtl zalakain ];
     platforms = stdenv.lib.platforms.linux;
     hydraPlatforms = [];
   };

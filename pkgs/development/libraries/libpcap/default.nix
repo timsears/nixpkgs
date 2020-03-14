@@ -1,27 +1,38 @@
 { stdenv, fetchurl, flex, bison }:
 
 stdenv.mkDerivation rec {
-  name = "libpcap-1.5.3";
-  
+  pname = "libpcap";
+  version = "1.9.1";
+
   src = fetchurl {
-    url = "http://www.tcpdump.org/release/${name}.tar.gz";
-    sha256 = "14wyjywrdi1ikaj6yc9c72m6m2r64z94lb0gm7k1a3q6q5cj3scs";
+    url = "https://www.tcpdump.org/release/${pname}-${version}.tar.gz";
+    sha256 = "153h1378diqyc27jjgz6gg5nxmb4ddk006d9xg69nqavgiikflk3";
   };
-  
+
   nativeBuildInputs = [ flex bison ];
-  
-  configureFlags = "--with-pcap=linux";
 
-  preInstall = ''mkdir -p $out/bin'';
-  
-  crossAttrs = {
-    # Stripping hurts in static libraries
-    dontStrip = true;
-    configureFlags = [ "--with-pcap=linux" "ac_cv_linux_vers=2" ];
-  };
+  # We need to force the autodetection because detection doesn't
+  # work in pure build enviroments.
+  configureFlags = [
+    ("--with-pcap=" + {
+      linux = "linux";
+      darwin = "bpf";
+    }.${stdenv.hostPlatform.parsed.kernel.name})
+  ] ++ stdenv.lib.optionals (stdenv.hostPlatform == stdenv.buildPlatform) [
+    "ac_cv_linux_vers=2"
+  ];
 
-  meta = {
-    homepage = http://www.tcpdump.org;
+  dontStrip = stdenv.hostPlatform != stdenv.buildPlatform;
+
+  prePatch = stdenv.lib.optionalString stdenv.isDarwin ''
+    substituteInPlace configure --replace " -arch i386" ""
+  '';
+
+  meta = with stdenv.lib; {
+    homepage = https://www.tcpdump.org;
     description = "Packet Capture Library";
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ fpletz ];
+    license = licenses.bsd3;
   };
 }

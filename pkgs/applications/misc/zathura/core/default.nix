@@ -1,37 +1,53 @@
-{ stdenv, fetchurl, pkgconfig, gtk, girara, gettext, docutils, file, makeWrapper, zathura_icon }:
+{ stdenv, fetchurl, meson, ninja, wrapGAppsHook, pkgconfig
+, appstream-glib, desktop-file-utils, python3
+, gtk, girara, gettext, libxml2, check
+, sqlite, glib, texlive, libintl, libseccomp
+, file, librsvg
+, gtk-mac-integration
+}:
+
+with stdenv.lib;
 
 stdenv.mkDerivation rec {
-  version = "0.2.9";
-  name = "zathura-core-${version}";
+  pname = "zathura-core";
+  version = "0.4.4";
 
   src = fetchurl {
-    url = "http://pwmt.org/projects/zathura/download/zathura-${version}.tar.gz";
-    sha256 = "17z05skjk95115ajp6459k1djadza1w8kck7jn1qnd697r01s1rc";
+    url = "https://git.pwmt.org/pwmt/zathura/-/archive/${version}/zathura-${version}.tar.gz";
+    sha256 = "0v5klgr009rsxi41h73k0398jbgmgh37asvwz2w15i4fzmw89jgb";
   };
 
-  buildInputs = [ pkgconfig file gtk girara gettext makeWrapper ];
+  outputs = [ "bin" "man" "dev" "out" ];
 
-  makeFlags = [ "PREFIX=$(out)" "RSTTOMAN=${docutils}/bin/rst2man.py" "VERBOSE=1" ];
+  # Flag list:
+  # https://github.com/pwmt/zathura/blob/master/meson_options.txt
+  mesonFlags = [
+    "-Dsqlite=enabled"
+    "-Dmagic=enabled"
+    # "-Dseccomp=enabled"
+    "-Dmanpages=enabled"
+    "-Dconvert-icon=enabled"
+    "-Dsynctex=enabled"
+  ];
 
-  postInstall = ''
-    wrapProgram "$out/bin/zathura" \
-      --prefix PATH ":" "${file}/bin" \
-      --prefix XDG_CONFIG_DIRS ":" "$out/etc"
+  nativeBuildInputs = [
+    meson ninja pkgconfig desktop-file-utils python3.pkgs.sphinx
+    gettext wrapGAppsHook libxml2 check
+  ] ++ optional stdenv.isLinux appstream-glib;
 
-    mkdir -pv $out/etc
-    echo "set window-icon ${zathura_icon}" > $out/etc/zathurarc
-  '';
+  buildInputs = [
+    gtk girara libintl sqlite glib file librsvg
+    texlive.bin.core
+  ] ++ optional stdenv.isLinux libseccomp
+    ++ optional stdenv.isDarwin gtk-mac-integration;
+
+  doCheck = true;
 
   meta = {
-    homepage = http://pwmt.org/projects/zathura/;
+    homepage = "https://git.pwmt.org/pwmt/zathura";
     description = "A core component for zathura PDF viewer";
-    license = stdenv.lib.licenses.zlib;
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.garbas ];
-
-    # Set lower priority in order to provide user with a wrapper script called
-    # 'zathura' instead of real zathura executable. The wrapper will build
-    # plugin path argument before executing the original.
-    priority = 1;
+    license = licenses.zlib;
+    platforms = platforms.unix;
+    maintainers = with maintainers; [ globin ];
   };
 }

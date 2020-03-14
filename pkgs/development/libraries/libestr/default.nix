@@ -1,8 +1,17 @@
 { stdenv, fetchurl }:
-stdenv.mkDerivation {
-  name = "libestr-0.1.9";
+
+stdenv.mkDerivation rec {
+  name = "libestr-0.1.11";
+
   src = fetchurl {
-    url = http://libestr.adiscon.com/files/download/libestr-0.1.9.tar.gz;
-    sha256 = "06km9mlw5qq4aa7503l81d0qcghzl0n3lh0z41r1xjpa04nnwb42";
+    url = "http://libestr.adiscon.com/files/download/${name}.tar.gz";
+    sha256 = "0910ifzcs8kpd3srrr4fvbacgh2zrc6yn7i4rwfj6jpzhlkjnqs6";
+  };
+
+  meta = with stdenv.lib; {
+    homepage = https://libestr.adiscon.com/;
+    description = "Some essentials for string handling";
+    license = licenses.lgpl21;
+    platforms = platforms.all;
   };
 }

@@ -1,28 +1,32 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, utils, pkgs, ... }:
 
 with lib;
 
 let
-
   ids = config.ids;
   cfg = config.users;
 
   passwordDescription = ''
-    The options <literal>hashedPassword</literal>,
-    <literal>password</literal> and <literal>passwordFile</literal>
+    The options <option>hashedPassword</option>,
+    <option>password</option> and <option>passwordFile</option>
     controls what password is set for the user.
-    <literal>hashedPassword</literal> overrides both
-    <literal>password</literal> and <literal>passwordFile</literal>.
-    <literal>password</literal> overrides <literal>passwordFile</literal>.
+    <option>hashedPassword</option> overrides both
+    <option>password</option> and <option>passwordFile</option>.
+    <option>password</option> overrides <option>passwordFile</option>.
     If none of these three options are set, no password is assigned to
     the user, and the user will not be able to do password logins.
-    If the option <literal>users.mutableUsers</literal> is true, the
+    If the option <option>users.mutableUsers</option> is true, the
     password defined in one of the three options will only be set when
     the user is created for the first time. After that, you are free to
     change the password with the ordinary user management commands. If
-    <literal>users.mutableUsers</literal> is false, you cannot change
+    <option>users.mutableUsers</option> is false, you cannot change
     user passwords, they will always be set according to the password
     options.
+  '';
+
+  hashedPasswordDescription = ''
+    To generate hashed password install <literal>mkpasswd</literal>
+    package and run <literal>mkpasswd -m sha-512</literal>.
   '';
 
   userOpts = { name, config, ... }: {
@@ -31,6 +35,7 @@ let
 
       name = mkOption {
         type = types.str;
+        apply = x: assert (builtins.stringLength x < 32 || abort "Username '${x}' is longer than 31 characters which is not allowed!"); x;
         description = ''
           The name of the user account. If undefined, the name of the
           attribute set will be used.
@@ -87,6 +92,7 @@ let
 
       group = mkOption {
         type = types.str;
+        apply = x: assert (builtins.stringLength x < 32 || abort "Group name '${x}' is longer than 31 characters which is not allowed!"); x;
         default = "nogroup";
         description = "The user's primary group.";
       };
@@ -98,25 +104,41 @@ let
       };
 
       home = mkOption {
-        type = types.str;
+        type = types.path;
         default = "/var/empty";
         description = "The user's home directory.";
       };
 
+      cryptHomeLuks = mkOption {
+        type = with types; nullOr str;
+        default = null;
+        description = ''
+          Path to encrypted luks device that contains
+          the user's home directory.
+        '';
+      };
+
       shell = mkOption {
-        type = types.str;
-        default = "/run/current-system/sw/sbin/nologin";
-        description = "The path to the user's shell.";
+        type = types.either types.shellPackage types.path;
+        default = pkgs.shadow;
+        defaultText = "pkgs.shadow";
+        example = literalExample "pkgs.bashInteractive";
+        description = ''
+          The path to the user's shell. Can use shell derivations,
+          like <literal>pkgs.bashInteractive</literal>. Don’t
+          forget to enable your shell in
+          <literal>programs</literal> if necessary,
+          like <code>programs.zsh.enable = true;</code>.
+        '';
       };
 
       subUidRanges = mkOption {
-        type = types.listOf types.optionSet;
+        type = with types; listOf (submodule subordinateUidRange);
         default = [];
         example = [
           { startUid = 1000; count = 1; }
           { startUid = 100001; count = 65534; }
         ];
-        options = [ subordinateUidRange ];
         description = ''
           Subordinate user ids that user is allowed to use.
           They are set into <filename>/etc/subuid</filename> and are used
@@ -125,13 +147,12 @@ let
       };
 
       subGidRanges = mkOption {
-        type = types.listOf types.optionSet;
+        type = with types; listOf (submodule subordinateGidRange);
         default = [];
         example = [
           { startGid = 100; count = 1; }
           { startGid = 1001; count = 999; }
         ];
-        options = [ subordinateGidRange ];
         description = ''
           Subordinate group ids that user is allowed to use.
           They are set into <filename>/etc/subgid</filename> and are used
@@ -155,21 +176,22 @@ let
         default = false;
         description = ''
           If true, the user's shell will be set to
-          <literal>cfg.defaultUserShell</literal>.
+          <option>users.defaultUserShell</option>.
         '';
       };
 
       hashedPassword = mkOption {
-        type = with types; uniq (nullOr str);
+        type = with types; nullOr str;
         default = null;
         description = ''
-          Specifies the (hashed) password for the user.
+          Specifies the hashed password for the user.
           ${passwordDescription}
+          ${hashedPasswordDescription}
         '';
       };
 
       password = mkOption {
-        type = with types; uniq (nullOr str);
+        type = with types; nullOr str;
         default = null;
         description = ''
           Specifies the (clear text) password for the user.
@@ -181,16 +203,60 @@ let
       };
 
       passwordFile = mkOption {
-        type = with types; uniq (nullOr string);
+        type = with types; nullOr str;
         default = null;
         description = ''
-          The path to a file that contains the user's password. The password
+          The full path to a file that contains the user's password. The password
           file is read on each system activation. The file should contain
           exactly one line, which should be the password in an encrypted form
           that is suitable for the <literal>chpasswd -e</literal> command.
           ${passwordDescription}
         '';
       };
+
+      initialHashedPassword = mkOption {
+        type = with types; nullOr str;
+        default = null;
+        description = ''
+          Specifies the initial hashed password for the user, i.e. the
+          hashed password assigned if the user does not already
+          exist. If <option>users.mutableUsers</option> is true, the
+          password can be changed subsequently using the
+          <command>passwd</command> command. Otherwise, it's
+          equivalent to setting the <option>hashedPassword</option> option.
+
+          ${hashedPasswordDescription}
+        '';
+      };
+
+      initialPassword = mkOption {
+        type = with types; nullOr str;
+        default = null;
+        description = ''
+          Specifies the initial password for the user, i.e. the
+          password assigned if the user does not already exist. If
+          <option>users.mutableUsers</option> is true, the password
+          can be changed subsequently using the
+          <command>passwd</command> command. Otherwise, it's
+          equivalent to setting the <option>password</option>
+          option. The same caveat applies: the password specified here
+          is world-readable in the Nix store, so it should only be
+          used for guest accounts or passwords that will be changed
+          promptly.
+        '';
+      };
+
+      packages = mkOption {
+        type = types.listOf types.package;
+        default = [];
+        example = literalExample "[ pkgs.firefox pkgs.thunderbird ]";
+        description = ''
+          The set of packages that should be made available to the user.
+          This is in contrast to <option>environment.systemPackages</option>,
+          which adds packages to all users.
+        '';
+      };
+
     };
 
     config = mkMerge
@@ -200,15 +266,23 @@ let
         (mkIf config.isNormalUser {
           group = mkDefault "users";
           createHome = mkDefault true;
-          home = mkDefault "/home/${name}";
+          home = mkDefault "/home/${config.name}";
           useDefaultShell = mkDefault true;
           isSystemUser = mkDefault false;
+        })
+        # If !mutableUsers, setting ‘initialPassword’ is equivalent to
+        # setting ‘password’ (and similarly for hashed passwords).
+        (mkIf (!cfg.mutableUsers && config.initialPassword != null) {
+          password = mkDefault config.initialPassword;
+        })
+        (mkIf (!cfg.mutableUsers && config.initialHashedPassword != null) {
+          hashedPassword = mkDefault config.initialHashedPassword;
         })
       ];
 
   };
 
-  groupOpts = { name, config, ... }: {
+  groupOpts = { name, ... }: {
 
     options = {
 
@@ -230,7 +304,7 @@ let
       };
 
       members = mkOption {
-        type = with types; listOf string;
+        type = with types; listOf str;
         default = [];
         description = ''
           The user names of the group members, added to the
@@ -247,32 +321,36 @@ let
   };
 
   subordinateUidRange = {
-    startUid = mkOption {
-      type = types.int;
-      description = ''
-        Start of the range of subordinate user ids that user is
-        allowed to use.
-      '';
-    };
-    count = mkOption {
-      type = types.int;
-      default = 1;
-      description = ''Count of subordinate user ids'';
+    options = {
+      startUid = mkOption {
+        type = types.int;
+        description = ''
+          Start of the range of subordinate user ids that user is
+          allowed to use.
+        '';
+      };
+      count = mkOption {
+        type = types.int;
+        default = 1;
+        description = ''Count of subordinate user ids'';
+      };
     };
   };
 
   subordinateGidRange = {
-    startGid = mkOption {
-      type = types.int;
-      description = ''
-        Start of the range of subordinate group ids that user is
-        allowed to use.
-      '';
-    };
-    count = mkOption {
-      type = types.int;
-      default = 1;
-      description = ''Count of subordinate group ids'';
+    options = {
+      startGid = mkOption {
+        type = types.int;
+        description = ''
+          Start of the range of subordinate group ids that user is
+          allowed to use.
+        '';
+      };
+      count = mkOption {
+        type = types.int;
+        default = 1;
+        description = ''Count of subordinate group ids'';
+      };
     };
   };
 
@@ -280,13 +358,13 @@ let
     map (range: "${user.name}:${toString range.startUid}:${toString range.count}\n")
       user.subUidRanges);
 
-  subuidFile = concatStrings (map mkSubuidEntry (attrValues cfg.extraUsers));
+  subuidFile = concatStrings (map mkSubuidEntry (attrValues cfg.users));
 
   mkSubgidEntry = user: concatStrings (
     map (range: "${user.name}:${toString range.startGid}:${toString range.count}\n")
         user.subGidRanges);
 
-  subgidFile = concatStrings (map mkSubgidEntry (attrValues cfg.extraUsers));
+  subgidFile = concatStrings (map mkSubgidEntry (attrValues cfg.users));
 
   idsAreUnique = set: idAttr: !(fold (name: args@{ dup, acc }:
     let
@@ -298,25 +376,37 @@ let
       else { dup = false; acc = newAcc; }
     ) { dup = false; acc = {}; } (builtins.attrNames set)).dup;
 
-  uidsAreUnique = idsAreUnique (filterAttrs (n: u: u.uid != null) cfg.extraUsers) "uid";
-  gidsAreUnique = idsAreUnique (filterAttrs (n: g: g.gid != null) cfg.extraGroups) "gid";
+  uidsAreUnique = idsAreUnique (filterAttrs (n: u: u.uid != null) cfg.users) "uid";
+  gidsAreUnique = idsAreUnique (filterAttrs (n: g: g.gid != null) cfg.groups) "gid";
 
   spec = pkgs.writeText "users-groups.json" (builtins.toJSON {
     inherit (cfg) mutableUsers;
-    users = mapAttrsToList (n: u:
+    users = mapAttrsToList (_: u:
       { inherit (u)
-          name uid group description home shell createHome isSystemUser
-          password passwordFile hashedPassword;
-      }) cfg.extraUsers;
+          name uid group description home createHome isSystemUser
+          password passwordFile hashedPassword
+          initialPassword initialHashedPassword;
+        shell = utils.toShellPath u.shell;
+      }) cfg.users;
     groups = mapAttrsToList (n: g:
       { inherit (g) name gid;
         members = g.members ++ (mapAttrsToList (n: u: u.name) (
-          filterAttrs (n: u: elem g.name u.extraGroups) cfg.extraUsers
+          filterAttrs (n: u: elem g.name u.extraGroups) cfg.users
         ));
-      }) cfg.extraGroups;
+      }) cfg.groups;
   });
 
+  systemShells =
+    let
+      shells = mapAttrsToList (_: u: u.shell) cfg.users;
+    in
+      filter types.shellPackage.check shells;
+
 in {
+  imports = [
+    (mkAliasOptionModule [ "users" "extraUsers" ] [ "users" "users" ])
+    (mkAliasOptionModule [ "users" "extraGroups" ] [ "users" "groups" ])
+  ];
 
   ###### interface
 
@@ -326,21 +416,24 @@ in {
       type = types.bool;
       default = true;
       description = ''
-        If true, you are free to add new users and groups to the system
+        If set to <literal>true</literal>, you are free to add new users and groups to the system
         with the ordinary <literal>useradd</literal> and
         <literal>groupadd</literal> commands. On system activation, the
         existing contents of the <literal>/etc/passwd</literal> and
         <literal>/etc/group</literal> files will be merged with the
-        contents generated from the <literal>users.extraUsers</literal> and
-        <literal>users.extraGroups</literal> options. If
-        <literal>mutableUsers</literal> is false, the contents of the user and
-        group files will simply be replaced on system activation. This also
-        holds for the user passwords; if this option is false, all changed
-        passwords will be reset according to the
-        <literal>users.extraUsers</literal> configuration on activation. If
-        this option is true, the initial password for a user will be set
-        according to <literal>users.extraUsers</literal>, but existing passwords
+        contents generated from the <literal>users.users</literal> and
+        <literal>users.groups</literal> options.
+        The initial password for a user will be set
+        according to <literal>users.users</literal>, but existing passwords
         will not be changed.
+
+        <warning><para>
+        If set to <literal>false</literal>, the contents of the user and
+        group files will simply be replaced on system activation. This also
+        holds for the user passwords; all changed
+        passwords will be reset according to the
+        <literal>users.users</literal> configuration on activation.
+        </para></warning>
       '';
     };
 
@@ -352,9 +445,9 @@ in {
       '';
     };
 
-    users.extraUsers = mkOption {
+    users.users = mkOption {
       default = {};
-      type = types.loaOf types.optionSet;
+      type = with types; loaOf (submodule userOpts);
       example = {
         alice = {
           uid = 1234;
@@ -370,40 +463,26 @@ in {
         Additional user accounts to be created automatically by the system.
         This can also be used to set options for root.
       '';
-      options = [ userOpts ];
     };
 
-    users.extraGroups = mkOption {
+    users.groups = mkOption {
       default = {};
       example =
         { students.gid = 1001;
           hackers = { };
         };
-      type = types.loaOf types.optionSet;
+      type = with types; loaOf (submodule groupOpts);
       description = ''
         Additional groups to be created automatically by the system.
       '';
-      options = [ groupOpts ];
     };
 
+    # FIXME: obsolete - will remove.
     security.initialRootPassword = mkOption {
       type = types.str;
       default = "!";
       example = "";
-      description = ''
-        The (hashed) password for the root account set on initial
-        installation. The empty string denotes that root can login
-        locally without a password (but not via remote services such
-        as SSH, or indirectly via <command>su</command> or
-        <command>sudo</command>). The string <literal>!</literal>
-        prevents root from logging in using a password.
-        Note that setting this option sets
-        <literal>users.extraUsers.root.hashedPassword</literal>.
-        Also, if <literal>users.mutableUsers</literal> is false
-        you cannot change the root password manually, so in that case
-        the name of this option is a bit misleading, since it will define
-        the root password beyond the user initialisation phase.
-      '';
+      visible = false;
     };
 
   };
@@ -413,15 +492,14 @@ in {
 
   config = {
 
-    users.extraUsers = {
+    users.users = {
       root = {
         uid = ids.uids.root;
         description = "System administrator";
         home = "/root";
         shell = mkDefault cfg.defaultUserShell;
         group = "root";
-        extraGroups = [ "grsecurity" ];
-        hashedPassword = mkDefault config.security.initialRootPassword;
+        initialHashedPassword = mkDefault config.security.initialRootPassword;
       };
       nobody = {
         uid = ids.uids.nobody;
@@ -430,7 +508,7 @@ in {
       };
     };
 
-    users.extraGroups = {
+    users.groups = {
       root.gid = ids.gids.root;
       wheel.gid = ids.gids.wheel;
       disk.gid = ids.gids.disk;
@@ -449,32 +527,76 @@ in {
       nixbld.gid = ids.gids.nixbld;
       utmp.gid = ids.gids.utmp;
       adm.gid = ids.gids.adm;
-      grsecurity.gid = ids.gids.grsecurity;
+      input.gid = ids.gids.input;
+      kvm.gid = ids.gids.kvm;
+      render.gid = ids.gids.render;
     };
 
-    system.activationScripts.users = stringAfter [ "etc" ]
+    system.activationScripts.users = stringAfter [ "stdio" ]
       ''
+        install -m 0700 -d /root
+        install -m 0755 -d /home
+
         ${pkgs.perl}/bin/perl -w \
-          -I${pkgs.perlPackages.FileSlurp}/lib/perl5/site_perl \
-          -I${pkgs.perlPackages.JSON}/lib/perl5/site_perl \
+          -I${pkgs.perlPackages.FileSlurp}/${pkgs.perl.libPrefix} \
+          -I${pkgs.perlPackages.JSON}/${pkgs.perl.libPrefix} \
           ${./update-users-groups.pl} ${spec}
       '';
 
     # for backwards compatibility
     system.activationScripts.groups = stringAfter [ "users" ] "";
 
-    environment.etc."subuid" = {
-      text = subuidFile;
-      mode = "0644";
-    };
-    environment.etc."subgid" = {
-      text = subgidFile;
-      mode = "0644";
-    };
+    # Install all the user shells
+    environment.systemPackages = systemShells;
+
+    environment.etc = {
+      subuid = {
+        text = subuidFile;
+        mode = "0644";
+      };
+      subgid = {
+        text = subgidFile;
+        mode = "0644";
+      };
+    } // (mapAttrs' (name: { packages, ... }: {
+      name = "profiles/per-user/${name}";
+      value.source = pkgs.buildEnv {
+        name = "user-environment";
+        paths = packages;
+        inherit (config.environment) pathsToLink extraOutputsToInstall;
+        inherit (config.system.path) ignoreCollisions postBuild;
+      };
+    }) (filterAttrs (_: u: u.packages != []) cfg.users));
+
+    environment.profiles = [
+      "$HOME/.nix-profile"
+      "/etc/profiles/per-user/$USER"
+    ];
 
     assertions = [
       { assertion = !cfg.enforceIdUniqueness || (uidsAreUnique && gidsAreUnique);
         message = "UIDs and GIDs must be unique!";
+      }
+      { # If mutableUsers is false, to prevent users creating a
+        # configuration that locks them out of the system, ensure that
+        # there is at least one "privileged" account that has a
+        # password or an SSH authorized key. Privileged accounts are
+        # root and users in the wheel group.
+        assertion = !cfg.mutableUsers ->
+          any id (mapAttrsToList (name: cfg:
+            (name == "root"
+             || cfg.group == "wheel"
+             || elem "wheel" cfg.extraGroups)
+            &&
+            ((cfg.hashedPassword != null && cfg.hashedPassword != "!")
+             || cfg.password != null
+             || cfg.passwordFile != null
+             || cfg.openssh.authorizedKeys.keys != []
+             || cfg.openssh.authorizedKeys.keyFiles != [])
+          ) cfg.users);
+        message = ''
+          Neither the root account nor any wheel user has a password or SSH authorized key.
+          You must set one to prevent being locked out of your system.'';
       }
     ];
 

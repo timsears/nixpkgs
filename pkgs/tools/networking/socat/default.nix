@@ -1,14 +1,26 @@
-{ stdenv, fetchurl, openssl }:
+{ stdenv, fetchurl, openssl, readline, which, nettools }:
 
 stdenv.mkDerivation rec {
-  name = "socat-1.7.2.4";
+  name = "socat-1.7.3.4";
 
   src = fetchurl {
     url = "http://www.dest-unreach.org/socat/download/${name}.tar.bz2";
-    sha256 = "028yjka2zr6j1i8pmfmvzqki8ajczdl1hnry1x31xbbg3j83jxsb";
+    sha256 = "1z7xgnwiqpcv1j6aghhj9nqbx7cg3gpc4n9j7vi9hm7nhv5788wp";
   };
 
-  buildInputs = [ openssl ];
+  postPatch = ''
+    patchShebangs test.sh
+    substituteInPlace test.sh \
+      --replace /bin/rm rm \
+      --replace /sbin/ifconfig ifconfig
+  '';
+
+  buildInputs = [ openssl readline ];
+
+  hardeningEnable = [ "pie" ];
+
+  checkInputs = [ which nettools ];
+  doCheck = false; # fails a bunch, hangs
 
   meta = {
     description = "A utility for bidirectional data transfer between two independent data channels";

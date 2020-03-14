@@ -1,44 +1,139 @@
-{ stdenv, fetchurl, bash, xulrunner }:
+{ stdenv, fetchurl, wrapGAppsHook, makeDesktopItem
+, atk
+, cairo
+, curl
+, cups
+, dbus-glib
+, dbus
+, dconf
+, fontconfig
+, freetype
+, gdk-pixbuf
+, glib
+, glibc
+, gtk3
+, libX11
+, libXScrnSaver
+, libxcb
+, libXcomposite
+, libXcursor
+, libXdamage
+, libXext
+, libXfixes
+, libXi
+, libXinerama
+, libXrender
+, libXt
+, libnotify
+, gnome3
+, libGLU, libGL
+, nspr
+, nss
+, pango
+, gsettings-desktop-schemas
+}:
 
-assert (stdenv.system == "x86_64-linux" || stdenv.system == "i686-linux");
-
-let
-  version = "4.0.22";
-  arch = if stdenv.system == "x86_64-linux"
-           then "linux-x86_64"
-           else "linux-i686";
-in
-stdenv.mkDerivation {
-  name = "zotero-${version}";
+stdenv.mkDerivation rec {
+  pname = "zotero";
+  version = "5.0.83";
 
   src = fetchurl {
-    url = "https://download.zotero.org/standalone/${version}/Zotero-${version}_${arch}.tar.bz2";
-    sha256 = if stdenv.system == "x86_64-linux"
-               then "0dq4x1cc0lnhs7g6w85qjdlb7sajr13mr2zcf4yvrciwhwy3r1i1"
-               else "0s4j2karaq85fwnd1niz8hzx5k71cqs493g38pg337i3iwxad9hg";
+    url = "https://download.zotero.org/client/release/${version}/Zotero-${version}_linux-x86_64.tar.bz2";
+    sha256 = "1abkwxdi154hnry8nsvxbklvbsnvd7cs2as0041h2kbiz824pv31";
   };
 
-  # Strip the bundled xulrunner
-  prePatch = ''rm -fr run-zotero.sh zotero xulrunner/'';
+  buildInputs= [ wrapGAppsHook gsettings-desktop-schemas gtk3 gnome3.adwaita-icon-theme dconf ];
 
-  inherit bash xulrunner;
-  installPhase = ''
-    mkdir -p "$out/libexec/zotero"
-    cp -vR * "$out/libexec/zotero/"
+  phases = [ "unpackPhase" "patchPhase" "installPhase" "fixupPhase" ];
 
-    mkdir -p "$out/bin"
-    substituteAll "${./zotero.sh}" "$out/bin/zotero"
-    chmod +x "$out/bin/zotero"
+  dontStrip = true;
+  dontPatchELF = true;
+
+  libPath = stdenv.lib.makeLibraryPath
+    [ stdenv.cc.cc
+      atk
+      cairo
+      curl
+      cups
+      dbus-glib
+      dbus
+      fontconfig
+      freetype
+      gdk-pixbuf
+      glib
+      glibc
+      gtk3
+      libX11
+      libXScrnSaver
+      libXcomposite
+      libXcursor
+      libxcb
+      libXdamage
+      libXext
+      libXfixes
+      libXi
+      libXinerama
+      libXrender
+      libXt
+      libnotify
+      libGLU libGL
+      nspr
+      nss
+      pango
+    ] + ":" + stdenv.lib.makeSearchPathOutput "lib" "lib64" [
+      stdenv.cc.cc
+    ];
+
+  patchPhase = ''
+    sed -i '/pref("app.update.enabled", true);/c\pref("app.update.enabled", false);' defaults/preferences/prefs.js
   '';
 
-  doInstallCheck = true;
-  installCheckPhase = "$out/bin/zotero --version";
+  desktopItem = makeDesktopItem {
+    name = "zotero-${version}";
+    exec = "zotero -url %U";
+    icon = "zotero";
+    type = "Application";
+    comment = meta.description;
+    desktopName = "Zotero";
+    genericName = "Reference Management";
+    categories = "Office;Database;";
+    startupNotify = "true";
+    mimeType = "text/plain";
+  };
+
+  installPhase =
+  ''
+     mkdir -p "$prefix/usr/lib/zotero-bin-${version}"
+     cp -r * "$prefix/usr/lib/zotero-bin-${version}"
+     mkdir -p "$out/bin"
+     ln -s "$prefix/usr/lib/zotero-bin-${version}/zotero" "$out/bin/"
+
+     # install desktop file and icons.
+     mkdir -p $out/share/applications
+     cp ${desktopItem}/share/applications/* $out/share/applications/
+     for size in 16 32 48 256; do
+       install -Dm444 chrome/icons/default/default$size.png \
+         $out/share/icons/hicolor/''${size}x''${size}/apps/zotero.png
+     done
+
+     for executable in \
+       zotero-bin plugin-container \
+       updater minidump-analyzer
+     do
+       if [ -e "$out/usr/lib/zotero-bin-${version}/$executable" ]; then
+         patchelf --interpreter "$(cat $NIX_CC/nix-support/dynamic-linker)" \
+           "$out/usr/lib/zotero-bin-${version}/$executable"
+       fi
+     done
+     find . -executable -type f -exec \
+       patchelf --set-rpath "$libPath" \
+         "$out/usr/lib/zotero-bin-${version}/{}" \;
+  '';
 
   meta = with stdenv.lib; {
     homepage = "https://www.zotero.org";
     description = "Collect, organize, cite, and share your research sources";
     license = licenses.agpl3;
     platforms = platforms.linux;
-    maintainers = with maintainers; [ ttuegel ];
   };
 }

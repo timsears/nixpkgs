@@ -1,69 +1,96 @@
-{ stdenv, fetchurl, blas, bzip2, gfortran, liblapack, libX11, libXmu, libXt
-, libjpeg, libpng, libtiff, ncurses, pango, pcre, perl, readline, tcl
-, texLive, tk, xz, zlib, less, texinfo, graphviz, icu, pkgconfig, bison
-, imake, which, jdk, atlas
+{ stdenv, fetchurl, bzip2, gfortran, libX11, libXmu, libXt, libjpeg, libpng
+, libtiff, ncurses, pango, pcre, perl, readline, tcl, texLive, tk, xz, zlib
+, less, texinfo, graphviz, icu, pkgconfig, bison, imake, which, jdk, openblas
+, curl, Cocoa, Foundation, libobjc, libcxx, tzdata, fetchpatch
 , withRecommendedPackages ? true
+, enableStrictBarrier ? false
+# R as of writing does not support outputting both .so and .a files; it outputs:
+#     --enable-R-static-lib conflicts with --enable-R-shlib and will be ignored
+, static ? false
 }:
 
 stdenv.mkDerivation rec {
-  name = "R-3.1.0";
+  name = "R-3.6.3";
 
   src = fetchurl {
-    url = "http://cran.r-project.org/src/base/R-3/${name}.tar.gz";
-    sha256 = "1qjzbw341bvi1h4jwbvdkvq8j0z9l3m85mpgrlfw0n2cz2806s4a";
+    url = "https://cran.r-project.org/src/base/R-3/${name}.tar.gz";
+    sha256 = "13xaxwfbzj0bd6rn2n27z0n04lb93mcyq991w4vdbbg8v282jc49";
   };
 
-  buildInputs = [ blas bzip2 gfortran liblapack libX11 libXmu libXt
-    libXt libjpeg libpng libtiff ncurses pango pcre perl readline tcl
-    texLive tk xz zlib less texinfo graphviz icu pkgconfig bison imake
-    which jdk atlas
+  dontUseImakeConfigure = true;
+
+  buildInputs = [
+    bzip2 gfortran libX11 libXmu libXt libXt libjpeg libpng libtiff ncurses
+    pango pcre perl readline texLive xz zlib less texinfo graphviz icu
+    pkgconfig bison imake which openblas curl tcl tk jdk
+  ] ++ stdenv.lib.optionals stdenv.isDarwin [ Cocoa Foundation libobjc libcxx ];
+
+  patches = [
+    ./no-usr-local-search-paths.patch
+  ] ++ stdenv.lib.optionals stdenv.hostPlatform.isAarch64 [
+    # Remove a test which fails on aarch64.
+    # See https://bugs.r-project.org/bugzilla/show_bug.cgi?id=17718
+    ./0001-Disable-test-pending-upstream-fix.patch
   ];
 
-  patches = [ ./no-usr-local-search-paths.patch ];
+  prePatch = stdenv.lib.optionalString stdenv.isDarwin ''
+    substituteInPlace configure --replace "-install_name libR.dylib" "-install_name $out/lib/R/lib/libR.dylib"
+  '';
+
+  dontDisableStatic = static;
 
   preConfigure = ''
     configureFlagsArray=(
       --disable-lto
       --with${stdenv.lib.optionalString (!withRecommendedPackages) "out"}-recommended-packages
-      --with-blas="-L${atlas}/lib -lf77blas -latlas"
-      --with-lapack="-L${liblapack}/lib -llapack"
+      --with-blas="-L${openblas}/lib -lopenblas"
+      --with-lapack="-L${openblas}/lib -lopenblas"
       --with-readline
       --with-tcltk --with-tcl-config="${tcl}/lib/tclConfig.sh" --with-tk-config="${tk}/lib/tkConfig.sh"
       --with-cairo
       --with-libpng
       --with-jpeglib
       --with-libtiff
-      --with-system-zlib
-      --with-system-bzlib
-      --with-system-pcre
-      --with-system-xz
       --with-ICU
-      --enable-R-shlib
+      ${stdenv.lib.optionalString enableStrictBarrier "--enable-strict-barrier"}
+      ${if static then "--enable-R-static-lib" else "--enable-R-shlib"}
       AR=$(type -p ar)
       AWK=$(type -p gawk)
-      CC=$(type -p gcc)
-      CXX=$(type -p g++)
+      CC=$(type -p cc)
+      CXX=$(type -p c++)
       FC="${gfortran}/bin/gfortran" F77="${gfortran}/bin/gfortran"
       JAVA_HOME="${jdk}"
-      LDFLAGS="-L${gfortran.gcc}/lib"
       RANLIB=$(type -p ranlib)
       R_SHELL="${stdenv.shell}"
+  '' + stdenv.lib.optionalString stdenv.isDarwin ''
+      --disable-R-framework
+      OBJC="clang"
+      CPPFLAGS="-isystem ${libcxx}/include/c++/v1"
+      LDFLAGS="-L${libcxx}/lib"
+  '' + ''
     )
-    echo "TCLLIBPATH=${tk}/lib" >>etc/Renviron.in
+    echo >>etc/Renviron.in "TCLLIBPATH=${tk}/lib"
+    echo >>etc/Renviron.in "TZDIR=${tzdata}/share/zoneinfo"
   '';
 
   installTargets = [ "install" "install-info" "install-pdf" ];
 
+  # The store path to "which" is baked into src/library/base/R/unix/system.unix.R,
+  # but Nix cannot detect it as a run-time dependency because the installed file
+  # is compiled and compressed, which hides the store path.
+  postFixup = "echo ${which} > $out/nix-support/undetected-runtime-dependencies";
+
   doCheck = true;
+  preCheck = "export TZ=CET; bin/Rscript -e 'sessionInfo()'";
 
   enableParallelBuilding = true;
 
   setupHook = ./setup-hook.sh;
 
-  meta = {
+  meta = with stdenv.lib; {
     homepage = "http://www.r-project.org/";
     description = "Free software environment for statistical computing and graphics";
-    license = stdenv.lib.licenses.gpl2Plus;
+    license = licenses.gpl2Plus;
 
     longDescription = ''
       GNU R is a language and environment for statistical computing and
@@ -84,7 +111,9 @@ stdenv.mkDerivation rec {
       user-defined recursive functions and input and output facilities.
     '';
 
-    hydraPlatforms = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.simons ];
+    platforms = platforms.all;
+    hydraPlatforms = platforms.linux;
+
+    maintainers = with maintainers; [ peti timokau ];
   };
 }

@@ -1,32 +1,48 @@
-{ stdenv, fetchurl, pcre, libiconv ? null }:
+{ stdenv, fetchurl, pcre, libiconv, perl }:
 
-let version = "2.14"; in
+let version = "3.4"; in
 
 stdenv.mkDerivation {
-  name = "gnugrep-${version}";
+  pname = "gnugrep";
+  inherit version;
 
   src = fetchurl {
     url = "mirror://gnu/grep/grep-${version}.tar.xz";
-    sha256 = "1qbjb1l7f9blckc5pqy8jlf6482hpx4awn2acmhyf5mv9wfq03p7";
+    sha256 = "1yy33kiwrxrwj2nxa4fg15bvmwyghqbs8qwkdvy5phm784f7brjq";
   };
 
-  buildInputs = [ pcre ]
-    ++ stdenv.lib.optional (libiconv != null) libiconv;
+  # Perl is needed for testing
+  nativeBuildInputs = [ perl ];
+  outputs = [ "out" "info" ]; # the man pages are rather small
 
-  patches = [ ./test-localeconv.patch ];
+  buildInputs = [ pcre libiconv ];
 
-  NIX_LDFLAGS = stdenv.lib.optionalString (libiconv != null) "-L${libiconv}/lib -liconv";
+  # cygwin: FAIL: multibyte-white-space
+  # freebsd: FAIL mb-non-UTF8-performance
+  # all platforms: timing sensitivity in long-pattern-perf 
+  #doCheck = !stdenv.isDarwin && !stdenv.isSunOS && !stdenv.isCygwin && !stdenv.isFreeBSD;
+  doCheck = false;
 
-  doCheck = !stdenv.isDarwin;
-
-  # On Mac OS X, force use of mkdir -p, since Grep's fallback
+  # On macOS, force use of mkdir -p, since Grep's fallback
   # (./install-sh) is broken.
   preConfigure = ''
     export MKDIR_P="mkdir -p"
   '';
 
-  meta = {
-    homepage = http://www.gnu.org/software/grep/;
+  # Fix reference to sh in bootstrap-tools, and invoke grep via
+  # absolute path rather than looking at argv[0].
+  postInstall =
+    ''
+      rm $out/bin/egrep $out/bin/fgrep
+      echo "#! /bin/sh" > $out/bin/egrep
+      echo "exec $out/bin/grep -E \"\$@\"" >> $out/bin/egrep
+      echo "#! /bin/sh" > $out/bin/fgrep
+      echo "exec $out/bin/grep -F \"\$@\"" >> $out/bin/fgrep
+      chmod +x $out/bin/egrep $out/bin/fgrep
+    '';
+
+  meta = with stdenv.lib; {
+    homepage = https://www.gnu.org/software/grep/;
     description = "GNU implementation of the Unix grep command";
 
     longDescription = ''
@@ -35,10 +51,10 @@ stdenv.mkDerivation {
       prints the matching lines.
     '';
 
-    license = stdenv.lib.licenses.gpl3Plus;
+    license = licenses.gpl3Plus;
 
-    maintainers = [ ];
-    platforms = stdenv.lib.platforms.all;
+    maintainers = [ maintainers.eelco ];
+    platforms = platforms.all;
   };
 
   passthru = {inherit pcre;};

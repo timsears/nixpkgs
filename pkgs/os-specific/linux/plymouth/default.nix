@@ -1,44 +1,58 @@
-{ stdenv, fetchurl, autoconf, automake, cairo, docbook_xsl, gtk
-, libdrm, libpng , libtool, libxslt, makeWrapper, pango, pkgconfig
-, udev
+{ stdenv, fetchurl, autoreconfHook, pkgconfig, libxslt, docbook_xsl
+, gtk3, udev, systemd
 }:
 
 stdenv.mkDerivation rec {
-  name = "plymouth-${version}";
-  version = "0.9.0";
+  pname = "plymouth";
+  version = "0.9.4";
 
   src = fetchurl {
-    url = "http://www.freedesktop.org/software/plymouth/releases/${name}.tar.bz2";
-    sha256 = "0kfdwv179brg390ma003pmdqfvqlbybqiyp9fxrxx0wa19sjxqnk";
+    url = "https://www.freedesktop.org/software/plymouth/releases/${pname}-${version}.tar.xz";
+    sha256 = "0l8kg7b2vfxgz9gnrn0v2w4jvysj2cirp0nxads5sy05397pl6aa";
   };
 
-  buildInputs = [
-    autoconf automake cairo docbook_xsl gtk libdrm libpng libtool
-    libxslt makeWrapper pango pkgconfig udev
+  nativeBuildInputs = [
+    autoreconfHook pkgconfig libxslt docbook_xsl
   ];
 
-  prePatch = ''
-    sed -e "s#\$(\$PKG_CONFIG --variable=systemdsystemunitdir systemd)#$out/etc/systemd/system#g" \
-      -i configure.ac
-  '';
+  buildInputs = [
+    gtk3 udev systemd
+  ];
 
-  configurePhase = ''
-    ./configure \
-      --prefix=$out \
-      -bindir=$out/bin \
-      -sbindir=$out/sbin \
-      --exec-prefix=$out \
-      --libdir=$out/lib \
-      --libexecdir=$out/lib \
-      --sysconfdir=$out/etc \
-      --localstatedir=/var \
-      --with-log-viewer \
-      --without-system-root-install \
-      --without-rhgb-compat-link \
-      --enable-tracing \
-      --enable-systemd-integration \
-      --enable-pango \
-      --enable-gtk
+  postPatch = ''
+    sed -i \
+      -e "s#\$(\$PKG_CONFIG --variable=systemdsystemunitdir systemd)#$out/etc/systemd/system#g" \
+      -e "s#plymouthplugindir=.*#plymouthplugindir=/etc/plymouth/plugins/#" \
+      -e "s#plymouththemedir=.*#plymouththemedir=/etc/plymouth/themes#" \
+      -e "s#plymouthpolicydir=.*#plymouthpolicydir=/etc/plymouth/#" \
+      configure.ac
+
+    configureFlags="
+      --prefix=$out
+      --bindir=$out/bin
+      --sbindir=$out/sbin
+      --exec-prefix=$out
+      --libdir=$out/lib
+      --libexecdir=$out/lib
+      --sysconfdir=/etc
+      --with-systemdunitdir=$out/etc/systemd/system
+      --localstatedir=/var
+      --with-logo=/etc/plymouth/logo.png
+      --with-background-color=0x000000
+      --with-background-start-color-stop=0x000000
+      --with-background-end-color-stop=0x000000
+      --with-release-file=/etc/os-release
+      --without-system-root-install
+      --without-rhgb-compat-link
+      --enable-tracing
+      --enable-systemd-integration
+      --enable-pango
+      --enable-gdm-transition
+      --enable-gtk"
+
+    installFlags="
+      plymouthd_defaultsdir=$out/share/plymouth
+      plymouthd_confdir=$out/etc/plymouth"
   '';
 
   meta = with stdenv.lib; {

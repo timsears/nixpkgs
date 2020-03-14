@@ -1,23 +1,24 @@
-{ fetchurl, stdenv, zip, zlib, qt5 }:
+{ fetchFromGitHub, stdenv, zlib, qtbase, cmake, fixDarwinDylibNames }:
 
 stdenv.mkDerivation rec {
-  name = "quazip-0.7";
+  pname = "quazip";
+  version = "0.8.1";
 
-  src = fetchurl {
-    url = "mirror://sourceforge/quazip/${name}.tar.gz";
-    sha256 = "8af5e7f9bff98b5a2982800a292eae0176c2b41a98a8deab14f4e1cbe07674a4";
+  src = fetchFromGitHub {
+    owner = "stachenov";
+    repo = pname;
+    rev = "v${version}";
+    sha256 = "1g473gnsbkvxpsv8lbsmhspn7jnq86b05zzgqh11r581v8ndvz5s";
   };
 
-  configurePhase = "cd quazip && qmake quazip.pro";
+  buildInputs = [ zlib qtbase ];
+  nativeBuildInputs = [ cmake ]
+    ++ stdenv.lib.optional stdenv.isDarwin fixDarwinDylibNames;
 
-  installFlags = "INSTALL_ROOT=$(out)";
-
-  buildInputs = [ zlib qt5 ];
-
-  meta = {
+  meta = with stdenv.lib; {
     description = "Provides access to ZIP archives from Qt programs";
-    license = stdenv.lib.licenses.gpl2Plus;
-    homepage = http://quazip.sourceforge.net/;
-    platforms = stdenv.lib.platforms.linux;
+    license = licenses.lgpl21Plus;
+    homepage = https://stachenov.github.io/quazip/; # Migrated from http://quazip.sourceforge.net/
+    platforms = with platforms; linux ++ darwin;
   };
 }

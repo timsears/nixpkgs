@@ -1,67 +1,57 @@
-{ config, lib, pkgs, ... }:
+{ ... }:
 
-with lib;
-
-let
- pkgs2storeContents = l : map (x: { object = x; symlink = "none"; }) l;
-
-in {
-  # Create the tarball
-  system.build.dockerImage = import ../../lib/make-system-tarball.nix {
-    inherit (pkgs) stdenv perl xz pathsFromGraph;
-
-    contents = [];
-    extraArgs = "--owner=0";
-    storeContents = [
-      { object = config.system.build.toplevel + "/init";
-        symlink = "/bin/init";
-      }
-    ] ++ (pkgs2storeContents [ pkgs.stdenv ]);
-  };
+{
+  imports = [
+    ../profiles/docker-container.nix # FIXME, shouldn't include something from profiles/
+  ];
 
   boot.postBootCommands =
     ''
-      # After booting, register the contents of the Nix store in the Nix
-      # database.
-      if [ -f /nix-path-registration ]; then
-        ${config.nix.package}/bin/nix-store --load-db < /nix-path-registration &&
-        rm /nix-path-registration
-      fi
-
-      # nixos-rebuild also requires a "system" profile and an
-      # /etc/NIXOS tag.
-      touch /etc/NIXOS
-      ${config.nix.package}/bin/nix-env -p /nix/var/nix/profiles/system --set /run/current-system
-
       # Set virtualisation to docker
-      echo "docker" > /run/systemd/container 
+      echo "docker" > /run/systemd/container
     '';
 
-
-  # docker image config
-  require = [
-    ../installer/cd-dvd/channel.nix
-    ../profiles/minimal.nix
-    ../profiles/clone-config.nix
-  ];
-
-  boot.isContainer = true;
-
-  # Iptables do not work in docker
+  # Iptables do not work in Docker.
   networking.firewall.enable = false;
 
-  services.openssh.enable = true;
-
-  # Socket activated ssh presents problem in docker
+  # Socket activated ssh presents problem in Docker.
   services.openssh.startWhenNeeded = false;
-
-  # Allow the user to login as root without password
-  security.initialRootPassword = "";
-
-  # Some more help text.
-  services.mingetty.helpLine =
-    ''
-
-      Log in as "root" with an empty password.
-    '';
 }
+
+# Example usage:
+#
+## default.nix
+# let
+#   nixos = import <nixpkgs/nixos> {
+#     configuration = ./configuration.nix;
+#     system = "x86_64-linux";
+#   };
+# in
+# nixos.config.system.build.tarball
+#
+## configuration.nix
+# { pkgs, config, lib, ... }:
+# {
+#   imports = [
+#     <nixpkgs/nixos/modules/virtualisation/docker-image.nix>
+#     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>
+#   ];
+#
+#   documentation.doc.enable = false;
+#
+#   environment.systemPackages = with pkgs; [
+#     bashInteractive
+#     cacert
+#     nix
+#   ];
+# }
+#
+## Run
+# Build the tarball:
+# $ nix-build default.nix
+# Load into docker:
+# $ docker import result/tarball/nixos-system-*.tar.xz nixos-docker
+# Boots into systemd
+# $ docker run --privileged -it nixos-docker /init
+# Log into the container
+# $ docker exec -it <container-name> /run/current-system/sw/bin/bash

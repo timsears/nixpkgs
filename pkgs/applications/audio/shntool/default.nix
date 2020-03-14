@@ -1,8 +1,8 @@
 { stdenv, fetchurl, flac }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   version = "3.0.10";
-  name = "shntool-${version}";
+  pname = "shntool";
 
   src = fetchurl {
     url = http://www.etree.org/shnutils/shntool/dist/src/shntool-3.0.10.tar.gz;
@@ -12,7 +12,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ flac ];
 
   meta = {
-    description = "multi-purpose WAVE data processing and reporting utility";
+    description = "Multi-purpose WAVE data processing and reporting utility";
     homepage = http://www.etree.org/shnutils/shntool/;
     license = stdenv.lib.licenses.gpl2Plus;
     platforms = stdenv.lib.platforms.all;

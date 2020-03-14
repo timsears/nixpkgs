@@ -1,34 +1,49 @@
-{ stdenv, fetchurl, python, sip, qt4, pythonDBus, pkgconfig, lndir, makeWrapper }:
+{ stdenv, fetchurl, buildPythonPackage, python, dbus-python, sip, qt4, pkgconfig, lndir, dbus, makeWrapper }:
 
-let version = "4.10.2"; # kde410.pykde4 doesn't build with 4.10.3
-in
-stdenv.mkDerivation {
-  name = "PyQt-x11-gpl-${version}";
+buildPythonPackage rec {
+  pname = "PyQt-x11-gpl";
+  version = "4.12";
+  format = "other";
 
   src = fetchurl {
-    url = "mirror://sourceforge/pyqt/PyQt4/PyQt-${version}/PyQt-x11-gpl-${version}.tar.gz";
-    sha256 = "1zp69caqq195ymp911d0cka8619q78hzmfxvj7c51w2y53zg4z3l";
+    url = "mirror://sourceforge/pyqt/PyQt4_gpl_x11-${version}.tar.gz";
+    sha256 = "1nw8r88a5g2d550yvklawlvns8gd5slw53yy688kxnsa65aln79w";
   };
 
-  configurePhase = ''
+  postPatch = ''
     mkdir -p $out
-    lndir ${pythonDBus} $out
+    lndir ${dbus-python} $out
+    rm -rf "$out/nix-support"
 
     export PYTHONPATH=$PYTHONPATH:$out/lib/${python.libPrefix}/site-packages
+    ${stdenv.lib.optionalString stdenv.isDarwin ''
+      export QMAKESPEC="unsupported/macx-clang-libc++" # macOS target after bootstrapping phase \
+    ''}
 
     substituteInPlace configure.py \
-      --replace 'install_dir=pydbusmoddir' "install_dir='$out/lib/${python.libPrefix}/site-packages/dbus/mainloop'"
+      --replace 'install_dir=pydbusmoddir' "install_dir='$out/lib/${python.libPrefix}/site-packages/dbus/mainloop'" \
+    ${stdenv.lib.optionalString stdenv.isDarwin ''
+      --replace "qt_macx_spec = 'macx-g++'" "qt_macx_spec = 'unsupported/macx-clang-libc++'" # for bootstrapping phase \
+    ''}
 
-    configureFlagsArray=( \
-      --confirm-license --bindir $out/bin \
-      --destdir $out/lib/${python.libPrefix}/site-packages \
-      --plugin-destdir $out/lib/qt4/plugins --sipdir $out/share/sip \
-      --dbus=$out/include/dbus-1.0 --verbose)
-
-    ${python.executable} configure.py $configureFlags "''${configureFlagsArray[@]}"
+    chmod +x configure.py
+    sed -i '1i#!${python.interpreter}' configure.py
   '';
 
-  buildInputs = [ python pkgconfig makeWrapper qt4 lndir ];
+  configureScript = "./configure.py";
+  dontAddPrefix = true;
+  configureFlags = [
+    "--confirm-license"
+    "--bindir=${placeholder "out"}/bin"
+    "--destdir=${placeholder "out"}/${python.sitePackages}"
+    "--plugin-destdir=${placeholder "out"}/lib/qt4/plugins"
+    "--sipdir=${placeholder "out"}/share/sip/PyQt4"
+    "--dbus=${stdenv.lib.getDev dbus-python}/include/dbus-1.0"
+    "--verbose"
+  ];
+
+  nativeBuildInputs = [ pkgconfig lndir makeWrapper qt4 ];
+  buildInputs = [ qt4 dbus ];
 
   propagatedBuildInputs = [ sip ];
 
@@ -39,6 +54,10 @@ stdenv.mkDerivation {
   '';
 
   enableParallelBuilding = true;
+
+  passthru = {
+    qt = qt4;
+  };
 
   meta = {
     description = "Python bindings for Qt";

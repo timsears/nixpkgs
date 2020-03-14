@@ -1,57 +1,36 @@
-{ stdenv, lib, go, fetchgit, fetchhg, fetchbzr, fetchFromGitHub
-, ruby, rubyLibs, nodejs }:
+{ stdenv, buildGoPackage, fetchFromGitHub }:
 
-let
-  version = "0.4.0";
-in
+buildGoPackage rec {
+  pname = "consul";
+  version = "1.6.2";
+  rev = "v${version}";
 
-with lib;
-stdenv.mkDerivation {
-  name = "consul-${version}";
+  goPackagePath = "github.com/hashicorp/consul";
 
-  src = import ./deps.nix {
-    inherit stdenv lib fetchgit fetchhg fetchbzr fetchFromGitHub;
+  # Note: Currently only release tags are supported, because they have the Consul UI
+  # vendored. See
+  #   https://github.com/NixOS/nixpkgs/pull/48714#issuecomment-433454834
+  # If you want to use a non-release commit as `src`, you probably want to improve
+  # this derivation so that it can build the UI's JavaScript from source.
+  # See https://github.com/NixOS/nixpkgs/pull/49082 for something like that.
+  # Or, if you want to patch something that doesn't touch the UI, you may want
+  # to apply your changes as patches on top of a release commit.
+  src = fetchFromGitHub {
+    owner = "hashicorp";
+    repo = pname;
+    inherit rev;
+    sha256 = "0r9wqxhgspgypvp9xdv931r8g28gjg9njdignp84rrbxljix25my";
   };
 
-  buildInputs = [ go ruby rubyLibs.sass nodejs ];
-
-  configurePhase = flip concatMapStrings
-    (with rubyLibs; [ execjs json minitest rake rdoc sass uglifier ])
-    (gem: ''
-      export GEM_PATH="$GEM_PATH:${gem}/${ruby.gemPath}"
-    '');
-
-  buildPhase = ''
-    # Build consul binary
-    export GOPATH=$src
-    go build -v -o consul github.com/hashicorp/consul
-
-    # Build ui static files
-    ({
-      cp -r src/github.com/hashicorp/consul/ui .
-      cd ui
-      chmod -R u+w .
-      make dist
-    })
+  preBuild = ''
+    buildFlagsArray+=("-ldflags" "-X github.com/hashicorp/consul/version.GitDescribe=v${version} -X github.com/hashicorp/consul/version.Version=${version} -X github.com/hashicorp/consul/version.VersionPrerelease=")
   '';
 
-  outputs = [ "out" "ui" ];
-
-  installPhase = ''
-    # Install consul binary
-    mkdir -p $out/bin
-    cp consul $out/bin
-
-    # Install ui static files
-    mkdir -p $ui
-    mv ui/dist/* $ui
-  '';
-
-  meta = with lib; {
-    homepage    = http://www.consul.io/;
-    description = "A tool for service discovery, monitoring and configuration";
-    maintainers = with maintainers; [ cstrahan wkennington ];
-    license     = licenses.mpl20 ;
-    platforms   = platforms.unix;
+  meta = with stdenv.lib; {
+    description = "Tool for service discovery, monitoring and configuration";
+    homepage = https://www.consul.io/;
+    platforms = platforms.linux ++ platforms.darwin;
+    license = licenses.mpl20;
+    maintainers = with maintainers; [ pradeepchhetri vdemeester nh2 ];
   };
 }

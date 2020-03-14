@@ -10,4 +10,10 @@ stdenv.mkDerivation {
   };
 
   inherit unzip;
+
+  meta = with stdenv.lib; {
+    homepage = http://httpunit.sourceforge.net;
+    platforms = platforms.unix;
+    license = licenses.mit;
+  };
 }

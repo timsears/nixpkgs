@@ -1,17 +1,17 @@
-{ stdenv, fetchurl, libiconvOrNull, recode }:
+{ stdenv, fetchurl, libiconv, recode }:
 
 stdenv.mkDerivation rec {
-  name = "enca-1.15";
+  pname = "enca";
+  version = "1.19";
 
   src = fetchurl {
-    url = "http://dl.cihar.com/enca/${name}.tar.bz2";
-    sha256 = "1iibfl2s420x7bc1hvxr1ys4cpz579brg2m2ln4rp677azmrr8mv";
+    url = "https://dl.cihar.com/enca/${pname}-${version}.tar.xz";
+    sha256 = "1f78jmrggv3jymql8imm5m9yc8nqjw5l99mpwki2245l8357wj1s";
   };
 
-  buildInputs = [ recode libiconvOrNull ];
+  buildInputs = [ recode libiconv ];
 
-  meta = {
-    homepage = http://freecode.com/projects/enca;
+  meta = with stdenv.lib; {
     description = "Detects the encoding of text files and reencodes them";
 
     longDescription = ''
@@ -22,8 +22,7 @@ stdenv.mkDerivation rec {
         Unicode variants, independently on language.
     '';
 
-    license = stdenv.lib.licenses.gpl2;
-
-    platforms = stdenv.lib.platforms.all;
+    license = licenses.gpl2;
+   
   };
 }

@@ -1,34 +1,65 @@
-{ stdenv, fetchurl, libevent, zlib, openssl, db, bison, pam }:
+{ stdenv, fetchurl, autoconf, automake, libtool, bison
+, libasr, libevent, zlib, libressl, db, pam, nixosTests
+}:
 
 stdenv.mkDerivation rec {
-  name = "opensmtpd-${version}";
-  version = "5.4.2p1";
+  pname = "opensmtpd";
+  version = "6.6.4p1";
 
-  buildInputs = [ libevent zlib openssl db bison pam ];
+  nativeBuildInputs = [ autoconf automake libtool bison ];
+  buildInputs = [ libasr libevent zlib libressl db pam ];
 
   src = fetchurl {
-    url = "http://www.opensmtpd.org/archives/${name}.tar.gz";
-    sha256 = "18nrzfjhv9znb5dbhc5k3fi31a3vr1r8j36q3fzghkh47n6z9yjg";
-  };  
+    url = "https://www.opensmtpd.org/archives/${pname}-${version}.tar.gz";
+    sha256 = "1kyph9ycq0j21dl9n1sq5fns9p4gckdi0fmnf8awrcwrdcm9dyg2";
+  };
 
-  configureFlags = [ 
+  patches = [
+    ./proc_path.diff # TODO: upstream to OpenSMTPD, see https://github.com/NixOS/nixpkgs/issues/54045
+  ];
+
+  # See https://github.com/OpenSMTPD/OpenSMTPD/issues/885 for the `sh bootstrap`
+  # requirement
+  postPatch = ''
+    substituteInPlace mk/smtpctl/Makefile.am --replace "chgrp" "true"
+    substituteInPlace mk/smtpctl/Makefile.am --replace "chmod 2555" "chmod 0555"
+    sh bootstrap
+  '';
+
+  configureFlags = [
+    "--sysconfdir=/etc"
+    "--localstatedir=/var"
     "--with-mantype=doc"
-    "--with-pam"
-    "--without-bsd-auth"
-    "--with-sock-dir=/run"
-    "--with-privsep-user=smtpd"
-    "--with-queue-user=smtpq"
-    "--with-ca-file=/etc/ssl/certs/ca-bundle.crt"
-  ];  
+    "--with-auth-pam"
+    "--without-auth-bsdauth"
+    "--with-path-socket=/run"
+    "--with-user-smtpd=smtpd"
+    "--with-user-queue=smtpq"
+    "--with-group-queue=smtpq"
+    "--with-path-CAfile=/etc/ssl/certs/ca-certificates.crt"
+    "--with-libevent=${libevent.dev}"
+    "--with-table-db"
+  ];
 
-  meta = {
-    homepage = "http://www.postfix.org/";
+  # See https://github.com/OpenSMTPD/OpenSMTPD/pull/884
+  makeFlags = [ "CFLAGS=-ffunction-sections" "LDFLAGS=-Wl,--gc-sections" ];
+
+  installFlags = [
+    "sysconfdir=\${out}/etc"
+    "localstatedir=\${TMPDIR}"
+  ];
+
+  meta = with stdenv.lib; {
+    homepage = https://www.opensmtpd.org/;
     description = ''
       A free implementation of the server-side SMTP protocol as defined by
-      RFC 5321, with some additional standard extensions.
+      RFC 5321, with some additional standard extensions
     '';
-    license = stdenv.lib.licenses.isc;
-    platforms = stdenv.lib.platforms.linux;
-    maintainers = [ stdenv.lib.maintainers.rickynils ];
+    license = licenses.isc;
+    platforms = platforms.linux;
+    maintainers = with maintainers; [ rickynils obadz ekleog ];
+  };
+  passthru.tests = {
+    basic-functionality-and-dovecot-interaction = nixosTests.opensmtpd;
   };
 }

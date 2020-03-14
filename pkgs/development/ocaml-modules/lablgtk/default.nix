@@ -1,38 +1,46 @@
-{stdenv, fetchurl, ocaml, findlib, pkgconfig, gtk, libgnomecanvas, libglade, gtksourceview, camlp4}:
+{ stdenv, fetchurl, ocaml, findlib, pkgconfig, gtk2, libgnomecanvas, libglade, gtksourceview }:
 
-let
-  ocaml_version = (builtins.parseDrvName ocaml.name).version;
-  pname = "lablgtk";
-  version = "2.16.0";
+let param =
+  let check = stdenv.lib.versionAtLeast ocaml.version; in
+  if check "4.06" then {
+    version = "2.18.8";
+    url = "https://github.com/garrigue/lablgtk/releases/download/lablgtk2188/lablgtk-2.18.8.tar.gz";
+    sha256 = "1qsd9nv96fxddc8zayqiqxw9hcyf29axckqg100fm2brs2prpxci";
+  } else if check "3.12" then {
+    version = "2.18.5";
+    url = https://forge.ocamlcore.org/frs/download.php/1627/lablgtk-2.18.5.tar.gz;
+    sha256 = "0cyj6sfdvzx8hw7553lhgwc0krlgvlza0ph3dk9gsxy047dm3wib";
+  } else throw "lablgtk is not available for OCaml ${ocaml.version}";
 in
 
-assert stdenv.lib.versionAtLeast ocaml_version "3.12";
+stdenv.mkDerivation {
+  pname = "lablgtk";
+  inherit (param) version;
 
-stdenv.mkDerivation (rec {
-  name = "${pname}-${version}";
   src = fetchurl {
-    url = "https://forge.ocamlcore.org/frs/download.php/979/${name}.tar.gz";
-    sha256 = "a0ea9752eb257dadcfc2914408fff339d4c34357802f02c63329dd41b777de2f";
+    inherit (param) url sha256;
   };
 
-  buildInputs = [ocaml findlib pkgconfig gtk libgnomecanvas libglade gtksourceview camlp4];
+  nativeBuildInputs = [ pkgconfig ];
+  buildInputs = [ ocaml findlib gtk2 libgnomecanvas libglade gtksourceview ];
 
-  configureFlags = "--with-libdir=$(out)/lib/ocaml/${ocaml_version}/site-lib";
-  buildFlags = "world";
+  configureFlags = [ "--with-libdir=$(out)/lib/ocaml/${ocaml.version}/site-lib" ];
+  buildFlags = [ "world" ];
 
   preInstall = ''
-    mkdir -p $out/lib/ocaml/${ocaml_version}/site-lib
-    export OCAMLPATH=$out/lib/ocaml/${ocaml_version}/site-lib/:$OCAMLPATH
+    mkdir -p $out/lib/ocaml/${ocaml.version}/site-lib
+    export OCAMLPATH=$out/lib/ocaml/${ocaml.version}/site-lib/:$OCAMLPATH
   '';
 
-  meta = {
-    platforms = ocaml.meta.platforms;
-    maintainers = [
-      stdenv.lib.maintainers.z77z
-      stdenv.lib.maintainers.roconnor
+  dontStrip = true;
+
+  meta = with stdenv.lib; {
+    platforms = ocaml.meta.platforms or [];
+    maintainers = with maintainers; [
+      maggesi roconnor vbgl
     ];
-    homepage = http://wwwfun.kurims.kyoto-u.ac.jp/soft/lsl/lablgtk.html;
-    description = "LablGTK is is an Objective Caml interface to gtk+";
-    license = stdenv.lib.licenses.lgpl21Plus;
+    homepage = http://lablgtk.forge.ocamlcore.org/;
+    description = "An OCaml interface to GTK";
+    license = licenses.lgpl21Plus;
   };
-})
+}

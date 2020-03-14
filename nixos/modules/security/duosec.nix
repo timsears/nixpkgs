@@ -7,36 +7,45 @@ let
 
   boolToStr = b: if b then "yes" else "no";
 
-  configFile = ''
+  configFilePam = ''
     [duo]
     ikey=${cfg.ikey}
     skey=${cfg.skey}
     host=${cfg.host}
-    ${optionalString (cfg.group != "") ("group="+cfg.group)}
+    ${optionalString (cfg.groups != "") ("groups="+cfg.groups)}
     failmode=${cfg.failmode}
     pushinfo=${boolToStr cfg.pushinfo}
     autopush=${boolToStr cfg.autopush}
-    motd=${boolToStr cfg.motd}
     prompts=${toString cfg.prompts}
-    accept_env_factor=${boolToStr cfg.acceptEnvFactor}
     fallback_local_ip=${boolToStr cfg.fallbackLocalIP}
   '';
 
-  loginCfgFile = optional cfg.ssh.enable
-    { source = pkgs.writeText "login_duo.conf" configFile;
-      mode   = "0600";
-      uid    = config.ids.uids.sshd;
-      target = "duo/login_duo.conf";
-    };
+  configFileLogin = configFilePam + ''
+    motd=${boolToStr cfg.motd}
+    accept_env_factor=${boolToStr cfg.acceptEnvFactor}
+  '';
 
-  pamCfgFile = optional cfg.pam.enable
-    { source = pkgs.writeText "pam_duo.conf" configFile;
-      mode   = "0600";
-      uid    = config.ids.uids.sshd;
-      target = "duo/pam_duo.conf";
-    };
+  loginCfgFile = optionalAttrs cfg.ssh.enable {
+    "duo/login_duo.conf" =
+      { source = pkgs.writeText "login_duo.conf" configFileLogin;
+        mode   = "0600";
+        user   = "sshd";
+      };
+  };
+
+  pamCfgFile = optional cfg.pam.enable {
+    "duo/pam_duo.conf" =
+      { source = pkgs.writeText "pam_duo.conf" configFilePam;
+        mode   = "0600";
+        user   = "sshd";
+      };
+  };
 in
 {
+  imports = [
+    (mkRenamedOptionModule [ "security" "duosec" "group" ] [ "security" "duosec" "groups" ])
+  ];
+
   options = {
     security.duosec = {
       ssh.enable = mkOption {
@@ -66,14 +75,20 @@ in
         description = "Duo API hostname.";
       };
 
-      group = mkOption {
+      groups = mkOption {
         type = types.str;
         default = "";
-        description = "Use Duo authentication for users only in this group.";
+        example = "users,!wheel,!*admin guests";
+        description = ''
+          If specified, Duo authentication is required only for users
+          whose primary group or supplementary group list matches one
+          of the space-separated pattern lists. Refer to
+          <link xlink:href="https://duo.com/docs/duounix"/> for details.
+        '';
       };
 
       failmode = mkOption {
-        type = types.str;
+        type = types.enum [ "safe" "secure" ];
         default = "safe";
         description = ''
           On service or configuration errors that prevent Duo
@@ -110,12 +125,12 @@ in
         default = false;
         description = ''
           Print the contents of <literal>/etc/motd</literal> to screen
-          after a succesful login.
+          after a successful login.
         '';
       };
 
       prompts = mkOption {
-        type = types.int;
+        type = types.enum [ 1 2 3 ];
         default = 3;
         description = ''
           If a user fails to authenticate with a second factor, Duo
@@ -145,7 +160,7 @@ in
 
           When $DUO_PASSCODE is non-empty, it will override
           autopush. The SSH client will need SendEnv DUO_PASSCODE in
-          its configuration, and the SSH server will similarily need
+          its configuration, and the SSH server will similarly need
           AcceptEnv DUO_PASSCODE.
         '';
       };
@@ -180,21 +195,10 @@ in
   };
 
   config = mkIf (cfg.ssh.enable || cfg.pam.enable) {
-    assertions =
-      [ { assertion = cfg.failmode == "safe" || cfg.failmode == "secure";
-          message   = "Invalid value for failmode (must be safe or secure).";
-        }
-        { assertion = cfg.prompts == 1 || cfg.prompts == 2 || cfg.prompts == 3;
-          message   = "Invalid value for prompts (must be 1, 2, or 3).";
-        }
-        { assertion = !cfg.pam.enable;
-          message   = "PAM support is currently not implemented.";
-        }
-      ];
-
      environment.systemPackages = [ pkgs.duo-unix ];
-     security.setuidPrograms    = [ "login_duo" ];
-     environment.etc = loginCfgFile ++ pamCfgFile;
+
+     security.wrappers.login_duo.source = "${pkgs.duo-unix.out}/bin/login_duo";
+     environment.etc = loginCfgFile // pamCfgFile;
 
      /* If PAM *and* SSH are enabled, then don't do anything special.
      If PAM isn't used, set the default SSH-only options. */
