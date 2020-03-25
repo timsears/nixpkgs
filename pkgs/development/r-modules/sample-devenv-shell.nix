@@ -257,7 +257,7 @@ let
 
         # packagesRequiringX
         AnalyzeFMRI
-        AnnotLists
+        ##AnnotLists
         AnthropMMD
         AtelieR
         BAT
@@ -266,7 +266,7 @@ let
         CCTpack
         CommunityCorrelogram
         ConvergenceConcepts
-        DALY
+        ##DALY
         DSpat
         Deducer
         DeducerPlugInExample
@@ -278,7 +278,7 @@ let
         DivMelt
         ENiRG
         EasyqpcR
-        EcoVirtual
+        ##EcoVirtual
         FD
         FFD
         FeedbackTS
@@ -287,8 +287,8 @@ let
         GPCSIV
         GUniFrac
         GrammR
-        GrapheR
-        GroupSeq
+        ##GrapheR
+        ##GroupSeq
         HH
         HiveR
         IsotopeR
@@ -497,9 +497,9 @@ in
       [ #conda
         my_r
         my_rstudio
-        texlive.combined.scheme-full # R needs this
-        pandoc # R needs this
-        samtools # tool need by some bioconductor packages
+        #texlive.combined.scheme-full # R needs this
+        #pandoc # R needs this
+        #samtools # tool need by some bioconductor packages
       ];
     # useful for trying to install broken packages another way
     #shellHook ="exec conda-shell"; 

@@ -1,4 +1,4 @@
-/* This file defines the composition for CRAN (R) packages. */
+    /* This file defines the composition for CRAN (R) packages. */
 
 { R, pkgs, overrides }:
 
@@ -220,6 +220,16 @@ let
   # `self` is `_self` with overridden packages;
   # packages in `_self` may depends on overridden packages.
   self = (defaultOverrides _self self) // overrides;
+
+  #make subsets for testing
+  subsets = { inherit buildRPackage; 
+              bioc_packages = import ./bioc-packages.nix { inherit self; derive = deriveBioc; };
+              bioc_annotation_packages =  import ./bioc-annotation-packages.nix { inherit self; derive = deriveBiocAnn; } ;
+              bioc_experiment_packages = import ./bioc-experiment-packages.nix { inherit self; derive = deriveBiocExp; } ;
+              bioc_workflows_packages = import ./bioc-workflows-packages.nix   { inherit self; derive = deriveBiocWrk; } ;
+              cran_packages = import ./cran-packages.nix            { inherit self; derive = deriveCran; };
+            };
+  
   _self = { inherit buildRPackage; } //
           import ./bioc-packages.nix            { inherit self; derive = deriveBioc; } //
           import ./bioc-annotation-packages.nix { inherit self; derive = deriveBiocAnn; } //
@@ -255,6 +265,8 @@ let
     JavaGD = [ pkgs.jdk ];
     KFKSDS = [ pkgs.gsl_1 ];
     ModelMetrics = lib.optional stdenv.isDarwin pkgs.llvmPackages.openmp;
+    MotIV = [ pkgs.gsl_1 ];
+    MSGFplus = [ pkgs.jdk];
     PKI = [ pkgs.openssl.dev ];
     R2SWF = [ pkgs.zlib pkgs.libpng pkgs.freetype.dev ];
     RAppArmor = [ pkgs.libapparmor ];
@@ -328,6 +340,7 @@ let
     magick = [ pkgs.imagemagick.dev ];
     mvabund = [ pkgs.gsl_1 ];
     mwaved = [ pkgs.fftw.dev ];
+    ncdfFlow = [ pkgs.zlib.dev ];
     ncdf4 = [ pkgs.netcdf ];
     nloptr = [ pkgs.nlopt pkgs.pkgconfig ];
     odbc = [ pkgs.unixODBC ];
@@ -390,7 +403,10 @@ let
 
   packagesWithBuildInputs = {
     # sort -t '=' -k 2
+    AnnotLists = [ pkgs.flock ];
+    DESeq2 = [ pkgs.libiconv ];
     Cairo = [ pkgs.pkgconfig ];
+    Hmisc = [ pkgs.libiconv ];
     KernSmooth = [ pkgs.libiconv ];
     Matrix = [ pkgs.libiconv ];
     R2SWF = [ pkgs.pkgconfig ];
@@ -399,40 +415,60 @@ let
     RMark = [ pkgs.which ];
     RProtoBuf = [ pkgs.pkgconfig ];
     RPushbullet = [ pkgs.which ];
+    RSpectra = [ pkgs.libiconv ];
+    RcppArmadillo = [ pkgs.libiconv ];
     RcppEigen = [ pkgs.libiconv ];
     Rpoppler = [ pkgs.pkgconfig pkgs.poppler.dev ];
     Rsymphony = [ pkgs.pkgconfig pkgs.doxygen pkgs.graphviz pkgs.subversion ];
+    Rtsne = [ pkgs.libiconv ];
     SparseM = lib.optionals stdenv.isDarwin [ pkgs.libiconv ];
     VariantAnnotation = [ pkgs.curl.dev ];
     XML = [ pkgs.pkgconfig ];
+    acepack = [ pkgs.libiconv ];
+    ade4 = [ pkgs.libiconv ];
     adimpro = [ pkgs.which pkgs.xorg.xdpyinfo ];
+    affyPLM = [ pkgs.libiconv ];
     ape = [ pkgs.libiconv ];
+    biglm = [ pkgs.libiconv ];
     cairoDevice = [ pkgs.pkgconfig ];
     chebpol = [ pkgs.pkgconfig ];
     cluster = [ pkgs.libiconv ];
+    edgeR = [ pkgs.libiconv ];
     expm = [ pkgs.libiconv ];
     fftw = [ pkgs.pkgconfig ];
     gam = lib.optionals stdenv.isDarwin [ pkgs.libiconv ];
     gdtools = [ pkgs.pkgconfig ];
+    genefilter = [ pkgs.libiconv ];
     glmnet = [ pkgs.libiconv ];
     gridGraphics = [ pkgs.which ];
+    hexbin = [ pkgs.libiconv ];
     igraph = [ pkgs.libiconv ];
+    impute = [ pkgs.libiconv ];
+    irlba = [ pkgs.libiconv ];
     jqr = [ pkgs.jq.lib ];
+    kernlab = [ pkgs.libiconv ];
     kza = [ pkgs.pkgconfig ];
     magick = [ pkgs.pkgconfig ];
+    mclust = [ pkgs.libiconv ];
     mgcv = [ pkgs.libiconv ];
     minqa = [ pkgs.libiconv ];
     mnormt = [ pkgs.libiconv ];
+    mvtnorm = [ pkgs.libiconv ];
     mwaved = [ pkgs.pkgconfig ];
     mzR = [ pkgs.netcdf pkgs.zlib.dev ];
     nat = [ pkgs.which ];
     nat_templatebrains = [ pkgs.which ];
+    nleqslv = [ pkgs.libiconv ];
     nlme = [ pkgs.libiconv ];
+    nnls = [ pkgs.libiconv ];
     odbc = [ pkgs.pkgconfig ];
+    oligo = [ pkgs.libiconv ];
     openssl = [ pkgs.pkgconfig ];
     pan = [ pkgs.libiconv ];
     pbdZMQ = lib.optionals stdenv.isDarwin [ pkgs.darwin.binutils ];
+    pcaPP = [ pkgs.libiconv ];
     phangorn = [ pkgs.libiconv ];
+    preprocessCore = [ pkgs.libiconv ];
     qpdf = [ pkgs.libjpeg.dev pkgs.zlib.dev ];
     qtbase = [ pkgs.cmake pkgs.perl ];
     qtpaint = [ pkgs.cmake ];
@@ -444,9 +480,12 @@ let
     rgl = [ pkgs.libGLU pkgs.libGLU.dev pkgs.libGL pkgs.xlibsWrapper ];
     rmutil = lib.optionals stdenv.isDarwin [ pkgs.libiconv ];
     robustbase = lib.optionals stdenv.isDarwin [ pkgs.libiconv ];
+    rrcov = [ pkgs.libiconv ];
+    sitmo = [ pkgs.libiconv ];
     sf = [ pkgs.pkgconfig pkgs.sqlite.dev pkgs.proj.dev ];
     showtext = [ pkgs.pkgconfig ];
     spate = [ pkgs.pkgconfig ];
+    statmod = [ pkgs.libiconv ];
     stringi = [ pkgs.pkgconfig ];
     sundialr = [ pkgs.libiconv ];
     svKomodo = [ pkgs.which ];
@@ -687,9 +726,11 @@ let
     "bigGP"  # openmpi related
     "rpanel" # bwidget/Tk issue?
     "tesseract" # pdftoools, poppler ?
-    "RSymphony" # requires pkgs.SYMPHONY
+    "Rsymphony" # requires pkgs.SYMPHONY
     "x12" # looks for path when installing
     "x12GUI" # depends on x12
+    "HDCytoData" # some download fails
+    "cytofWorkflow" # depends on HDCytoData  
   ];
 
   otherOverrides = old: new: {
@@ -971,5 +1012,5 @@ let
     });
 
   };
-in
-  self
+in self
+

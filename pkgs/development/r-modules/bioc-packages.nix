@@ -1786,7 +1786,7 @@ in with self; {
   twilight = derive2 { name="twilight"; version="1.62.0"; sha256="0sgn9ypni38asj96xa8046pwg2r5pqbmzxb86hm8g98ncmsrs6js"; depends=[Biobase]; };
   twoddpcr = derive2 { name="twoddpcr"; version="1.10.0"; sha256="0nm8x77xlapabgwwkr5w6gg267yn7mf5qj8xg8z2h7bcpr288gw6"; depends=[class ggplot2 hexbin RColorBrewer S4Vectors scales shiny]; };
   tximeta = derive2 { name="tximeta"; version="1.4.5"; sha256="0qgbyi4vjyyijldvpl8pqql465cclid1fkhg9g2ssd7szqpbr36l"; depends=[AnnotationDbi BiocFileCache Biostrings ensembldb GenomeInfoDb GenomicFeatures GenomicRanges jsonlite rappdirs S4Vectors SummarizedExperiment tibble tximport]; };
-  tximport = derive2 { name="tximport"; version="1.14.0"; sha256="09r23n2812q89by0r0cz2fx1gfnmn3jb3hwbg61m52bika82pakj"; depends=[]; };
+  tximport = derive2 { name="tximport"; version="1.14.2"; sha256="1avy0zhgnszmg0dr9w74yq9ml10kwdrrgcni2wysrd48zzskc1n0"; depends=[]; };
   uSORT = derive2 { name="uSORT"; version="1.12.0"; sha256="0y17hic5ilibh453algrpdkyzlz96p68118g49ady37hfvd6f73f"; depends=[Biobase BiocGenerics cluster fpc gplots igraph Matrix monocle plyr RANN RSpectra VGAM]; };
   unifiedWMWqPCR = derive2 { name="unifiedWMWqPCR"; version="1.22.0"; sha256="1l6rf7scxxyz4x0m4li54y6905sqj4jrx481zb9h3vqhcfcmn8lj"; depends=[BiocGenerics HTqPCR]; };
   universalmotif = derive2 { name="universalmotif"; version="1.4.9"; sha256="1dfni8g21v9n58v3wp3r6midwzjfjn4986vi9g71iwvqqbacf7gf"; depends=[ape BiocGenerics Biostrings ggplot2 ggseqlogo ggtree MASS processx Rcpp RcppThread Rdpack rlang S4Vectors yaml]; };
