@@ -11,8 +11,9 @@
 
 # To play with this in nix repl...
 
-# nix-repl> pkgs = import ../../../default.nix {}
+# nix-repl> pkgs = import ../../.. {}
 # nix-repl> p = import ./test-evaluation.nix
+# nix-repl> builtins.typeOf p
 # ...
 # nix-repl> builtins.attrNames p.notMarkedBroken # for example
     
@@ -36,48 +37,75 @@ let
     packages = packagesList;  
   };
 
-  # also a large set
-  notMarkedBroken = pkgs.lib.filterAttrs (n: v: ! (pkgs.lib.attrByPath ["meta" "broken"] false v)) pkgs.rPackages;
-
-  # a fairly small set, many just need some debugging.
-  markedBroken = pkgs.lib.filterAttrs (n: v: (pkgs.lib.attrByPath ["meta" "broken"] false v)) pkgs.rPackages;
-  namesBroken = builtins.attrNames markedBroken;
+  isBroken = (n: v: (pkgs.lib.attrByPath ["meta" "broken"] false v));
+  findBroken = s : pkgs.lib.filterAttrs isBroken s;
+  findNotBroken = s : pkgs.lib.filterAttrs (n: v: ! (isBroken n v) ) s;
   
-  # # imports from same places a default.nix but exposes subsets
-  # rpkgs = import ./package-subsets.nix { pkgs = pkgs; R = pkgs.R; overrides = {}; };
+  # broken and notbroken denotes the value of the meta.broken attribute
+  notbroken_pkgs = findNotBroken pkgs.rPackages;
+  notbroken_names = builtins.attrNames notbroken_pkgs;
 
+  broken_pkgs = findBroken pkgs.rPackages;
+  broken_names = builtins.attrNames broken_pkgs;
+  
   fakeDerive = x1: x2: x2;
   fakeSelf = {};
   importPkgNames = s: import s { self = fakeSelf; derive = fakeDerive; };
 
   bioc_all = pkgs.lib.attrNames (importPkgNames ./bioc-packages.nix);
-  bioc_notbroken = pkgs.lib.subtractLists namesBroken bioc_all;
+  bioc_notbroken = pkgs.lib.subtractLists broken_names bioc_all;
 
   bioc_annotation_all = pkgs.lib.attrNames (importPkgNames ./bioc-annotation-packages.nix);
-  bioc_annotation_notbroken = pkgs.lib.subtractLists namesBroken bioc_annotation_all;
+  bioc_annotation_notbroken = pkgs.lib.subtractLists broken_names bioc_annotation_all;
 
   bioc_experiment_all = pkgs.lib.attrNames (importPkgNames ./bioc-experiment-packages.nix);
-  bioc_experiment_notbroken = pkgs.lib.subtractLists namesBroken bioc_experiment_all;
+  bioc_experiment_notbroken = pkgs.lib.subtractLists broken_names bioc_experiment_all;
 
   bioc_workflows_all = pkgs.lib.attrNames (importPkgNames ./bioc-workflows-packages.nix);
-  bioc_workflows_notbroken = pkgs.lib.subtractLists namesBroken bioc_workflows_all;
-  
+  bioc_workflows_notbroken = pkgs.lib.subtractLists broken_names bioc_workflows_all;
+
+  cran_all = pkgs.lib.attrNames (importPkgNames ./cran-packages.nix);
+  cran_notbroken = pkgs.lib.subtractLists broken_names cran_all;
+
+
   # not broken ones..
-  bioc_pkgs =            pkgs.lib.getAttrs bioc_notbroken notMarkedBroken;
-  bioc_annotation_pkgs = pkgs.lib.getAttrs bioc_annotation_notbroken notMarkedBroken;
-  bioc_experiment_pkgs = pkgs.lib.getAttrs bioc_experiment_notbroken notMarkedBroken;
-  bioc_workflows_pkgs =  pkgs.lib.getAttrs bioc_workflows_notbroken notMarkedBroken;
+  bioc_pkgs            = pkgs.lib.getAttrs bioc_notbroken notbroken_pkgs;
+  bioc_annotation_pkgs = pkgs.lib.getAttrs bioc_annotation_notbroken notbroken_pkgs;
+  bioc_experiment_pkgs = pkgs.lib.getAttrs bioc_experiment_notbroken notbroken_pkgs;
+  bioc_workflows_pkgs  = pkgs.lib.getAttrs bioc_workflows_notbroken notbroken_pkgs;
+  cran_pkgs            = pkgs.lib.getAttrs cran_notbroken notbroken_pkgs;
 
 in
 
 { inherit
-    rWrapper # BIG! 
-    notMarkedBroken
-    markedBroken
-    bioc_workflows_notbroken
-    bioc_pkgs
-    bioc_annotation_pkgs
-    bioc_experiment_pkgs
-    bioc_workflows_pkgs
+  # package sets, none include packages marked broken
+  rWrapper # BIG!
+  notbroken_pkgs # BIG!
+  broken_pkgs
+  bioc_pkgs
+  bioc_annotation_pkgs
+  bioc_experiment_pkgs
+  bioc_workflows_pkgs
+  cran_pkgs
+  
+  # names
+  notbroken_names
+  broken_names
+  bioc_all
+  bioc_notbroken
+  bioc_annotation_all
+  bioc_annotation_notbroken
+  bioc_experiment_all
+  bioc_experiment_notbroken
+  bioc_workflows_all
+  bioc_workflows_notbroken
+  cran_all
+  cran_notbroken
+
+  # helper functions
+  isBroken
+  findBroken
+  findNotBroken
+
   ;}
 

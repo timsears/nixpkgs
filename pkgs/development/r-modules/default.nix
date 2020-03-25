@@ -729,8 +729,8 @@ let
     "Rsymphony" # requires pkgs.SYMPHONY
     "x12" # looks for path when installing
     "x12GUI" # depends on x12
-    "HDCytoData" # some download fails
-    "cytofWorkflow" # depends on HDCytoData  
+    "HDCytoData" "cytofWorkflow" # download fails, depends on HDCytoData
+    "rggobi" "explorase" # ggobi compile error
   ];
 
   otherOverrides = old: new: {
