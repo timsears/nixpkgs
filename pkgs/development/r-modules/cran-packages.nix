@@ -4,7 +4,7 @@
 # Rscript generate-r-packages.R cran >new && mv new cran-packages.nix
 
 { self, derive }:
-let derive2 = derive { snapshot = "2020-03-19"; };
+let derive2 = derive { snapshot = "2020-03-25"; };
 in with self; {
   A3 = derive2 { name="A3"; version="1.0.0"; sha256="017hq9pjsv1h9i7cqk5cfx27as54shlhdsdvr6jkhb8jfkpdb6cw"; depends=[pbapply xtable]; };
   ABACUS = derive2 { name="ABACUS"; version="1.0.0"; sha256="0m1dnkwjr1522l9ddbzzx7ayxvli17sbmk6s28adpmzzjwh2kd1i"; depends=[ggplot2 shiny]; };
@@ -91,7 +91,7 @@ in with self; {
   ART = derive2 { name="ART"; version="1.0"; sha256="186w1ivj5v3h906crl953qxgai5wiznaih83dgvwgnmabs9p1wvk"; depends=[car]; };
   ARTIVA = derive2 { name="ARTIVA"; version="1.2.3"; sha256="1jdvsslc8parz7wibcv51fx62brl2mc6i482hz43j1npsms2z1hl"; depends=[gplots igraph MASS]; };
   ARTP2 = derive2 { name="ARTP2"; version="0.9.45"; sha256="12nqxry2jkl1n07rbms38mrnp39cn00d0h272d9f1z5x883flv62"; depends=[data_table Formula]; };
-  ARTool = derive2 { name="ARTool"; version="0.10.6"; sha256="1wln9s3j3bs5svykp3as483q61fvlfsdcjlb8cs3mzw43nlp591i"; depends=[car dplyr lme4 magrittr plyr]; };
+  ARTool = derive2 { name="ARTool"; version="0.10.7"; sha256="1qk029q5ikz33s0d1gpywdb54ljvdlyxkb9v6zrc86f5ixcc7dnd"; depends=[car dplyr lme4 magrittr plyr]; };
   ARpLMEC = derive2 { name="ARpLMEC"; version="1.0"; sha256="0irgyf8acg1qn60npchvs258d0cf6cxm53xw0s8qg8iyqns52p75"; depends=[gmm lmec MASS Matrix mnormt mvtnorm numDeriv sandwich tmvtnorm]; };
   ASGS_foyer = derive2 { name="ASGS.foyer"; version="0.2.1"; sha256="0f0bl1fxda012d8pgqpaqb80m0nn490xih3ddscfqgb87zgrp4sx"; depends=[sp]; };
   ASIP = derive2 { name="ASIP"; version="0.4.9"; sha256="06f1nvy920vyx3bmdi77mwvfsn32xsfxaslhagnf1zh652vfkbwi"; depends=[raster rgdal stringr]; };
@@ -235,7 +235,7 @@ in with self; {
   BAT = derive2 { name="BAT"; version="2.0.0"; sha256="0fwyarkgxxgckaky2wjf311ymlh78942j51a2dvjkwlbshcdqbij"; depends=[hypervolume nls2 raster spatstat vegan]; };
   BAYESDEF = derive2 { name="BAYESDEF"; version="0.1.0"; sha256="030xskgqqg0n85mphjv32ks4ysvxb36f6ayy0176gps14jhmhcp7"; depends=[glmnet gWidgets readxl REdaS]; };
   BAYSTAR = derive2 { name="BAYSTAR"; version="0.2-9"; sha256="0crillww1f1jvhjw639sf09lpc3wpzd69milah143gk9zlrkhmz2"; depends=[coda mvtnorm]; };
-  BAwiR = derive2 { name="BAwiR"; version="1.2.1"; sha256="088d0mpd8nhfbyqck7d9wgls1ygawphh9jpp0jadn4dvkan6d2y8"; depends=[Anthropometry dplyr ggplot2 ggthemes hrbrthemes httr lubridate magrittr plyr purrr reshape2 rvest rworldmap scales stringi stringr tidyr xml2]; };
+  BAwiR = derive2 { name="BAwiR"; version="1.2.2"; sha256="0src5d7bi9d8mcg9rijrz20v0a8gif52j7qggbvl2xa15gksxdag"; depends=[Anthropometry dplyr ggplot2 ggthemes hrbrthemes httr lubridate magrittr plyr purrr reshape2 rvest rworldmap scales stringi stringr tidyr xml2]; };
   BB = derive2 { name="BB"; version="2019.10-1"; sha256="0kf9sfsm3n036a8a8gjfpc9qdryvadb019kqjh80n1szdv7bdl04"; depends=[quadprog]; };
   BBEST = derive2 { name="BBEST"; version="0.1-6"; sha256="1hvgi3679ixpq0c5qbxhkp1j0953k3lklglgxrq9mz2ry6z9n038"; depends=[DEoptim ggplot2 reshape2 shiny wmtsa]; };
   BBI = derive2 { name="BBI"; version="0.3.0"; sha256="167sndfp3776p8n9zdpihc9xhqqi8wygzpl49dzkfj53gwa77rnn"; depends=[vegan]; };
@@ -292,6 +292,7 @@ in with self; {
   BIOM_utils = derive2 { name="BIOM.utils"; version="0.9"; sha256="0xckhdvf15a62awfk9rjyqbi6rm7p4awxz7vg2m7bqiqzdll80p7"; depends=[]; };
   BIOMASS = derive2 { name="BIOMASS"; version="2.1.1"; sha256="0i7z0pxxp2b11gnsb51q89zk8wnxz1d86yv08xqf7zivgdf0sgpc"; depends=[data_table jsonlite minpack_lm rappdirs raster sp]; };
   BIOdry = derive2 { name="BIOdry"; version="0.8"; sha256="1zga8g50wjnnz2h9b3ak9q67qnl1f14cq6hvdzf9f84pphsnpasa"; depends=[ecodist nlme]; };
+  BIRDS = derive2 { name="BIRDS"; version="0.1"; sha256="1bfkwyc2hbd23adh11hgzkfr1dpffc3kzshjirizs6nzb7yyq0gz"; depends=[data_table dplyr esquisse geosphere leaflet lubridate magrittr mapedit nnet rgdal rgeos rlang sf shiny shotGroups sp stringr xts]; };
   BIS = derive2 { name="BIS"; version="0.2.1"; sha256="0mngmchgc46wc9a7ksyqrvj6k46nm4ih7x69k3xijfia9bgkym0v"; depends=[dplyr readr rvest tidyr xml2]; };
   BKPC = derive2 { name="BKPC"; version="1.0.1"; sha256="17gmhf6qq8jn2xzkqvjq60xzy0slz6kgfpd0d6hlpnf30ww7q923"; depends=[kernlab]; };
   BLCOP = derive2 { name="BLCOP"; version="0.3.2"; sha256="00x8xk7c8pdwpbmzshjg2ph1yz55vxmliblj1xr7y0gqhcmgyr27"; depends=[fBasics fMultivar fPortfolio MASS quadprog RUnit timeSeries]; };
@@ -319,6 +320,7 @@ in with self; {
   BNPmix = derive2 { name="BNPmix"; version="0.2.5"; sha256="16k7161yk1blpqwy9kj8lw565v9zl1298kqmf0agx8wjjjll4jyh"; depends=[coda ggplot2 Rcpp RcppArmadillo]; };
   BNSL = derive2 { name="BNSL"; version="0.1.4"; sha256="0nrlx55364kgvkdpyaimgjxwnzmmdl1gmvyv3wkm8n2jyki92xxp"; depends=[bnlearn igraph Rcpp]; };
   BNSP = derive2 { name="BNSP"; version="2.1.3"; sha256="1dsic7vmmgklbd7ykkj1484j8gxkra1xjf0bpqc41wwjdc30gfj9"; depends=[coda corrplot cubature Formula ggplot2 gridExtra label_switching mgcv plot3D plyr threejs]; };
+  BNrich = derive2 { name="BNrich"; version="0.1.0"; sha256="1g4r256al37zw88b1x79g76dpbh91pfllpbpn6bpj5kxxncb1x7j"; depends=[bnlearn corpcor glmnet graph]; };
   BOG = derive2 { name="BOG"; version="2.0"; sha256="0lz5af813b67hfl4hzcydn58sjhgn5706n2h44g488bks928k940"; depends=[DIME hash]; };
   BOIN = derive2 { name="BOIN"; version="2.6.4"; sha256="0p1205pxa5a9sbw88fm8lbvzgzyq3mf62lsp0l2c0sfsvcfpydkg"; depends=[Iso]; };
   BOSSreg = derive2 { name="BOSSreg"; version="0.1.0"; sha256="1nngs9j1hbb9ws423dxccjxwpkc5zl6l0zv46gb0v6m8y11d077b"; depends=[Matrix Rcpp RcppArmadillo]; };
@@ -388,7 +390,7 @@ in with self; {
   BayesLogit = derive2 { name="BayesLogit"; version="2.1"; sha256="0w3bzk39sxdskwikcz5i0xwfsll4sqgkpr8vw8jvzlcy6dl3yhis"; depends=[]; };
   BayesMAMS = derive2 { name="BayesMAMS"; version="0.1"; sha256="1qq3j9nm0k58gpyfavz77v1dwghy8pmpk0v52cj7l8sb3a3aiinm"; depends=[mvtnorm]; };
   BayesMFSurv = derive2 { name="BayesMFSurv"; version="0.1.0"; sha256="1yxxzwjh1fgfh7qkzf9dfm3x0vbgb0v4p6bf6b5w14kvm06rzhkg"; depends=[coda FastGP MCMCpack mvtnorm Rcpp RcppArmadillo]; };
-  BayesMallows = derive2 { name="BayesMallows"; version="0.4.1"; sha256="0q89al122393nym9i71gz5mh10d304fcnbw2naxwzmj744g3lpm2"; depends=[cowplot dplyr ggplot2 HDInterval igraph PerMallows purrr Rcpp RcppArmadillo Rdpack relations rlang sets tidyr]; };
+  BayesMallows = derive2 { name="BayesMallows"; version="0.4.2"; sha256="0fxv2llly4ada34mvvbgmsjq0kypd5ln208c38wqp87im2lvalc6"; depends=[cowplot dplyr ggplot2 HDInterval igraph PerMallows purrr Rcpp RcppArmadillo Rdpack relations rlang sets tidyr]; };
   BayesMixSurv = derive2 { name="BayesMixSurv"; version="0.9.1"; sha256="19kf39881q00pap9afwvvggk4s4w3qpz17b7065nig1mvk8dnp8r"; depends=[survival]; };
   BayesNI = derive2 { name="BayesNI"; version="0.1"; sha256="0zvr6rkb5zxgl53xby69d0j3yrfnlcmac6kwkxz77q5616w9dwq0"; depends=[]; };
   BayesNSGP = derive2 { name="BayesNSGP"; version="0.1.1"; sha256="11c83iafhl8yasyy8xwk9wladbj986xpmgc8d3yd9dxkic71flw8"; depends=[FNN Matrix nimble StatMatch]; };
@@ -398,10 +400,9 @@ in with self; {
   BayesPostEst = derive2 { name="BayesPostEst"; version="0.2.0"; sha256="0yyf9mawpq8ynw5mx0684f8yw3ajf01wadfdvs2yanjlgqbmy1sj"; depends=[carData caTools coda dplyr ggmcmc ggplot2 ggridges HDInterval R2jags reshape2 rlang ROCR runjags texreg tidyr]; };
   BayesRS = derive2 { name="BayesRS"; version="0.1.3"; sha256="0fhvnckabp0z1cdsbjgv3ijnzaxwhrk83fwcflgqbhvm3a9lzr77"; depends=[coda ggplot2 metRology reshape rjags]; };
   BayesReversePLLH = derive2 { name="BayesReversePLLH"; version="1.3"; sha256="07ijys5qd29qpa1hh6kbbp6fx97nmxydiijd0k0dh262vqfhh5ll"; depends=[Rcpp RcppArmadillo]; };
-  BayesS5 = derive2 { name="BayesS5"; version="1.31"; sha256="1azxn3r0s52zy6y5qsa6yx331795mkk7fb28fcinv2zx9iyvk33w"; depends=[abind Matrix snowfall]; };
+  BayesS5 = derive2 { name="BayesS5"; version="1.41"; sha256="0vs6s50h4gpxda9lbxfgn76k9kp81l62a6bv22r7ixsjlnd4baql"; depends=[abind Matrix snowfall splines2]; };
   BayesSAE = derive2 { name="BayesSAE"; version="1.0-2"; sha256="1xbx9hr254agpcqs1fl7qi7h19fd2bbmjszn44l566n2svgvxwf5"; depends=[coda Formula lattice]; };
   BayesSUR = derive2 { name="BayesSUR"; version="1.0-4"; sha256="1n38k9y1hvymfq556d5v2q69wqycvzdkjjgwzx0sz236wdqi64wv"; depends=[igraph Matrix Rcpp RcppArmadillo tikzDevice xml2]; };
-  BayesSenMC = derive2 { name="BayesSenMC"; version="0.1.1"; sha256="0bvlhhivdaw386ir5zb47bxg5dbqlfjfxbs28gjdr0csskwvh107"; depends=[dplyr ggplot2 lme4 Rcpp rstan]; };
   BayesSpec = derive2 { name="BayesSpec"; version="0.5.3"; sha256="17gchdijcjhbr2y4glbq9szjh4qmgivzh6p4fllh589da18nzjcr"; depends=[mvtnorm pscl trust]; };
   BayesSummaryStatLM = derive2 { name="BayesSummaryStatLM"; version="1.0-1"; sha256="05mlgyi4fglvjkpqyw3vcjpipqllx37svcb20c1mrsa46m6fm4s7"; depends=[ff mvnfast]; };
   BayesTree = derive2 { name="BayesTree"; version="0.3-1.4"; sha256="0saca1ln582szqzc2c78z24b1lszzhc9hvsin73kb7r2dlg5ciii"; depends=[nnet]; };
@@ -423,7 +424,7 @@ in with self; {
   BcDiag = derive2 { name="BcDiag"; version="1.0.10"; sha256="1gyinmx5wn2kk70hiy28ghilkhfirfjbfqdrqq5h3wfb4khnq6pz"; depends=[fabia]; };
   Bchron = derive2 { name="Bchron"; version="4.7.0"; sha256="1wzi63szg6x6h8x5ngm8x3scp0qlgld5dyidqic5ibhvxd36rqhy"; depends=[coda dplyr ggforce ggplot2 ggridges magrittr MASS mclust purrr scales stringr]; };
   Bclim = derive2 { name="Bclim"; version="3.1.2"; sha256="0dd4fx3rlljj3zb1m8q1bam1bswg497l3y8k0h0mkvjn94b4jbag"; depends=[ggplot2 MASS mclust statmod]; };
-  BeSS = derive2 { name="BeSS"; version="1.0.7"; sha256="1s43v61xx1c7b6b4zvpcdry8l2c6klllsc0cpcxp5y2bjmg5zj5v"; depends=[glmnet Matrix Rcpp RcppEigen survival]; };
+  BeSS = derive2 { name="BeSS"; version="1.0.8"; sha256="1yxinr3bfnk2ryal41l0j7i345aynrr62dd1rarrbyspxfrhimiq"; depends=[glmnet Matrix Rcpp RcppEigen survival]; };
   Benchmarking = derive2 { name="Benchmarking"; version="0.28"; sha256="1f13m6fz9wd6zzknglcl0za16dbjsxn9f2714rpg8hcsr3hrlhdl"; depends=[lpSolveAPI ucminf]; };
   BenfordTests = derive2 { name="BenfordTests"; version="1.2.0"; sha256="1nnj0w0zwcmg7maqmmpixx7alvsyxva370ssc26ahg6kxy5a621w"; depends=[]; };
   Bergm = derive2 { name="Bergm"; version="5.0.1"; sha256="1zy2ar43v7pf1ibbhf7visy1ia24lfpa2kb921vxd7hiilky1h8v"; depends=[coda ergm Matrix matrixcalc MCMCpack mvtnorm network]; };
@@ -478,7 +479,7 @@ in with self; {
   Biopeak = derive2 { name="Biopeak"; version="1.0"; sha256="1l08m1jl8yygbdfzk8klpj1q2m7icvxi98vmk7akxs0sswjc6wd2"; depends=[cluster dbscan factoextra gplots RColorBrewer]; };
   Bios2cor = derive2 { name="Bios2cor"; version="2.1"; sha256="04wk1cjrrxhpv1kdhd67r1qvjv268xxi0z0r105wy912110z9m6x"; depends=[bigmemory bio3d circular igraph]; };
   BisRNA = derive2 { name="BisRNA"; version="0.2.2"; sha256="11jl5109nlm272vncprwplkz4kpvg7yx6yfnbjg47lfrsxcj8n0g"; depends=[MASS]; };
-  BisqueRNA = derive2 { name="BisqueRNA"; version="1.0.1"; sha256="0jbplh1vfcr5rwqbli2h5bg7b3rdkc9vbsyj7fzlz474blzfg6mr"; depends=[Biobase lsei]; };
+  BisqueRNA = derive2 { name="BisqueRNA"; version="1.0.2"; sha256="0j3z704hnfdmmbs8jzsnk7mvklpg5bs8jika810j8ygl97skdk5h"; depends=[Biobase lsei]; };
   BivGeo = derive2 { name="BivGeo"; version="2.0.1"; sha256="1sj52v1zmk425jw9acq9y0jdp3agx103yzf1bjbc5vrmk1x0i0qr"; depends=[]; };
   BivRec = derive2 { name="BivRec"; version="1.2.0"; sha256="1q68qs2xm3qry7wc5ilrgjpyygfbcvvqy61yg98h5px302d1ixk3"; depends=[dplyr MASS Rcpp stringr survival]; };
   BivRegBLS = derive2 { name="BivRegBLS"; version="1.1.1"; sha256="1kpl0pwm2g40pxrfbz2d95vcrm51flg6bgc83661349cmc9a2511"; depends=[ellipse]; };
@@ -488,7 +489,7 @@ in with self; {
   BlakerCI = derive2 { name="BlakerCI"; version="1.0-6"; sha256="0dcmnaf0k195caajy8h4qymyfj45cjwmkcgsbwv0z7x3h9sx5k6v"; depends=[]; };
   BlandAltmanLeh = derive2 { name="BlandAltmanLeh"; version="0.3.1"; sha256="11p30zqb3f9ifk3v18dspg18sclz5zxjygy7hw8ccb4bcqhx68lm"; depends=[]; };
   Blaunet = derive2 { name="Blaunet"; version="2.0.8"; sha256="127nl041a1rbf8c4ffv8sbkn5y03ywaxkp51yd0sahs2anf415y4"; depends=[cairoDevice ergm foreign gWidgets gWidgetsRGtk2 haven network plot3D plot3Drgl rgl RGtk2 sna statnet_common]; };
-  Blendstat = derive2 { name="Blendstat"; version="1.0.2"; sha256="04rn5yqkmqrcali75ly476x0dasysbxilynziy48mrm6q3h7xyjy"; depends=[lattice MASS]; };
+  Blendstat = derive2 { name="Blendstat"; version="1.0.3"; sha256="0d5zzqiav7b5prh8332kwqy6ga96lkbkdjis8qwifa11j5qa087a"; depends=[lattice MASS]; };
   BlockCov = derive2 { name="BlockCov"; version="0.1.1"; sha256="1ilqd8kvhlq0nc1n4y7g0aiwran3kyqs8i143j6dv2wy3myn5x0l"; depends=[BBmisc dplyr magrittr Matrix Rdpack rlang tibble]; };
   BlockFeST = derive2 { name="BlockFeST"; version="1.6"; sha256="0hj7a5as7nxbgjac7lbj6qfwffx3g8x8phpf9a55f1c9cdzi73a5"; depends=[BASIX]; };
   BlockMessage = derive2 { name="BlockMessage"; version="1.0"; sha256="1jrcb9j1ikbpw098gqbcj29yhffa15xav90y6vpginmhbfpwlbf4"; depends=[]; };
@@ -560,7 +561,7 @@ in with self; {
   CC = derive2 { name="CC"; version="1.0"; sha256="189si37ggichqmzy8m686zw1cijix7yfy8ma5iqpnq1q9vm3pcvy"; depends=[]; };
   CCA = derive2 { name="CCA"; version="1.2"; sha256="00zy6bln22qshhlll0y0adnvb8wa1f7famqyws71b6pcnwxki5ha"; depends=[fda fields]; };
   CCAGFA = derive2 { name="CCAGFA"; version="1.0.8"; sha256="1jxb6d1h5p97wnr45s1fsspksqn771nib415ihxi4vj5w8s94j8b"; depends=[]; };
-  CCAMLRGIS = derive2 { name="CCAMLRGIS"; version="3.0.2"; sha256="0szk6z0nyw2f28q23qr69qrj35sy9qmdpvsqypm13drzv6vqlkqd"; depends=[dplyr geosphere magrittr raster rgdal rgeos sp]; };
+  CCAMLRGIS = derive2 { name="CCAMLRGIS"; version="3.0.3"; sha256="0nwz007hn937y6ckkv7lcabyhcj7cvpy23hr03naggdbd4ql0gjf"; depends=[dplyr geosphere magrittr raster rgdal rgeos sp]; };
   CCM = derive2 { name="CCM"; version="1.2"; sha256="1mhl7yppniybdffylddbbb65n7gmv029fb46wlsxm4yf2xkplmwy"; depends=[]; };
   CCP = derive2 { name="CCP"; version="1.1"; sha256="07jxh33pb8llk1gx4rc80ppi35z8y1gwsf19zrca9w91aahcs8cx"; depends=[]; };
   CCTpack = derive2 { name="CCTpack"; version="1.5.2"; sha256="1kkxsk9x4jz2bvldmba7fsri3zc1cjz15z0xicjmfc7lj72ngdig"; depends=[MASS mvtnorm polycor psych R2jags rjags]; };
@@ -696,7 +697,7 @@ in with self; {
   CausalGAM = derive2 { name="CausalGAM"; version="0.1-4"; sha256="1riz11hfg96iks7734rg692l75nfrd3hmr9gw563j27rkk1nfkl6"; depends=[gam]; };
   CausalImpact = derive2 { name="CausalImpact"; version="1.2.4"; sha256="0nszqvaxmz9jrb7wqdmjjplajk8mxpyyl14n2fm5p4pyx8srwphq"; depends=[assertthat Boom bsts dplyr ggplot2 zoo]; };
   CausalKinetiX = derive2 { name="CausalKinetiX"; version="0.2.1"; sha256="0haxw4vvbw48hlvsl1d1y3xm48qm5vl0d3k5lj89ajwc618nk5jg"; depends=[cvTools deSolve fda glmnet pspline quadprog randomForest sundialr]; };
-  Causata = derive2 { name="Causata"; version="4.2-0"; sha256="04lndjy4rdf063z75zv42b000z06ffnr91pv2sql1ks6w60zmh1m"; depends=[boot data_table foreach ggplot2 glmnet R_utils RCurl rjson RMySQL stringr XML yaml]; };
+  Causata = derive2 { name="Causata"; version="4.2-0"; sha256="1q39py09l6f97zcc8mbavbx7jahgjfs0q873s5axc88vbzxg7008"; depends=[boot data_table foreach ggplot2 glmnet R_utils RCurl rjson RMySQL stringr XML yaml]; };
   CautiousLearning = derive2 { name="CautiousLearning"; version="1.0.1"; sha256="1m5x93l4bscrpcxk0pva6d6n2qnzhzxh0a6a81p97l8lqgs1qw2q"; depends=[BH Rcpp sitmo spc]; };
   CePa = derive2 { name="CePa"; version="0.7.0"; sha256="0jykh0f168azphjd3h1q81wlvj8zn8qy0c4wi275gvw0xwi104mk"; depends=[graph igraph Rgraphviz]; };
   CeRNASeek = derive2 { name="CeRNASeek"; version="2.1.2"; sha256="1bjx474wbxs4wxy6j4n578cggmcj0061kbbkyhfif65qbsfgrcf8"; depends=[gtools igraph survival]; };
@@ -773,7 +774,6 @@ in with self; {
   CoFRA = derive2 { name="CoFRA"; version="0.1002"; sha256="0ldf84dxaanww3qkf64mz5gv3yv2rjp9m6dy64xckds66vw6x0m3"; depends=[gplots stringr]; };
   CoImp = derive2 { name="CoImp"; version="1.0"; sha256="06y722flpiqpwq0p7ik86s09mdnvqw3hdybhdzn8vfns5swc8x1y"; depends=[copula gtools locfit nnet]; };
   CoRpower = derive2 { name="CoRpower"; version="1.0.3"; sha256="007v6khv2kkf398cqy3vjv0ncd7zc8ad084a5qhpplsnj1f3ll2j"; depends=[osDesign survival]; };
-  CoSMoS = derive2 { name="CoSMoS"; version="1.0.1"; sha256="1kh1ka428vv99vwxajyvaz9n5d1ss6h03w7kwwp89hjxrm8wnrc2"; depends=[data_table ggplot2 nloptr pracma]; };
   CodataGS = derive2 { name="CodataGS"; version="1.43"; sha256="1bjn6s1f5jn64gwrvjz5kvwfkbqrqhavib6dj9k37rb5nzqkwhp6"; depends=[Matrix]; };
   CodeDepends = derive2 { name="CodeDepends"; version="0.6.5"; sha256="0l7kiv3awx50glf5cs841b4zzsff1ml90f0zr868ygvwsr4ps1hq"; depends=[codetools graph XML]; };
   CoinMinD = derive2 { name="CoinMinD"; version="1.1"; sha256="0invnbj5589wbs0k2w5aq9qak7axc3s0g9nw85c48lnl0v95s91i"; depends=[MCMCpack]; };
@@ -844,7 +844,7 @@ in with self; {
   CorporaCoCo = derive2 { name="CorporaCoCo"; version="1.1-0"; sha256="1s3wlcy6mnw9riivw5lc4gd6bjbsd77m15ipr95g46isdcrli8zb"; depends=[data_table RColorBrewer rlist]; };
   CorrBin = derive2 { name="CorrBin"; version="1.6"; sha256="0iwad5qf7hqii02s5f85155c5s7v8ghnac4l6l3c45dshrpapp2m"; depends=[boot combinat dirmult geepack mvtnorm]; };
   CorrMixed = derive2 { name="CorrMixed"; version="1.0"; sha256="0rj987k8pzsw9n9a20ky23rwc3zyqsl0fcibpmry7p8pw2miaj0z"; depends=[nlme psych]; };
-  CorrToolBox = derive2 { name="CorrToolBox"; version="1.6.1"; sha256="1hqbb3raw86g3ww8dmapyy8lac2avs6jbjklfvi9gx06lyw4kv9r"; depends=[BinNonNor BinOrdNonNor GenOrd moments mvtnorm psych]; };
+  CorrToolBox = derive2 { name="CorrToolBox"; version="1.6.2"; sha256="0a12vdyqqhw46iladdkbc0hxsbq8pihg056k6hn1rv41g7r08y14"; depends=[BinNonNor BinOrdNonNor GenOrd moments mvtnorm psych]; };
   CorrectOverloadedPeaks = derive2 { name="CorrectOverloadedPeaks"; version="1.2.17"; sha256="1g7irjbhwnbhk74y3qxcjlrsn2yz8q6wn7ih16wq669nswryxhxk"; depends=[bitops digest XML]; };
   CorrectedFDR = derive2 { name="CorrectedFDR"; version="1.0"; sha256="15047cfjniljzhznkbzq3hyq221y9k7fa04f69zm0k0sxr627gxg"; depends=[]; };
   CosW = derive2 { name="CosW"; version="0.1"; sha256="12l4w8b5jnr8773hxk7khrdn705x6bdbw7s8z8w95bfbbi12dj6v"; depends=[fdrtool pracma]; };
@@ -858,6 +858,7 @@ in with self; {
   CoxBoost = derive2 { name="CoxBoost"; version="1.4"; sha256="1bxkanc8zr4g3abn4ds5wqibv65flvm4y648fs9s0l4vc9vmyshg"; depends=[Matrix prodlim survival]; };
   CoxPhLb = derive2 { name="CoxPhLb"; version="1.2.0"; sha256="0jlh2k5ygj896sfx7dcw5qlb80bl64rsvqfayv0c6a107bmrzsw4"; depends=[survival]; };
   CoxPlus = derive2 { name="CoxPlus"; version="1.1.1"; sha256="038wsz206bgc0pnzx403b5ihcwhxpkrpxmwvrvqcxf8333pb62l5"; depends=[Rcpp RcppArmadillo]; };
+  CoxR2 = derive2 { name="CoxR2"; version="1.0"; sha256="1fjsa403lbx0hi7b0gsdaz0q9axw521q4xzphbfbknify4y72md6"; depends=[survival]; };
   CoxRidge = derive2 { name="CoxRidge"; version="0.9.2"; sha256="0p65mg4hzdgks03k1lj90yj6qbk50s94rwvcwzkb5xxxwrijd10r"; depends=[survival]; };
   CpGFilter = derive2 { name="CpGFilter"; version="1.1"; sha256="0ccvk7lawmay0wqdyhs6ww7396dcfzazn72sq6zwyw7dl45k2j0i"; depends=[matrixStats]; };
   CpGassoc = derive2 { name="CpGassoc"; version="2.60"; sha256="1zx18x8pxjl2ajnj7a7lb8383m75ysg17f4mzz0vkgl5mnf617ny"; depends=[nlme]; };
@@ -931,7 +932,6 @@ in with self; {
   DES = derive2 { name="DES"; version="1.0.0"; sha256="16p38i8ykwc8gjw6c9dhdwjjpa1b17n9wqhz3rhkbzjh978pky31"; depends=[]; };
   DESnowball = derive2 { name="DESnowball"; version="1.0"; sha256="012kdnxmzap6afc3ffkcvk1mazlkp286av6g9fwz2wcbf5mh9n1m"; depends=[clue cluster combinat MASS]; };
   DET = derive2 { name="DET"; version="2.0.1"; sha256="1jadxhq2jjjvmkz4bmakb7yzlnf080fpdkdi39czkm489bvjxgd5"; depends=[doParallel pROC]; };
-  DEVis = derive2 { name="DEVis"; version="1.0.1"; sha256="0fb8q72gm9h52v6fc12jcvk9k59qrns74yqjvj73nch29gkr16hp"; depends=[DESeq2 ggdendro ggplot2 ggsci ggthemes gridExtra MASS pheatmap plyr PoiClaClu RColorBrewer reshape2 SummarizedExperiment]; };
   DEoptim = derive2 { name="DEoptim"; version="2.2-5"; sha256="0nlm2gdvd33yrwambmlrgj76inxz2a65ya7727l98fd4skfdw4mf"; depends=[]; };
   DEoptimR = derive2 { name="DEoptimR"; version="1.0-8"; sha256="1vz546hyjyhly70z62h5n3mn62b8llhhmim8ffp9y6jnnb0i2sc4"; depends=[]; };
   DFA_CANCOR = derive2 { name="DFA.CANCOR"; version="0.1.6"; sha256="0pyql8xms08qn8kzf1h984ik1pbyy8z1wa1lf588pb6clwmd2mk8"; depends=[MASS MVN]; };
@@ -945,6 +945,7 @@ in with self; {
   DHS_rates = derive2 { name="DHS.rates"; version="0.7.0"; sha256="11rzwwx6vvr66nfklqh6j86k3d0cdccg6l99azwqif0cmj81rdw5"; depends=[crayon haven matrixStats reshape survey]; };
   DIFboost = derive2 { name="DIFboost"; version="0.2"; sha256="0wyjk870n18lq0dwhm9ndsh5vv0d8wkrbcky68w454vzrrw1q9h8"; depends=[mboost penalized stabs]; };
   DIFlasso = derive2 { name="DIFlasso"; version="1.0-3"; sha256="195wiy0jjkq6bh2b6wrjmr5l34pzx0i2qqvwp4pzv77sx737ds0v"; depends=[grplasso miscTools penalized]; };
+  DIFplus = derive2 { name="DIFplus"; version="1.1"; sha256="1k03lr437gx5y762z3h40hz9kcl4m8xgrndxvbyvsgmn2h6pbwsd"; depends=[plyr TestDataImputation]; };
   DIFtree = derive2 { name="DIFtree"; version="3.1.4"; sha256="1q02229vlmyxqasbxiscxvqpcip1r0sbwbp7ja909ljhc5b76pr8"; depends=[gridBase penalized plotrix VGAM]; };
   DIME = derive2 { name="DIME"; version="1.2"; sha256="11l6mk6i3kqphrnq4iwk4b0ridbbpg2pr4pyqaqbsb06ng899xw0"; depends=[]; };
   DIMORA = derive2 { name="DIMORA"; version="0.1.0"; sha256="0qcy2pqpx7za4ckf6wvmbhz5a52j44ksn81f8j1lj0z90idj6psn"; depends=[minpack_lm numDeriv]; };
@@ -987,12 +988,13 @@ in with self; {
   DSAIRM = derive2 { name="DSAIRM"; version="0.8.2"; sha256="05m6hm9h8f41n3wswbp7z80kfvmn65jypj9fwlv3k8bdm4lw1mla"; depends=[adaptivetau boot deSolve dplyr ggplot2 gridExtra lhs nloptr plotly shiny XML]; };
   DSBayes = derive2 { name="DSBayes"; version="1.1"; sha256="0iv4l11dww45qg8x6xcf82f9rcz8bcb9w1mj7c7ha9glv5sfb25v"; depends=[BB]; };
   DSL = derive2 { name="DSL"; version="0.1-7"; sha256="05wj3zypr2kqfbka930qnwnk2r43pqi13pbs5n6lm8vdq4zjblw4"; depends=[]; };
+  DSSAT = derive2 { name="DSSAT"; version="0.0.1"; sha256="06a5n484pc49ynrzaf3fm04884z6qwhd6kw0n4834fynpnflkkym"; depends=[dplyr glue lubridate purrr readr rlang stringr tidyr]; };
   DSpat = derive2 { name="DSpat"; version="0.1.6"; sha256="1v6dahrp8q7fx0yrwgh6lk3ll2l8lzy146r28vkhz08ab8hiw431"; depends=[mgcv RandomFields rgeos sp spatstat]; };
   DSpoty = derive2 { name="DSpoty"; version="0.1.0"; sha256="18z8gk3zj7k2szxg9579qy5klrqjw6zsk5x9jmwrv4qhb98fyji6"; depends=[dplyr httr purrr stringr]; };
   DSsim = derive2 { name="DSsim"; version="1.1.5"; sha256="0dr8dc91m7s5c198k9cb26a09f14wb8ihr46c0mr9cg33l2wf3nv"; depends=[fields mgcv mrds rgeos shapefiles sp splancs]; };
-  DStree = derive2 { name="DStree"; version="1.0"; sha256="14wba25ylmsyrndh007kl377dv4r34wr1555yxl6kyxrs4yg3jir"; depends=[Ecdat pec Rcpp rpart rpart_plot survival]; };
+  DStree = derive2 { name="DStree"; version="1.0"; sha256="13kr6d0rpy4ygyfcpxppc1zn4rngansx1pa6idm489mivp04han6"; depends=[Ecdat pec Rcpp rpart rpart_plot survival]; };
   DSviaDRM = derive2 { name="DSviaDRM"; version="1.0"; sha256="1hj2pgnldrpgapwwz1kf4k6mvyzwdvb1i6czd7sbimsx5hafwps8"; depends=[igraph ppcor]; };
-  DT = derive2 { name="DT"; version="0.12"; sha256="0089288ma1cj9nf4jscmpbagyqlg4r90mw8bwl4zv1d4hjl0d693"; depends=[crosstalk htmltools htmlwidgets jsonlite magrittr promises]; };
+  DT = derive2 { name="DT"; version="0.13"; sha256="1db35mi4m4q3kha4vhvh693bv04y7h9pdawhsx8f234qjvz7783r"; depends=[crosstalk htmltools htmlwidgets jsonlite magrittr promises]; };
   DTAT = derive2 { name="DTAT"; version="0.3-3"; sha256="184b8qkwqlygdqzad2x2qf4hdrpsr7yffmf21jrz5yf946y621wl"; depends=[data_table dplyr Hmisc jsonlite km_ci pomp r2d3 shiny survival]; };
   DTAXG = derive2 { name="DTAXG"; version="0.1.0"; sha256="1jxa0ix0z35i0xdnjl698j8iqjmp6nz8ckah9bap5ay9rkq0xd7f"; depends=[]; };
   DTComPair = derive2 { name="DTComPair"; version="1.0.3"; sha256="1af2293ckkpz0gjcibgzzvz37852cav4wa4girpc87yn3p4ajlri"; depends=[gee PropCIs]; };
@@ -1007,7 +1009,7 @@ in with self; {
   DTSg = derive2 { name="DTSg"; version="0.3.0"; sha256="1dzzb51zash0r7afvnlv3sn738g6dxgb11s3f0skzl3s83jn15lh"; depends=[checkmate data_table R6]; };
   DTWBI = derive2 { name="DTWBI"; version="1.1"; sha256="06lp4yc5nhacrgic78l014g2w1ibwgs8dp8zrahk5aripaczl25y"; depends=[dtw e1071 entropy lsa rlist]; };
   DTWUMI = derive2 { name="DTWUMI"; version="1.0"; sha256="0pybgbfs2yp2ljbs0kra5z70x3llkiwdngp6cadgs3j9rar4vq4q"; depends=[dtw DTWBI e1071 entropy lsa rlist]; };
-  DVHmetrics = derive2 { name="DVHmetrics"; version="0.3.9"; sha256="1m13lhxgw7yj44s5spmlb4xxkranfbmjfh8lhrksikd796vxms3s"; depends=[ggplot2 KernSmooth reshape2 shiny]; };
+  DVHmetrics = derive2 { name="DVHmetrics"; version="0.3.10"; sha256="1d8zig3ljld05pwaqsahyvjf95y8k183al5ibx09h6hj3r5bfd8n"; depends=[DT ggplot2 KernSmooth reshape2 shiny]; };
   DWDLargeR = derive2 { name="DWDLargeR"; version="0.1-0"; sha256="1bxdvgj38xv2xj98njpyhy12b54nccwnc3v92kkpd3i7nwbw48dy"; depends=[Matrix SparseM]; };
   DWLasso = derive2 { name="DWLasso"; version="1.1"; sha256="1i8j8wjfvg69ldr8ahz1zv3m2wgxd701iph94ad22zs9qwqfg16z"; depends=[glmnet hglasso Matrix]; };
   DWreg = derive2 { name="DWreg"; version="2.0"; sha256="0bgahzgcxz86n0ady97l48zyahv3p2iyc2ivbij1xrfx3wcx3b5n"; depends=[DiscreteWeibull Ecdat maxLik survival]; };
@@ -1036,7 +1038,8 @@ in with self; {
   DeLorean = derive2 { name="DeLorean"; version="1.5.0"; sha256="1ry6j4mvxms9hddi9c56p9yhjh66fzss41wqkf6xq398h1wbn4q1"; depends=[BH broom coda dplyr fastICA functional ggplot2 kernlab lattice MASS memoise Rcpp RcppEigen reshape2 rstan rstantools seriation StanHeaders stringr]; };
   DeRezende_Ferreira = derive2 { name="DeRezende.Ferreira"; version="0.1.0"; sha256="05c99z3hlwwm0p02cl9z6gjwfxfq2b2qn90l85270bi16llgf42h"; depends=[xts]; };
   DealGPL570 = derive2 { name="DealGPL570"; version="0.2.0"; sha256="1c202gzbhqaisxvpiiajcbfsjnqrvygd19304m2n89ansv81vi8r"; depends=[affy dplyr GEOquery stringr tibble]; };
-  DeclareDesign = derive2 { name="DeclareDesign"; version="0.20.0"; sha256="0zdpiwh74ljc57s4cgak2j8zg3zyz9f3b47dambw2zdiy0db6wk8"; depends=[estimatr fabricatr generics randomizr rlang]; };
+  DeclareDesign = derive2 { name="DeclareDesign"; version="0.22.0"; sha256="1c4ij70d2002rj595fzik75x44jf0gdnrs4bbm5fv4lqnbrm5j37"; depends=[estimatr fabricatr generics randomizr rlang]; };
+  DecomposeR = derive2 { name="DecomposeR"; version="1.0.0"; sha256="1q7r2pgd5qgr1jnrvcwaxnwa38is8g4raz16qmp0kaw281mpglcp"; depends=[colorRamps dplyr hexbin hht StratigrapheR]; };
   DecorateR = derive2 { name="DecorateR"; version="0.1.1"; sha256="1dvyadlksqv8ns043yh91f6kw162k6r0zwn13j1g6pvismw04br9"; depends=[rJava RWeka RWekajars]; };
   Deducer = derive2 { name="Deducer"; version="0.7-9"; sha256="14kakyf28i654pndlswjzp6h3h7szpznrg6xznqg150mmn0bs3s6"; depends=[car e1071 effects foreign ggplot2 JGR MASS multcomp plyr rJava scales]; };
   DeducerPlugInExample = derive2 { name="DeducerPlugInExample"; version="0.2-0"; sha256="03aw7wr957xzw920ybyzxnck5kx0q2xpcrpq8jh2afyzszy6hzbi"; depends=[Deducer]; };
@@ -1065,6 +1068,7 @@ in with self; {
   DetMCD = derive2 { name="DetMCD"; version="0.0.5"; sha256="034wb5hwpikli6h2rwiqr19qvzxrr4qwi4q436y7c5a5wgkfzgl5"; depends=[pcaPP Rcpp RcppEigen robustbase]; };
   DetR = derive2 { name="DetR"; version="0.0.5"; sha256="1dd4nzkgj5pl9397aa0z3q5fpl27xbdf7q0pqbs821dyynylxzn9"; depends=[MASS pcaPP Rcpp RcppEigen robustbase]; };
   DetSel = derive2 { name="DetSel"; version="1.0.4"; sha256="01mpjy1cmgbrchdjl0gmrq3zx3mlkznml1qcradj2v5mgz26ifrv"; depends=[ash]; };
+  DevTreatRules = derive2 { name="DevTreatRules"; version="1.1.0"; sha256="1h4p78mwl5ir31hfb38x1dwq5xxbdlsasvk5vxa3c7xdvhsd2yrf"; depends=[DynTxRegime glmnet modelObj]; };
   Devore7 = derive2 { name="Devore7"; version="0.7.6"; sha256="1m18p8h9vv4v0aq2fkjyj39vzb8a09azbbczhfiv4y88w540i8nw"; depends=[lattice MASS]; };
   Dforest = derive2 { name="Dforest"; version="0.4.2"; sha256="19jyph2zqfyq9vv22kb6fqy89l0vcviv19zgk10hbd7q850f6ryn"; depends=[ggplot2 rpart]; };
   DiPhiSeq = derive2 { name="DiPhiSeq"; version="0.2.0"; sha256="11l2inf99vxz9k292307j8c2b25kc1066svy3vxrfl72rrm4fqa7"; depends=[]; };
@@ -1082,18 +1086,17 @@ in with self; {
   Diderot = derive2 { name="Diderot"; version="0.12"; sha256="1cq8yk4r0csnslp286hzs04zzq44q0frz0kyll9jhqjil34qh0x7"; depends=[data_table doParallel foreach igraph RCurl splitstackshape stringi]; };
   DiffCorr = derive2 { name="DiffCorr"; version="0.4.1"; sha256="1kxp9dbiww086rmvmjvfhbk7jl36dkj88qwii6zg57llf7l5l4hm"; depends=[fdrtool igraph multtest pcaMethods]; };
   DiffNet = derive2 { name="DiffNet"; version="1.0-0"; sha256="04dvf0qxnc6jizwfjxw731j7d2fxyapk06rmqvga6h3p075q0mqk"; depends=[data_table doParallel foreach gplots Hmisc igraph lsa Matrix qlcMatrix Rcpp RcppEigen]; };
-  DiffXTables = derive2 { name="DiffXTables"; version="0.0.2"; sha256="01kxa0barwy9khwf9yyzdxi4561n5c0q9s2fps8gwb2afxdhxjm0"; depends=[Matrix]; };
+  DiffXTables = derive2 { name="DiffXTables"; version="0.1.0"; sha256="1la512kvq1ziw1b3zzn2khh4cjcq2lwq1r17b84x7f4spbfp5l2b"; depends=[]; };
   DiffusionRgqd = derive2 { name="DiffusionRgqd"; version="0.1.3"; sha256="1gf5jpvimfrc9ccva0jk85rl4zfkbijm2305ky1rxcgm4kgw4lax"; depends=[colorspace Rcpp RcppArmadillo rgl]; };
   DiffusionRimp = derive2 { name="DiffusionRimp"; version="0.1.2"; sha256="1h7145ldlgwrrwj4l1wxdp2rbg2pm4v3pngiq0saz0xi3vpcxwl6"; depends=[colorspace Rcpp RcppArmadillo rgl]; };
   DiffusionRjgqd = derive2 { name="DiffusionRjgqd"; version="0.1.1"; sha256="1yb1jaq324qm2x8cl3bs2dflnsx8yfygpw2m3kk5hzaai9gfkqjf"; depends=[colorspace Rcpp RcppArmadillo rgl]; };
-  Digiroo2 = derive2 { name="Digiroo2"; version="0.6"; sha256="1b1ahhqz5largjadlk5n6nw2183c05k28mksb1wm26y0lps0vdgr"; depends=[maptools spatstat spdep]; };
   DirectEffects = derive2 { name="DirectEffects"; version="0.2"; sha256="0cawn1i1cyczsr9zpcaky79dfdl9anfjgiaa2404capacnj3call"; depends=[Formula glue sandwich]; };
   DirectStandardisation = derive2 { name="DirectStandardisation"; version="1.3"; sha256="1qlfvzlig3a2v78fiq6sbbpxklmjczikxdw57m6mqngzrl9vdl2g"; depends=[]; };
   DirectedClustering = derive2 { name="DirectedClustering"; version="0.1.1"; sha256="1shdqz0c5bbgknvfqr3ais26cb5mpywnah3d3584w97sy8v7gxm2"; depends=[igraph]; };
-  Directional = derive2 { name="Directional"; version="4.2"; sha256="0w0r73pvins39h2sfaqnxjjw3s386zpqrd5m04mc1m6mwslas0s1"; depends=[bigstatsr doParallel foreach MASS Rfast Rfast2 rgl]; };
+  Directional = derive2 { name="Directional"; version="4.3"; sha256="0kbwf3rzh776y7hk8zbb5yq01pm5m5bx5brap8dv5lgxg083jxq8"; depends=[bigstatsr doParallel foreach MASS RANN Rfast Rfast2 rgl]; };
   DirichletReg = derive2 { name="DirichletReg"; version="0.6-3.1"; sha256="1lz4b166grrs6vs98mf6a0wg4hvh0p901h697h9dkfhkxw8cqj3f"; depends=[Formula maxLik rgl]; };
   DisHet = derive2 { name="DisHet"; version="1.0.0"; sha256="056jcs1qpiyadnmlzd0cj4kp0qzkichxi0pdnxypyq1fsqnpvan3"; depends=[gtools matrixStats]; };
-  DisImpact = derive2 { name="DisImpact"; version="0.0.5"; sha256="1n0lyzv6abvrrcxj4zglyl9b0j4ldj0zkznh57frn1j1imb1na1l"; depends=[dplyr magrittr purrr rlang tidyselect]; };
+  DisImpact = derive2 { name="DisImpact"; version="0.0.6"; sha256="1lq89pq5z7jcl1qflg3b25y6z1b65kpvfnf5534n7xfg0lkihq94"; depends=[dplyr purrr rlang tidyr tidyselect]; };
   DiscreteFDR = derive2 { name="DiscreteFDR"; version="1.3-4"; sha256="0r3z56xcb5als38rhydia482j5xl9kcgamdj6ibd22yi0ya6k4iv"; depends=[Rcpp]; };
   DiscreteInverseWeibull = derive2 { name="DiscreteInverseWeibull"; version="1.0.2"; sha256="0vjsvl4m4zccfgizv7mzidbbpzqcm101x448vllcdcrn2xlnkmnq"; depends=[Rsolnp]; };
   DiscreteLaplace = derive2 { name="DiscreteLaplace"; version="1.1.1"; sha256="17w4vjvsm7jacvwckjczyah3hglq044r3m6vqdcrg8haz884rav2"; depends=[]; };
@@ -1193,13 +1196,13 @@ in with self; {
   EML = derive2 { name="EML"; version="2.0.2"; sha256="05hkm8kf17294by7jhvhbq0cqbpg042xkc5cgx9kzrgld8hxrwqm"; depends=[digest dplyr emld jqr jsonlite rmarkdown uuid xml2]; };
   EMMAgeo = derive2 { name="EMMAgeo"; version="0.9.7"; sha256="1wz4zw45xfqbk589cpd188j7619h2ar2czfkisil9x8ksijfixls"; depends=[caTools GPArotation limSolve matrixStats shiny]; };
   EMMIXcskew = derive2 { name="EMMIXcskew"; version="0.9-5"; sha256="1ys5kvns6jlw2lk9m6xcy71wx1d581cmphiaxnp3hsqimc8wz7hq"; depends=[MASS mnormt rgl]; };
-  EMMIXgene = derive2 { name="EMMIXgene"; version="0.1.2"; sha256="1rkj8ihzrgv3834dvbq6wdk4nnzpa9g1if713anp76qv6gxch501"; depends=[BH ggplot2 mclust Rcpp RcppArmadillo reshape scales]; };
+  EMMIXgene = derive2 { name="EMMIXgene"; version="0.1.3"; sha256="0a5q78s9y6ba1641lrv87kglg39x9wbk5xg7ihzbpl4adrb5sz4f"; depends=[BH ggplot2 mclust Rcpp RcppArmadillo reshape scales]; };
   EMMIXmfa = derive2 { name="EMMIXmfa"; version="2.0.11"; sha256="06lfmpw908chhzx512anqacixvvx3y02wm1n4wmpb890rd85n11r"; depends=[]; };
   EMMIXskew = derive2 { name="EMMIXskew"; version="1.0.3"; sha256="05y1ivbzbsfab90925l3ahzd3b8y5kjfk3f0p2s9s3sfyxphqah7"; depends=[KernSmooth lattice mvtnorm]; };
   EMMLi = derive2 { name="EMMLi"; version="0.0.3"; sha256="1b36kyzvrdljmkysggv8jyaip78pj32ms0xhj2y568hd419lkh2p"; depends=[]; };
   EMMREML = derive2 { name="EMMREML"; version="3.1"; sha256="0qwj4jlfhppjxwcjldh49b6idnagazrxybaid3k2c269wvxwvddq"; depends=[Matrix]; };
   EMP = derive2 { name="EMP"; version="2.0.5"; sha256="0piagbxk8siagmvzqv2bh12g1y0hy3c0vkxpddlmp7gm3i304rpi"; depends=[ROCR]; };
-  EMSC = derive2 { name="EMSC"; version="0.9.0"; sha256="13d915g7iyv724x35i9mr8msy5mhrpqhhva21vdinxbjdy6vdlr9"; depends=[pracma]; };
+  EMSC = derive2 { name="EMSC"; version="0.9.1"; sha256="1njqd9ns9d47zpxy5y6xcxhyd3ly5hr3w6q7m5qr2svk9gz1kl50"; depends=[pracma]; };
   EMSNM = derive2 { name="EMSNM"; version="1.0"; sha256="0rhaadzhq9jfpnwxfqcsb3yz96rqlwkm165k5n5jxzwxpg1rg2n0"; depends=[]; };
   EMSaov = derive2 { name="EMSaov"; version="2.3"; sha256="1hpvwimhkl7za5s8j9n4a8883vy89jrxrhlh0k3cfprnndh4zz05"; depends=[shiny]; };
   EMT = derive2 { name="EMT"; version="1.1"; sha256="0m3av1x3jcp3hxnzrfb128kch9gy2zlr6wpy96c5c8kgbngndmph"; depends=[]; };
@@ -1348,6 +1351,7 @@ in with self; {
   FDRSeg = derive2 { name="FDRSeg"; version="1.0-3"; sha256="0dh6m5vlx664kryh56jzi3zxydjwa5217nhbwn6adp0q5qdh6d8a"; depends=[Rcpp stepR]; };
   FDRreg = derive2 { name="FDRreg"; version="0.1"; sha256="17hppvyncbmyqpi7sin9qsrgffrnx8xjcla2ra6y0sqzam1145y4"; depends=[fda mosaic Rcpp RcppArmadillo]; };
   FDRsampsize = derive2 { name="FDRsampsize"; version="1.0"; sha256="0g8kawzyi9x5yndvh330wzqw6rvcnprwq56ngd0j6z51hvvw8qhw"; depends=[]; };
+  FDX = derive2 { name="FDX"; version="1.0.1"; sha256="1za2w2xykbfy2pvxxr9xq2lblk65mxrskx80cdcr00ivzj1jx2bn"; depends=[DiscreteFDR PoissonBinomial pracma Rcpp]; };
   FDboost = derive2 { name="FDboost"; version="0.3-2"; sha256="1ahdq49ijj4j2yykmzbpgrjn0sm09nzmd33k317y157hnf6zyxvs"; depends=[gamboostLSS MASS Matrix mboost mgcv stabs zoo]; };
   FENmlm = derive2 { name="FENmlm"; version="2.4.3"; sha256="1a205a4iv54haixanyzx210lzqg7cnryjvqayvkdj1lhmdql4anw"; depends=[Formula MASS numDeriv Rcpp]; };
   FEprovideR = derive2 { name="FEprovideR"; version="1.1"; sha256="02hfdk9qhaq4y19p700w2i7qsdp4z2kyww0pr0pijfivkqks0vpi"; depends=[ggplot2 Matrix poibin]; };
@@ -1428,6 +1432,7 @@ in with self; {
   FastSF = derive2 { name="FastSF"; version="0.1.1"; sha256="1xajav45h57hchzkvl2pb4mz9xy433lq74jnry0icid8dai5xhwb"; depends=[limSolve Rcpp RcppArmadillo]; };
   FatTailsR = derive2 { name="FatTailsR"; version="1.7-5"; sha256="1l2anaf4kixidmvya64ni5b78bl9w2n6xf1lnf297lkdka8gxigw"; depends=[minpack_lm timeSeries]; };
   FateID = derive2 { name="FateID"; version="0.1.9"; sha256="0n02591wpi4n0ga42v4xd1jzskcl56nvvls48sdkcnvc7cyi0hjv"; depends=[lle locfit pheatmap princurve randomForest RColorBrewer Rtsne som umap]; };
+  FaultTree = derive2 { name="FaultTree"; version="0.99.4"; sha256="0f1pvi0vaaw29vghxi5qgbl6hn3fpwm2gxpdvchp3k2wk6p2gvk3"; depends=[Rcpp RcppArmadillo]; };
   FcircSEC = derive2 { name="FcircSEC"; version="1.0.0"; sha256="06c1n0xx1q0zh16bgylwbvqzp8q4c5bj626shm2c6r8f9kcjgysh"; depends=[Biostrings seqRFLP stringi]; };
   FeaLect = derive2 { name="FeaLect"; version="1.20"; sha256="1dfi0v313x4a4ck98zlk6yr3nfjrdwr5649x9dx3i7yfkypk2k5c"; depends=[lars rms]; };
   FeatureHashing = derive2 { name="FeatureHashing"; version="0.9.1.4"; sha256="00yrji3grqgzg8c1hwqq5kb9xgqlnzwymy0b38cwixadc5w5lq8m"; depends=[BH digest magrittr Matrix Rcpp]; };
@@ -1474,6 +1479,7 @@ in with self; {
   ForecastCombinations = derive2 { name="ForecastCombinations"; version="1.1"; sha256="07vzgm2jy992p1l9b8rsv2lbc8cbfzvql85n5ah4p4l3zjxdxgk9"; depends=[quadprog quantreg]; };
   ForecastFramework = derive2 { name="ForecastFramework"; version="0.10.3"; sha256="1c57jfcd156468s0bj0v523clg6pnwbw5spkqchbyz0fxzadc14p"; depends=[abind dplyr lubridate magrittr R6 reshape2 tibble]; };
   ForecastTB = derive2 { name="ForecastTB"; version="1.0.1"; sha256="1wqgw4i65ajwj8la8mgv2qqm4ydgk90i6chdkd8h33rlwh8yddc6"; depends=[circlize decomposedPSF forecast ggplot2 gridExtra imputeTestbench PSF RColorBrewer reshape2]; };
+  ForestDisc = derive2 { name="ForestDisc"; version="0.1.0"; sha256="1mzlrqjxsja51yyxckj4ym1vpfpq30vlhvs8clrg8jv7kz86hdwk"; depends=[moments nloptr randomForest]; };
   ForestFit = derive2 { name="ForestFit"; version="0.5.7"; sha256="08q4cibxhq02qawpyvc8cnr3x1gc8pi1rzdqq3i86764ssb2649a"; depends=[ars]; };
   ForestGapR = derive2 { name="ForestGapR"; version="0.0.2"; sha256="0xig9nal83xg312kgq6dhi7n67sa8ixlnh79x957w3n5rv9kdyf2"; depends=[igraph raster rgeos sp spatstat VGAM viridis]; };
   ForestTools = derive2 { name="ForestTools"; version="0.2.0"; sha256="0q9nk9n001bnz5hd8cxj6wmaf8c7g0kwfkpa0hk6ap42666rrrah"; depends=[APfun imager raster rgeos sp]; };
@@ -1626,7 +1632,7 @@ in with self; {
   GSAgm = derive2 { name="GSAgm"; version="1.0"; sha256="18bhk67rpss6gg1ncaj0nrz0wbfxv7kvy1cxria083vi60z0vwbb"; depends=[edgeR survival]; };
   GSE = derive2 { name="GSE"; version="4.2"; sha256="0vrxn6j5brhwd38zqnr6m3in3hp1xfs1mfhps9qsj20d4w8d1rf9"; depends=[cellWise ggplot2 MASS Rcpp RcppArmadillo robustbase rrcov]; };
   GSED = derive2 { name="GSED"; version="2.5"; sha256="0hz7rn0j62gy7bv67dxqpfdq86zv3yqhl9pwafcism94636h8vrj"; depends=[memoise R_utils rootSolve survival]; };
-  GSIF = derive2 { name="GSIF"; version="0.5-5"; sha256="104v01yifpagj7kyjfy80c4dgn9wv76py0av90vmgc55qynmvv19"; depends=[aqp dismo gstat plotKML plyr raster rgdal RSAGA scales sp]; };
+  GSIF = derive2 { name="GSIF"; version="0.5-5.1"; sha256="1nc177f200m3wfppmdh9cf6g2npx87c0mz2g17zdrw5crx688i8d"; depends=[aqp dismo gstat plotKML plyr raster rgdal RSAGA scales sp]; };
   GSM = derive2 { name="GSM"; version="1.3.2"; sha256="04xjs9w4gaszwzxmsr7657ry2ywa9pvpwpczpvinxi8vpj347jbb"; depends=[gtools]; };
   GSMX = derive2 { name="GSMX"; version="1.3"; sha256="1n1d7rixj14ari46snsmi48qfmy00ihmzvayk3hkrp2d2d0xi2gh"; depends=[MASS]; };
   GSODR = derive2 { name="GSODR"; version="2.0.1"; sha256="0wy2qim636g5rfy046r3qab3r58j3w7ngx57k5gdarbwcjzxw07y"; depends=[countrycode curl data_table future_apply httr R_utils]; };
@@ -1643,13 +1649,14 @@ in with self; {
   GWASExactHW = derive2 { name="GWASExactHW"; version="1.01"; sha256="19qmk8h7kxmn9kzw0x4xns5p3qqz27xkqq4q6zmh4jzizd0fsl78"; depends=[]; };
   GWASbyCluster = derive2 { name="GWASbyCluster"; version="0.1.7"; sha256="0ivlkxbh8m23vbnjfmhk0vfczd5b8lzy9w4gm1m6jpvdm40kn70x"; depends=[Biobase limma rootSolve snpStats]; };
   GWASinlps = derive2 { name="GWASinlps"; version="1.2"; sha256="036lv8f58kz6qdwaviyk1q1qsgcj9cimipq1cjrfpn8snkn7s1gh"; depends=[horseshoe mombf speedglm]; };
-  GWASinspector = derive2 { name="GWASinspector"; version="1.4.5"; sha256="1y2wg7nrz7q5240bmcz88pgzykmkq8hjxq452lfgwajvk0dr67k5"; depends=[data_table futile_logger ggplot2 gridExtra hash ini kableExtra knitr rmarkdown RSQLite]; };
+  GWASinspector = derive2 { name="GWASinspector"; version="1.4.6"; sha256="11bk7g36dhyj0wibf7knlyxjggns0fyis40r8z62285jhlf3s3kf"; depends=[data_table futile_logger ggplot2 gridExtra hash ini kableExtra knitr rmarkdown RSQLite]; };
   GWEX = derive2 { name="GWEX"; version="1.0.2"; sha256="0iykciifbskcrx1qv4874nxli1sq6nbmlfinq4ksir3p93y7ds87"; depends=[abind doParallel EnvStats fGarch foreach lmomco MASS mvtnorm nleqslv Renext]; };
   GWG = derive2 { name="GWG"; version="1.0"; sha256="1va0cd229dhhi1lmrkpwapcm96hrdmxilrmba02xnl7ikhisw0my"; depends=[]; };
   GWLelast = derive2 { name="GWLelast"; version="1.2.2"; sha256="1nm4w5m4ca6npmpvh9nb0cnrbzlyv95nvvhgs3pqcrw4igagm4hj"; depends=[doParallel foreach geosphere glmnet sp spgwr]; };
   GWRM = derive2 { name="GWRM"; version="2.1.0.3"; sha256="16ahlf1pbcpgha50a7ml2c336by50r287kihwshiazshifi5p3n3"; depends=[doParallel foreach]; };
   GWSDAT = derive2 { name="GWSDAT"; version="3.0.3"; sha256="10xvnnhqjs2p1r6yzflhkfi4985ljs57k5k8r6g85y2hq46m80p8"; depends=[deldir digest geometry Kendall lattice MASS Matrix officer readxl rhandsontable sf shiny shinycssloaders shinydashboard shinyjs sm sp splancs zoo]; };
   GWmodel = derive2 { name="GWmodel"; version="2.1-3"; sha256="1xha645sx73sy35s856qd4hd3y0n682bnrw0ahfzcr4fvzykc6iy"; depends=[FNN maptools Rcpp RcppArmadillo robustbase sp spacetime spatialreg spdep]; };
+  GWnnegPCA = derive2 { name="GWnnegPCA"; version="0.0.1"; sha256="1fdlrdsqdg5gi7w3np7qcqdvxzgrvzj5bzqvh0d32ps59n8agsjy"; depends=[GWmodel nsprcomp sf sp]; };
   GWsignif = derive2 { name="GWsignif"; version="1.2"; sha256="0bss5s3ijnlckz44p7jj49bn2r8nwqckpzwzcv0vci915q8jfsj2"; depends=[]; };
   GaDiFPT = derive2 { name="GaDiFPT"; version="1.0"; sha256="15fnj1w30h0zdj032f3js0bbb1qlyk4b54a4aclykwzicqdgalkg"; depends=[]; };
   GameTheory = derive2 { name="GameTheory"; version="2.7"; sha256="0vb7sjia5s58gw9zpkzddps8knxvbrz7fbi3m6digl8bf5vwhxxw"; depends=[combinat gtools ineq kappalab lpSolveAPI]; };
@@ -1674,7 +1681,7 @@ in with self; {
   GeneralOaxaca = derive2 { name="GeneralOaxaca"; version="1.0"; sha256="19j5c5xr6mdb6pmih94wbjas4yh0dmsqfggg8clvdxkpwk0h338v"; depends=[boot]; };
   GeneralisedCovarianceMeasure = derive2 { name="GeneralisedCovarianceMeasure"; version="0.1.0"; sha256="02s1wbsdp5ma4pnmcsdl5dwm156zx12d3n1ypzkc33lxg21ashzj"; depends=[CVST kernlab mgcv xgboost]; };
   GeneralizedHyperbolic = derive2 { name="GeneralizedHyperbolic"; version="0.8-4"; sha256="01gqfvmzfslhxdnigzbl3rd55hk6r0kgd8fm9xjl0kb9vmb735lm"; depends=[DistributionUtils MASS]; };
-  GeneralizedUmatrix = derive2 { name="GeneralizedUmatrix"; version="1.1.8"; sha256="01sx1vkkpnfhzb95lnc8ccc4hflq9hjl90f5mxndmdam44k05b51"; depends=[ggplot2 Rcpp RcppArmadillo]; };
+  GeneralizedUmatrix = derive2 { name="GeneralizedUmatrix"; version="1.1.9"; sha256="02wbs1q9wzzgbfnx8nfc8wiyqim8vznlps3w91hgx7s28biq37n7"; depends=[ggplot2 Rcpp RcppArmadillo]; };
   GeneticSubsetter = derive2 { name="GeneticSubsetter"; version="0.8"; sha256="0bd4snv3dwabc7mknmd2rjmffj67xq535x0bycajhd83d1jhjars"; depends=[]; };
   GenoScan = derive2 { name="GenoScan"; version="0.1"; sha256="0p98imfvvz7l94kim3pxypyjs2pbxng4a2nagbafbady82ylr2vi"; depends=[data_table MASS Matrix seqminer SKAT]; };
   GenomicMating = derive2 { name="GenomicMating"; version="2.0"; sha256="02v1pkarmardf7g8hf2n4jj4cq4707g5lcc7gnwsiyyh7pknd1y6"; depends=[dplyr emoa kohonen LowRankQP magrittr plotly qtl Rcpp RcppArmadillo scatterplot3d SOMbrero]; };
@@ -1709,6 +1716,7 @@ in with self; {
   GlobalDeviance = derive2 { name="GlobalDeviance"; version="0.4"; sha256="0s318arq2kmn8fh0rd5hd1h9wmadr9q8yw8ramsjzvdc41bxqq1a"; depends=[snowfall]; };
   GlobalFit = derive2 { name="GlobalFit"; version="1.2"; sha256="01s51nxcsl8xxn6khbv5jsvpwblwf0iamvr477a1rraqqqj94zx0"; depends=[sybil]; };
   GlobalOptions = derive2 { name="GlobalOptions"; version="0.1.1"; sha256="0x89hfz80avq4zcskxl71i4zi0mgniqqxfrvz050aa2189wfyja2"; depends=[]; };
+  GmAMisc = derive2 { name="GmAMisc"; version="1.1.1"; sha256="0bvf5p779g8nn0wmna61jyns7wdjl0b0283r8b7m0s325mh6ckfv"; depends=[caTools classInt cluster coin corrplot DescTools dismo ggplot2 ggrepel gridExtra Hmisc InPosition kimisc lsr maptools plyr pROC raster RcmdrMisc rgdal rgeos sp spatstat]; };
   Gmedian = derive2 { name="Gmedian"; version="1.2.5"; sha256="0xx8x4g6wb9djmkx3q1bwwa1vgf10avi6ka3x1jzgsxk6x0jsx0i"; depends=[Rcpp RcppArmadillo robustbase RSpectra]; };
   Gmisc = derive2 { name="Gmisc"; version="1.9.2"; sha256="08wkdaf2dyji7vkc0w4ay0f2pkll3psc1ap4rn7pdvfz2wlgs7c9"; depends=[abind checkmate forestplot Hmisc htmlTable knitr lattice magrittr Rcpp rmarkdown stringr XML]; };
   GoFKernel = derive2 { name="GoFKernel"; version="2.1-1"; sha256="0xygsdmggl35fafyp431mkwalwixw2r3f32qll1pf72dfwd8y8d3"; depends=[KernSmooth]; };
@@ -1726,6 +1734,7 @@ in with self; {
   GreedyExperimentalDesignJARs = derive2 { name="GreedyExperimentalDesignJARs"; version="1.0"; sha256="14i6m5qlh1fca9xmzid01hicd3bkf6rzl139ss78gvw544zrapw7"; depends=[rJava]; };
   GreedySBTM = derive2 { name="GreedySBTM"; version="1.0"; sha256="1r29cd8nxpyc82rz2xb9mk9wc17gcdlcl9lw1j3y4npr2z0qhf13"; depends=[Rcpp RcppArmadillo]; };
   Greg = derive2 { name="Greg"; version="1.3.3"; sha256="1909lpsax1dwblrq0ab52vwz8iik9h8p5w2nmlsrwfwyv8018yha"; depends=[Epi forestplot Gmisc Hmisc htmlTable knitr magrittr nlme rms sandwich stringr]; };
+  GridOnClusters = derive2 { name="GridOnClusters"; version="0.0.3"; sha256="1mz24ha3mlgypb980xa6jriqfrmrzg3q3kz01228rvn2vynrcdb8"; depends=[cluster GDAtools Rcpp]; };
   GriegSmith = derive2 { name="GriegSmith"; version="1.0"; sha256="1a7gnaig1wvxpph7d8c37kx51dznzk0457fzf7alw95iwpyb4z7j"; depends=[spatstat]; };
   GrimR = derive2 { name="GrimR"; version="0.5"; sha256="005ywc31yn1cs54kjlkrryw0s7zm8dqqfjkdlkm4s1sbc9r3mssz"; depends=[car]; };
   GroupComparisons = derive2 { name="GroupComparisons"; version="0.1.0"; sha256="0fxgh1mksrfmd4yjrpxg3nfby5wyx75lj0shb5xrdzl7pxzh56ai"; depends=[car]; };
@@ -1835,15 +1844,15 @@ in with self; {
   HiResTEC = derive2 { name="HiResTEC"; version="0.59"; sha256="08c5zvj1as28skhlyybrjinc9wawdsqfxiwybd0ni0ljh2i2sc5c"; depends=[beeswarm Biobase InterpretMSSpectrum openxlsx plyr Rdisop]; };
   HiddenMarkov = derive2 { name="HiddenMarkov"; version="1.8-11"; sha256="1yh85pdb9r90qxcl5gxslyplxzrx8knrrsl2q65l57zfkqj185ja"; depends=[]; };
   HierDpart = derive2 { name="HierDpart"; version="0.5.0"; sha256="1lrp5snkx5irrx6b19wdfmkpbxdy4gxkhpjibfin109s5r54jvvg"; depends=[ade4 adegenet ape diveRsity entropart GGally ggplot2 hierfstat mmod pegas permute reshape2 tibble vegan]; };
-  HierO = derive2 { name="HierO"; version="0.2"; sha256="1lqj5grjly4kzxl7wb192aagz2kdvpnjdan2kcg5yxwvg1xcvwv1"; depends=[bitops RCurl rneos tcltk2 XML]; };
+  HierO = derive2 { name="HierO"; version="0.2"; sha256="17l8ri282vak3z48919gh9mrvz02l2qjjymqp8bj2mqbq6rzj355"; depends=[bitops RCurl rneos tcltk2 XML]; };
   HighDimOut = derive2 { name="HighDimOut"; version="1.0.0"; sha256="0r7mazwq4fsz547d3nyavmqya7144lg3fkl5f7amrp48l9h85vx2"; depends=[DMwR FNN foreach ggplot2 plyr proxy]; };
   HighestMedianRules = derive2 { name="HighestMedianRules"; version="1.0"; sha256="01fj3xgrb9iav5v91bq04hzv9nhnwy8l00dx6yykghwvzjwfv3ih"; depends=[RMallow]; };
   HistDAWass = derive2 { name="HistDAWass"; version="1.0.4"; sha256="18l9hjkdcwk1lh19z240s9rqg49v9gpydllcaa5jndysylx8ybjr"; depends=[class FactoMineR ggplot2 ggridges histogram Rcpp RcppArmadillo]; };
   HistData = derive2 { name="HistData"; version="0.8-6"; sha256="0an8cki2ahaf3ynbcqgikxi90l3bv7gcn6nnwnli9g1br89y3bd4"; depends=[]; };
   HistogramTools = derive2 { name="HistogramTools"; version="0.3.2"; sha256="1wkv6ypn006d8j6bpbhc1knw0bky4y8r7jp87482yd19q5ljsgv0"; depends=[ash Hmisc stringr]; };
   HiveR = derive2 { name="HiveR"; version="0.3.42"; sha256="09h061511pk7iy1k9gb3ifa5q6gd17ix9sn2fshl6gp5sxnysn4f"; depends=[jpeg plyr png RColorBrewer rgl tkrgl]; };
-  Hmisc = derive2 { name="Hmisc"; version="4.3-1"; sha256="02ni7719acdmc8pcbx07b7x2nqsjrwq4smnx9qlzqjmx4pmp3cwc"; depends=[acepack base64enc cluster data_table foreign Formula ggplot2 gridExtra gtable htmlTable htmltools lattice latticeExtra nnet rpart survival viridis]; };
-  Hmsc = derive2 { name="Hmsc"; version="3.0-4"; sha256="1h2szg5qrqfx8h982n860bw0mcwqgj1x269vd7c191yhsfhqgkny"; depends=[abind ape BayesLogit coda fields FNN ggplot2 MASS Matrix MCMCpack mvtnorm nnet pdist pROC statmod truncnorm]; };
+  Hmisc = derive2 { name="Hmisc"; version="4.4-0"; sha256="1ivfamwghd2z408fkhs7jy5zl3q0z1a2la16yi8js872br6cyvpi"; depends=[acepack base64enc cluster data_table foreign Formula ggplot2 gridExtra gtable htmlTable htmltools lattice latticeExtra nnet rpart survival viridis]; };
+  Hmsc = derive2 { name="Hmsc"; version="3.0-6"; sha256="1n02akdrz4g33aqwigbh9ckdplxvgnzsznwlyx6j40s4rqgv2zrz"; depends=[abind ape BayesLogit coda fields FNN ggplot2 MASS Matrix MCMCpack mvtnorm nnet pdist pROC rlang statmod truncnorm]; };
   HoRM = derive2 { name="HoRM"; version="0.1.2"; sha256="0vfsya6423i25szdj5s8pa8pwshiqykikxdbbj7r2nz73x3qp6hy"; depends=[ggplot2 MASS orthopolynom quantmod rsm]; };
   Holidays = derive2 { name="Holidays"; version="1.0-7"; sha256="1srfbhlrf0pd6gzhp4hbic555lb7camk084rn1qz2g7fjvyijqiq"; depends=[TimeWarp]; };
   Homeric = derive2 { name="Homeric"; version="0.1-3"; sha256="1vcs8fj39zpz45p7gph0mnx65hgr35na0b79i8llyw7i1h7zqzxr"; depends=[]; };
@@ -2028,7 +2037,7 @@ in with self; {
   IsoCI = derive2 { name="IsoCI"; version="1.1"; sha256="0r7ksfic6p2v95c953s4gbzzclk4ldxysm8szb8xba1w0nx2izil"; depends=[KernSmooth]; };
   IsoGene = derive2 { name="IsoGene"; version="1.0-24"; sha256="0flm0mszankvl3aizwsazyhvz2xkr4gfqiqywpc0r1swqj19610r"; depends=[affy Biobase ff Iso xtable]; };
   IsoSpecR = derive2 { name="IsoSpecR"; version="2.0.1"; sha256="1y101x7138pdylp2qsmyd10dh0d3wwic292qfi2kbn3z849dlhnn"; depends=[Rcpp]; };
-  IsoplotR = derive2 { name="IsoplotR"; version="3.2"; sha256="00v2b7r537awxmns8m22gk3q225kkh68wwwzip5x6qrvykmnxdk6"; depends=[MASS]; };
+  IsoplotR = derive2 { name="IsoplotR"; version="3.3"; sha256="1bldpa7j37k29k51lpbpyr4g4939zw1n9dv498v92w82kzj2p6zf"; depends=[MASS]; };
   IsoriX = derive2 { name="IsoriX"; version="0.8.1"; sha256="0rr9frj0mhismls60vgax357jgfyq2wci7rvhvp70fh5k998mzid"; depends=[lattice latticeExtra numDeriv raster rasterVis sp spaMM viridisLite]; };
   IsotopeR = derive2 { name="IsotopeR"; version="0.5.4"; sha256="0xgha5alh5y5qfz00rl73q4xlamnmrwij7kckljmy6zgrlrdnl6x"; depends=[colorspace ellipse fgui plotrix runjags]; };
   JADE = derive2 { name="JADE"; version="2.0-2"; sha256="0haqb8fsn1z532z42vjz60na7hlwv5rhayxzbd4rkzx2wcvnlbhn"; depends=[clue]; };
@@ -2093,7 +2102,7 @@ in with self; {
   KappaGUI = derive2 { name="KappaGUI"; version="2.0.2"; sha256="0vklny804xpd9r60j4a01j2gak8jizwjw0abf7yvbcalv3zbpb3k"; depends=[irr shiny]; };
   KappaV = derive2 { name="KappaV"; version="0.3"; sha256="13mmfb8ijpgvzfj20andqb662950lp9g25k5b26r5ba65p7nhva7"; depends=[maptools PresenceAbsence rgeos sp]; };
   KarsTS = derive2 { name="KarsTS"; version="2.2"; sha256="0ay9qi3wws0vi7lygkljaz6xhskc0mzl6r8wsaia2f5f399ya1hp"; depends=[BaylorEdPsych circular forecast infotheo mgcv missForest MVN nonlinearTseries plot3D rgl stinepack stlplus tcltk2 tkrplot tseries tseriesChaos zoo]; };
-  KbMvtSkew = derive2 { name="KbMvtSkew"; version="1.0.1"; sha256="0bbnsalyk6r5pzfpz7cniyck4ganm6jka6vijcrals5sxpg70w7x"; depends=[]; };
+  KbMvtSkew = derive2 { name="KbMvtSkew"; version="1.0.2"; sha256="14g27a0dkj4gpf5l2k96fd3aa21fz8b85lf5a1jxj0qgjmr4kib0"; depends=[]; };
   KenSyn = derive2 { name="KenSyn"; version="0.3"; sha256="0s8sq3caxn4swac81196dp52r9lbmxb3ni45yaxh53f5g34slsi8"; depends=[lme4 metafor nlme]; };
   Kendall = derive2 { name="Kendall"; version="2.2"; sha256="0z2yr3x2nvdm81w2imb61hxwcbmg14kfb2bxgh3wmkmv3wfjwkwn"; depends=[boot]; };
   KernSmooth = derive2 { name="KernSmooth"; version="2.23-16"; sha256="1acrkbdn3a74y4dndkcdl1njnpfqz7gk3bsz03g8lfj8l7z53hmq"; depends=[]; };
@@ -2126,7 +2135,7 @@ in with self; {
   LCFdata = derive2 { name="LCFdata"; version="2.0"; sha256="1x3vbr6hdviqvd6dxn1kb449g0q5zkfmjsmr5nxd2g82p69lv3xm"; depends=[]; };
   LCMCR = derive2 { name="LCMCR"; version="0.4.11"; sha256="11vcqjjlcps3nqfrmncfqdadhrwk7fvrnx6xqwnc6l12hr98hic0"; depends=[]; };
   LCox = derive2 { name="LCox"; version="0.1.0"; sha256="1cqkqmi6bkd41xxwqqzpdiwdv8m5nrqz3f6cajnnbmgfcjawmrzq"; depends=[fdapace survival]; };
-  LDATS = derive2 { name="LDATS"; version="0.2.6"; sha256="1vswk00ih65fz6578x23cacfi7zby299l6cwq1z3gn034cms75za"; depends=[coda digest extraDistr lubridate magrittr memoise mvtnorm nnet progress topicmodels viridis]; };
+  LDATS = derive2 { name="LDATS"; version="0.2.7"; sha256="0im5lvhfbxvrkz9yvfg5xibzdlss869rdz5mixr4ric9lj0ixx0g"; depends=[coda digest extraDistr lubridate magrittr memoise mvtnorm nnet progress topicmodels viridis]; };
   LDAvis = derive2 { name="LDAvis"; version="0.3.2"; sha256="1y9wd379rfv3rd3f65ll21nvh6i8yafvv11f8gw8nn06194dgfzg"; depends=[proxy RJSONIO]; };
   LDOD = derive2 { name="LDOD"; version="1.0"; sha256="0mf2sy01yv57mqicrz08a17m6crigklx6fmw9zpxv7g85qw1iq4v"; depends=[Rmpfr Rsolnp]; };
   LDPD = derive2 { name="LDPD"; version="1.1.2"; sha256="1khdx8vwlpliyjc4sxcdiywbxl8lc9f5s3457vcip1j8dv537lbm"; depends=[MASS nleqslv]; };
@@ -2191,7 +2200,7 @@ in with self; {
   LVGP = derive2 { name="LVGP"; version="2.1.5"; sha256="03sd777s16nv04ikn9b3rj67ad6n4bwi0rycc7wqdnq0dx6xgniy"; depends=[lhs randtoolbox]; };
   LW1949 = derive2 { name="LW1949"; version="1.1.0"; sha256="147ymp7j98ihp1dcz3p5v9ar6h767phjdnga5q5vf1wwa2mxawg7"; depends=[MASS mgcv plotrix]; };
   LZeroSpikeInference = derive2 { name="LZeroSpikeInference"; version="1.0.3"; sha256="15x29afaq13iwlj66h97k3kczg9rfgp6i9d76rji58hfgh8i8by6"; depends=[]; };
-  LaF = derive2 { name="LaF"; version="0.8.0"; sha256="1nasj0502i0dbzqgm1pdvmc0wj1hk2q5fzanpcsh7zslsikiqxyq"; depends=[Rcpp]; };
+  LaF = derive2 { name="LaF"; version="0.8.4"; sha256="1mj010bl4ql0hm33vl0dd08s9dab11y9fa32nsqs6kbb22gjzk6p"; depends=[Rcpp]; };
   LabRS = derive2 { name="LabRS"; version="0.1.0"; sha256="1a9qafimia83qldsif5wfqx273mvqbx22p5i0hg8n4jvj4vzpy2w"; depends=[knitr]; };
   LabourMarketAreas = derive2 { name="LabourMarketAreas"; version="3.2.4"; sha256="0xm6rn8r5z3b04zd7gdrclhzmqcvqxyyjlch5npdyq8sbfd163hh"; depends=[data_table maptools rgdal rgeos sp spdep]; };
   LadR = derive2 { name="LadR"; version="1.0.6"; sha256="14n58y1p14wwxwwrbdqv2kkplma8ficpqx8nd22qp931idijpsji"; depends=[L1pack]; };
@@ -2308,8 +2317,8 @@ in with self; {
   MCI = derive2 { name="MCI"; version="1.3.3"; sha256="1wn8lcr5sq3697nsmly6syb9jv7p99ks0fy933ff5rx54x3rf9hz"; depends=[]; };
   MCI2 = derive2 { name="MCI2"; version="1.1.2"; sha256="1vxzfab8yn18icarsdvz8ky7frspxax22sb8c0ki91y1mj9m9mgj"; depends=[MCI osrm REAT reshape tmaptools]; };
   MCL = derive2 { name="MCL"; version="1.0"; sha256="1w36h4vhd525h57pz6ik3abbsrvxnkcqypl2aj1ijb6wm7nfp4ri"; depends=[expm]; };
-  MCMC_OTU = derive2 { name="MCMC.OTU"; version="1.0.10"; sha256="15k3y4bm4cxjb6r30afpw9gksflsxigzb17zwm1ipygq0d0h0zkg"; depends=[coda ggplot2 MCMCglmm]; };
-  MCMC_qpcr = derive2 { name="MCMC.qpcr"; version="1.2.3"; sha256="0b9n793spljmsb58jp41vnl9c753xqaw1g4wbi4ax348cvi09jk8"; depends=[coda ggplot2 MCMCglmm]; };
+  MCMC_OTU = derive2 { name="MCMC.OTU"; version="1.0.10"; sha256="1h1b0lw7d96q47sgq3px8j6rbkyhxhykm1c891px89khgg6hnszc"; depends=[coda ggplot2 MCMCglmm]; };
+  MCMC_qpcr = derive2 { name="MCMC.qpcr"; version="1.2.3"; sha256="1f6pbvn5ghv1zirpxi8xwxk799fzh1c4yj1xkgpl8kyn2k54nfp9"; depends=[coda ggplot2 MCMCglmm]; };
   MCMC4Extremes = derive2 { name="MCMC4Extremes"; version="1.1"; sha256="06p6xdbja7vrdq4vnhybpkmyf4rkaihcmy9sc81sb0h2wa21vcq0"; depends=[evir]; };
   MCMCglmm = derive2 { name="MCMCglmm"; version="2.29"; sha256="1d37rk10zi2yymsxif9091z9lnav7p4cazjfq29fhj90x8vpifhk"; depends=[ape coda corpcor cubature Matrix tensorA]; };
   MCMCpack = derive2 { name="MCMCpack"; version="1.4-6"; sha256="1ivkm35hkfxgd67hbsga7mghki6np4cfmg719s2sd2d5dy6h3kbb"; depends=[coda lattice MASS mcmc quantreg]; };
@@ -2319,6 +2328,7 @@ in with self; {
   MCPAN = derive2 { name="MCPAN"; version="1.1-21"; sha256="0q1m0xg8825q9zjwxcz2h2n0dyr21q5bk29qbqpdhirlwm6f1a51"; depends=[magic MCMCpack multcomp mvtnorm plyr]; };
   MCPMod = derive2 { name="MCPMod"; version="1.0-10.1"; sha256="0j15dpxy62vwbd6pcsvkbpi1nklh0yjzwf53kcmv4jhj0v6xmpp9"; depends=[lattice mvtnorm]; };
   MCPModGeneral = derive2 { name="MCPModGeneral"; version="0.1-1"; sha256="0izhbiivlb818ak49hl1f7li1chlyrxk5f80cmw4zkim3l6ddaxq"; depends=[DoseFinding MASS]; };
+  MCPModPack = derive2 { name="MCPModPack"; version="0.1"; sha256="110v5gvxc3l138152lzkb98ljrcq5373bykd0dsczc315x4h5wp3"; depends=[devEMF flextable mvtnorm officer Rcpp RcppEigen RcppNumerical shiny shinydashboard]; };
   MCS = derive2 { name="MCS"; version="0.1.3"; sha256="1kiz1jq1bm2n8f33nsybp5jfrzzl9xbsi3m9l8818ybmph99xms6"; depends=[]; };
   MCSim = derive2 { name="MCSim"; version="1.0"; sha256="1nqry41qa5c02an5fxm3y1g3w1vcqjgsy1an95i3szz1w1ndaj14"; depends=[CircStats MASS]; };
   MCTM = derive2 { name="MCTM"; version="1.0"; sha256="14xjfskyrqi0m58lkwjfjpss5j7wy3ajr148n526czrrpccg108j"; depends=[]; };
@@ -2343,13 +2353,13 @@ in with self; {
   MEclustnet = derive2 { name="MEclustnet"; version="1.2.2"; sha256="0rs58dafxngk2lkq14cy14ayjwgnz1gmi12jmi4z74sdj0b3h0gw"; depends=[e1071 ellipse latentnet MASS mvtnorm nnet vegan]; };
   MEtest = derive2 { name="MEtest"; version="1.1"; sha256="0dxm3fs0lqnas70a1ckikvjp2ib9rqsknwcs9n9jfsmm1fqhxdpf"; depends=[statmod]; };
   MF = derive2 { name="MF"; version="4.3.2"; sha256="1arnhyqf1cjvngygcpqk2g4d52949rhkjmclbaskyxcrvp62qln0"; depends=[]; };
-  MFAg = derive2 { name="MFAg"; version="1.5"; sha256="0av47syfb0jkiix0xjnd208bz78gx5ji2y9kb7ni1yd7njm7in9m"; depends=[]; };
+  MFAg = derive2 { name="MFAg"; version="1.6"; sha256="0iy1lmky7nagkm03inn6gv7qzz1jyi7fsgzp9iff0xv6d54kwcls"; depends=[]; };
   MFDFA = derive2 { name="MFDFA"; version="1.1"; sha256="0nr78p6y4jpg1hrl0h7b7hyvwbr61paf85y3f2dx815x5hscmdhy"; depends=[numbers]; };
   MFHD = derive2 { name="MFHD"; version="0.0.1"; sha256="0gb8y297y1x03wy46530psmlawyv4z5dydilk36qcmadlk1wx02k"; depends=[deldir depth depthTools fda_usc matrixStats]; };
   MFKnockoffs = derive2 { name="MFKnockoffs"; version="0.9.1"; sha256="1bcdqfzmllp3dri1phy365wgc9c37wlag65pzljn4p3mf43w10nq"; depends=[corpcor glmnet gtools Matrix Rdsdp RSpectra]; };
   MFPCA = derive2 { name="MFPCA"; version="1.3-4"; sha256="18wbas1g848865di96a19kmv0fsnds7cfv81nwhz6l6q8qmlnkf6"; depends=[abind foreach funData irlba Matrix mgcv plyr]; };
   MFT = derive2 { name="MFT"; version="2.0"; sha256="0n1xws3dw0650037qyqgp600p8cf098qa5hkbncdfdbl0w34qamy"; depends=[]; };
-  MGBT = derive2 { name="MGBT"; version="1.0.2"; sha256="0jgdy8zw5lx2f567n3livgmwhpfcd1s42mp1bj859jx3z5kiwkiy"; depends=[]; };
+  MGBT = derive2 { name="MGBT"; version="1.0.4"; sha256="1x2yqfb5diqkq82j81slh9kxzxgyy67axyqlqjpv237yf8p0djc0"; depends=[]; };
   MGDrivE = derive2 { name="MGDrivE"; version="1.5.0"; sha256="1dgmmc34m2pj1l2gkwg85sj4rbhhwyrp8cj4m9b9hlz134n3qgwy"; depends=[R6 Rcpp Rdpack]; };
   MGL = derive2 { name="MGL"; version="1.1"; sha256="03q453swnangxyc4nvjhzw2zpcy5vp1wpilap5rwymnf0c0xi4j7"; depends=[]; };
   MGLM = derive2 { name="MGLM"; version="0.2.0"; sha256="0yyqm53lvp59zy8lkffw9x3zhqrnh29j5v3yyzk6qrgj2slnc7nk"; depends=[]; };
@@ -2357,6 +2367,7 @@ in with self; {
   MGRASTer = derive2 { name="MGRASTer"; version="0.9"; sha256="0jmf2900r56v60981sabflkhid3yrqd9xd7crb56vgfl1qkva9zp"; depends=[]; };
   MGSDA = derive2 { name="MGSDA"; version="1.4"; sha256="0grwl740yvz2av5nkvmyyrr8ji5f39sjs1c5gxp6lp9p36i2wc32"; depends=[MASS]; };
   MHCtools = derive2 { name="MHCtools"; version="1.2.1"; sha256="1mf70x1vd8h8i0iapl54fp8q4gpqd61faxvhpxlhv49g8s5n9pbd"; depends=[rlist]; };
+  MHMM = derive2 { name="MHMM"; version="1.0.0"; sha256="0d3djaydw0h7x3vlaghrbgmx024rgv36wfsjhlixzzssb2d6lqzi"; depends=[BH ggplot2 gridExtra Rcpp RcppArmadillo reshape2]; };
   MHTcop = derive2 { name="MHTcop"; version="0.1.1"; sha256="1mr8y8brsi37b5qx3fqm0bj90dgknzzwhxfmvyd9kxbxh19whgxq"; depends=[copula matrixStats MCMCpack mvtnorm stabledist]; };
   MHTdiscrete = derive2 { name="MHTdiscrete"; version="1.0.1"; sha256="0czpsk4jiwbzd6g2dwssmggsdhwchikmc1skv48d9j4xvglns7yw"; depends=[]; };
   MHTmult = derive2 { name="MHTmult"; version="0.1.0"; sha256="1y3vh2kab6nfkiz4nzdhrpy9h6drk1ibfd2h62hpr3y09z9a2yld"; depends=[]; };
@@ -2388,6 +2399,7 @@ in with self; {
   MLID = derive2 { name="MLID"; version="1.0.1"; sha256="0ygahmcfbydzic5q3h1ppv5b2ks4lh8mcyfqq27ssmn4g1n6hdvp"; depends=[lme4 nlme]; };
   MLML2R = derive2 { name="MLML2R"; version="0.3.3"; sha256="1jgk0h3chab831g5nsppgc6p0xplv11j82491iymnxixqfswb08w"; depends=[]; };
   MLMOI = derive2 { name="MLMOI"; version="0.1.1"; sha256="0fliax6ajacm2i416xi26qlwg3y7iw8y6hykkz0mcwp7djyn3n6s"; depends=[Rdpack rJava Rmpfr XLConnect]; };
+  MLModelSelection = derive2 { name="MLModelSelection"; version="1.0"; sha256="1qfy2rfx2nvkwisl9wwllqsq2qhqzsdmrh90z5zn5qs07d0305wn"; depends=[MASS Rcpp RcppArmadillo RcppDist]; };
   MLPUGS = derive2 { name="MLPUGS"; version="0.2.0"; sha256="1yda37073g640g1qrkjrwa8hbyq6bjlcw3wpznx0bk5h0639bc0s"; depends=[]; };
   MLRShiny = derive2 { name="MLRShiny"; version="0.1.0"; sha256="06zcyz8l4754sjbcql3jd3nq1d2lgj92p5h2bh708z52mww71isw"; depends=[corrgram dplyr forecast psych QuantPsyc shiny shinyAce]; };
   MLRShiny2 = derive2 { name="MLRShiny2"; version="0.1.0"; sha256="1ygamp0ldz1i0w2xyi205rpd1gd5asw61l36z06j41ghdyiz1lww"; depends=[corrgram dplyr forecast psych QuantPsyc shiny shinyAce]; };
@@ -2436,6 +2448,7 @@ in with self; {
   MPV = derive2 { name="MPV"; version="1.55"; sha256="127m19q5dq38x2k29rkgvvfidazbmzsarzf9m2sjpx6ay8j8hvpl"; depends=[KernSmooth]; };
   MPkn = derive2 { name="MPkn"; version="0.1.0"; sha256="0nvd6sv1wypcmphm0wcymbibcxrqzx3c9s9b191p1pmxyz607vxv"; depends=[]; };
   MPsychoR = derive2 { name="MPsychoR"; version="0.10-7"; sha256="10nphm5dzxha4xb7a21b0nxbqy55fg8k748qax7nq3rj4nfjaml7"; depends=[]; };
+  MQMF = derive2 { name="MQMF"; version="0.1.0"; sha256="0pg120003zgnxw51agmfjzj8snkb19r1d4hyssxxl5y0ykxk1hn0"; depends=[MASS mvtnorm]; };
   MRCE = derive2 { name="MRCE"; version="2.1"; sha256="12q7mqn2qkgv992df71k1xmli61khhbfm7lw0n7z2l7qqldpiw1n"; depends=[QUIC]; };
   MRCV = derive2 { name="MRCV"; version="0.3-3"; sha256="0m29mpsd3kackwrawvahi22j0aghfb12x9j18xk4x1w4bkpiscmf"; depends=[tables]; };
   MRFA = derive2 { name="MRFA"; version="0.4"; sha256="1ivzyp3q2nb6h5mhykina75ak7ajfw62rh23yr4pljma7gmr1hhm"; depends=[fields foreach glmnet grplasso plyr randtoolbox]; };
@@ -2451,7 +2464,7 @@ in with self; {
   MRwarping = derive2 { name="MRwarping"; version="1.0"; sha256="13bcs7rlm4irx7yzdnib558w9014a4chh9xwc010m6pxvxv36qnv"; depends=[boa SemiPar]; };
   MSCMT = derive2 { name="MSCMT"; version="1.3.4"; sha256="1vh0i9nxqiy3qdnb7z7cn5kpp2jahdmaqpnv7q5650pkswhwmfpc"; depends=[ggplot2 lpSolve lpSolveAPI Rdpack Rglpk]; };
   MSCquartets = derive2 { name="MSCquartets"; version="1.0.5"; sha256="0gfbawv7ib31pxmcj8ki67a72jqacm8nlizgk95yg7afjlqiyz8v"; depends=[ape phangorn RandomFieldsUtils Rdpack zipfR]; };
-  MSEtool = derive2 { name="MSEtool"; version="1.4.3"; sha256="1r4bnw49hhriwrgg1pkg6gkq789c63bhsp71srrf5fv7jna8z0zk"; depends=[abind coda corpcor DLMtool dplyr gplots MASS mvtnorm RcppEigen reshape2 rmarkdown snowfall TMB]; };
+  MSEtool = derive2 { name="MSEtool"; version="1.5.0"; sha256="10kczcv468c9s1blh37bj2cyy8zhszlwg7azvw64w2xmqnc782g4"; depends=[abind coda corpcor DLMtool dplyr gplots MASS mvtnorm RcppEigen reshape2 rmarkdown snowfall TMB]; };
   MSG = derive2 { name="MSG"; version="0.4"; sha256="0fdxgqfc87iwqnnrgh7m8bfxh8lv42ffi0xxy4i1rv94aiw8gfr5"; depends=[RColorBrewer]; };
   MSGARCH = derive2 { name="MSGARCH"; version="2.31"; sha256="15df35l5nr6cl3q7xprl6ifswh7mg1fvix1x9374qgyafwr40sq4"; depends=[coda expm fanplot MASS numDeriv Rcpp RcppArmadillo zoo]; };
   MSGLasso = derive2 { name="MSGLasso"; version="2.1"; sha256="1k17vnvzr647pwfbdxrpqcsp34iygq86wf0ns4rq8cj6q5mik1bv"; depends=[]; };
@@ -2482,8 +2495,8 @@ in with self; {
   MVQuickGraphs = derive2 { name="MVQuickGraphs"; version="0.1.2"; sha256="1937w8y866bsn9kn6a98c91akhm9ddc5dr9wqm51lkbjyz1zm0j1"; depends=[plotrix]; };
   MVR = derive2 { name="MVR"; version="1.33.0"; sha256="1ygz47a2p5r5axql5zsxvsn25pcqyxz6mpw50zfmzrcqdrfa3bg8"; depends=[statmod]; };
   MVT = derive2 { name="MVT"; version="0.3"; sha256="0vinlv3d5daf8q7pd9xgs51nxz2njgdba5750vygmv883srlzi9d"; depends=[]; };
-  MVar = derive2 { name="MVar"; version="2.1.1"; sha256="17fj2y739afmdrbhnd2la9qiywcyyk0nr1d8936c63nz8xivvssv"; depends=[MASS]; };
-  MVar_pt = derive2 { name="MVar.pt"; version="2.1.1"; sha256="0jzsiawisr0378n9ph7s2c2j64xybf9mz00zriw38cjr1lxaqrnf"; depends=[MASS]; };
+  MVar = derive2 { name="MVar"; version="2.1.2"; sha256="0j8b3q6nanymkdpilwbk9a1a9fvlawxjj91skpmxrx16kb7j2i3w"; depends=[MASS]; };
+  MVar_pt = derive2 { name="MVar.pt"; version="2.1.2"; sha256="00kfaz7xfy3if3v2waji6h1xcjsa9pn4b5jn81q38a3yin78wsw6"; depends=[MASS]; };
   MVisAGe = derive2 { name="MVisAGe"; version="0.2.1"; sha256="1plrzzj7cr2hxk1npadvjnk7sanhilh99l5vrkjjh3l6li2ym09b"; depends=[]; };
   MWLasso = derive2 { name="MWLasso"; version="1.3.1"; sha256="11lyk46lmjcd60q0mixi41b8ybjgyp1xi18g3ag4450xyhw3r17s"; depends=[]; };
   MWRidge = derive2 { name="MWRidge"; version="1.0.0"; sha256="17kvs9npr1ff24z3pv9x2qnfwyy6w3hc7hm60ynzbjlk2rr11xr9"; depends=[glmnet]; };
@@ -2514,9 +2527,8 @@ in with self; {
   MatSkew = derive2 { name="MatSkew"; version="0.1.5"; sha256="019v2b1r0bvw84xs50smjb3jdz7gd2adz5d84xd8zq43lnml96d1"; depends=[]; };
   MatTransMix = derive2 { name="MatTransMix"; version="0.1.7"; sha256="1p67k2ysh7lahynlfyp30bxpzpc49jhdy2y5mfs09yhjwg0wl1by"; depends=[]; };
   MatchIt = derive2 { name="MatchIt"; version="3.0.2"; sha256="1pp91pw2sy9hik4sgn4gcsp40hb01n9pfccrwdcffwji5fd1aavq"; depends=[MASS Matching]; };
-  MatchIt_mice = derive2 { name="MatchIt.mice"; version="3.0.1"; sha256="04c078fz7s0wll4wizi0mj4s3gdx1kpr5g40gq7znn362z7q25ym"; depends=[MatchIt mice]; };
   MatchLinReg = derive2 { name="MatchLinReg"; version="0.7.3"; sha256="1si0zn6vlgyj08841hfjx8an96a8ipnawl4zbalabmpy7r5bfwx8"; depends=[Hmisc Matching]; };
-  MatchThem = derive2 { name="MatchThem"; version="0.9.2"; sha256="08jrli2pyirrwk6hmqz10iiijargd5qmxs5r2r86gyiwkk5llw7m"; depends=[broom dplyr MatchIt mice survey WeightIt]; };
+  MatchThem = derive2 { name="MatchThem"; version="0.9.3"; sha256="05m141qn0a9ahraga1lpcjffbddmm70bx9m3javrr9727nnar9wf"; depends=[broom dplyr MatchIt mice survey WeightIt]; };
   Matching = derive2 { name="Matching"; version="4.9-7"; sha256="0vgw0nm40bicda2nwgklc27qsjxbqbjpl9yd28hqxj71xfsyqmhr"; depends=[MASS]; };
   Matrix = derive2 { name="Matrix"; version="1.2-18"; sha256="06b1rc1vq65b271f2wpzhqkvhng8hwwnvjflzxkng50i52603zzp"; depends=[lattice]; };
   Matrix_utils = derive2 { name="Matrix.utils"; version="0.9.8"; sha256="0a5fq1scykqk0kc9j051j6fix6j2dqwz5wbgb0amaxsiywz9vigb"; depends=[grr Matrix]; };
@@ -2547,7 +2559,7 @@ in with self; {
   MetFns = derive2 { name="MetFns"; version="3.2.2"; sha256="15fd2d0yysibi2x43qv6b8i1pa18l7z4n0zpmrqhsmvqkgy8sla0"; depends=[astroFns lubridate plotrix pracma]; };
   MetNorm = derive2 { name="MetNorm"; version="0.1"; sha256="0vfi3k0yp2dz47gwj1n1avs3ji0a2nlrrljz5d0l66zfh4474jb4"; depends=[]; };
   MetProc = derive2 { name="MetProc"; version="1.0.1"; sha256="1z6538pij1rq5wv9s8rjcn0sck15y26asv4vamav8a6s4135ia3q"; depends=[fastcluster gplots]; };
-  MetSizeR = derive2 { name="MetSizeR"; version="1.1"; sha256="11hdmpvnszr6pn9ihb3zjy9miksz1fs4piry153z4dic8pjydkax"; depends=[cairoDevice gWidgets gWidgetsRGtk2 MetabolAnalyze mvtnorm]; };
+  MetSizeR = derive2 { name="MetSizeR"; version="1.1"; sha256="139mnlbc0y050wl13nhm8wb560fryyav3j83c8g8cid6641m903r"; depends=[cairoDevice gWidgets gWidgetsRGtk2 MetabolAnalyze mvtnorm]; };
   MetaAnalyser = derive2 { name="MetaAnalyser"; version="0.2.1"; sha256="0k58325nb7svihhpga7kdbryr9bi5470qsb8aa5llpiggs8j7sfz"; depends=[DT ggvis rstudioapi shiny]; };
   MetaComp = derive2 { name="MetaComp"; version="1.1.2"; sha256="1yb115qdmf5rxmjl4y7qr0i6668n46scs4yjpfq9bmy3w9i4ji1x"; depends=[Cairo data_table dplyr ggplot2 plyr reshape2]; };
   MetaCycle = derive2 { name="MetaCycle"; version="1.2.0"; sha256="1lh1msrcz70p5jixz5j83pqa3cid21y7m1zvlk872k16awmif00k"; depends=[gnm]; };
@@ -2672,9 +2684,9 @@ in with self; {
   My_stepwise = derive2 { name="My.stepwise"; version="0.1.0"; sha256="10wka6kzk8krwdsyjfnn78dfqflq4zg3vjkk0i2ywjm5vap6aqa5"; depends=[car lmtest survival]; };
   Myrrix = derive2 { name="Myrrix"; version="1.2"; sha256="05x2h4ppjhfm0wlpwyp8ycjg59qj3gv0yqdilxrzb1lkrzln92xb"; depends=[Myrrixjars rJava]; };
   Myrrixjars = derive2 { name="Myrrixjars"; version="1.0-2"; sha256="1hhfg83z5kl6l250z3lippx3qc68k1wj1qlfzd6m66rgmk699gyl"; depends=[rJava]; };
-  N2H4 = derive2 { name="N2H4"; version="0.5.4"; sha256="1sdxfi4618q9kz18ns1i1i2g5r0c4b6ydijaaxr21z206zi5i5wb"; depends=[dplyr httr jsonlite lubridate rvest tibble tidyr xml2]; };
+  N2H4 = derive2 { name="N2H4"; version="0.5.7"; sha256="0wpwcv17jvrjgvr0qhjrjr1i2rdxcga49c1c6m7s58p9wmdi8fg2"; depends=[dplyr httr jsonlite lubridate rvest tibble tidyr xml2]; };
   NACHO = derive2 { name="NACHO"; version="1.0.0"; sha256="0mnkfg45bcnrpxq3q7qpzw8kr5k6kdqd6022n0ld7m3wg9bwxzpb"; depends=[cli crayon dplyr ggbeeswarm ggforce ggplot2 ggrepel knitr magrittr purrr rlang rmarkdown rstudioapi scales sessioninfo shiny shinyWidgets tibble tidyr]; };
-  NADA = derive2 { name="NADA"; version="1.6-1"; sha256="1jjlm6rljk4nv6b7l2w3xnj31j61wq30sp5pnna8wav6gyjqjfmb"; depends=[survival]; };
+  NADA = derive2 { name="NADA"; version="1.6-1.1"; sha256="0jp4mqr77cx7q5lff84s6wb0dwjy9mi0jyhbjc5fsx50bdczc3v7"; depends=[survival]; };
   NAEPprimer = derive2 { name="NAEPprimer"; version="1.0.1"; sha256="19p1livdnayfcl88f8r9x1vg30x522q8lgx66pfgwpkxjzvrqa2l"; depends=[]; };
   NAM = derive2 { name="NAM"; version="1.7.3"; sha256="12d2yjl0af2ailvwk30fswalx1wzyj500qbrhiczsg1vr4rcqhkh"; depends=[Rcpp]; };
   NAPPA = derive2 { name="NAPPA"; version="2.0.1"; sha256="0nn4wgl8bs7sy7v56xfif7i9az6kdz9xw7m98z1gnvl2g7damvn3"; depends=[NanoStringNorm plyr]; };
@@ -2743,14 +2755,14 @@ in with self; {
   NPS = derive2 { name="NPS"; version="1.1"; sha256="02idja149a2sj97sks4lhsaflpifyxi6n0rjlcq9993f84szfgsi"; depends=[]; };
   NPflow = derive2 { name="NPflow"; version="0.13.3"; sha256="1bgdkm82pmzjv46pkxpvh5ffffmc6q68x5jjl7k330w9vwgx2kf0"; depends=[ellipse fastcluster ggplot2 pheatmap Rcpp RcppArmadillo reshape2 truncnorm]; };
   NPsimex = derive2 { name="NPsimex"; version="0.2-1"; sha256="1k9i1f5ckvzdns8f5qnm2zq7qs3wsgzsnfwdz21zmhmi6d0pwchm"; depends=[]; };
-  NSM3 = derive2 { name="NSM3"; version="1.12"; sha256="0spkzx2zm8q85h7ij9r52bsqlwgw2fsc7zw3aaz8644q0xlnjnvj"; depends=[agricolae ash binom BSDA coin combinat epitools fANCOVA gtools Hmisc km_ci MASS metafor nortest np partitions quantreg Rfit SemiPar SuppDists survival waveslim]; };
+  NSM3 = derive2 { name="NSM3"; version="1.13"; sha256="0icjx9whn6ff25rh2p3pd8y3yc0f4ssw00g25dryzhfclqkcf006"; depends=[agricolae ash binom BSDA coin combinat fANCOVA gtools Hmisc km_ci MASS metafor nortest np partitions quantreg Rfit SemiPar SuppDists survival waveslim]; };
   NSO1212 = derive2 { name="NSO1212"; version="1.0.0"; sha256="1yk07n9ksbazj27sax5jhs5f84zy80awrvkhziclsqm3h1g3h7w5"; depends=[httr jsonlite]; };
   NST = derive2 { name="NST"; version="2.0.4"; sha256="0kwdfqr30av50k1s8sdf7714kzq9z1qrg85c3r7ljzrajj16vnl3"; depends=[ape permute vegan]; };
   NSUM = derive2 { name="NSUM"; version="1.0"; sha256="1as4g3v7qlk9wxlpwhg293980jq9gy6qay77bbcrjf481gvkkbp6"; depends=[MASS MCMCpack]; };
   NScluster = derive2 { name="NScluster"; version="1.3.4"; sha256="1bkzmm573ic6xrsqbbln865rfw2xnmby632m3jcgamddxppx3fjf"; depends=[]; };
   NTS = derive2 { name="NTS"; version="1.1.0"; sha256="0sjzc42whb9wr0w6r8qis89sjcfqwci5wnm3ndxxvfhg6x6skmi3"; depends=[dlm MASS MSwM Rdpack tensor]; };
   NUCOMBog = derive2 { name="NUCOMBog"; version="1.0.4.2"; sha256="0s6gm3adc9qdh94pxzgccbxx1f1lbgqyvd4xk37xp6f3b5hwljdz"; depends=[snowfall]; };
-  NameNeedle = derive2 { name="NameNeedle"; version="1.2.4"; sha256="1f8hmabwafjmgx2z381a3m84zfrd0s9x51haa4c1phq41yfq2lm5"; depends=[]; };
+  NameNeedle = derive2 { name="NameNeedle"; version="1.2.6"; sha256="0cs65hs6fbkxv8pc2m4394c68nqbahjcryjnhhrhg50wam3y03lq"; depends=[]; };
   NanoStringNorm = derive2 { name="NanoStringNorm"; version="1.2.1"; sha256="05r1hvrxwi2mcq3pv6b699291qg120ijad96s5dah2f6cwx7gm7j"; depends=[gdata vsn XML]; };
   NatureSounds = derive2 { name="NatureSounds"; version="1.0.3"; sha256="0db7y6213bkmfjr2r3jkdbx0wja778cgnavap03v7fswrl61w61m"; depends=[knitr tuneR]; };
   NbClust = derive2 { name="NbClust"; version="3.0"; sha256="1vwb48zy6ln1ddpqmfngii1i80n8qmqyxnzdp6gbaq96lakl3w3c"; depends=[]; };
@@ -2793,7 +2805,7 @@ in with self; {
   NoiseFiltersR = derive2 { name="NoiseFiltersR"; version="0.1.0"; sha256="0y90si8f5hsi273g10hw700r72la30hwqlwg59gaq76wqlkm8j0p"; depends=[caret e1071 kknn MASS nnet randomForest rJava rpart RWeka]; };
   NominalLogisticBiplot = derive2 { name="NominalLogisticBiplot"; version="0.2"; sha256="0m9442d9i78x57gdwyl3ckwp1m6j27cam774zkb358dw5nmwxbmz"; depends=[gmodels MASS mirt]; };
   NonCompart = derive2 { name="NonCompart"; version="0.4.5"; sha256="0z2iigr8nsyanx9lnf7hq5d5fbnm1kd3ir2scfhaqafxa8y8byq9"; depends=[]; };
-  NonNorMvtDist = derive2 { name="NonNorMvtDist"; version="1.0.1"; sha256="135scrxwm52fg4drxfr8dgwp2jrgdgbi3fq13i4cka3i99bpx4lm"; depends=[cubature]; };
+  NonNorMvtDist = derive2 { name="NonNorMvtDist"; version="1.0.2"; sha256="11xqdrx03q3anavyxpzb0hz6mcbdy252rzzjlpa2byfdlrfvn178"; depends=[cubature]; };
   NonProbEst = derive2 { name="NonProbEst"; version="0.2.3"; sha256="0wpqsz06c5v42xijh7imv9fxz9p01354pw7s91sjn6m12w2a2d0z"; depends=[caret e1071 sampling]; };
   NonpModelCheck = derive2 { name="NonpModelCheck"; version="3.0"; sha256="13qk2wbgpdf763q5xg29p2hxwqpml23pcgxrzmx12vnapnqfh71k"; depends=[dr]; };
   Nonpareil = derive2 { name="Nonpareil"; version="3.3.4"; sha256="1hhshcggfv92ll5zqh8hd3pldp07n0684yh1252z2jv2vbl87v3z"; depends=[]; };
@@ -2824,7 +2836,7 @@ in with self; {
   OLScurve = derive2 { name="OLScurve"; version="0.2.0"; sha256="1zqapfwgwy9rxnbhmlgplkphw1bdia4cyi9q6iwcppw3rjw75f1n"; depends=[lattice]; };
   ONETr = derive2 { name="ONETr"; version="1.0.3"; sha256="14l56qcmyyk2ivcfkfv7j2k4i1mfrngpi9zcc88w6xfhz5qlb548"; depends=[plyr RCurl XML]; };
   OOBCurve = derive2 { name="OOBCurve"; version="0.3"; sha256="1i7prybs3b60ipl34zrq6mcr6w9kc1d44b14mxcd752k42k6xs2r"; depends=[mlr randomForest ranger]; };
-  OOR = derive2 { name="OOR"; version="0.1.2"; sha256="1zw7g0365znyn828qqsn83l2a837wwj9cx7dzcbns28vhqmsn6hm"; depends=[]; };
+  OOR = derive2 { name="OOR"; version="0.1.3"; sha256="13v04rx2q6pbiq7dyd29wvimkr4sbq2f5rnn3a0lcbwr3x35r7h9"; depends=[]; };
   OOmisc = derive2 { name="OOmisc"; version="1.2"; sha256="09vaxn5czsgn6wpr27lka40kzd76jzqgqxavf26ms3m9kkdf83g4"; depends=[]; };
   OPDOE = derive2 { name="OPDOE"; version="1.0-10"; sha256="04z944i4f3i0cjnxh32wf7n2dfyynnvkz4lxdkn90flam2np58yv"; depends=[crossdes gmp mvtnorm nlme orthopolynom polynom]; };
   OPI = derive2 { name="OPI"; version="2.9"; sha256="0nkdzl4c6k77phiig3mjwp9dkyarcr4k07mxc6ff72yr776s2pma"; depends=[]; };
@@ -2855,7 +2867,7 @@ in with self; {
   Omisc = derive2 { name="Omisc"; version="0.1.2"; sha256="0ww83srfc7vr1gw2aaa5bahs6lvm11j4057hn06pclz1wb6fnbyw"; depends=[copula MASS psych]; };
   OmnibusFisher = derive2 { name="OmnibusFisher"; version="1.0"; sha256="0x3q04g45nixgsrl4biqqi6bk4kx79spq5whm3n4ppr0nkv8dw4h"; depends=[CompQuadForm stringr survey]; };
   OnAge = derive2 { name="OnAge"; version="1.0.1"; sha256="1zby5sf92c185b5m19jv4ndgbv6mz107nc47zn1d6bijrypzpc20"; depends=[]; };
-  OncoBayes2 = derive2 { name="OncoBayes2"; version="0.6-0"; sha256="10igxf1jys4v0l4r66j66266s8lwby7c0kyq1jdv2b6i2wvnrmfr"; depends=[abind assertthat bayesplot BH checkmate dplyr Formula ggplot2 RBesT Rcpp RcppEigen rstan rstantools StanHeaders tibble tidyr]; };
+  OncoBayes2 = derive2 { name="OncoBayes2"; version="0.6-3"; sha256="1m05m6g98az7qy14j3w0r5vym997a6c564y4ispl711s609yg2rr"; depends=[abind assertthat bayesplot BH checkmate dplyr Formula ggplot2 RBesT Rcpp RcppEigen rstan rstantools StanHeaders tibble tidyr]; };
   Oncotree = derive2 { name="Oncotree"; version="0.3.3"; sha256="147rc9ci66lxbb91ys2ig40sgmldi15p604yysrd4ccbxpbk2zwf"; depends=[boot]; };
   OneArmPhaseTwoStudy = derive2 { name="OneArmPhaseTwoStudy"; version="1.0.3"; sha256="0q8g33s1jq0ipvwq83xhrly8idsh68licgyivxc628zbm1id5p38"; depends=[Rcpp]; };
   OneR = derive2 { name="OneR"; version="2.2"; sha256="1k7rzhcwq5b2yi4zfsc1r0yb6w65gxj9835d2a1dclallja3zav2"; depends=[]; };
@@ -2863,6 +2875,7 @@ in with self; {
   OpasnetUtils = derive2 { name="OpasnetUtils"; version="1.3"; sha256="0mmn4dpk1wl8slg55xzhpk7jdwhkrka53rwmrsr73sikkh3mcyfn"; depends=[digest ggplot2 httpRequest igraph plyr RCurl reshape2 rgdal rjson sp triangle xtable]; };
   OpenCL = derive2 { name="OpenCL"; version="0.2-1"; sha256="1bhnqwrb8phldk5hr06iyvw8fx03x01ddqr4y5zs4a1wpyah7j2w"; depends=[]; };
   OpenImageR = derive2 { name="OpenImageR"; version="1.1.6"; sha256="1yl7xvb86vxyf8d5g58hhmrva0gyg8iabb9npsdlnl8j0bg5gfiw"; depends=[jpeg png R6 Rcpp RcppArmadillo shiny tiff]; };
+  OpenLand = derive2 { name="OpenLand"; version="1.0.0"; sha256="0y4hhld08dj82j1dqmm5ywq8dkfcnlgg3g6ndhcj4h6ihrwq4xc7"; depends=[circlize dplyr ggplot2 gridExtra networkD3 raster tidyr]; };
   OpenML = derive2 { name="OpenML"; version="1.10"; sha256="132swv22ymm0wxq8y65y2niq8chmga1mnl1lgn6m3cgljvwad47r"; depends=[backports BBmisc checkmate curl data_table digest httr jsonlite memoise stringi XML]; };
   OpenMPController = derive2 { name="OpenMPController"; version="0.2-5"; sha256="00hs8v47pr2d726z8izkfrgmayw147hdm16rr9rw1zs3ad216zjj"; depends=[]; };
   OpenMx = derive2 { name="OpenMx"; version="2.17.3"; sha256="1s2pcg281ag3qz2wz8yi826f2d3kj3qg916js7zz0nsrljcyv5bc"; depends=[BH digest MASS Matrix Rcpp RcppEigen rpf StanHeaders]; };
@@ -2897,7 +2910,7 @@ in with self; {
   OutrankingTools = derive2 { name="OutrankingTools"; version="1.0"; sha256="0z7pslkkinn7flc4xwjg0bsfswf8ad4jv9rmglaj3fmjcx9b6wgj"; depends=[igraph]; };
   OwenQ = derive2 { name="OwenQ"; version="1.0.3"; sha256="0kra8pvz21kqwzwsrqh6vwfyq9qqrar3glcycd2gip19273whdim"; depends=[BH Rcpp RcppEigen RcppNumerical]; };
   OxyBS = derive2 { name="OxyBS"; version="1.5"; sha256="11l3gm0jvw993jb13f6kpv77m6z0d1jswscma2v28qzkw053r3dc"; depends=[]; };
-  PAC = derive2 { name="PAC"; version="1.1.1"; sha256="07f83i43nxf1s2c26kkpcv4iyq517w20y1l7yg41wnmbfi9xlk7s"; depends=[dplyr ggplot2 ggrepel igraph infotheo parmigene Rcpp Rtsne]; };
+  PAC = derive2 { name="PAC"; version="1.1.2"; sha256="1xh8y6ypicfabfm7kv0l4074mskjbcvyv5y13r10g5b7gqk35vkz"; depends=[dplyr ggplot2 ggrepel igraph infotheo parmigene Rcpp Rtsne]; };
   PACLasso = derive2 { name="PACLasso"; version="1.0.0"; sha256="1qzzymhfsjy8mk0r0xpd5h4wrx4wk8gq3vi6fnawkq5xkrg26rld"; depends=[lars limSolve MASS penalized quadprog]; };
   PACVr = derive2 { name="PACVr"; version="0.9.2"; sha256="0pn4k1yxja0blc89ksmhn7pwn3p647hvn6zmi7d0k47dfzy5rch5"; depends=[BiocGenerics Biostrings genbankr GenomicAlignments optparse RCircos]; };
   PAFit = derive2 { name="PAFit"; version="1.0.1.8"; sha256="12rqf7mcbsc4ngq75gw8nrllqc2nd9l5p8jdnx6gjn26ldydg6h6"; depends=[igraph knitr magicaxis mapproj MASS network networkDynamic plyr RColorBrewer Rcpp VGAM]; };
@@ -2905,7 +2918,7 @@ in with self; {
   PAGI = derive2 { name="PAGI"; version="1.0"; sha256="01j1dz5ihqslpwp9yidmhw86l112l7rfkswmf03vss872mpvyp3f"; depends=[igraph]; };
   PAGWAS = derive2 { name="PAGWAS"; version="2.0"; sha256="0bz47ivd32kx1amgqllqbxyyvj773q7wasgk924hmibabiixa8nx"; depends=[foreach lars mnormt]; };
   PAMA = derive2 { name="PAMA"; version="0.1.0"; sha256="19mz37h1kcfff7fkshg6qzgwm9vqgbzwjkcs5ydd1v6xq37lzapm"; depends=[mc2d PerMallows]; };
-  PANDA = derive2 { name="PANDA"; version="0.9.9"; sha256="1sf3c49v4mb3mz2imqlqdbh1iab7bc2pxpi8bmgj2jld133555ip"; depends=[cluster GO_db]; };
+  PANDA = derive2 { name="PANDA"; version="0.9.9"; sha256="0j1v4j5906w3v8kakp5gcr19m59sm5a24npx0s91yinjn7qs2ipb"; depends=[cluster GO_db]; };
   PANICr = derive2 { name="PANICr"; version="1.0.0"; sha256="167s1p7y8mmhcdnng0s5i09kjfh088jhmxs74rkyda52l9hyx363"; depends=[coda MCMCpack xts]; };
   PARSE = derive2 { name="PARSE"; version="0.1.0"; sha256="0y408va1rfn3j8cb1i0k8kypyg9mb6yfj513l54f23z31d3bi45m"; depends=[doParallel foreach gplots mvtnorm]; };
   PAS = derive2 { name="PAS"; version="1.2.5"; sha256="175p3bnpnhknfsc29hri0l2ipz1x6qcxs2bq7awns8lccam466r2"; depends=[glmnet]; };
@@ -2935,7 +2948,7 @@ in with self; {
   PCGSE = derive2 { name="PCGSE"; version="0.4"; sha256="0ky1nzhz6v9n34kas9nw2scc6ip7av19g09zcsxaa9436nhip4f6"; depends=[MASS RMTstat safe]; };
   PCICt = derive2 { name="PCICt"; version="0.5-4.1"; sha256="17ipmv6ps7c9dv4k9kxjjynnlgr63baz9z9ndwfg0lckc3vw81ya"; depends=[]; };
   PCMBase = derive2 { name="PCMBase"; version="1.2.11"; sha256="010188p7f4nr5jxayq02a8q2r23a9w9rd6njxckca99d903cpwg5"; depends=[ape data_table expm ggplot2 mvtnorm xtable]; };
-  PCMBaseCpp = derive2 { name="PCMBaseCpp"; version="0.1.8"; sha256="0h0l5ji5hp15ibfpwncyw2gyah80y2gr2z5br4jlzakvc5y3hqbf"; depends=[abind data_table PCMBase Rcpp RcppArmadillo]; };
+  PCMBaseCpp = derive2 { name="PCMBaseCpp"; version="0.1.9"; sha256="0k40mxs8w1vk7qwpkv8gnq6cq3kpj7wvf0i6f1qn1wmm2vvz1kfy"; depends=[abind data_table PCMBase Rcpp RcppArmadillo]; };
   PCMRS = derive2 { name="PCMRS"; version="0.1-1"; sha256="10n4am4qm23aaghf8awv2llcq7392s62yr6mf5h8nf18hfz29wrn"; depends=[cubature ltm mvtnorm Rcpp RcppArmadillo statmod]; };
   PCPS = derive2 { name="PCPS"; version="1.0.7"; sha256="0gxymz0yws1q1bxkpxi0lmbv57xx62h3dl7z3i2cnbagswkax3zh"; depends=[ape nlme phylobase picante RcppArmadillo SYNCSA vegan]; };
   PCRedux = derive2 { name="PCRedux"; version="1.0-6"; sha256="0s7g6y8iw4w42ihpiqqhbgwaf4fim91pwsp8hh7fh5nawj2wg9k7"; depends=[bcp changepoint chipPCR ecp fda_usc MBmca pbapply pracma qpcR robustbase shiny zoo]; };
@@ -3033,7 +3046,7 @@ in with self; {
   PTE = derive2 { name="PTE"; version="1.7"; sha256="1azkrij4kfmvp03lnzm88gwgvz8g54jq94j0qg8ynxvyjzrppc98"; depends=[doParallel foreach survival]; };
   PTXQC = derive2 { name="PTXQC"; version="1.0.2"; sha256="19gm7a9p74xb9qcyyy7hrd2m236mss61skbrnqdcs0678ahp1l2z"; depends=[data_table ggdendro ggplot2 gtable kableExtra knitr plyr RColorBrewer reshape2 rmarkdown seqinr UpSetR yaml]; };
   PTwins = derive2 { name="PTwins"; version="0.1.1"; sha256="166mc7w52n9d3n72h5jvvhbki87prkils3yigdf57dn9pyixrd66"; depends=[]; };
-  PUPAIM = derive2 { name="PUPAIM"; version="0.1.0"; sha256="0lkfp1jlcf0m0h7hqvbcr0sq0kbdwpvqvz52rs8j5n7ywiky4q3i"; depends=[FSA Metrics minpack_lm]; };
+  PUPAIM = derive2 { name="PUPAIM"; version="0.2.0"; sha256="1ky6f4yhm3hjrfxwk8vfalzzjgkq1922my26w457q8nfng7f2m53"; depends=[Metrics minpack_lm nls2]; };
   PUlasso = derive2 { name="PUlasso"; version="3.2.3"; sha256="07jf81q898833qswwairkv21dxlz7890219fdgnw3ywgp5kvlp41"; depends=[doParallel foreach ggplot2 Matrix Rcpp RcppEigen]; };
   PVAClone = derive2 { name="PVAClone"; version="0.1-6"; sha256="0fj5p3z2cwnyshrr4rq88wpij2xax5p4aq0x4p342kadx9d6x2ga"; depends=[coda dclone dcmle]; };
   PVR = derive2 { name="PVR"; version="0.3"; sha256="0pcnazkiwmicr3k6k70r8skqk0pd46fcqhhxghawxjs4slgnygkj"; depends=[ape MASS splancs]; };
@@ -3066,7 +3079,7 @@ in with self; {
   ParallelLogger = derive2 { name="ParallelLogger"; version="1.1.1"; sha256="0z2a777536yvqcypzxis7j4k3ns5v4lwdrkib9zx1ngxxzv6k9xn"; depends=[jsonlite snow XML]; };
   ParallelPC = derive2 { name="ParallelPC"; version="1.2"; sha256="07y7xb16865khxkvwsk1yglzyy7ja4aj2wpkipaz48i77c3x8bi2"; depends=[]; };
   ParallelTree = derive2 { name="ParallelTree"; version="0.1.3"; sha256="1h53qwhc63fglm452b3by7f3g6f3hyqwkmwmbdqdb9rv3j4gvnvg"; depends=[ggplot2]; };
-  ParamHelpers = derive2 { name="ParamHelpers"; version="1.13"; sha256="0yaf899yhia2773lkq5a16wz6srpsx7xzkbgf421ai2z90m23ddr"; depends=[backports BBmisc checkmate fastmatch]; };
+  ParamHelpers = derive2 { name="ParamHelpers"; version="1.14"; sha256="1sx2ddm8hwvvmk0z65wa689w80py3fny82zjd4d29qwxlv854xmi"; depends=[backports BBmisc checkmate fastmatch]; };
   Pareto = derive2 { name="Pareto"; version="1.1.3"; sha256="0iqagvdysp6fjd9hmrya93i64jijl894f5kkcvbbhdjfsz719pk5"; depends=[]; };
   ParetoPosStable = derive2 { name="ParetoPosStable"; version="1.1"; sha256="1fwji5wrhbxr089dll812csamvb5q2pxn1607rpirarifgfbj28m"; depends=[ADGofTest doParallel foreach lmom]; };
   PartCensReg = derive2 { name="PartCensReg"; version="1.39"; sha256="0blzv57cbxqghkz4fc3plvrcw80g0kx17dzmajkfv598m1wm6hc8"; depends=[Matrix optimx ssym]; };
@@ -3183,6 +3196,7 @@ in with self; {
   ProTrackR = derive2 { name="ProTrackR"; version="0.3.7"; sha256="15m8g9v254avi68qr7v5q4fzhclkv1q849sj69fs0c9qcli1x384"; depends=[audio lattice signal tuneR XML]; };
   ProbBayes = derive2 { name="ProbBayes"; version="1.1"; sha256="0bkbqyrmpy9swaxsl91w6iiw81znjf1lk4b0vqgn6wdnrir6gkmn"; depends=[ggplot2 gridExtra LearnBayes shiny]; };
   ProbForecastGOP = derive2 { name="ProbForecastGOP"; version="1.3.2"; sha256="0fnw3g19lx4vs8vmn4qdirvybkiy2cxkhwkn9qa3phz45iixnvx4"; depends=[fields RandomFields]; };
+  ProbMarg = derive2 { name="ProbMarg"; version="1.0.0"; sha256="0jv5d5zk7jq5si80rs69bvl7wssv2nihg35f2q4g7jkd7qmsbrq3"; depends=[]; };
   ProbYX = derive2 { name="ProbYX"; version="1.1-0"; sha256="0dphf6jr72l235v3yjhwi8bqmv6ac7yrbyfwhx4qjrrcdnsb7qhl"; depends=[rootSolve]; };
   ProbeDeveloper = derive2 { name="ProbeDeveloper"; version="1.0.0"; sha256="1d2zr8ikia3mspp2arpx7iwf4a4pq1ywl82pxbxrw6xpz313d5x9"; depends=[Biostrings TmCalculator]; };
   ProbitSpatial = derive2 { name="ProbitSpatial"; version="1.0"; sha256="0pq5bsjd00qc83c7x8vlpsxdksywlnfg7rlsvb6j21fz9wi3hpas"; depends=[Matrix numDeriv RANN Rcpp RcppEigen speedglm]; };
@@ -3210,9 +3224,9 @@ in with self; {
   PupilPre = derive2 { name="PupilPre"; version="0.6.2"; sha256="123m1zqld0jl26vqz41iic7vxzyfs1aw8zi5ki2cy6wzw9ss87m6"; depends=[dplyr ggplot2 mgcv rlang robustbase shiny signal tidyr VWPre zoo]; };
   PupillometryR = derive2 { name="PupillometryR"; version="0.0.1"; sha256="0fn1cm43jzkdph06awg741x31v5674vxb8zgnz3pfh585jggkb3j"; depends=[data_table dplyr fda fractal ggplot2 lazyeval mgcv rlang signal tidyr zoo]; };
   PurBayes = derive2 { name="PurBayes"; version="1.3"; sha256="0nbm4cyrwfbwwbjbjkylr86cshaqbvbif6dkp4fag8kbcgyyx5qh"; depends=[rjags]; };
-  Pursuit = derive2 { name="Pursuit"; version="1.0.0"; sha256="0wcg9zcln2mpqdyi4k4fcah6s1n0xd0jvc98vl4p1gyygy1x2vdr"; depends=[MASS]; };
+  Pursuit = derive2 { name="Pursuit"; version="1.0.1"; sha256="0c4bc0ldfx02a8ws3g3gn7smikg3fdjygybs3q764kxhq88kv42l"; depends=[MASS]; };
   PxWebApiData = derive2 { name="PxWebApiData"; version="0.3.0"; sha256="1c2liqh1asd0mk4cvrwpl4pdid2rqfxrma284ah4hwr6sah5lk6w"; depends=[httr jsonlite pxweb rjstat]; };
-  PythonInR = derive2 { name="PythonInR"; version="0.1-9"; sha256="1kifcnax1685rd9w6m713marik0na8xn572zymvcvdwp2yd1vjn5"; depends=[pack R6]; };
+  PythonInR = derive2 { name="PythonInR"; version="0.1-11"; sha256="099wsy44g3vh19vixn1ili7fd0a6q5x09hj4hp4i8cf51nihmk2q"; depends=[pack R6]; };
   QAIG = derive2 { name="QAIG"; version="0.1.5"; sha256="1cchf5x7wzc3mc6xzvq14kmd9yxr9kq237s8af4xqaz1pv0b093j"; depends=[Formula stringr]; };
   QBAsyDist = derive2 { name="QBAsyDist"; version="0.1.2"; sha256="1yql29npaq9yz02bv3hqf5m2mhscjms7qqf4vlaxm8s665rxcxad"; depends=[ald Deriv GoFKernel locpol nloptr quantreg scdensity zipfR]; };
   QCA = derive2 { name="QCA"; version="3.7"; sha256="0m78ky2w988d46jk5idhg2vyn8sw5sdvl0gv479snjxidjb78mml"; depends=[admisc lpSolve shiny venn]; };
@@ -3225,7 +3239,7 @@ in with self; {
   QCSimulator = derive2 { name="QCSimulator"; version="0.0.1"; sha256="1ff7xagnzibhrwrmkqyky4ik3kx7rrlajrs1ypm210sl1d73jwvs"; depends=[ggplot2]; };
   QDComparison = derive2 { name="QDComparison"; version="3.0"; sha256="0y4494r3ixkyh58xr9md7c6xgcj1hgbjzfybvqqdbawjxvy5p38i"; depends=[]; };
   QFASA = derive2 { name="QFASA"; version="1.0.3"; sha256="1yw745wk9ijvqs3hv0gbm6bkzjrlj42ipwbzypj73s3f7ygl452f"; depends=[boot futile_logger gamlss gamlss_dist Rsolnp]; };
-  QFRM = derive2 { name="QFRM"; version="1.0.1"; sha256="1k79sq9il4326q7ivwdwlzw7drjv4pwqra3fr8kyyqcpmxh9296h"; depends=[]; };
+  QFRM = derive2 { name="QFRM"; version="1.0.1"; sha256="02fixwxc97lgdp1ajhk9z12qj1cdl79vyl6q3jy37i6k7xh9mdfl"; depends=[]; };
   QGglmm = derive2 { name="QGglmm"; version="0.7.4"; sha256="0ghvicz4ia1180byj28lmg49889hqhb94g1jrkhm6hnzgqbjnfmd"; depends=[cubature]; };
   QHOT = derive2 { name="QHOT"; version="0.1.0"; sha256="02z0n2jawd6m7bvyvpcy0j13p1c0zm036g62n56xva18qnq5c9lb"; depends=[]; };
   QLearning = derive2 { name="QLearning"; version="0.1.1"; sha256="1bx77yxsnzh0ny3ghala5fw54lxzrxqk9s32qk3dzvfbyp4paggn"; depends=[]; };
@@ -3276,7 +3290,7 @@ in with self; {
   R2BEAT = derive2 { name="R2BEAT"; version="1.0.1"; sha256="0x0gb3gpvjmwa6f2p0p45m86l9iy7nwmcjhyi68lg694cvd9ny37"; depends=[]; };
   R2BayesX = derive2 { name="R2BayesX"; version="1.1-1"; sha256="1ff8cscl839ykp7l34sscc8zqp516mh64igk7dfv9n02l40w8ypf"; depends=[BayesXsrc colorspace mgcv]; };
   R2DGC = derive2 { name="R2DGC"; version="1.0.3"; sha256="0f84fmpf3m2s2p6bllvjs8rgnhwjy54adblv02dq8gakwvb4j2aw"; depends=[]; };
-  R2DT = derive2 { name="R2DT"; version="0.1"; sha256="0zydrdx6xdlacq6s01jwv4rv6ydmbwmiif40rilp8h76bim0kdbr"; depends=[data_table devFunc plyr]; };
+  R2DT = derive2 { name="R2DT"; version="0.2"; sha256="0hyisq6mij80v14sjspn9idd1h38sd1knbpd0dn2wy9k2w1fl0pk"; depends=[data_table devFunc plyr]; };
   R2HTML = derive2 { name="R2HTML"; version="2.3.2"; sha256="00kxny7hajs9r2kw63qk7d03ggdxx2j1g8vbrmzp806y8aczvik9"; depends=[]; };
   R2MLwiN = derive2 { name="R2MLwiN"; version="0.8-6"; sha256="1qhhigb9yryciq3j28q7wcvyw49nvf2mb8m9nj1c14z0pchi7xir"; depends=[coda digest doParallel foreach foreign lattice Matrix memisc R2WinBUGS texreg]; };
   R2OpenBUGS = derive2 { name="R2OpenBUGS"; version="3.2-3.2"; sha256="1cxr93g0fkdv3lqdh63l2gcp7qn3q42pm1r6nzf35550k9ahkhnv"; depends=[boot coda]; };
@@ -3336,7 +3350,6 @@ in with self; {
   RColorBrewer = derive2 { name="RColorBrewer"; version="1.1-2"; sha256="1pfcl8z1pnsssfaaz9dvdckyfnnc6rcq56dhislbf571hhg7isgk"; depends=[]; };
   RConics = derive2 { name="RConics"; version="1.0"; sha256="1lwr7hi1102gm8fi9k5ra24s0rjmnkccihhqn3byckqx6y8kq7ds"; depends=[]; };
   RCriteo = derive2 { name="RCriteo"; version="1.0.2"; sha256="1vyhnblw9zr5h6c25lf76p9vn95k8vr0hpq1sjkccdwl9yvsyhfy"; depends=[httr plyr RCurl XML]; };
-  RCrypto = derive2 { name="RCrypto"; version="0.1.0"; sha256="1lw7hq5ks36fixk0g3gcy4nw21ygwc14jq840hnhyds4glywfpvm"; depends=[dplyr httr jsonlite]; };
   RCurl = derive2 { name="RCurl"; version="1.98-1.1"; sha256="1zqiawhx5v06vmcg87rmx2qdd9fa4svds3i9a1lphchvprr93jkf"; depends=[bitops]; };
   RCzechia = derive2 { name="RCzechia"; version="1.4.5"; sha256="1ar3vkslwzqmljq01swdqk72i2q4pcr7x58pi79gaxwx2p1h4bsl"; depends=[curl dplyr httr jsonlite lwgeom magrittr rlang sf]; };
   RDFTensor = derive2 { name="RDFTensor"; version="1.1"; sha256="1xbar13snwyls6rva91bs0632zplfc2qcqlwf7h07r8798m3234s"; depends=[Matrix pracma]; };
@@ -3421,7 +3434,7 @@ in with self; {
   RJafroc = derive2 { name="RJafroc"; version="1.3.2"; sha256="11waf05ljzfrizsbb2y6bd2cd8k7950kbq26sfyfgf4idh5w0mbp"; depends=[bbmle binom dplyr ggplot2 mvtnorm numDeriv openxlsx Rcpp stringr]; };
   RKEA = derive2 { name="RKEA"; version="0.0-6"; sha256="1dncplg83b4zznh1zh90wr8jv5259cy93imrry86c5kqdijmhrrp"; depends=[rJava RKEAjars tm]; };
   RKEAjars = derive2 { name="RKEAjars"; version="5.0-4"; sha256="1j4643xc8k3zy4rv0h8dd154jafihnjr43wzz3d93j11g2w9xhq3"; depends=[rJava]; };
-  RKEEL = derive2 { name="RKEEL"; version="1.3.1"; sha256="0k13j460jalmjdicrm7rqxb1b25cx1h4c276xbiybmhrmzmjlv5y"; depends=[arules doParallel foreach gdata Matrix pmml R6 rJava RKEELdata RKEELjars XML]; };
+  RKEEL = derive2 { name="RKEEL"; version="1.3.2"; sha256="120x49zblhs7grqj919m3ll9q5ddr3kkqicy1am5b8hahybiz5al"; depends=[arules doParallel foreach gdata Matrix pmml R6 rJava RKEELdata RKEELjars XML]; };
   RKEELdata = derive2 { name="RKEELdata"; version="1.0.5"; sha256="1swzqw6j006ya48ahg6n1g8faxhqiv9v5q1zrnihpzj6868lf7y3"; depends=[]; };
   RKEELjars = derive2 { name="RKEELjars"; version="1.0.19"; sha256="1a879b0xq5jk7r2pf4n41nm0c4himl4yqw083xh2ha4qdhab5kq0"; depends=[downloader]; };
   RKHSMetaMod = derive2 { name="RKHSMetaMod"; version="1.1"; sha256="1h8gqqfmlrzyj4n997yn13vqpaw2kwzl45gscy3fdhskzmyg0ss3"; depends=[Rcpp RcppEigen RcppGSL]; };
@@ -3457,7 +3470,7 @@ in with self; {
   RMixtCompUtilities = derive2 { name="RMixtCompUtilities"; version="4.1.0"; sha256="0c6sjn6j0g6zc44w5knsgd6ga138gci54yilak8w0xrv5kr7mj3w"; depends=[ggplot2 plotly scales]; };
   RMySQL = derive2 { name="RMySQL"; version="0.10.20"; sha256="0lv9m6zpm8dgv7yixr6xhw379vbq45d7n7gkrmjrppdj8vcih77i"; depends=[DBI]; };
   RNAseqNet = derive2 { name="RNAseqNet"; version="0.1.3"; sha256="1fn3q49dswi8hsyxkkgmq35gbdmnn72kzmfk89vd7gjvm67skvm6"; depends=[ggplot2 glmnet hot_deck igraph PoiClaClu]; };
-  RNAsmc = derive2 { name="RNAsmc"; version="0.4.0"; sha256="17gkhmnrxa1zwh6qhc0x48smgyq35g5gdb4wv0m5pnbyhkqzs7sq"; depends=[RRNA]; };
+  RNAsmc = derive2 { name="RNAsmc"; version="0.5.0"; sha256="0kjgkqqr0ylij13jj48ssjwp2w6wnjv60f52az72c8df8w8diskq"; depends=[circlize RRNA]; };
   RNAstructureModuleMiner = derive2 { name="RNAstructureModuleMiner"; version="0.1.0"; sha256="026r1h4z1jdfww0ay9iixa77ax6b19pgp589bbn77xg1vwjjlbsk"; depends=[RRNA]; };
   RNCBIEUtilsLibs = derive2 { name="RNCBIEUtilsLibs"; version="0.9"; sha256="1h1ywx8wxy6n2rbpmjbqw4c0djz29pbncisd0mlbshj1fw226jba"; depends=[rJava]; };
   RNCEP = derive2 { name="RNCEP"; version="1.0.9"; sha256="1rbz8i4id5an95pcw6mbc30cjkj3pr5hc4hzfkcyhy5nnfxz784b"; depends=[abind fields maps RColorBrewer sp tgp]; };
@@ -3479,6 +3492,7 @@ in with self; {
   ROCR = derive2 { name="ROCR"; version="1.0-7"; sha256="1jay8cm7lgq56i967vm5c2hgaxqkphfpip0gn941li3yhh7p3vz7"; depends=[gplots]; };
   ROCS = derive2 { name="ROCS"; version="1.3"; sha256="11vdf8701ap6ya7c7kx9jhvg7qfc6vkij3jridna6f4xj384grki"; depends=[poibin rgl]; };
   ROCit = derive2 { name="ROCit"; version="1.1.1"; sha256="1bip1zz5chm06pfikkscahph2clsaf9rhhpsla6vmvpfy0d8p070"; depends=[]; };
+  ROCnReg = derive2 { name="ROCnReg"; version="1.0"; sha256="0fz1s2a71bb1l60mqvrzmac5wiaa43h4s9xbpaw90y5w2kdpz1ji"; depends=[lattice MASS Matrix moments nor1mix np pbivnorm spatstat]; };
   ROCt = derive2 { name="ROCt"; version="0.9.5"; sha256="0f7day0rv62ggm1nc7qkh45r6svr84mdk7xxpdf09pi4lbdx0rm6"; depends=[date relsurv survival timereg]; };
   ROCwoGS = derive2 { name="ROCwoGS"; version="1.0"; sha256="029nramxwhzqim315g1vkg1zsszzkic28w6ahwg9n7bk9d08adzk"; depends=[]; };
   RODBC = derive2 { name="RODBC"; version="1.3-16"; sha256="0fcnszrkk7llz26wccs97glddw793i0f9bd7rwxrld24vn1lng92"; depends=[]; };
@@ -3535,7 +3549,7 @@ in with self; {
   RPostgres = derive2 { name="RPostgres"; version="1.2.0"; sha256="16fjwaj1qvr1i9naq19jg2z3dqssi3pp4wwviyqlkj1mmbyh28zx"; depends=[BH bit64 blob DBI hms plogr Rcpp withr]; };
   RPresto = derive2 { name="RPresto"; version="1.3.4"; sha256="17hwq76vzr27prwisfxahs1ix9grldknaywnq3v2a3s2x79v8vbv"; depends=[DBI httr jsonlite openssl Rcpp stringi]; };
   RProbSup = derive2 { name="RProbSup"; version="2.1"; sha256="0lmv4x235xiykc8jfnp15l4yypm99yz6spsnaxacp49y2aw23jpy"; depends=[]; };
-  RProtoBuf = derive2 { name="RProtoBuf"; version="0.4.15"; sha256="0m7fm6d3yscridx332ljxm3mjsz82knnq4796xr1rhalddjhckvk"; depends=[Rcpp RCurl]; };
+  RProtoBuf = derive2 { name="RProtoBuf"; version="0.4.16"; sha256="0vw1rpglavn1p9q4g6rqmbfwa3qjkdh33if7bmwgkyys3nvdr918"; depends=[Rcpp RCurl]; };
   RPtests = derive2 { name="RPtests"; version="0.1.4"; sha256="1r30pslbjq3dip41la81jlin2vhxdmayg902x9ryjy554awfgh7j"; depends=[glmnet randomForest Rcpp]; };
   RPublica = derive2 { name="RPublica"; version="0.1.3"; sha256="1w2pn1g44a00ls8kkzj53a739pq6vzp38px2k0yh10rlzimmb21l"; depends=[curl httr jsonlite]; };
   RPushbullet = derive2 { name="RPushbullet"; version="0.3.3"; sha256="0acydm5xc1j6yjmjipfrg7pvc6h0jwihrg1rx97qwddds2xakkxy"; depends=[curl jsonlite]; };
@@ -3548,6 +3562,7 @@ in with self; {
   RRI = derive2 { name="RRI"; version="1.1"; sha256="0msdc5j5vx4snl8r3q5nn0mw2i80jds5pjykhmigcrx6jzg6h6i7"; depends=[Rcpp RcppArmadillo]; };
   RRNA = derive2 { name="RRNA"; version="1.0"; sha256="14rcqh95ygybci8hb8ays8ikb22g3850s9f3sgx3r4f0ky52dcba"; depends=[]; };
   RRPP = derive2 { name="RRPP"; version="0.5.2"; sha256="0j31drphisckab9v93z6spdj9jgd0wx9dkbd2b22ff5la6bvil7k"; depends=[]; };
+  RRRR = derive2 { name="RRRR"; version="1.0.0"; sha256="1xia8izpxlacas2qa508wy7d65b461cqqkkv78jbp85h0dzxa0k0"; depends=[expm ggplot2 magrittr matrixcalc mvtnorm]; };
   RRTCS = derive2 { name="RRTCS"; version="0.0.3"; sha256="1riz1gjx3c0pf17xwybizb94nm5zgmfsnv6np3afvw831mb1x3l9"; depends=[sampling samplingVarEst]; };
   RRate = derive2 { name="RRate"; version="1.0"; sha256="1q3f2gphdf50aijnk5xqfpxcqfd4jq7byb1gpb0vcnaxgi3a9lwm"; depends=[]; };
   RRedshiftSQL = derive2 { name="RRedshiftSQL"; version="0.1.2"; sha256="03jbml8d19hcg6achnyc4hcnl5j10yvsx59j80r46zyn0flsnizq"; depends=[DBI RPostgreSQL]; };
@@ -3576,7 +3591,7 @@ in with self; {
   RSVGTipsDevice = derive2 { name="RSVGTipsDevice"; version="1.0-7"; sha256="0jdr8l0hp4kzsvlgs8j1m74sr98z4v2lmiqinmc238m406nhppab"; depends=[]; };
   RSarules = derive2 { name="RSarules"; version="1.0"; sha256="0lrql4q45hyhqbix86ixl12mknnjbz3137gx2zkvqpz91bsk145j"; depends=[arules Matrix]; };
   RSauceLabs = derive2 { name="RSauceLabs"; version="0.1.6"; sha256="1p7hw6vnlg6w5ggmfpc3q3s6n1fikjkjnxzz97jifiy0zwn5dp9i"; depends=[data_table httr jsonlite whisker xml2]; };
-  RScelestial = derive2 { name="RScelestial"; version="1.0.0"; sha256="1amvzp4a69cpm13affvpza8zs1n78a3y93bwpv0fzi2b60im4y9x"; depends=[Rcpp]; };
+  RScelestial = derive2 { name="RScelestial"; version="1.0.1"; sha256="10d2kxlqy224y6qypr7g3pnbv9bkrj22zi77wg7y646f5bzdz9qd"; depends=[Rcpp]; };
   RSclient = derive2 { name="RSclient"; version="0.7-3"; sha256="07mbw6mcin9ivsg313ycw2pi901x9vjpmi6q7sms1hml4yq50k6h"; depends=[]; };
   RSeed = derive2 { name="RSeed"; version="0.1.60"; sha256="0rvb6w4z5c2wcdgx5w6vv7c8il8d0096pgv3fyvw21ag25z605jc"; depends=[graph RBGL sybil]; };
   RSelenium = derive2 { name="RSelenium"; version="1.7.7"; sha256="1xn5fdbzmq7b1f5fc9ls23g177bmnd8bn4p4d8aafr6z3jwkmfir"; depends=[binman caTools httr openssl wdman XML]; };
@@ -3639,7 +3654,7 @@ in with self; {
   RadTran = derive2 { name="RadTran"; version="1.0"; sha256="1sb8d4y3b37akbxhdavxrkp34zn3ip061b7gzy0ga57pyn76cvpn"; depends=[ReacTran rootSolve]; };
   RadioGx = derive2 { name="RadioGx"; version="0.0.2"; sha256="1ls56zxsa5l6925ig7d9n3ffns1x0jkbd3zdk530nlffkralwz0k"; depends=[Biobase caTools cluster CoreGx KernSmooth magicaxis Matrix PharmacoGx RColorBrewer reshape2 scales]; };
   RadioSonde = derive2 { name="RadioSonde"; version="1.4"; sha256="1v9jdpynmb01m3syhas1s08xxlvjawhlvjkyhils2iggi4xw4hiq"; depends=[]; };
-  Radviz = derive2 { name="Radviz"; version="0.8.2"; sha256="105zbrda3yf49sm8b0ysxc7gy0ia8xbp32fhyf70q6wm12jziz2z"; depends=[dplyr ggplot2 rlang]; };
+  Radviz = derive2 { name="Radviz"; version="0.9.0"; sha256="01k9q6h243sg8hiqx4pdmki962av04mv9gi9mxg14rg57a7i6nd4"; depends=[dplyr ggplot2 igraph pracma Rcpp RcppArmadillo rlang]; };
   RagGrid = derive2 { name="RagGrid"; version="0.2.0"; sha256="0crnpd75lyhd0awzqzqy7bzw4ydgxpyhy1ybb1ff4qsnisbjdbba"; depends=[crosstalk htmltools htmlwidgets knitr]; };
   RainfallErosivityFactor = derive2 { name="RainfallErosivityFactor"; version="0.1.0"; sha256="16yrr2bl62m1nr81nzvmdq7s78f7fg50dah5dg5q4j4j7z8qfsqz"; depends=[]; };
   Ramble = derive2 { name="Ramble"; version="0.1.1"; sha256="0225za85i5nvf8l89i5bz7nxsxykd3v9fp1wgihmncca6n8vhgpl"; depends=[]; };
@@ -3677,7 +3692,7 @@ in with self; {
   RclusTool = derive2 { name="RclusTool"; version="0.91.3"; sha256="0f6v2p6dg3fq3vzys6hgwmmgyrxfj2kb4wpbywd7f9p5yd9cfd88"; depends=[class cluster conclust corrplot e1071 factoextra FactoMineR ggplot2 jpeg MASS mclust mda mmand nnet png randomForest reshape sp stringi stringr tcltk2 tkrplot]; };
   Rcmdr = derive2 { name="Rcmdr"; version="2.6-2"; sha256="1fv4qx4w9x3gi64vba9qdkp6kghl83z5q7mmdjx7068n484kyhm1"; depends=[abind car effects lme4 RcmdrMisc relimp tcltk2]; };
   RcmdrMisc = derive2 { name="RcmdrMisc"; version="2.7-0"; sha256="08k4x957x08cmhad1r5w502zan13gmcfap16wjfb92b4v3f6dzqy"; depends=[abind car colorspace e1071 foreign haven Hmisc MASS nortest readstata13 readxl sandwich]; };
-  RcmdrPlugin_BiclustGUI = derive2 { name="RcmdrPlugin.BiclustGUI"; version="1.1.1"; sha256="1sdc8ibggz8wpn77g7hddyl7lg86dbyw8qax63p6cqx1pfhb4rra"; depends=[BcDiag BiBitR BicARE biclust fabia gplots iBBiG Rcmdr rqubic s4vd superbiclust viridis]; };
+  RcmdrPlugin_BiclustGUI = derive2 { name="RcmdrPlugin.BiclustGUI"; version="1.1.1"; sha256="11p8k2aimi81hx4kydvnqsycqd5b5gwryisavayg7vrn3x24cc0z"; depends=[BcDiag BiBitR BicARE biclust fabia gplots iBBiG Rcmdr rqubic s4vd superbiclust viridis]; };
   RcmdrPlugin_DoE = derive2 { name="RcmdrPlugin.DoE"; version="0.12-3"; sha256="1iifn71kjjgcp7dfz2pjq57mgbv4rrznrl3b3k9gdc2dva1z9zvc"; depends=[DoE_base DoE_wrapper FrF2 Rcmdr RcmdrMisc relimp]; };
   RcmdrPlugin_EACSPIR = derive2 { name="RcmdrPlugin.EACSPIR"; version="0.2-2"; sha256="10r6rb0fwlilcnqxa38zh7yxc54x1a0by5x4f6gzdn9zs7aj5l1r"; depends=[abind ez nortest R2HTML Rcmdr RcmdrMisc reshape]; };
   RcmdrPlugin_EBM = derive2 { name="RcmdrPlugin.EBM"; version="1.0-10"; sha256="02zips1jbfn7cshjlrm1gr632px2zxlys8i0f1nrf1gifl44v1qw"; depends=[abind epiR Rcmdr]; };
@@ -3722,7 +3737,7 @@ in with self; {
   Rcpp = derive2 { name="Rcpp"; version="1.0.4"; sha256="1m80pdhzi2p82db5xkbwc2m3fzv6df59955yj03nlq40fj7zx4nr"; depends=[]; };
   Rcpp11 = derive2 { name="Rcpp11"; version="3.1.2.0"; sha256="1x6n1z7kizagr5ymvbwqb7nyn3lca4d4m0ks33zhcn9gay6g0fac"; depends=[]; };
   RcppAPT = derive2 { name="RcppAPT"; version="0.0.6"; sha256="0gkvs276hwa4yzd1bwf12p83cq2i1k021nq4y6ll1gcrj41mkdns"; depends=[Rcpp]; };
-  RcppAlgos = derive2 { name="RcppAlgos"; version="2.3.6"; sha256="05lwip6d48qhk4gph3lgwnix55sw24b12a4g1jd4h0lxgkhak4bm"; depends=[gmp Rcpp RcppThread]; };
+  RcppAlgos = derive2 { name="RcppAlgos"; version="2.4.1"; sha256="0s97v2agy8pzaqfjm7cabpfxpkidxl1zwi4vkjdhsfzxjp5xwwms"; depends=[gmp Rcpp RcppThread]; };
   RcppAnnoy = derive2 { name="RcppAnnoy"; version="0.0.16"; sha256="0bfa35lp6vc4b0h3ymvdx50br233q8vvyjml34ngi81rj0imz3fr"; depends=[Rcpp]; };
   RcppArmadillo = derive2 { name="RcppArmadillo"; version="0.9.850.1.0"; sha256="0q9clhmbwwph47hrhx5827m7njrcl2klihyqbkf0ihwlbqrjijwz"; depends=[Rcpp]; };
   RcppBDT = derive2 { name="RcppBDT"; version="0.2.3"; sha256="0gnj4gz754l80df7w3d5qn7a57z9kq494n00wp6f7vr8aqgq8wi1"; depends=[BH Rcpp]; };
@@ -3733,6 +3748,7 @@ in with self; {
   RcppClassicExamples = derive2 { name="RcppClassicExamples"; version="0.1.2"; sha256="0dr2104miy7psr73nicfs84652ai0d5liw6wxcwyrx7fmys3p638"; depends=[Rcpp RcppClassic]; };
   RcppDE = derive2 { name="RcppDE"; version="0.1.6"; sha256="1i9jj595nqpb16y22z2b8fcf0gq1fg0pbiisbd837p1cyw4nff69"; depends=[Rcpp RcppArmadillo]; };
   RcppDL = derive2 { name="RcppDL"; version="0.0.5"; sha256="1gii00bna6k9byaax7gsx42dv1jjnkrp4clbmdq59ybq3vkvw8z2"; depends=[Rcpp]; };
+  RcppDate = derive2 { name="RcppDate"; version="0.0.1"; sha256="0psa7drm6chwn5w3h6yhaavf33mvzfaghzqa404l5yvxczy22xqi"; depends=[]; };
   RcppDist = derive2 { name="RcppDist"; version="0.1.1"; sha256="02g57xwfipdcljv06krhm02dbqn9kfyj2km6rdg0a7vq9prwdz1x"; depends=[Rcpp RcppArmadillo]; };
   RcppDynProg = derive2 { name="RcppDynProg"; version="0.1.3"; sha256="099hbm355d30rwxqjd7j4dfw678551dc5v4y7yy6q4xxyf527lbs"; depends=[Rcpp RcppArmadillo wrapr]; };
   RcppEigen = derive2 { name="RcppEigen"; version="0.3.3.7.0"; sha256="1b78qcjim0n9klgkr82n794d6bj9r9f33g0kcsszsns2hir65sk2"; depends=[Matrix Rcpp]; };
@@ -3837,8 +3853,8 @@ in with self; {
   RichR = derive2 { name="RichR"; version="1.0.0"; sha256="0z0ri90jqdmw0vwxd1b4wr9if5cgm1gqpf6g9p1fdvncf4sdi9by"; depends=[magrittr metap plyr reshape2]; };
   RidgeFusion = derive2 { name="RidgeFusion"; version="1.0-3"; sha256="10llmrsfpcqrkcbw7zj44kvfy7ywn9rk49n7zplilz8h94zzcmjv"; depends=[mvtnorm]; };
   Ridit = derive2 { name="Ridit"; version="1.1"; sha256="02cni6hzf1bsns7vi8vklnhc0pfb5vwqhjnnfnjnnaxpzpsbvdfn"; depends=[]; };
-  RiemBase = derive2 { name="RiemBase"; version="0.2.3"; sha256="08dwnzjy7fhipvqb7p4kbhcfhrnz9i025czci6d0a9nnyscqcgfv"; depends=[pracma Rcpp RcppArmadillo Rdpack]; };
-  RiemBaseExt = derive2 { name="RiemBaseExt"; version="0.1.1"; sha256="17899bsb6s4jaql71hsq5abcnf1ybji5236zwh25apc6k7br14fc"; depends=[cluster dbscan energy fastcluster kernlab Rcpp RcppArmadillo Rdpack RiemBase]; };
+  RiemBase = derive2 { name="RiemBase"; version="0.2.4"; sha256="1h3ascbdgvp56k5ki6qr849296cdkr2bzc33pwwp033rmd8khpr3"; depends=[pracma Rcpp RcppArmadillo Rdpack]; };
+  RiemBaseExt = derive2 { name="RiemBaseExt"; version="0.1.2"; sha256="0g0gkwjh1x18ay03f557g3zvb2cfivpx0pcgsrr3gm0gphli96v8"; depends=[cluster dbscan energy fastcluster kernlab Rcpp RcppArmadillo Rdpack RiemBase]; };
   RiemStiefel = derive2 { name="RiemStiefel"; version="0.1.0"; sha256="1yiz8lbvrlgln1dlf8z03f298isr8cjlcbrh62vb7ppaxjlvlyzx"; depends=[Rcpp RcppArmadillo Rdpack RiemBase RiemBaseExt]; };
   Riex = derive2 { name="Riex"; version="1.0.1"; sha256="1jri01s08g819bvw0bgd5z5iaf9rlikkqq993lm0455k909wm34v"; depends=[dplyr ggplot2 httr purrr quantmod rjson stringr tibble tidyr tidyverse TTR urltools xts zoo]; };
   Rilostat = derive2 { name="Rilostat"; version="1.0.1"; sha256="0k8x2z3vxfwbynn22wpkfbc1i237bl61dh612nhw19c7v48lhdgg"; depends=[data_table dplyr DT haven plyr RCurl readr stringr tibble xml2]; };
@@ -3948,6 +3964,7 @@ in with self; {
   Rwave = derive2 { name="Rwave"; version="2.4-8"; sha256="1rmqwyj2r84sii0vfqhyhpi3n1n1zia2ca627fq9ksvwn110nrvh"; depends=[]; };
   Rwhois = derive2 { name="Rwhois"; version="1.0.3"; sha256="06mx98wi6r265ykkk81hk17yjkym6ar7c2cwp962ijfk3lxwc9l4"; depends=[stringr]; };
   Rwinsteps = derive2 { name="Rwinsteps"; version="1.0-1.1"; sha256="0kaxhaa65k1hkhl4kqfxyyk6v967xncrdr5hy8b808zlbqriankc"; depends=[]; };
+  Rwofost = derive2 { name="Rwofost"; version="0.6-1"; sha256="09gqbc44rjrrkvwld1vdxz6ljykskpjgj778vd9bcajsqczqx7bz"; depends=[meteor Rcpp]; };
   Rwordseg = derive2 { name="Rwordseg"; version="0.3-2"; sha256="10jhfalh45rrcm76hwz4b5yl408ndx2wkr0i3q1avx6z6i45d8s6"; depends=[HMM tmcn]; };
   RxCEcolInf = derive2 { name="RxCEcolInf"; version="0.1-4"; sha256="0qyhxqd5yi4d1prj0i4g3k29zi0mx6wkjx24ynb4arxw6h1vabh4"; depends=[coda lattice MASS MCMCpack mvtnorm]; };
   RxODE = derive2 { name="RxODE"; version="0.9.2-0"; sha256="1ynn38wk08szi34pk0hmlnanmfg19arazsqzafyw5kd1v3fdx4g4"; depends=[assertthat brew cli dparser ggplot2 inline knitr lotri magrittr Matrix memoise mvnfast pillar PreciseSums Rcpp RcppArmadillo rex sys units]; };
@@ -3979,7 +3996,7 @@ in with self; {
   SASmarkdown = derive2 { name="SASmarkdown"; version="0.4.3"; sha256="0jc21ylflvv4snik13731acxh9zw79s7hpswk58p2wzvavq8k9zn"; depends=[knitr]; };
   SASmixed = derive2 { name="SASmixed"; version="1.0-4"; sha256="0491x4a3fwiy26whclrc19alcdxccn40ghpsgwjkn9sxi8vj5wvm"; depends=[]; };
   SASxport = derive2 { name="SASxport"; version="1.7.0"; sha256="1na94lxrn8kbhxpiflg14nkdx13rjq9bvvqbxyxh1mq0q7vz7a2l"; depends=[Hmisc stringi]; };
-  SAVE = derive2 { name="SAVE"; version="1.0"; sha256="1m9rrga8x00hlvn0c1jcz6yz14pdm6h3dq14905mq49sw63c7zll"; depends=[coda DiceKriging]; };
+  SAVE = derive2 { name="SAVE"; version="1.0"; sha256="14z0ffkh7nylr5i2844vvby3g40ly9lx2k2i0gxxg8dryjzrb5ps"; depends=[coda DiceKriging]; };
   SAVER = derive2 { name="SAVER"; version="1.1.2"; sha256="1s1kw8idkaj7j90fw4qn9k0wd4vz0sblsk06ry6lm4afcar0p158"; depends=[doParallel foreach glmnet iterators Matrix]; };
   SAutomata = derive2 { name="SAutomata"; version="0.1.0"; sha256="0d9q7bm2f7s4aslml40n43vwcdkc8rnn9ygydccwi4b9a7y23k58"; depends=[]; };
   SBRect = derive2 { name="SBRect"; version="0.26"; sha256="16g0ciy9q9irypsl8x36i0lavl41j3af13r2si0by8q6wj56pxi4"; depends=[rJava]; };
@@ -4040,7 +4057,7 @@ in with self; {
   SHAPforxgboost = derive2 { name="SHAPforxgboost"; version="0.0.3"; sha256="09gwjw6pbq9b9fg1nsf2jv6dh2g6nmd5iyq6c8c2imgq0la1khgj"; depends=[BBmisc data_table ggExtra ggforce ggplot2 ggpubr RColorBrewer xgboost]; };
   SHELF = derive2 { name="SHELF"; version="1.7.0"; sha256="0rhxagblk8bmwd4wfbjf52dh6y1brajp6xn8rsjx7q0z4brgcr23"; depends=[ggExtra ggplot2 ggridges gridExtra Hmisc MASS rmarkdown scales shiny shinyMatrix tidyr]; };
   SHIP = derive2 { name="SHIP"; version="1.0.2"; sha256="0b83cclibdz1r7sz968nmca4najwgps9wrdlsh4gxrl7fq40k4ln"; depends=[]; };
-  SHT = derive2 { name="SHT"; version="0.1.2"; sha256="0h93yky87rgrydn994j3anq7n2s2vgli47v5ra09gwlv8p1ijpxn"; depends=[fastclime pracma Rcpp RcppArmadillo Rdpack]; };
+  SHT = derive2 { name="SHT"; version="0.1.3"; sha256="016ll3dclnd3arr7x9vvwls84kypqnnm24r9jmcxkk7n8zl0xwb9"; depends=[fastclime pracma Rcpp RcppArmadillo Rdpack]; };
   SI = derive2 { name="SI"; version="0.2.0"; sha256="0i6kpaw5yk39skm77nf56ai25clkparz3l8qx0223jrmdqbf97b7"; depends=[]; };
   SIBER = derive2 { name="SIBER"; version="2.1.4"; sha256="1wn69giv6prg9dy10zn2fb63s6a0wqv5maccaf69267anh0s4qpc"; depends=[coda dplyr ellipse ggplot2 hdrcde magrittr mnormt purrr rjags spatstat spatstat_utils tidyr viridis]; };
   SIBERG = derive2 { name="SIBERG"; version="2.0.2"; sha256="0wfx1dpjd09gb736sm2xhrkba26nwnzn5x575h39n2g33jwqqy2r"; depends=[mclust]; };
@@ -4090,7 +4107,7 @@ in with self; {
   SNSequate = derive2 { name="SNSequate"; version="1.3.3"; sha256="1qadhk2acpr0lkh2z37ivif9dbp7zb31lfn32ch2sb0z9pp56his"; depends=[emdbook knitr magic plyr progress statmod]; };
   SNscan = derive2 { name="SNscan"; version="1.0"; sha256="1s7dxi7faih0phx5wk2xrrzhvfwicq3h2cg8x2klwbrslin973lz"; depends=[igraph poweRlaw Rmpfr]; };
   SOAR = derive2 { name="SOAR"; version="0.99-11"; sha256="1n38gx5sxpkqfkk4y6vpp6g19b8bs5bisni9wn6311s0csizp86m"; depends=[]; };
-  SODC = derive2 { name="SODC"; version="1.0"; sha256="18s4rcp5dzchvwrzzbfhbs3x91zlg1rymjarxjk5i429mfrn0krx"; depends=[magic MASS ppls psych]; };
+  SODC = derive2 { name="SODC"; version="1.0"; sha256="0w02hj5m4b1c4lvq3fdygpanp2qnarq8wrjz4pm7rkpkqqzic8v9"; depends=[magic MASS ppls psych]; };
   SOFIA = derive2 { name="SOFIA"; version="1.0"; sha256="1jlaggxa2nz2r5yb2xmf0dh5wmxfdk6xwn0l3nwsqh82vyxhp7l9"; depends=[png]; };
   SOIL = derive2 { name="SOIL"; version="1.1"; sha256="0dvfh84xjzald51kmdb546par2rbjdn3nys9y9w7cvafv2lc5yj9"; depends=[brglm2 glmnet MASS ncvreg]; };
   SOLOMON = derive2 { name="SOLOMON"; version="1.0-1"; sha256="0z91wsrgdir25ks4dnirzsg4f1ngal7n40235m3w43j6y6dhkqrc"; depends=[]; };
@@ -4098,6 +4115,7 @@ in with self; {
   SOPIE = derive2 { name="SOPIE"; version="1.5"; sha256="0isvb2vzzpn57bq0ix2pfaqdnl5z8qk6v6fvf15vnxcqg2sm63q5"; depends=[ADGofTest circular]; };
   SOR = derive2 { name="SOR"; version="0.23.1"; sha256="1accs4bqy080nfmgkdg7bgamdrcwcn01y6nydvvq12w3v8asdvwh"; depends=[Matrix]; };
   SOUP = derive2 { name="SOUP"; version="1.1"; sha256="0k8nlvl4681cz07xjazprcc0jhknfa5hgr7w1qxxmgrp3sprr8r4"; depends=[tensor]; };
+  SP2000 = derive2 { name="SP2000"; version="0.0.5"; sha256="0ny7a3i7hb1j3vkdnjy8gyhbvpqnzj588l127p6wxal48ks2g7zp"; depends=[jsonlite pbmcapply purrr rlist tibble]; };
   SPADAR = derive2 { name="SPADAR"; version="1.0"; sha256="0xzhcy5nglwx9j2jkm3i9xj1iw1y9wbf6rwfjyhpiwwq6qn8mn5r"; depends=[mapproj RCEIM]; };
   SPARQL = derive2 { name="SPARQL"; version="1.16"; sha256="0gak1q06yyhdmcxb2n3v0h9gr1vqd0viqji52wpw211qp6r6dcrc"; depends=[RCurl XML]; };
   SPAS = derive2 { name="SPAS"; version="2020.1.1"; sha256="1bvnyxg3npxv63kikmr30jgc14f1s1a5vfh40qs50nbzq84pl6bx"; depends=[BB MASS Matrix msm numDeriv plyr RcppEigen TMB]; };
@@ -4119,6 +4137,7 @@ in with self; {
   SPREDA = derive2 { name="SPREDA"; version="1.1"; sha256="0fn4p5apjq8zgd3zms2b88ga5wbsv86y59ac5x06w75rf071xglv"; depends=[nlme survival]; };
   SPRT = derive2 { name="SPRT"; version="1.0"; sha256="1r4pfqh8k5avi8qgpk5x1cy8lmkn341yvjvd2r7wqwb3mr242r0v"; depends=[]; };
   SPSL = derive2 { name="SPSL"; version="0.1-9"; sha256="0kf6mmbvavid3dw2l4fkclk669wi13wkyykhwn5272d6qnhlhhca"; depends=[]; };
+  SPUTNIK = derive2 { name="SPUTNIK"; version="1.3"; sha256="0xmd7y0w1wnbavpjhnap2wczprl1xccrgdwgrmv9031lasrd9xv9"; depends=[e1071 edgeR ggplot2 imager infotheo irlba reshape spatstat viridis]; };
   SPYvsSPY = derive2 { name="SPYvsSPY"; version="0.1.1"; sha256="1hxc73wwrzqh1r1xr9yd4hy4ma24virg4iv978lfyc9f9n56znp5"; depends=[]; };
   SPmlficmcm = derive2 { name="SPmlficmcm"; version="1.4"; sha256="1acs3560a7h6xx286m40abr9b7i5qihn6wni8flj0biahmsszzx6"; depends=[nleqslv]; };
   SPreFuGED = derive2 { name="SPreFuGED"; version="1.0"; sha256="1cdamkrr0xpc0l2dypd9lgjidrmalfxs0ms7z3wfmf22a8b3y0d2"; depends=[Biobase boot CMA lattice limma lme4 mvtnorm]; };
@@ -4135,6 +4154,7 @@ in with self; {
   SSDM = derive2 { name="SSDM"; version="0.2.8"; sha256="19l78dkjk76ababkd7xsfn0fy99khfa4i502q4vllpvch4cjz51c"; depends=[dismo e1071 earth gbm ggplot2 mgcv nnet poibin randomForest raster reshape2 rpart scales shiny shinydashboard shinyFiles sp spThin]; };
   SSDforR = derive2 { name="SSDforR"; version="1.5.12"; sha256="12vhdh808w4qbr7ipidx79y0lsn04za7d0m6dxpn8mgbplr64kdb"; depends=[MAd MASS metafor psych SingleCaseES TSA TTR]; };
   SSLASSO = derive2 { name="SSLASSO"; version="1.2-2"; sha256="0vnn9ksdf0qgjflgx1sfj6q6j9jfnarbx2222rh9kb10jy8b16jv"; depends=[]; };
+  SSLR = derive2 { name="SSLR"; version="0.9.0"; sha256="1k7a8f25jhswfhagbn8dr0lhc9148475v264kh0a4p0852vsbdlr"; depends=[dplyr foreach generics magrittr parsnip plyr proxy purrr RANN Rcpp RcppArmadillo rlang RSSL]; };
   SSM = derive2 { name="SSM"; version="1.0.1"; sha256="1h8yyzh5rn5jay70kyzvwirfndi049a5w28qigrjv5rxd7ml84l7"; depends=[]; };
   SSN = derive2 { name="SSN"; version="1.1.15"; sha256="057lh2ym82ff3c25vyh97csns4jwlbvxwc4jai0i4yplxf0ccmha"; depends=[BH igraph lattice maptools MASS Matrix rgdal rgeos RSQLite sp]; };
   SSOSVM = derive2 { name="SSOSVM"; version="0.2.1"; sha256="11wlalpw6yhvv95xr8vvgxgl4jafc2ghzsk5wqyv71ahxarmrlss"; depends=[MASS mvtnorm Rcpp RcppArmadillo]; };
@@ -4201,13 +4221,13 @@ in with self; {
   SeerMapperWest = derive2 { name="SeerMapperWest"; version="1.2.0"; sha256="1mq88ljz86bk4mjj6pmrd8k61rf69s7g1j8by4c0s3c6fnkwb3qg"; depends=[sp]; };
   SegCorr = derive2 { name="SegCorr"; version="1.2"; sha256="1g4bwfs539jf7ckzjyindi3v1av7vd38yz16m7cb20qqa0a33kbj"; depends=[jointseg]; };
   Segmentor3IsBack = derive2 { name="Segmentor3IsBack"; version="2.0"; sha256="0c7ag9svd1xlm60padg41gvz7qnbcp41kg3cz2dvi9hy2yrqw0qd"; depends=[]; };
-  Sejong = derive2 { name="Sejong"; version="0.01"; sha256="1d9gw42dbs74w7xi8r9bs6dhl23y16yxqzyhqqayvcm98q3l77nf"; depends=[]; };
+  Sejong = derive2 { name="Sejong"; version="0.01"; sha256="0j10szvdn32b7xnvhcbj89xma64bq62936b3r18n1limjpismfws"; depends=[]; };
   SeleMix = derive2 { name="SeleMix"; version="1.0.1"; sha256="1qzy59wbjh8llm66l70xi0p3lv94iawh2h5vwa9sqy2ra5vmpaxk"; depends=[mvtnorm]; };
   Select = derive2 { name="Select"; version="1.4"; sha256="1qx4wwxxwjq31vf645xvwb0y2z5h4v6ca8fcrfpaj5kc33f333v2"; depends=[ade4 FD lattice latticeExtra Rsolnp]; };
   SelectBoost = derive2 { name="SelectBoost"; version="2.0.0"; sha256="137fxvlpc2vyn5w93ih8bm6pp198xwlbb9ky8dhxgarh0syz8g4v"; depends=[abind Cascade glmnet igraph lars msgps Rfast spls varbvs]; };
   SelvarMix = derive2 { name="SelvarMix"; version="1.2.1"; sha256="02d16ffw5syq0d3yiim9jgrjlz99n956zxp23idpsmq6lb2whq66"; depends=[glasso Rcpp RcppArmadillo Rmixmod]; };
-  SemNeT = derive2 { name="SemNeT"; version="1.1.3"; sha256="0r0xr918smq3yn93hx1k0h4vk634ml7zh7d18r2996d72q3ns9ik"; depends=[doParallel dplyr foreach ggplot2 igraph lsa magrittr NetworkToolbox networktools pbapply plyr purrr qgraph RColorBrewer SemNetCleaner]; };
-  SemNetCleaner = derive2 { name="SemNetCleaner"; version="1.1.4"; sha256="1rdsnh46yiagdxmgq530y9jq2vil1nrfrzmzbcxmigd7wib8cr26"; depends=[foreign htmlTable hunspell knitr R_matlab readxl rmarkdown searcher SemNetDictionaries stringdist stringi]; };
+  SemNeT = derive2 { name="SemNeT"; version="1.2.0"; sha256="1j1i0c5l490l5h38ni9ylycfmks9giirzk44qhyx2mdqvy1sq5sn"; depends=[doParallel dplyr foreach ggplot2 igraph lsa magrittr NetworkToolbox networktools pbapply plyr purrr qgraph RColorBrewer SemNetCleaner]; };
+  SemNetCleaner = derive2 { name="SemNetCleaner"; version="1.1.5"; sha256="1ak6y3jc2dbfl7bd5qg6hh5lrpisxfp87v8408qvvji6962h5fm5"; depends=[foreign htmlTable hunspell knitr R_matlab readxl rmarkdown searcher SemNetDictionaries stringdist stringi]; };
   SemNetDictionaries = derive2 { name="SemNetDictionaries"; version="0.1.5"; sha256="179dgq65m4kzbqxgcicnchahslildc43f506sa7x2prbr7by27d3"; depends=[]; };
   Semblance = derive2 { name="Semblance"; version="1.1.0"; sha256="1kzrg5z3244nx9y37p092wpangni3fxpx04i5fb4dhrmav4rvgab"; depends=[DescTools fields msos PerformanceAnalytics]; };
   SemiCompRisks = derive2 { name="SemiCompRisks"; version="3.3"; sha256="06anhf0kqaz4i84g73w3l4gf0q2mwi00vlkciqfbxpwgrbacplf6"; depends=[Formula MASS survival]; };
@@ -4234,7 +4254,6 @@ in with self; {
   Seurat = derive2 { name="Seurat"; version="3.1.4"; sha256="0lhjbjhv1hnx5i3gkx41k68i8ykay3f24708h30wx9xywww9lsvi"; depends=[ape cluster cowplot fitdistrplus future future_apply ggplot2 ggrepel ggridges httr ica igraph irlba KernSmooth leiden lmtest MASS Matrix metap patchwork pbapply plotly png RANN RColorBrewer Rcpp RcppAnnoy RcppEigen RcppProgress reticulate rlang ROCR rsvd Rtsne scales sctransform tsne uwot]; };
   ShapeChange = derive2 { name="ShapeChange"; version="1.4"; sha256="1ch7avx8mxjk8vrp17inaihmbsv968wflyk1n4fbjvacbl24vn2b"; depends=[coneproj quadprog]; };
   ShapePattern = derive2 { name="ShapePattern"; version="2.0.2"; sha256="0mby6zr5vv145qn744xkgas1zw7hns9faygp8y0887qx57qhpyw7"; depends=[landscapemetrics raster rgdal rgeos sp]; };
-  ShapeSelectForest = derive2 { name="ShapeSelectForest"; version="1.3"; sha256="1vvfl1ldrn0l9w38hx0hhszvj5a2dpmfl6ljzw7f0ji181lrx96m"; depends=[coneproj raster rgdal]; };
   SharpeR = derive2 { name="SharpeR"; version="1.2.1"; sha256="1xcnbjwcqc9mhb6kqcarkmjcr5zrn5hryfp4i4rayra9yk9k18r8"; depends=[matrixcalc sadists]; };
   ShiftShareSE = derive2 { name="ShiftShareSE"; version="1.0.1"; sha256="09sm3frapxv1zhxy84wqyaxdk5jx62ijszfa34zlknlgivividfy"; depends=[Formula]; };
   ShinyImage = derive2 { name="ShinyImage"; version="0.1.0"; sha256="0nhsaq6i9lr8gqpdkahw3qr0c0cb0qwc0nqpk1ism21l6zg6ahc9"; depends=[EBImage R6 shiny shinyjs]; };
@@ -4371,7 +4390,7 @@ in with self; {
   SportsAnalytics = derive2 { name="SportsAnalytics"; version="0.2"; sha256="1vb080ak1mfvr6d0q9i3r8hd547ba80bavjdcri0gclqqcjf1ach"; depends=[]; };
   SqlRender = derive2 { name="SqlRender"; version="1.6.4"; sha256="14vl18295fg4wmk6j7dgjx85inbyix7zs25j81g88q4q93448sax"; depends=[rJava]; };
   Sstack = derive2 { name="Sstack"; version="1.0.1"; sha256="137vsas2kw3l37c141g51sgx0j6z8ys6hbxjmsdymz1fxsjr4adg"; depends=[doParallel dplyr foreach randomForest]; };
-  StAMPP = derive2 { name="StAMPP"; version="1.5.1"; sha256="0yyssscx3l4csban66gb4q35h37gf7pqvvycfsy56n96pnnlrgkf"; depends=[adegenet doParallel foreach pegas]; };
+  StAMPP = derive2 { name="StAMPP"; version="1.6.1"; sha256="1x6b032xadjn8yq3n662r9f0lyg5xl71q2lksvx8rn5fmpjlqqrs"; depends=[adegenet doParallel foreach pegas]; };
   StMoMo = derive2 { name="StMoMo"; version="0.4.1"; sha256="1c4v2gjipq1y4crc6bqvz2x5c02bl10mh9jacg8dqb2dffsh5y44"; depends=[fanplot fields forecast gnm MASS RColorBrewer reshape2 rootSolve]; };
   StMoSim = derive2 { name="StMoSim"; version="3.1.1"; sha256="1y4lnbpgdza6r6w3q161nlmg8775g3zv323amcwxcj41r4v41p96"; depends=[Rcpp RcppParallel]; };
   StVAR = derive2 { name="StVAR"; version="1.1"; sha256="0wz5f5i9927fs1s8yczwqs022k912220m28l1sv5f0r081iv656i"; depends=[ADGofTest matlab MCMCpack numDeriv]; };
@@ -4393,7 +4412,7 @@ in with self; {
   SteinIV = derive2 { name="SteinIV"; version="0.1-1"; sha256="1bm4lc7g9h9jkb1dpzb84289bwxcywp0a8vylv6ipvhiqbqk5d95"; depends=[]; };
   Stem = derive2 { name="Stem"; version="1.0"; sha256="1fr02mi5qyxbqavdh2hg8ggw4nfjh3vs7g0vh834h6y0v53l71r5"; depends=[MASS mvtnorm]; };
   StempCens = derive2 { name="StempCens"; version="0.1.0"; sha256="11gspjrcl6yiyr19hankan5mcxipfsdkhha6nsiybs1chg5wx6f4"; depends=[distances ggplot2 gridExtra Matrix MCMCglmm mvtnorm optimx sp spTimer ssym tmvtnorm]; };
-  StepReg = derive2 { name="StepReg"; version="1.4.0"; sha256="0lbizly4s4zh1ykfdabrc8145bw7vkgh24qb1q5yp0pahfiyb85p"; depends=[Rcpp RcppEigen ResourceSelection statmod]; };
+  StepReg = derive2 { name="StepReg"; version="1.4.1"; sha256="1ash73v9qwy1717w00vajamkd4rb8rsaxch7y9479yqagclfbl18"; depends=[Rcpp RcppEigen]; };
   StepSignalMargiLike = derive2 { name="StepSignalMargiLike"; version="2.6.0"; sha256="0j85lvs2bljfhf482r31sq3xgk8l73hcw22wgxxp8z8nla38cwf9"; depends=[Rcpp]; };
   StepwiseTest = derive2 { name="StepwiseTest"; version="1.0"; sha256="1fdm4s9l6grgd45r98ybbsh40rnmnn16c0id6lv28cpmssi0iphi"; depends=[Rcpp RcppArmadillo]; };
   StereoMorph = derive2 { name="StereoMorph"; version="1.6.3"; sha256="0sr8i6hq9iir2f717yvm5kdda047hamsqcrl553jjzzcbxg0y5m1"; depends=[bezier jpeg MASS png Rcpp rjson shiny svgViewR tiff]; };
@@ -4405,7 +4424,7 @@ in with self; {
   StratifiedBalancing = derive2 { name="StratifiedBalancing"; version="0.3.0"; sha256="0pklnm0q0imdhyzhwyb4i0j441dkk4k6qqlx8d4q2xnl62drqnvv"; depends=[bnlearn plyr]; };
   StratifiedMedicine = derive2 { name="StratifiedMedicine"; version="0.2.2"; sha256="1dy78bx865v0p00cdvf9jx28wp7y8j15xinz7vy4j3w8ymalns8y"; depends=[dplyr ggparty ggplot2 glmnet mvtnorm partykit ranger survival]; };
   StratifiedRF = derive2 { name="StratifiedRF"; version="0.2.2"; sha256="0a5djia6xacs17nnr5knr1acwzicrffz73q9nvnhdmihazq8v27d"; depends=[C50 dplyr]; };
-  StratigrapheR = derive2 { name="StratigrapheR"; version="1.0.0"; sha256="1pav5zgq0h1fm15sd3q8xiyd5dv4xz06m90r99i1n5348xvg33cq"; depends=[diagram dplyr shiny stringr XML]; };
+  StratigrapheR = derive2 { name="StratigrapheR"; version="1.0.1"; sha256="0b63n91ns4z745nrdrrnjmj1pmqi5plj1fkbh9ix7i6a7bd2n023"; depends=[diagram dplyr shiny stringr XML]; };
   StreamMetabolism = derive2 { name="StreamMetabolism"; version="1.1.2"; sha256="1sv30i7armk7jhxg5x9lh0r9qq3xixn1k2h0q89halkh1yraal8a"; depends=[chron maptools zoo]; };
   StressStrength = derive2 { name="StressStrength"; version="1.0.2"; sha256="1fq26bzmwsk4nzz9bgasyxz9alw8x2ssahz67mham7vw483w79pd"; depends=[]; };
   String2AdjMatrix = derive2 { name="String2AdjMatrix"; version="0.1.0"; sha256="058r30kjjna02nmd6ngqfcnn1yk5390i20xvl6qb5qk3bcp2wmxn"; depends=[stringr]; };
@@ -4434,7 +4453,7 @@ in with self; {
   Superpower = derive2 { name="Superpower"; version="0.0.3"; sha256="0hwlgscygjcqiclgac97ffcmw081g91rvqbd2pj0z0kijz7g597x"; depends=[afex dplyr emmeans ggplot2 gridExtra magrittr MASS mvtnorm reshape2]; };
   SuppDists = derive2 { name="SuppDists"; version="1.1-9.5"; sha256="1i3iq12a5x5k49ac01mikzcrrq9gc148xq3m08h4xm07bha6f2v8"; depends=[]; };
   SurfaceTortoise = derive2 { name="SurfaceTortoise"; version="1.0.1"; sha256="0q0swp0xs3lmfx2dxffqrna2spyr2l9ka0zbhmw8nkgb1w5rq5q6"; depends=[gstat raster rgeos sp]; };
-  Surrogate = derive2 { name="Surrogate"; version="1.6"; sha256="0xd8xjqn64ppg4qq7nhibws7k68gp6d21x1385hd3qcav8bq2hgq"; depends=[extraDistr ks lattice latticeExtra lme4 logistf MASS mixtools msm nlme OrdinalLogisticBiplot rgl rms rootSolve survival]; };
+  Surrogate = derive2 { name="Surrogate"; version="1.7"; sha256="17f91s6fdlbgwxqggnylx45n3j2mdsqi9613ayrhi77yhqhjpm16"; depends=[extraDistr ks lattice latticeExtra lme4 logistf MASS mixtools msm nlme OrdinalLogisticBiplot rgl rms rootSolve survival]; };
   SurrogateOutcome = derive2 { name="SurrogateOutcome"; version="1.0"; sha256="0x91bmr4n9zn9cc72s91fzzsqhzhrkfpcbcla00gcsfmbjqz3997"; depends=[survival]; };
   SurrogateTest = derive2 { name="SurrogateTest"; version="1.1"; sha256="0m6m44vsfdgv47sswi2s8snmypa7s2ppad73fqnvymq8fm2b3yl2"; depends=[survival]; };
   SurvBoost = derive2 { name="SurvBoost"; version="0.1.2"; sha256="17av00iwa3kpw0ihrvvynrfcghnq492b5k7n9fxfgf2nily24x2p"; depends=[directlabels ggplot2 mvtnorm plyr Rcpp RcppArmadillo RcppParallel reshape2 survival]; };
@@ -4562,6 +4581,7 @@ in with self; {
   TTmoment = derive2 { name="TTmoment"; version="1.0"; sha256="0a4rdb4fk1mqnvvz0r15kni0g5vcj4xkkcwwv7c2gxc94xh5i5ih"; depends=[mvtnorm]; };
   TULIP = derive2 { name="TULIP"; version="1.0"; sha256="0v0qnhlgj31mdl8xhhcbdlnmfcfn2scpr0bf2jxkxpyxiavqdfxy"; depends=[glmnet MASS Matrix tensr]; };
   TUWmodel = derive2 { name="TUWmodel"; version="1.1-1"; sha256="1am3ywcj1rqgz5i2g9c6d6fgiv8b2nabllfy84xx1n18pin7mfbk"; depends=[]; };
+  TVMM = derive2 { name="TVMM"; version="1.0"; sha256="1jiabmnpkm3gw4arw82w6g5jl7nbskjkvr7lvs9q1jfwjknjdrx9"; depends=[MASS robustbase]; };
   Taba = derive2 { name="Taba"; version="0.1.0"; sha256="0pqmz7gyf719s5b7mjmmmxr5il3pzgsymibxir6ljpgdsdgbgi5s"; depends=[robustbase]; };
   Table1Heatmap = derive2 { name="Table1Heatmap"; version="1.1"; sha256="1nrabjivfsdhaqmlq365pskkrp99jqsxn8vy03mdnqn5h5zv7wvx"; depends=[colorRamps]; };
   TableHC = derive2 { name="TableHC"; version="0.1.2"; sha256="1il86xjc4h1sdq3gpi4s7xbkcgzpgfqy5ivzjdkbq45d06pssk21"; depends=[]; };
@@ -4669,7 +4689,7 @@ in with self; {
   TwoRegression = derive2 { name="TwoRegression"; version="0.1.2"; sha256="0qr9zrfmbh4c4207gvwa384q5njjx6nsl6lc58d25m8bkfalifpi"; depends=[data_table dplyr magrittr seewave]; };
   TwoSampleTest_HD = derive2 { name="TwoSampleTest.HD"; version="1.0"; sha256="0xdib7hwbpy549pxihai8dpy91h94wwl3b76jn7p0m15ky7z18df"; depends=[]; };
   TwoStepCLogit = derive2 { name="TwoStepCLogit"; version="1.2.5"; sha256="050y7na91izg36gkwd8yn8rx3r39dk6qlvhd3137f3jnk4v00bck"; depends=[survival]; };
-  UBCRM = derive2 { name="UBCRM"; version="1.0.1"; sha256="1h9f8wlxdgb67qqqnfhd9gfs4l2cq84vajhcb0psva0gwdd1yf6i"; depends=[]; };
+  UBCRM = derive2 { name="UBCRM"; version="1.0.1"; sha256="04pcl8m56mw2r09xh9n6xvv18wxrfi89qf9d2d1rhk93yqdigdqr"; depends=[]; };
   UBL = derive2 { name="UBL"; version="0.0.6"; sha256="0238irg7r3g248h4x4bdb308wvfqq99hwykywf4k2bssdd25kwjk"; depends=[automap gstat MBA randomForest sp]; };
   UCR_ColumnNames = derive2 { name="UCR.ColumnNames"; version="0.1.0"; sha256="1nwwq93f60r9aik51l7mzckg81f81nz5kgzynyzp5sm4y2wmpzwn"; depends=[]; };
   UCSCXenaShiny = derive2 { name="UCSCXenaShiny"; version="0.4.0"; sha256="1m67ahh2k0mc8215nnb32r8nf9niax7y5nn3qpwg1fcav7g9ns66"; depends=[dplyr DT ggplot2 ggpubr magrittr plotly RColorBrewer shiny shinyBS shinyjs shinythemes shinyWidgets tibble UCSCXenaTools zip]; };
@@ -4699,7 +4719,7 @@ in with self; {
   UniDOE = derive2 { name="UniDOE"; version="1.0.2"; sha256="14jz4acrvbv59sbr7gya8g0z749vv0i04gl5wl0y4218byjvw6bs"; depends=[Rcpp]; };
   UniIsoRegression = derive2 { name="UniIsoRegression"; version="0.0-0"; sha256="0lmrmb9sbk41ak7sbcrzhfnijb1skgb4lqg9m9imc98lcp69h7z0"; depends=[Rcpp]; };
   Unicode = derive2 { name="Unicode"; version="13.0.0-1"; sha256="12q98hdh46bbx17z6869bmn1j9bbhf524flvn76sqf20phk81xjy"; depends=[]; };
-  UniprotR = derive2 { name="UniprotR"; version="1.2.3"; sha256="0xlszwlrfi51day88ailgwr88wn7n0fdc0ms39gqy5jcw0xc9yky"; depends=[alakazam data_tree dplyr ggplot2 ggpubr gridExtra httr magick magrittr plyr scales tidyverse]; };
+  UniprotR = derive2 { name="UniprotR"; version="1.2.4"; sha256="1zzxm93390nxw27fr62vhd8pafkq6fiy8if0cx4raznlym5615is"; depends=[alakazam data_tree dplyr ggplot2 ggpubr gridExtra httr magick magrittr plyr scales tidyverse]; };
   UnitCircle = derive2 { name="UnitCircle"; version="0.1.3"; sha256="0z5ssps8l5ka4aw4984qml15scw4pfssara5dls82afhfhpkszsr"; depends=[]; };
   UnivRNG = derive2 { name="UnivRNG"; version="1.2"; sha256="0cx6bdzzypxnaqi4wkb20saqd5sfa2rga5cqh694l70vj9c3zw26"; depends=[]; };
   UpSetR = derive2 { name="UpSetR"; version="1.4.0"; sha256="007i0njnjjy7vbrxabwav7a1kk2n0hn2mkvqsdzzfk10ckp5y7im"; depends=[ggplot2 gridExtra plyr scales]; };
@@ -4760,8 +4780,8 @@ in with self; {
   VetResearchLMM = derive2 { name="VetResearchLMM"; version="1.0.0"; sha256="1a7wm04bsr5shak7l8ypxlhlnx3qkq1jdpjnji1n05p6b00ih9h1"; depends=[ggplot2 lme4 lmerTest multcomp nlme]; };
   ViSiElse = derive2 { name="ViSiElse"; version="1.2.2"; sha256="1ay09dahlqnfrgf4gl4s45a4ahrk2xliagxqz5h826w2vzsawqcc"; depends=[chron colorspace ggplot2 Matrix reshape2 stringr]; };
   VineCopula = derive2 { name="VineCopula"; version="2.3.0"; sha256="0w9lpdb9mjia2vg9h4v418g8zw8xfq83hmih37hf3yp7p88vja1k"; depends=[ADGofTest lattice MASS mvtnorm]; };
+  Visualize_CRAN_Downloads = derive2 { name="Visualize.CRAN.Downloads"; version="1.0"; sha256="0hzq00dbddzwvhryl38sffchxqz52xk8fizsfjgk1xxjr3g8icw4"; depends=[cranlogs htmlwidgets plotly]; };
   Voss = derive2 { name="Voss"; version="0.1-4"; sha256="056izh1j26vqjhjh01fr7nwiz1l6vwr5z4fll87w99nc5wc4a467"; depends=[fields]; };
-  VoxR = derive2 { name="VoxR"; version="0.5.1"; sha256="07lsp6lrkq0gv55m84dl9w7gz5246d9avypqnkz96n3rbbgd0w5z"; depends=[]; };
   W2CWM2C = derive2 { name="W2CWM2C"; version="2.0"; sha256="139rbbhshiap3iq4s4n84sip3cwwjn2x7lm7kmzwj5glhl5dc6ga"; depends=[colorspace wavemulcor waveslim]; };
   W3CMarkupValidator = derive2 { name="W3CMarkupValidator"; version="0.1-6"; sha256="0nfay5nqss3zlw4nikj8h3zzlnjfxjch4pm3qky15qrcigrybrbl"; depends=[curl xml2]; };
   WARN = derive2 { name="WARN"; version="1.2-4"; sha256="18gfk9vqcqarj7j5i240wqv2dclg3csng4mih5izj40xaaxaf6q5"; depends=[MASS]; };
@@ -4825,7 +4845,7 @@ in with self; {
   XGR = derive2 { name="XGR"; version="1.1.7"; sha256="1s65n4d67wj24rn6gi9hh3dlmghrxxjhm6nknhnsdjysab24njnv"; depends=[BiocGenerics dnet dplyr GenomicRanges ggnetwork ggplot2 ggrepel igraph IRanges MASS Matrix RCircos S4Vectors supraHex tidyr]; };
   XHWE = derive2 { name="XHWE"; version="1.0"; sha256="1ca8y9q3623d0vn91g62nrqf3pkbcbkpclmddw5byd37sdrgsi5l"; depends=[]; };
   XKCDdata = derive2 { name="XKCDdata"; version="0.1.0"; sha256="1lx9frlbc549qrh4d3m79r3l9icfzqkgfgp8raa8x46a2havi0a5"; depends=[assertthat dplyr glue htmltools httr jsonlite magrittr tibble]; };
-  XLConnect = derive2 { name="XLConnect"; version="0.2-15"; sha256="1cvq677m09gwpwhj3fy15mbfn0s0b1y35w95pjnijiwpcpdxiq96"; depends=[rJava XLConnectJars]; };
+  XLConnect = derive2 { name="XLConnect"; version="1.0.1"; sha256="0fbfkl26v42bvbz27kjw8cqnq67mwalxqpp5avqjphc17i5a6ylj"; depends=[rJava]; };
   XLConnectJars = derive2 { name="XLConnectJars"; version="0.2-15"; sha256="1ipqyjgsh5a1ygsbhyqxyj9wfjv1f73cyfrpx6jvf0is5jklhvxx"; depends=[rJava]; };
   XML = derive2 { name="XML"; version="3.99-0.3"; sha256="0lzpqwajs5xaqdna50vl24qkp9xvh00zypjjzy6kgdzk11isgdw1"; depends=[]; };
   XML2R = derive2 { name="XML2R"; version="0.0.6"; sha256="0azfh950r2b7ck3n1vzk3mdll7zy844nx3mbk676jxnj8gg7nxk5"; depends=[plyr RCurl XML]; };
@@ -4852,9 +4872,6 @@ in with self; {
   ZRA = derive2 { name="ZRA"; version="0.2"; sha256="1sx1q5yf68hhlb5j1hicpj594rmgajqr25llg7ax416j0m2rnagi"; depends=[dygraphs forecast]; };
   ZVCV = derive2 { name="ZVCV"; version="1.0.0"; sha256="1npw836q2skx54843lgxvb0rfwafckjc8k8dljykm60ad3z7zak8"; depends=[abind glmnet mvtnorm partitions Rcpp RcppArmadillo]; };
   ZeBook = derive2 { name="ZeBook"; version="1.1"; sha256="0v98kbz9njjdx60x9dn8hl8mc6x19i5knjyg2gkwfd667yy1rkl6"; depends=[deSolve triangle]; };
-  Zelig = derive2 { name="Zelig"; version="5.1.6.1"; sha256="0mnq397kp3glgc5c2802r3q2gxdbrz05qnpl3431avzywmbjn55s"; depends=[AER Amelia coda dplyr Formula geepack jsonlite MASS MatchIt maxLik MCMCpack quantreg sandwich survey survival VGAM]; };
-  ZeligChoice = derive2 { name="ZeligChoice"; version="0.9-6"; sha256="1whfwc42lsi54xfr423h6jwbvpj6yjyyf0854k1f1ms13liahm8w"; depends=[dplyr Formula jsonlite MASS VGAM Zelig]; };
-  ZeligEI = derive2 { name="ZeligEI"; version="0.1-2"; sha256="0kilzfqmm6a41mmjvlynh3rnj30fqiq8gsja28fzwpf0lbl89slg"; depends=[dplyr ei eiPack Formula jsonlite MASS MCMCpack Zelig]; };
   ZillowR = derive2 { name="ZillowR"; version="0.1.0"; sha256="1wrr58p76ps29fqzzwgfvfibxrvc72p2yzs5kc2rv1yxzzcpyxvb"; depends=[RCurl XML]; };
   ZipRadius = derive2 { name="ZipRadius"; version="1.0.1"; sha256="00q4a2bsajs5ns4vdm289iaj9mczxjn3ssyrnmg2z4wicr2ljizv"; depends=[dplyr geosphere ggplot2 magrittr rlang testthat]; };
   Zseq = derive2 { name="Zseq"; version="0.2.0"; sha256="06dndi2b1q79bmxax11bv0l5ifcz1mhpvbn90y6a6xymrgcq0ivi"; depends=[gmp]; };
@@ -4916,7 +4933,7 @@ in with self; {
   activpalProcessing = derive2 { name="activpalProcessing"; version="1.0.2"; sha256="1y0bjx2qx53iy930y9iww4q1yzjj8y16cwgixk1mq3w4g1f116d1"; depends=[chron]; };
   actogrammr = derive2 { name="actogrammr"; version="0.2.3"; sha256="1jzvarmd41yqlrkagzlc8m19n5mn0w0b36fy50lyvgrfsafjfbqa"; depends=[dplyr ggplot2 lubridate readr tidyr]; };
   actuar = derive2 { name="actuar"; version="2.3-3"; sha256="0aw3hlan5y22mdqk1wvnw9ksqhwp4yy5hi0dpv21p7s0hyxhphih"; depends=[expint]; };
-  actuaryr = derive2 { name="actuaryr"; version="1.0.0"; sha256="19rxz2i7x51dc7r5j37av3ahf99z6swjcixs93slmjymg358r1rq"; depends=[lubridate]; };
+  actuaryr = derive2 { name="actuaryr"; version="1.1.0"; sha256="0v33rrw1m030a5w3v3f7pigfw1vwsclh48av0yjiha26mpvi3cal"; depends=[crayon dplyr lubridate magrittr purrr]; };
   ada = derive2 { name="ada"; version="2.0-5"; sha256="1h3a07czp0w3hrhjcg1fz721y8vsfclzqi3rq8qfzgpfb4h1f06r"; depends=[rpart]; };
   adabag = derive2 { name="adabag"; version="4.2"; sha256="109wrl1pwvmyv2l909hrvk7dg4aa9pv449mvdycp50zwrsw9w0a7"; depends=[caret doParallel foreach rpart]; };
   adagio = derive2 { name="adagio"; version="0.7.1"; sha256="1h9l0ddrxq8y35iy9hdkxdvdwsqpnpkzzbkbwwhm4380lq1m7a3k"; depends=[]; };
@@ -4976,7 +4993,7 @@ in with self; {
   afex = derive2 { name="afex"; version="0.26-0"; sha256="0h3p1svgk1ap3lj08fi8nzdb3710h99bv150krf1x8wci1a0r1if"; depends=[car lme4 lmerTest pbkrtest reshape2]; };
   affluenceIndex = derive2 { name="affluenceIndex"; version="1.0"; sha256="1nb2dlsnvjsvkyrfdaskmpr3kv3qgdfb60xgmzvscfli0yf4dzr1"; depends=[]; };
   afmToolkit = derive2 { name="afmToolkit"; version="0.0.1"; sha256="1pm3xyh9vq10mmfgknlvlfr9f027xprrgy1dvbbxpi7f111hv1gl"; depends=[assertthat DBI dplyr ggplot2 gridExtra minpack_lm scales tibble]; };
-  afpt = derive2 { name="afpt"; version="1.1.0.0"; sha256="0q8asx5qkw7l01qrb2gbwadsbhlgj7mh32sr8xi28v7jlpncj627"; depends=[]; };
+  afpt = derive2 { name="afpt"; version="1.1.0.1"; sha256="0cg5cdm9nl1hs6f3j0ljpw4bkqvh3ksyj615b9nnbqs5k28lyds9"; depends=[]; };
   aftgee = derive2 { name="aftgee"; version="1.1.3"; sha256="1zkb99938q8pp318a0c0bpgzcqxc8ijygfz904lz6n40c5i2i9lz"; depends=[BB geepack MASS survival]; };
   agRee = derive2 { name="agRee"; version="0.5-2"; sha256="1fhpkhnq8gbdy8k2w5wwn7h7gj0mmvk052fqxfazksxrlqicbbhb"; depends=[coda lme4 miscF R2jags]; };
   aggregation = derive2 { name="aggregation"; version="1.0.1"; sha256="0j9g604m2ccc7hcy02539yja9cf3xcbl25gvp838bp4x8w18my46"; depends=[]; };
@@ -4986,12 +5003,14 @@ in with self; {
   agridat = derive2 { name="agridat"; version="1.16"; sha256="1kgmjrj207md86qivadkmv3s2gh3hi9zv63bsj8b9vlcd9f58pfk"; depends=[]; };
   agriwater = derive2 { name="agriwater"; version="1.0.0"; sha256="0m1dpv69nf3pjp63z3a5710skgb6sbrmjv6b8rxvq9lrw63993g9"; depends=[raster rgdal sp]; };
   agrmt = derive2 { name="agrmt"; version="1.40.4"; sha256="1y2gnq6b4zkxknygg73r8qrd435y7c69iqn8i56kwk1ccc1rwddx"; depends=[]; };
+  agroclim = derive2 { name="agroclim"; version="0.1.0"; sha256="16cyqplzmwziqwkicix0sr06zhc0yx615iv3hda0cxbdyf2rllk3"; depends=[abind cowplot easyNCDF ggforce ggplot2 ggpubr gtable multiApply ncdf4 plyr raster reshape sp zoo]; };
   agrostab = derive2 { name="agrostab"; version="0.1.0"; sha256="0mcskv3144j594wqljzn5pwbhkxh6sb76b1c2wabzjvi61zrapiv"; depends=[dplyr ggplot2 rlang]; };
   agsemisc = derive2 { name="agsemisc"; version="1.3-1"; sha256="1905q35jgjhghlawql43yh296kbpysp927x3hj750yshz5zayzyr"; depends=[lattice MASS]; };
   ahaz = derive2 { name="ahaz"; version="1.14"; sha256="1z7w5rxd5cya7kxhgxqvn72k87y33ginxra9g7j9wrfs5jgx6kvx"; depends=[Matrix survival]; };
   ahnr = derive2 { name="ahnr"; version="0.3.1"; sha256="1g8m3q108ricfyn4fjjaihpr93xz7fm2sfzg3i0fz1n1i703jwm8"; depends=[ggplot2 magrittr matrixcalc pdist pracma purrr visNetwork]; };
   ahp = derive2 { name="ahp"; version="0.2.12"; sha256="0zjhgl0smzx4bkhmdm4rmpyrq4hmxy1nkxvwqjr40pz7vm69icqx"; depends=[data_tree DiagrammeR formattable yaml]; };
   ahpsurvey = derive2 { name="ahpsurvey"; version="0.4.1"; sha256="1r7x4c318nzbx0ppm9272kfpz2bln1cafkv9irnj85nsdcravr33"; depends=[dplyr knitr magrittr randomNames Rdpack tidyr]; };
+  aiRly = derive2 { name="aiRly"; version="0.1.0"; sha256="0d3w5dwk0b3pd49zw2005rili4p3l1i3x4hzp8cf6rljr86x01cy"; depends=[httr jsonlite reshape2 tibble]; };
   aiRthermo = derive2 { name="aiRthermo"; version="1.2.1"; sha256="058082qdfi1pbdgf26vbfahri1kbc8b2l816q4dq89j5aj5is0a2"; depends=[]; };
   aibd = derive2 { name="aibd"; version="0.1.7"; sha256="0hylhjfqb3l11cjjsamcd4j0w4ai6qrplzg7ys8r73x1wmhrr9as"; depends=[commonsMath rscala]; };
   aidar = derive2 { name="aidar"; version="1.0.5"; sha256="1q2iz2qzh2yl0v0sc537xq4vbx2nblym3kv419vr7jvrghdpx3vj"; depends=[XML]; };
@@ -5026,6 +5045,7 @@ in with self; {
   allelic = derive2 { name="allelic"; version="0.1"; sha256="0xs4kd3vqb5ph8kqc3lcqgirrdkz8b627pvnczvci2g0sr3cl18j"; depends=[]; };
   allestimates = derive2 { name="allestimates"; version="0.1.6"; sha256="1jrp5nh9g2alx8aycysiymhylm2r7lqf8s68ppbgy6liw3iazym2"; depends=[broom dplyr ggplot2 MASS speedglm stringr survival tibble tidyr]; };
   alluvial = derive2 { name="alluvial"; version="0.1-2"; sha256="039frwrsxq1lb97s7vf2vbyyadimkigs628ymym06fxka53drdkp"; depends=[]; };
+  alookr = derive2 { name="alookr"; version="0.3.0"; sha256="0xd80mypg07ifsx17aivciknk231yhi34c8vzwjnyasg2h88s3is"; depends=[caTools cli dlookr dplyr future ggmosaic ggplot2 MASS MLmetrics party purrr randomForest ranger RColorBrewer rlang ROCR rpart tibble tidyr tidyselect unbalanced]; };
   alpaca = derive2 { name="alpaca"; version="0.3.2"; sha256="07r13gyqb876p6zx3pydl414zrgc473dnyn5ja6hmzjmkv19lw4k"; depends=[data_table Formula MASS Rcpp RcppArmadillo]; };
   alphaOutlier = derive2 { name="alphaOutlier"; version="1.2.0"; sha256="09yrbv7jsiymw5gzp8p92ki70v1fys2k75x4sb9s7wy3c58wn1cd"; depends=[nleqslv quantreg Rsolnp]; };
   alphabetr = derive2 { name="alphabetr"; version="0.2.2"; sha256="1pmp6zwhgycb38y5jbvrbv2nza7gyjh508vy09ml483c2cysvc1r"; depends=[clue dplyr multicool Rcpp]; };
@@ -5040,9 +5060,8 @@ in with self; {
   alterryx = derive2 { name="alterryx"; version="0.5.0"; sha256="1p9q4244bm7hf6my8q951idw41xa5gcrdl7znmsng9pwxh8dnz3h"; depends=[base64enc digest httr jsonlite]; };
   altmeta = derive2 { name="altmeta"; version="2.3"; sha256="0fcd2pzp62871b37fcwz1zcidch5akj6a5npcvwzg4zwp8i9rmyl"; depends=[coda rjags]; };
   amap = derive2 { name="amap"; version="0.8-18"; sha256="0zpcb73w413na23f6giml9311jh0j0y766w2fh9i40d2h7bbvyvs"; depends=[]; };
-  amber = derive2 { name="amber"; version="0.1.6"; sha256="0n9idgmkqnnsajybkbgczlrr1hyj5z98rixk451lh1r1j2cv8252"; depends=[classInt doParallel foreach Hmisc latex2exp ncdf4 raster rgdal rgeos scico sp viridis xtable]; };
   ambhasGW = derive2 { name="ambhasGW"; version="0.0.2"; sha256="0v517i4whip45pk6bwlwval9pz367pcgzz62b2z22mrwgi6m6bck"; depends=[raster rgdal yaml]; };
-  ambient = derive2 { name="ambient"; version="0.1.0"; sha256="142q30rhi0wz0gp1v0swm83gbli8j6plpzzpqjwnjc693wd3a1ih"; depends=[Rcpp]; };
+  ambient = derive2 { name="ambient"; version="1.0.0"; sha256="0b8nd8g0ydglql2cwi4wmlnv5kyid8q51vz0p08f9m5x73k3z2bd"; depends=[Rcpp rlang]; };
   ameco = derive2 { name="ameco"; version="0.2.9"; sha256="0vzwsy7gp17ghl1hgcsbfs9rarzl8dl36x6lplnzrisqv3dqmk25"; depends=[]; };
   amelie = derive2 { name="amelie"; version="0.2.1"; sha256="0f4rfijskrw9nmyzbrbz6yfa9d0a5cxjw8n9c36hc6jvh377i7k7"; depends=[]; };
   amen = derive2 { name="amen"; version="1.3"; sha256="1qaznfmnh3dlnp41afd37lr328qzy50hn8hi0c302wj0f992ycqg"; depends=[]; };
@@ -5051,6 +5070,7 @@ in with self; {
   ammistability = derive2 { name="ammistability"; version="0.1.1"; sha256="1vp2857cwn4dd86vj8qf6h4z8hh5q2jvrlpmply8bf70mnmnq18h"; depends=[agricolae ggcorrplot ggplot2 Rdpack reshape2]; };
   ampd = derive2 { name="ampd"; version="0.2"; sha256="0bi8qngd37n60ym516yjcahxc536vdwm60rq5ld32170hww69j7c"; depends=[]; };
   ampir = derive2 { name="ampir"; version="0.1.0"; sha256="1z9ha329fbji9jlly84cn7z2fxclk3n3w0xddq1mw1gqq3dyb8ba"; depends=[caret kernlab Peptides Rcpp]; };
+  amt = derive2 { name="amt"; version="0.0.8"; sha256="1g6s8cmsxi8w6fbmkr0cwq8qafqvni7b7qxl19b1l742mi1j47zv"; depends=[broom checkmate circular ctmm dplyr fitdistrplus FNN geosphere glue KernSmooth lazyeval leaflet lubridate magrittr maptools purrr raster Rcpp rgeos rlang sf sp survival tibble tidyr]; };
   anMC = derive2 { name="anMC"; version="0.2.2"; sha256="0ab215nrqn535g9ayqzvgdckhwcrij1mc1296pvlj3grn3f8rhws"; depends=[mvtnorm Rcpp RcppArmadillo]; };
   anacor = derive2 { name="anacor"; version="1.1-3"; sha256="0mj8g9p4fla0ax9jvcq7kii4lrhj8g872p11nys06anva22qjp51"; depends=[car colorspace fda]; };
   analogsea = derive2 { name="analogsea"; version="0.8.0"; sha256="1naw9qh6rp1hz3mk19jir0qia1daizbfa695qbp1sg6rdh6is8ag"; depends=[httr jsonlite magrittr yaml]; };
@@ -5060,7 +5080,7 @@ in with self; {
   analyz = derive2 { name="analyz"; version="1.4"; sha256="0qdh1gld2dkl0krbhm2vcqg8dfs03dn51rclgsw02554s06dlgxw"; depends=[]; };
   anapuce = derive2 { name="anapuce"; version="2.3"; sha256="05k3ypy4dc8q4jv0by37k66pdwb1wmsd24i6nciris5knfdy9csg"; depends=[]; };
   anchoredDistr = derive2 { name="anchoredDistr"; version="1.0.3"; sha256="07q4np0zryb49cpi7w5iz0qna63cyp9nz13d8ws6x9ccg417r99a"; depends=[DBI dplyr ggplot2 np plyr reshape2 Rmisc RSQLite]; };
-  anchors = derive2 { name="anchors"; version="3.0-8"; sha256="12gd2526y7s2a8i6b9xma2c3sc6zxnwzl6sn8b50hbxizwr8d34j"; depends=[MASS rgenoud]; };
+  anchors = derive2 { name="anchors"; version="3.0-8"; sha256="1s8545d52fmg8w06nwpnv1ppnq6prk39rxgyyjw8909jlxlnxnjr"; depends=[MASS rgenoud]; };
   andrews = derive2 { name="andrews"; version="1.0"; sha256="130i86qkdy1xpcf611jpzqgmd17iik7j7spdcfwzk48f31biyp8v"; depends=[]; };
   anesrake = derive2 { name="anesrake"; version="0.80"; sha256="1p2g51w80jiadlf4asbnsw46asarzlzr5c1yfhdb31ymqxd7p76q"; depends=[Hmisc weights]; };
   angstroms = derive2 { name="angstroms"; version="0.0.1"; sha256="1k8q4pkb5vcjfp2n2dga3q2ydmdxv020k5qzrb6w01ixrgf15d8l"; depends=[nabor ncdf4 proj4 raster sp spbabel]; };
@@ -5143,7 +5163,7 @@ in with self; {
   ari = derive2 { name="ari"; version="0.3.5"; sha256="03w99c918jp23d0kl26vx4m7xjicpgwl5rhn9d0fsm4kvv7j87li"; depends=[hms progress purrr rmarkdown rvest text2speech tuneR webshot xml2]; };
   aricode = derive2 { name="aricode"; version="0.1.2"; sha256="0w5ap0lhp9x67qvz3z80y49311g6h24x11yn8ziv75s3kaxy2wvz"; depends=[Matrix Rcpp]; };
   arkdb = derive2 { name="arkdb"; version="0.0.5"; sha256="00ih2in6q0kismpc5jc8w3609nxjkmybx8i19cjlbr93y2zjm29i"; depends=[DBI progress]; };
-  arkhe = derive2 { name="arkhe"; version="0.2.1"; sha256="0x0rj3r10l2n1n932643gdp36wic0jwlribqhy5awacwm5mgdfzc"; depends=[]; };
+  arkhe = derive2 { name="arkhe"; version="0.2.2"; sha256="0wfi6wgarjfkni4l1wy863i1cbqsckcw3ar357rkcwz3kks47f6p"; depends=[]; };
   arm = derive2 { name="arm"; version="1.10-1"; sha256="0vvp90jygajd6ydky57z66wqjq9msfbl88irj5jbsray574mh4bg"; depends=[abind coda lme4 MASS Matrix nlme]; };
   armada = derive2 { name="armada"; version="0.1.0"; sha256="191iwf5y1za3wssawkyi9jcingfqqxcvv88hglpw6j7y3x5f47hf"; depends=[anapuce circlize ClustOfVar ComplexHeatmap doParallel FAMT glmnet impute mvtnorm qvalue VSURF]; };
   armspp = derive2 { name="armspp"; version="0.0.2"; sha256="098c59hdzr4ly8sx72xkcbjmiz5y65id1slsscwjji1yssb23lqq"; depends=[Rcpp]; };
@@ -5169,7 +5189,7 @@ in with self; {
   asVPC = derive2 { name="asVPC"; version="1.0.2"; sha256="07nfwr0lsfpwgfdgzcdn1svw8dnjfni5ga9q77yjd1bj0wf76ci2"; depends=[ggplot2 plyr]; };
   asaur = derive2 { name="asaur"; version="0.50"; sha256="0c1rgic76w3i2xhna7i52lyc0p01s5b1mxyn55gqw6i19v9mq0b3"; depends=[]; };
   asbio = derive2 { name="asbio"; version="1.6-3"; sha256="15b3018wyf41iajy92a0nzhhz0qfawi05zy5my1hq3l5mrlkidh1"; depends=[deSolve gWidgets gWidgetstcltk lattice multcompView mvtnorm pixmap plotrix scatterplot3d tkrplot]; };
-  asciiSetupReader = derive2 { name="asciiSetupReader"; version="2.3.0"; sha256="1gfd1pqanxc3wsl1pmqc9csbzlffryvjkd1p2fa7b0kbwl1ln63s"; depends=[data_table haven miniUI readr rstudioapi shiny stringr vroom zoo]; };
+  asciiSetupReader = derive2 { name="asciiSetupReader"; version="2.3.1"; sha256="031x6kvzpfh2falzg2qgch2czj74a4mskl8cn83y9rs0shswvmhx"; depends=[data_table haven miniUI readr rstudioapi shiny stringr vroom zoo]; };
   asciicast = derive2 { name="asciicast"; version="1.0.0"; sha256="0vga88cq2hzi0bwq43n1yz5cm8kaag9xpg8v73gj06fb93lhha9x"; depends=[curl jsonlite processx tibble uuid V8]; };
   asciiruler = derive2 { name="asciiruler"; version="0.2"; sha256="0xhkbsy9dypk09avazgxczyfkh3rhdxhwci688dw1lxnhxv1hj24"; depends=[stringr]; };
   asd = derive2 { name="asd"; version="2.2"; sha256="0p3r4qjam3sl3rpcilb0pgx4xx3ly71xqnvkv31vzjs885lgxz4l"; depends=[mvtnorm]; };
@@ -5238,7 +5258,7 @@ in with self; {
   audit = derive2 { name="audit"; version="0.1-1"; sha256="0hrcdcwda5c0snskrychiyfjcbnymkcl2x43bapb6inw9y8989qv"; depends=[]; };
   auditor = derive2 { name="auditor"; version="1.2.0"; sha256="14swypvjfkd8qi34dsv2sg2fj0ls4xz42vy4csd2qxj0zwi3rlap"; depends=[DALEX ggplot2 ggrepel gridExtra hnp scales]; };
   augSIMEX = derive2 { name="augSIMEX"; version="3.7.3"; sha256="0cdqpckc4aiwi2dnkcvk2m9n0bg9f7qmd84n3rdw6clcrd0f95wz"; depends=[Formula MASS nleqslv Rcpp rootSolve]; };
-  augmentedRCBD = derive2 { name="augmentedRCBD"; version="0.1.1"; sha256="0l2x8f8xqrvsn4gbi707xw2nfxcvcmxwgpzq4vh8ngxnq89m2179"; depends=[dplyr emmeans flextable ggplot2 moments multcomp multcompView officer Rdpack reshape2 stringi]; };
+  augmentedRCBD = derive2 { name="augmentedRCBD"; version="0.1.2"; sha256="1m5iwsy6a580k8b2ph186w2aa9nqy1551mwr4zx4cwyh06m8hrq3"; depends=[dplyr emmeans flextable ggplot2 moments multcomp multcompView officer Rdpack reshape2 stringi]; };
   auk = derive2 { name="auk"; version="0.4.0"; sha256="1wrplqbzfa0jp91hxc1jd5vjm587pz1768s7csfqvrgn8ziy9akx"; depends=[assertthat countrycode dplyr httr magrittr rlang stringi stringr tidyr]; };
   aurelius = derive2 { name="aurelius"; version="0.8.4"; sha256="00bpf9sggvnajpmg3zsdgfjinkb6wbrcf1ris7qfhh1rp5rz4m4m"; depends=[gbm glmnet jsonlite]; };
   auth0 = derive2 { name="auth0"; version="0.2.1"; sha256="077nqh28q3b9jb25fy0157l06zpx3x0rg4z5dz2dqsh88xy4nhqj"; depends=[htmltools httr shiny shinyjs yaml]; };
@@ -5255,6 +5275,7 @@ in with self; {
   automultinomial = derive2 { name="automultinomial"; version="2.0.0"; sha256="04rjg3xjlhnkchzvdxqm762z5abm81s5b9czgzmli30zh07bf3fd"; depends=[igraph Matrix numDeriv]; };
   autoplotly = derive2 { name="autoplotly"; version="0.1.2"; sha256="0ajzzj9w9f0v9n37liml63hq5xwkqq53lw85p0a2h99n4lg2hdg8"; depends=[ggfortify ggplot2 plotly]; };
   autoshiny = derive2 { name="autoshiny"; version="0.0.2"; sha256="0s06ynnirgsh19x8qq4020piirkhvjqpvz372syygvlal062y6cn"; depends=[shiny]; };
+  autota = derive2 { name="autota"; version="0.1.3"; sha256="07n34v4lpql5n0y94pm07ywl2z9azjgjrpw7qyfxa6qw6gv71gid"; depends=[base64enc glue httpuv magrittr memoise purrr RJSONIO rlang rlist rstudioapi stringdist stringr xml2]; };
   autothresholdr = derive2 { name="autothresholdr"; version="1.3.5"; sha256="1dvc21w57ir34vhcrbz58scl4ly057yn1ibmdkly99hwfkpihv3x"; depends=[checkmate filesstrings glue ijtiff magrittr purrr Rcpp rlang]; };
   av = derive2 { name="av"; version="0.5.0"; sha256="0v99y47dsa2z3c4qawipdrzynla2aab3x0c8qzdi5w9r5y9a38sh"; depends=[]; };
   available = derive2 { name="available"; version="1.0.4"; sha256="18dqm10dicbvjd5wli4nkv4fip0fgh2b9h9gm5511ayfsdg8lc8l"; depends=[cli clisymbols crayon desc glue jsonlite memoise SnowballC stringdist tibble tidytext udapi yesno]; };
@@ -5298,6 +5319,7 @@ in with self; {
   bagRboostR = derive2 { name="bagRboostR"; version="0.0.2"; sha256="1k9w98p3ad3myzyqhcrc4rsn7196qvhnmk5ddx3fpd1rdvy2dnby"; depends=[randomForest]; };
   baggedcv = derive2 { name="baggedcv"; version="1.0"; sha256="1rqs4sm6g1anck5s2dxlm1vcmylpphcbs2dpvf1sjki5lrzdq9z4"; depends=[doParallel foreach kedd mclust]; };
   baggr = derive2 { name="baggr"; version="0.4.0"; sha256="1cbajifb4gavamj46zs9vk6ihhg6wnv2hn75452bdc2mc4ingn5n"; depends=[bayesplot BH crayon forestplot ggplot2 gridExtra Rcpp RcppEigen rstan rstantools StanHeaders testthat]; };
+  bahc = derive2 { name="bahc"; version="0.1.0"; sha256="1i5s3qjwwsm94vplkifv72kql8wgiwsc7n1d0707rva92iyv7rcy"; depends=[fastcluster matrixStats]; };
   bain = derive2 { name="bain"; version="0.2.4"; sha256="15car9j11s0ywss13g5swf1dxjjc91xmbkvx200mivca9bj6245m"; depends=[lavaan]; };
   bairt = derive2 { name="bairt"; version="0.1.2"; sha256="17nc0lp0bzwshik33v0gq5d6nd2gvm4799b7rfiq089zhnzv90kj"; depends=[coda mvtnorm shiny shinyjs]; };
   baitmet = derive2 { name="baitmet"; version="1.0.1"; sha256="02ydakqr8v41hdnhcsgigwnic8d48qswryg1srb5w1fqdmdglnkl"; depends=[erah HiClimR Rcpp signal XML]; };
@@ -5341,7 +5363,7 @@ in with self; {
   batch = derive2 { name="batch"; version="1.1-5"; sha256="0wdgfvk2i542cqg34ikvzwlix09f2jyjb32a0f4zh9vg9nrywswq"; depends=[]; };
   batchmeans = derive2 { name="batchmeans"; version="1.0-3"; sha256="1qkdljngvlahk0pbrkarkjh2g4sxxwiva9f3m5y8gz8pjw9fpy9n"; depends=[]; };
   batchscr = derive2 { name="batchscr"; version="0.1.0"; sha256="094l2cq7lcdrlsdmsxmbal7srxdg20rxbms46h1sd414wq26d413"; depends=[]; };
-  batchtools = derive2 { name="batchtools"; version="0.9.12"; sha256="16x524hvy9d8p7r4fi1c8mixcvzgsjbf3y0vxaa56ssbbab4p7f9"; depends=[backports base64url brew checkmate data_table digest fs progress R6 rappdirs stringi withr]; };
+  batchtools = derive2 { name="batchtools"; version="0.9.13"; sha256="02bwfinwgn5nl638997javig61jmr0ci0qybmprz13jnvmam1yns"; depends=[backports base64url brew checkmate data_table digest fs progress R6 rappdirs stringi withr]; };
   batman = derive2 { name="batman"; version="0.1.0"; sha256="0ccgx506p4iri23k2ikb8jmh04dp08w66785bv52iy8kd359h43f"; depends=[Rcpp]; };
   batteryreduction = derive2 { name="batteryreduction"; version="0.1.1"; sha256="0j838q7063bplkzd50kmnxji80cgysfsq7m1qifv8z7a2zsh8c8g"; depends=[pracma]; };
   baycn = derive2 { name="baycn"; version="1.1.0"; sha256="1nimy9vc1i9an9992wwdr0qq8zi9363rjiv5ci81wliys1qlggaq"; depends=[egg ggplot2 gtools MASS]; };
@@ -5388,6 +5410,7 @@ in with self; {
   bbl = derive2 { name="bbl"; version="0.3.1"; sha256="1a6f5744xwn28qkqxlc5q7crarlx0jjg4z7wpp7jwr6ar152apvm"; depends=[pROC RColorBrewer Rcpp]; };
   bbmle = derive2 { name="bbmle"; version="1.0.23.1"; sha256="0p3l9shbr2846qmw8n0fyzf4j7gmi08aypl82jml3dwh26q1whk0"; depends=[bdsmatrix lattice MASS Matrix mvtnorm numDeriv]; };
   bbo = derive2 { name="bbo"; version="0.2"; sha256="19xrbla3bb3csg3gjjrpkgyr379zfwyh293bcrcd6j8rnm6g4i01"; depends=[]; };
+  bbreg = derive2 { name="bbreg"; version="1.0.0"; sha256="1v2m7ky9kd16psm9w8njfjzkwc4prvyq0fgbl6i210pjwwv9zvhr"; depends=[betareg expint Formula statmod]; };
   bbw = derive2 { name="bbw"; version="0.1.3"; sha256="1z3an561qh0rfi3jhh1ghsdbg8aimqmf4hpqri2jz39in3p0gwg4"; depends=[car]; };
   bc3net = derive2 { name="bc3net"; version="1.0.4"; sha256="15dghd0v1s71h77iw8b49v5h7wcda5mb4540lfyibsdipbashv2h"; depends=[c3net igraph infotheo lattice Matrix]; };
   bcROCsurface = derive2 { name="bcROCsurface"; version="1.0-4"; sha256="0bhwwr9pa78a8lhjz2cfbm09jq585p89l6dr2ihpil4q5r8cmsjr"; depends=[boot nnet Rcpp RcppArmadillo rgl]; };
@@ -5535,7 +5558,7 @@ in with self; {
   binnednp = derive2 { name="binnednp"; version="0.4.0"; sha256="1qswrr982x5hy2vl2fc603j98cjli9l40zzvvjy2l91p8xxrc5dn"; depends=[doParallel fitdistrplus foreach kedd mclust nor1mix Rcpp Rdpack]; };
   binom = derive2 { name="binom"; version="1.1-1"; sha256="0mjj92dqf5q69jxzqya4izb1mly3mkydbnmlm4wb3zqqg82a324c"; depends=[]; };
   binomSamSize = derive2 { name="binomSamSize"; version="0.1-5"; sha256="1an6dcqsjh5r0w4kc3n6yfvvha5qhrb2i4bpf7g5ykhl3i60zfcc"; depends=[binom]; };
-  binomialMix = derive2 { name="binomialMix"; version="1.0"; sha256="01l3083bc6k2n18nfi1alc737l5zcankv30f4i0z3ajlqpd2jqr9"; depends=[dplyr gmp lubridate MASS rlang Rmpfr stringr]; };
+  binomialMix = derive2 { name="binomialMix"; version="1.0.1"; sha256="1ak3h0lgjmrv9miwn7fl6jvcp8xdld53swjz71q67q999s42np0m"; depends=[dplyr gmp lubridate MASS rlang Rmpfr stringr]; };
   binomialRF = derive2 { name="binomialRF"; version="0.0.2"; sha256="08p35kimqjahs1jvcc5znx54j1hfsqiy16m9zkjgpjwsqx2x7dlf"; depends=[data_table ggplot2 randomForest rlist]; };
   binomialcftp = derive2 { name="binomialcftp"; version="1.0"; sha256="00c7ymlxk1xnx3x1814x7bcyir7q5sy4rb82dcpzf2bdly4xa1qr"; depends=[]; };
   binomlogit = derive2 { name="binomlogit"; version="1.2"; sha256="1njz1g9sciwa8q6h0zd8iw45vg3i1fwcvicj5y8srpk8wqw3qp7k"; depends=[]; };
@@ -5551,7 +5574,6 @@ in with self; {
   bioC_logs = derive2 { name="bioC.logs"; version="1.1"; sha256="18v8hj426vdfz30jifhd17fv65w5nv0f55ff9r8s2ahi6qv3w828"; depends=[]; };
   bioOED = derive2 { name="bioOED"; version="0.2.1"; sha256="0wx58bngpzlrbbcnx8l1lqhsg51y98wcym1238p87drf64x2mj1n"; depends=[bioinactivation corrplot dplyr FME ggplot2 MEIGOR rlang tidyr tidyselect tidyverse]; };
   bioPN = derive2 { name="bioPN"; version="1.2.0"; sha256="0mvqgsfc7d4h6npgg728chyp5jcsf49xhnq8cgjxfzmdayr1fwr8"; depends=[]; };
-  bioRad = derive2 { name="bioRad"; version="0.5.0"; sha256="0sqliaqslb0n136fqcw02zc7dbw8rs5p4ayb39msw0ypj0946ync"; depends=[assertthat curl fields ggmap ggplot2 maptools raster rgdal rhdf5 sp tidyr viridis viridisLite]; };
   bioacoustics = derive2 { name="bioacoustics"; version="0.2.2"; sha256="13m5w888fap7nxn3pwimi04zdp848n20ha01v7gkzdkchdnbbchb"; depends=[htmltools moments Rcpp stringr tuneR]; };
   biocompute = derive2 { name="biocompute"; version="1.0.3"; sha256="1c23yd0vhar1hvzskr7h6g3a78mcrwminm2pkdmc9qlpy8s8smvv"; depends=[cli crayon curl digest httr jsonlite jsonvalidate magrittr rmarkdown stringr uuid yaml]; };
   biogas = derive2 { name="biogas"; version="1.23.2"; sha256="05g6nyi872skvr34kw5c71ggnnjc3fv95imc327yjqhmqmwx3m19"; depends=[]; };
@@ -5573,7 +5595,7 @@ in with self; {
   bipartite = derive2 { name="bipartite"; version="2.14"; sha256="0wy7ciw59b7z2gzp5qiphss9p208qf6dyprl59nksb462fg4rxyq"; depends=[fields igraph MASS permute sna vegan]; };
   bipartiteD3 = derive2 { name="bipartiteD3"; version="0.2.0"; sha256="1jvhlycmxii4vcm9qbj246qkwhd1bcggqq56b5rmbyqwd4vhqh8f"; depends=[downloader dplyr purrr r2d3 RColorBrewer stringr tibble tidyr]; };
   biplotbootGUI = derive2 { name="biplotbootGUI"; version="1.2"; sha256="07lrs2n6s54h97vjriszszhksdbi14s2i234kwfhg7aq47k6l0jl"; depends=[cluster dendroextras MASS matlib rgl shapes tcltk2 tkrplot]; };
-  birankr = derive2 { name="birankr"; version="1.0.0"; sha256="004ckrr9jiclh1wfzchrv2s1b33y9lv465kx1jb2q4pr2m1j027c"; depends=[data_table Matrix]; };
+  birankr = derive2 { name="birankr"; version="1.0.1"; sha256="1azgrzgw5bnfac8p287ir5zl6kxc6jij20p6cfc3lbbl03f8sa1k"; depends=[data_table Matrix]; };
   birdring = derive2 { name="birdring"; version="1.4"; sha256="0rskrf0r5nrzfcac0zvc60vabvs9dws2zx1rxssvw6xmwyiiy1z6"; depends=[geosphere ks lazyData raster rgdal rgeos rworldmap rworldxtra sp]; };
   birk = derive2 { name="birk"; version="2.1.2"; sha256="07ck59m5mw897a60vmdn1b3qrmqj20qpfsn3093haqbpn8z13dmn"; depends=[]; };
   birtr = derive2 { name="birtr"; version="1.0.0"; sha256="0bcxvj30wzwclw1lcyhvwj3k7awd39lrvzia1nrg53hw90bfs811"; depends=[]; };
@@ -5704,15 +5726,15 @@ in with self; {
   breakage = derive2 { name="breakage"; version="1.1-1"; sha256="0zjazyz92criiimpz4wyd4hd8ccspvh3hhqpd4qkfdzdf9wp3kns"; depends=[Imap]; };
   breakfast = derive2 { name="breakfast"; version="1.0.0"; sha256="0p0svsqphd5w99pf5c5jmak1xxl8md881lapa8aps9xr73m4x6lf"; depends=[plyr]; };
   breakpoint = derive2 { name="breakpoint"; version="1.2"; sha256="004vi1qr7iib8ykg6sp7xzv0bb841h4vsz2x0cyrhkdp41frglx9"; depends=[doParallel foreach ggplot2 MASS msm]; };
-  breathtestcore = derive2 { name="breathtestcore"; version="0.5.0"; sha256="1nznzl5bwp5dg82hyx0rkg82glsdzwsdw0fx6hy6pdhfkblbwhz2"; depends=[assertthat broom dplyr ggfittext ggplot2 MASS multcomp nlme purrr readr readxl signal stringr tibble tidyr xml2]; };
-  breathteststan = derive2 { name="breathteststan"; version="0.4.7"; sha256="0lvyp3524cha6ckfx2c25829ys1g97xhjc3mi5cmdbfg8zfgcy58"; depends=[BH dplyr purrr Rcpp RcppEigen rstan rstantools StanHeaders stringr tibble tidyr]; };
+  breathtestcore = derive2 { name="breathtestcore"; version="0.6.0"; sha256="1nk1hnnb8qd6hhsh56k3zkmhx27q0xxx1igxvrgd3gd28rm6c1vb"; depends=[assertthat broom dplyr ggfittext ggplot2 MASS multcomp nlme purrr readr readxl signal stringr tibble tidyr xml2]; };
+  breathteststan = derive2 { name="breathteststan"; version="0.6.0.0"; sha256="0r89h9m6s6qsbzsfp0br95gzpb5cq33yanc2h2m5x8l4wp5n38vi"; depends=[BH dplyr purrr Rcpp RcppEigen rstan rstantools StanHeaders stringr tibble tidyr]; };
   brew = derive2 { name="brew"; version="1.0-6"; sha256="1vghazbcha8gvkwwcdagjvzx6yl8zm7kgr0i9wxr4jng06d1l3fp"; depends=[]; };
   brglm = derive2 { name="brglm"; version="0.6.2"; sha256="0c9ngscc6zlfm90fqyggnj04qfkhp5qgf5q3wnfpxwyc8cm47by2"; depends=[profileModel]; };
-  brglm2 = derive2 { name="brglm2"; version="0.6.1"; sha256="0p10anckxg0cs2hrj9swvir829kmm9aqwgfrspg4gcrvaxjp1fh6"; depends=[enrichwith lpSolveAPI MASS Matrix nnet numDeriv]; };
+  brglm2 = derive2 { name="brglm2"; version="0.6.2"; sha256="13apd1p770slnbrqs44khgv7fsh6g3fzd3n04hq36zz308avns9z"; depends=[enrichwith lpSolveAPI MASS Matrix nnet numDeriv]; };
   bridgedist = derive2 { name="bridgedist"; version="0.1.0"; sha256="0hqkpwpi3nv6mfhljl65zcflf4wy72ag36hdam6s7kynfj41qz6w"; depends=[]; };
   bridger2 = derive2 { name="bridger2"; version="0.1.0"; sha256="0clp42nnbvd01n65azdi2ghp0mfqwsipzdl2d30q04lcvfkdpxrf"; depends=[BSDA data_table ggplot2 outliers plotly shiny shinydashboard]; };
   bridgesampling = derive2 { name="bridgesampling"; version="1.0-0"; sha256="1awhvv0v42w2q6llqi1wqpaiv5zx74cqzigdsvphy2jfp8ajw64y"; depends=[Brobdingnag coda Matrix mvtnorm scales stringr]; };
-  brinton = derive2 { name="brinton"; version="0.1.4"; sha256="1vnhxi1wh0525gkiqcvisg0r5zpgdskyzggiqp1f3iiag73b60f5"; depends=[forcats GGally ggplot2 glue gridExtra hexbin lubridate pander RColorBrewer rmarkdown sm tibble]; };
+  brinton = derive2 { name="brinton"; version="0.1.5"; sha256="1mc6xksf2zwpgs3q0nx4zz77307ysrsgdk3d96xb9rjxdx7l1xnh"; depends=[forcats GGally ggplot2 glue gridExtra lubridate pander RColorBrewer rmarkdown sm tibble]; };
   briqr = derive2 { name="briqr"; version="0.1.0"; sha256="073pdk1094ng4kggzdjvihl791r2qlja1j2w3pfmh2027kn520r8"; depends=[dplyr httr jsonlite magrittr tibble]; };
   briskaR = derive2 { name="briskaR"; version="0.1.2"; sha256="1y9sabj7pfgyvv6s3bbvrb0xhjhwc4pcfsfx847kqdajid92qx8w"; depends=[deldir fftwtools fields MASS mvtnorm pracma raster rgdal rgeos sp]; };
   brlrmr = derive2 { name="brlrmr"; version="0.1.7"; sha256="0s47qz8y416x0gz91pzdpr97pmlvddwkvll454vnlafxxk9p5lds"; depends=[boot brglm MASS profileModel Rcpp]; };
@@ -5729,7 +5751,7 @@ in with self; {
   brunnermunzel = derive2 { name="brunnermunzel"; version="1.4.1"; sha256="1lba5cpiray65zg1pv3xv6yl1xg78rqlwxkcmhgizlh1rhpd430p"; depends=[]; };
   bs4Dash = derive2 { name="bs4Dash"; version="0.5.0"; sha256="1y75i6bsdy1bsbzwjblsnimw1zzk0zl3qnzqfq9zcnf6q2ghi3r2"; depends=[htmltools shiny]; };
   bsam = derive2 { name="bsam"; version="1.1.2"; sha256="1m2lpqm2i4i35hzr1iylrb8skx8rsys3w542xjyqw030bs7b1rdk"; depends=[coda dplyr ggplot2 gridExtra lubridate msm mvtnorm rjags rworldxtra sp tibble]; };
-  bsamGP = derive2 { name="bsamGP"; version="1.2.2"; sha256="1r7jmrj91na9718digggsjqfqc2l0s0md68vr3s9xcb77c4bbhyi"; depends=[ggplot2 gridExtra MASS]; };
+  bsamGP = derive2 { name="bsamGP"; version="1.2.3"; sha256="1wqs2y9f7fgdvshhzwpjp811h4xhdd1lplpadnpffa2lmyv7vh5s"; depends=[ggplot2 gridExtra MASS]; };
   bsearchtools = derive2 { name="bsearchtools"; version="0.0.61"; sha256="11fqz8kdhqpc3jq34vgv3frzawgsl5y0s83rb2p54yb5yhd3p68w"; depends=[Rcpp]; };
   bshazard = derive2 { name="bshazard"; version="1.1"; sha256="1kidypyqlilf794mksjvhja8bmnd9hdhz91ywy0mcddgc6wbar4h"; depends=[Epi survival]; };
   bspec = derive2 { name="bspec"; version="1.5"; sha256="0jynvir7z4q1vrvhdn6wijdrjfrkk4544nlawabw2fnfxss91a91"; depends=[]; };
@@ -5762,7 +5784,7 @@ in with self; {
   bvls = derive2 { name="bvls"; version="1.4"; sha256="18aaf7kk5mks3a59wwqhm1ckpn6s704l9m5nzy0x5iw0s98ijbm2"; depends=[]; };
   bwd = derive2 { name="bwd"; version="0.1.0"; sha256="1ryd5cqbpns9dsis2a9vjg6fcg23284c3dr3j3l18krdshdksfr0"; depends=[]; };
   bwimage = derive2 { name="bwimage"; version="1.2"; sha256="1wm17spxfrgf8kfc6fadri54sdk0b9813s9y4rp2xiwmy5sp6aj2"; depends=[jpeg png]; };
-  bwsTools = derive2 { name="bwsTools"; version="1.0.1"; sha256="15pa0nxk3wksi11p1bs48cyaqxk0lxqvnwiwznw8f7bjkacnn1hl"; depends=[crossdes dplyr igraph magrittr rlang tidyr]; };
+  bwsTools = derive2 { name="bwsTools"; version="1.1.0"; sha256="06gvw966p2qgkw1c2rdr5hiha47aclb398kjf8sgh5dcka9sv256"; depends=[crossdes dplyr ggplot2 igraph magrittr rlang tidyr]; };
   bysykkel = derive2 { name="bysykkel"; version="0.2.3"; sha256="1cbfmmmw7a37fwgwgfvc8yqxl4dh5n30qcnva9wsm903wccmb2cr"; depends=[glue httr jsonlite lubridate magrittr tibble]; };
   bytescircle = derive2 { name="bytescircle"; version="1.1"; sha256="0c83d37kijcvr00pc4qqdci14cpbg6988izyjfjk1yliavyc6mwf"; depends=[]; };
   bzinb = derive2 { name="bzinb"; version="1.0.4"; sha256="1424lwsm2ra124h0ahbl42szbx500fqkf9ccw9k1688iwxnfg7f2"; depends=[BH Rcpp]; };
@@ -5773,7 +5795,7 @@ in with self; {
   c3 = derive2 { name="c3"; version="0.3.0"; sha256="1c2k7ml153bby749qi3a6nckhwwr71mvvps9dkbzkxkwnmlwpz1h"; depends=[data_table dplyr htmlwidgets jsonlite lazyeval viridis]; };
   c3net = derive2 { name="c3net"; version="1.1.1"; sha256="0m4nvrs41kmlakc6m203zlncqwgj94wns8kzcb31xngjcacmcq42"; depends=[igraph]; };
   cAIC4 = derive2 { name="cAIC4"; version="0.9"; sha256="0imy4kq09an9azqi3aahw3lsmby8km2am0w7fb314xq6ghzf9xmp"; depends=[lme4 Matrix mgcv mvtnorm nlme RLRsim]; };
-  cIRT = derive2 { name="cIRT"; version="1.3.0"; sha256="0jbjkmzw3z935pq12k5kmy3vdpqlpm70siv8f0bnlw42sai1qcw1"; depends=[Rcpp RcppArmadillo]; };
+  cIRT = derive2 { name="cIRT"; version="1.3.1"; sha256="1x7cbawzzpzripzyg4yavc9s6kx06ff4q151kbvylr9wsf78s6qg"; depends=[Rcpp RcppArmadillo]; };
   cNORM = derive2 { name="cNORM"; version="1.2.2"; sha256="1lid4j6i65xmmakab0bbs7vyhkrvax3l5kv7r66x665gm8y00h0b"; depends=[lattice latticeExtra leaps]; };
   cOde = derive2 { name="cOde"; version="1.0.0"; sha256="12222wlsk9l6m9y477mjl8x279xhs8c1l1wsq92khwycm1j06jfy"; depends=[]; };
   cPCG = derive2 { name="cPCG"; version="1.0"; sha256="1pfbsv2rcjsryn6nr56a7i4yb7k0m3gdfn4q9l1kpzhmv9lic7m1"; depends=[Rcpp RcppArmadillo]; };
@@ -5792,7 +5814,7 @@ in with self; {
   cairoDevice = derive2 { name="cairoDevice"; version="2.28"; sha256="14885gpmhdzmxbz3q59s5sd3kjkyi5yf9lpnjwmvc482n8ix4lpq"; depends=[]; };
   calACS = derive2 { name="calACS"; version="2.2.2"; sha256="0a53k2rzyjksb0ypr5zrask4a6mgiyrqx0l2z3lm218y8pk2jf1w"; depends=[]; };
   calcWOI = derive2 { name="calcWOI"; version="1.0.2"; sha256="09g96inaayp0brbxw75l7k1cqn50f7qw0glb2g04657zmlk16i52"; depends=[LS2W wavethresh]; };
-  calculus = derive2 { name="calculus"; version="0.2.0"; sha256="0ks92pis7471p2qq66lysb3hw99qbm068v5gf82mknk56lfbymdc"; depends=[Rcpp]; };
+  calculus = derive2 { name="calculus"; version="0.2.1"; sha256="0hs7hzjl6xjza20v9zx9a1piywxa6w3h2rskr52d1dcbc0vwhinp"; depends=[Rcpp]; };
   calendar = derive2 { name="calendar"; version="0.0.1"; sha256="18ha6vpx2bpk8p08hajiq2d201fbqhzcycp8ks6wrr06fy04z689"; depends=[lubridate tibble]; };
   calibrar = derive2 { name="calibrar"; version="0.2.0"; sha256="1544bc5rhhc6d1mky7ngza00wwh63q07dkbzlwfgyavly8m9cplb"; depends=[cmaes foreach optimx]; };
   calibrate = derive2 { name="calibrate"; version="1.7.5"; sha256="1s423nr176l2sc66wp7hzgqkv7c2bq8d2bjrrvrrm5qa9y3zdx1k"; depends=[MASS]; };
@@ -5810,6 +5832,7 @@ in with self; {
   canprot = derive2 { name="canprot"; version="0.1.2"; sha256="0lc31vw49sc2zsrn52aqqljcc4n79j4i4845sr201ga67w07vrrb"; depends=[CHNOSZ xtable]; };
   cansim = derive2 { name="cansim"; version="0.3.5"; sha256="0lqkyq2n8v2y172ihyb9vh3mimrkg2yx2c42cxdaz4p7gqiq7z8r"; depends=[dplyr httr jsonlite purrr readr rlang rvest stringr tibble xml2]; };
   canvasXpress = derive2 { name="canvasXpress"; version="1.27.6"; sha256="0dhfkxmdmk3172pvby6ksysypg5z26byg26ny7wfy7b81rdwhqxk"; depends=[htmlwidgets httr]; };
+  canvasXpress_data = derive2 { name="canvasXpress.data"; version="1.27.6"; sha256="0kh5g3incl5lv4pb8fd9nzvlvfvyfs3bms78hlf71z8kkag9hzn1"; depends=[]; };
   cap = derive2 { name="cap"; version="1.0"; sha256="1pv8hskxjbp589dn7rx80yaa1ld76x1w37bss2fyrys1p3qr78aa"; depends=[MASS multigroup]; };
   caper = derive2 { name="caper"; version="1.0.1"; sha256="0md0sngj7wsv2d4d7fmyyz9qqismk3ps9l3qk1blqz1yi19pq124"; depends=[ape MASS mvtnorm]; };
   capitalR = derive2 { name="capitalR"; version="1.3.0"; sha256="08lvncia9mdrnw84zydf1k7336xawiirh2swziqfwx3z1n172n52"; depends=[]; };
@@ -5823,15 +5846,16 @@ in with self; {
   carData = derive2 { name="carData"; version="3.0-3"; sha256="0cg2yxzn0pdjqykr60my1fzpfkqac21fll5hv3m9w5c9sayq8swq"; depends=[]; };
   carSurv = derive2 { name="carSurv"; version="1.0.0"; sha256="0wv7lp10i4sdfqyizg77ghblp3pcp7wzhs946sm0wl6w00krav9j"; depends=[corpcor fdrtool mboost Rcpp survival]; };
   caracas = derive2 { name="caracas"; version="0.0.1"; sha256="1pn6qf6m32psylnw1rnp2pdkwpsa5jz0lhfwj5c0ll23a8ln7627"; depends=[reticulate]; };
-  carat = derive2 { name="carat"; version="0.1.0"; sha256="09vqcljl74x6qbk88mf9xnp1hwzg1mwvmxi43gmw8qcg13zcfiai"; depends=[ggplot2 gridExtra Rcpp RcppArmadillo stringr]; };
+  carat = derive2 { name="carat"; version="0.1.1"; sha256="1ql4lr3x6kiwq1xj671bm1y9mc8iw41j5y5796dfnw7a5251sy67"; depends=[ggplot2 gridExtra Rcpp RcppArmadillo stringr]; };
   carbonate = derive2 { name="carbonate"; version="0.1.3"; sha256="0y1wjrlh0rbfl1wz9028b637gs20giifp9ykg1yir2ak7fpwbq85"; depends=[clipr details httr magick R6 RSelenium rtweet wdman yaml]; };
   carcass = derive2 { name="carcass"; version="1.6"; sha256="0nhp35nxjqqmy15rf9vc0qyymy7d0v8mc84570b9nc62g5xac8xy"; depends=[arm expm lme4 MASS survival]; };
   cardidates = derive2 { name="cardidates"; version="0.4.8"; sha256="1mfd5sgzswhs9rln2bgxx8c54z69xp8l5dfmx7jfh8jl43qkzpjf"; depends=[boot lattice pastecs]; };
   cardioModel = derive2 { name="cardioModel"; version="1.4"; sha256="1a2nvn4a4zc89pb01m20pxqgbj0ypzzvx9w2vfzwly1kzkhvc9hr"; depends=[lubridate nlme]; };
   care = derive2 { name="care"; version="1.1.10"; sha256="00h36by40v60mqzbf615a99sdfz0i42i57wybxrcm7y1y2la0da8"; depends=[corpcor]; };
   careless = derive2 { name="careless"; version="1.1.3"; sha256="07yq6sfp110pkd3khfn8ajdqz2r4ipcs90mpaiynh12xl0n67x7k"; depends=[psych]; };
-  caret = derive2 { name="caret"; version="6.0-85"; sha256="0jxbf2zcvbb5s2pnjzg182awjvylc57q7z5plx6gs6gm62zxjafs"; depends=[foreach ggplot2 lattice ModelMetrics nlme plyr pROC recipes reshape2 withr]; };
+  caret = derive2 { name="caret"; version="6.0-86"; sha256="0dyflixdw98lvk2x3w136sw24ij0fwx5c7l709dmqr5z7xy1qjns"; depends=[foreach ggplot2 lattice ModelMetrics nlme plyr pROC recipes reshape2 withr]; };
   caretEnsemble = derive2 { name="caretEnsemble"; version="2.0.1"; sha256="127gqd23xjis62irqviihzk80zydrdplwh65zcmd7ng29ih5wnby"; depends=[caret data_table digest ggplot2 gridExtra lattice pbapply plyr]; };
+  carfima = derive2 { name="carfima"; version="2.0.2"; sha256="1n68jqn42m54xn7jq8qywrpnvggrcsgvgnlqg6nw0pgiplbkynih"; depends=[DEoptim invgamma mvtnorm pracma truncnorm]; };
   caribou = derive2 { name="caribou"; version="1.1"; sha256="0ibl3jhvsgjfcva0113z0di9n5n30bs90yz0scckfv1c0pjhn4xd"; depends=[]; };
   caroline = derive2 { name="caroline"; version="0.7.6"; sha256="1afxxbrd7w628l4pxdmvwbs7mbgxlhnfq3nxk2s93w47gn7r9fp7"; depends=[]; };
   carpenter = derive2 { name="carpenter"; version="0.2.2"; sha256="13ahhdc6f5ngrhb7slqbxzfs3wswixh0argyr6l46cv4fdkaa80s"; depends=[dplyr lazyeval magrittr pander tibble tidyr]; };
@@ -5845,6 +5869,7 @@ in with self; {
   cascsim = derive2 { name="cascsim"; version="0.4"; sha256="0n6frnbby1pjpx1z9lzxflmja2mg0dy99c5f7biakpaqi82x5xjb"; depends=[copula fitdistrplus moments R2HTML scatterplot3d]; };
   caseMatch = derive2 { name="caseMatch"; version="1.0.8"; sha256="0bp2g0zzcspa6riinsa3bp1qwiip6z058hn2y5mw0w9xah8a685a"; depends=[]; };
   casebase = derive2 { name="casebase"; version="0.1.0"; sha256="0216qzyxv44cl9f806lal9lx4n0zzr9csx8ggyjva04h5iiqrq6w"; depends=[data_table ggplot2 survival VGAM]; };
+  casen = derive2 { name="casen"; version="0.1.3"; sha256="0yg02n379l38b0hyg7ra1x8bbbi3ai68gzd03ykqr8y5f3s9wbcf"; depends=[dplyr fs glue haven janitor labelled magrittr purrr Rcpp rlang srvyr survey tibble tidyr]; };
   casino = derive2 { name="casino"; version="0.1.0"; sha256="07fphn46718gr1zm0xr43mwv7yk697xrc40lxxin315cf3gm0cka"; depends=[crayon dplyr ggplot2 magrittr purrr R6 tibble tidyr]; };
   cassandRa = derive2 { name="cassandRa"; version="0.1.0"; sha256="0rwqzxbflxn1iyggm3mq6pkbl61mhk4vdwqwzlwrhrvvr2ib236r"; depends=[bipartite boot dplyr ggplot2 magrittr purrr reshape2 tidyr vegan]; };
   castor = derive2 { name="castor"; version="1.5.5"; sha256="1bsdyi905zafk8av0svw6ql0pg4ns1q7w810xx448k0hpq4v468l"; depends=[naturalsort nloptr Rcpp]; };
@@ -5872,6 +5897,7 @@ in with self; {
   causalMGM = derive2 { name="causalMGM"; version="0.1.1"; sha256="13qx71rfc6m7mvlpwma7ks09f3mlxknxw3jlv3b4iq5pjs8f1v5r"; depends=[rJava]; };
   causaldrf = derive2 { name="causaldrf"; version="0.3"; sha256="16gqx8b8alwm8a4lm69qamnqr3bg2qbz0d6q4lyqyrwsk12grid6"; depends=[mgcv survey]; };
   causaleffect = derive2 { name="causaleffect"; version="1.3.10"; sha256="0z7vdhm9g95s9nkyx4jdzqrap24nb63n8mr23b9gqm6s1m47sc0z"; depends=[ggm igraph XML]; };
+  causaloptim = derive2 { name="causaloptim"; version="0.6.4"; sha256="00x0rmg94bmnghbsgra2zdflmc2pfjikb5l6z51ly8h8lqr5bv63"; depends=[igraph Rcpp shiny]; };
   causalsens = derive2 { name="causalsens"; version="0.1.2"; sha256="1xy8nybflbw6hymc15mmz27ic6hcq89wryb8q6d4zi216lwv2nww"; depends=[]; };
   causalweight = derive2 { name="causalweight"; version="0.1.3"; sha256="0bg3xxnbixz2p5qrkziwf3jh6rpcp6c1fngv0vpq1y957j3fw5f2"; depends=[hdm LARF mvtnorm np]; };
   cba = derive2 { name="cba"; version="0.2-21"; sha256="0j2hbp0xlfp28gqgnkcvmb4yp1kc5m2bp5x7pr4m1pz2b1s7h7m6"; depends=[proxy]; };
@@ -5893,7 +5919,7 @@ in with self; {
   ccda = derive2 { name="ccda"; version="1.1.1"; sha256="1kka4vmhpcnl4skdmijzsxrfj6dgax6hhlxvp7gkqlfaazq8pzf0"; depends=[MASS]; };
   ccdrAlgorithm = derive2 { name="ccdrAlgorithm"; version="0.0.5"; sha256="171k70p4qyasr385ma3cvcga2b4nbz2dfry78wqx5yb1aa6wwcyc"; depends=[Rcpp sparsebnUtils]; };
   cchs = derive2 { name="cchs"; version="0.4.1"; sha256="1aq6mc3hyhp3g8yzk6y82zz8nriwmxms9lgpw06rf857im6bn5ls"; depends=[survival]; };
-  cchsflow = derive2 { name="cchsflow"; version="1.3.2"; sha256="0rri4566jrzhbyp4azqayzdrdkpcgqq236cg4nrskwqb2bys3ifb"; depends=[dplyr haven magrittr sjlabelled stringr]; };
+  cchsflow = derive2 { name="cchsflow"; version="1.5.1"; sha256="0229jbnay4ic1g3kw94c9vzf4bp6mf1q2bk1qf35p998ci1pzd85"; depends=[dplyr haven magrittr sjlabelled stringr]; };
   cclust = derive2 { name="cclust"; version="0.6-21"; sha256="1n5hh0017bcq8ck52qq89jm9zgdfpmiksrypsnv2vvhk3nr0s91c"; depends=[]; };
   ccmm = derive2 { name="ccmm"; version="1.0"; sha256="0855nr74xxpy7in2vrw15g8pv7nm1374irc1c5hikr5hadk5pf8v"; depends=[MASS]; };
   ccostr = derive2 { name="ccostr"; version="0.1.0"; sha256="0yfmj8v7ip595v87w9dmlzl5rih2j0lsapswh9b9vvc20wnk48ld"; depends=[data_table dplyr forcats ggplot2 knitr msm Rdpack rlang survival tibble]; };
@@ -6012,7 +6038,7 @@ in with self; {
   chron = derive2 { name="chron"; version="2.3-55"; sha256="09gbs7c1ynlg0kl1m6nkbn75ysk16g13r17snnaws64qwywiywqg"; depends=[]; };
   chronosphere = derive2 { name="chronosphere"; version="0.2.2"; sha256="11vc7ids362jm1xd4z4mfmjbpsxw8wmjnn26ivy7n42xlqqzzpnf"; depends=[raster sp]; };
   chunkR = derive2 { name="chunkR"; version="1.1.1"; sha256="1kw3hsx5k4cdicx0hc1v0mf2nzvqg95shx2xv05vb2pass48qw48"; depends=[Rcpp]; };
-  chunked = derive2 { name="chunked"; version="0.4.1"; sha256="1cxhk28fn4bbwbaijggxkm7qyjnic7ky0s9c4zmd87hfibi8w4v5"; depends=[DBI dplyr LaF rlang]; };
+  chunked = derive2 { name="chunked"; version="0.5.0"; sha256="1b28hqngdkkn4wnkd3b8vcaf3md6jan73nbx240v6s2nj2anlnc8"; depends=[DBI dplyr LaF progress rlang]; };
   ciTools = derive2 { name="ciTools"; version="0.5.1"; sha256="02jgi09vkzsan47mvg65ciqc1q4vmrl14v2i5bsaqxbvxwd65lww"; depends=[arm boot dplyr lme4 magrittr MASS survival tibble]; };
   cicerone = derive2 { name="cicerone"; version="1.0.1"; sha256="02dzd82vldn1k5i0j8kw1pp1jwakqnsvd1k88czh3qqfaa4wsrq5"; depends=[assertthat R6 shiny]; };
   cifti = derive2 { name="cifti"; version="0.4.5"; sha256="092334lcpkzv52bg53hzx64dnrwq67f3p9fzwchmafx1l46xrqx9"; depends=[gifti oro_nifti R_utils xml2]; };
@@ -6032,7 +6058,7 @@ in with self; {
   civis = derive2 { name="civis"; version="2.1.2"; sha256="085cy1icqn78vimkjv2zdd5m1qf47qj9hl8vkpd29a948nkiv9xf"; depends=[future httr jsonlite memoise]; };
   cjoint = derive2 { name="cjoint"; version="2.1.0"; sha256="1bs380ji9vsc1d77wqhl0ij9xblww3g9x3hiwpcpz26wihqcx7ac"; depends=[DT ggplot2 lmtest Matrix sandwich shiny shinyBS shinyjs survey]; };
   ckanr = derive2 { name="ckanr"; version="0.4.0"; sha256="17mb8ank4p39mkmkrpj40hk2g1wpn06k0rx65hqd5h49pvlj21d3"; depends=[DBI dbplyr dplyr httr jsonlite magrittr]; };
-  clValid = derive2 { name="clValid"; version="0.6-6"; sha256="1l9q7684vv75jnbymaa10md13qri2wjjg7chr1z1m0rai8iq3xxw"; depends=[class cluster]; };
+  clValid = derive2 { name="clValid"; version="0.6-6"; sha256="1v8rpbzzbv6sxsij8g3bjxxs92sdpsfz6y2vc59vld4f4nvg2gn1"; depends=[class cluster]; };
   cladoRcpp = derive2 { name="cladoRcpp"; version="0.15.1"; sha256="0msay6yvm6wc964gwrz31ky5w4mizakji3j6rpkydz0zlrl52v1j"; depends=[Rcpp RcppArmadillo]; };
   clam = derive2 { name="clam"; version="2.3.4"; sha256="1d86m3mf18h0rx03bxc8rx9zsjd77b60ik85mblxg4d4apvzh096"; depends=[]; };
   clampSeg = derive2 { name="clampSeg"; version="1.0-5"; sha256="05922fddvi7s4imdnr9fb27aqskgd489amw9h86g5vw4l494lnl9"; depends=[Rcpp stepR]; };
@@ -6064,7 +6090,7 @@ in with self; {
   clifford = derive2 { name="clifford"; version="1.0-2"; sha256="17br7p4zj1cjf1nbwbk0a2jjxj589qgvlnzi6yp4dqlf2g0w01z6"; depends=[BH Rcpp]; };
   clifro = derive2 { name="clifro"; version="3.2-2"; sha256="11bfvaf1b1wv83dw8ggj7ldsc6fs8s3gl7jdzyq7l1w7innihp9s"; depends=[ggplot2 lubridate magrittr RColorBrewer RCurl reshape2 scales xml2]; };
   clikcorr = derive2 { name="clikcorr"; version="1.0"; sha256="0zdnbcl5q293mmm6pbn4ri7p1q6z6sff74axsb3nyd153v2xamr5"; depends=[mvtnorm]; };
-  climate = derive2 { name="climate"; version="0.9.1"; sha256="0jy2qhbhwh9f5b7qzpyygd2hhrm6fjvm1i1cc3n9hl5m7j3qaj8j"; depends=[RCurl XML]; };
+  climate = derive2 { name="climate"; version="0.9.2"; sha256="0scz1qzcnzn4k9zs0r9abqs8q3if3qdnwm50q3dyqq0swdp9jgys"; depends=[RCurl XML]; };
   climateStability = derive2 { name="climateStability"; version="0.1.3"; sha256="1zag722sznr22xid2v1k4a9sh3sr3grfa3wwd2m943zpvyi1sk9a"; depends=[raster]; };
   climatol = derive2 { name="climatol"; version="3.1.2"; sha256="0p3nk4n7izj0cmmqd9apa1gix5lfdzp08ydy0n7rkl5kbkmrkb6n"; depends=[mapdata maps]; };
   climatrends = derive2 { name="climatrends"; version="0.1.0"; sha256="1jn7xib07n6f9vq614cxahxph4mrs8xbv484npl0702klpk6fjqg"; depends=[nasapower tibble]; };
@@ -6099,7 +6125,7 @@ in with self; {
   clustEff = derive2 { name="clustEff"; version="0.1.2"; sha256="1hy7jc8yfg554l439lfrppdsizrdmvxrqf9dwbkjckbvggg54f0k"; depends=[cluster fda qrcm]; };
   clustMD = derive2 { name="clustMD"; version="1.2.1"; sha256="0w4s9dab2mm5x0xibyl6s101c64if945a2cmwin9psd95p76mcny"; depends=[ggplot2 MASS mclust msm mvtnorm reshape2 truncnorm viridis]; };
   clustMixType = derive2 { name="clustMixType"; version="0.2-2"; sha256="143xq457migvdfylgyfs19arlmzc9gy360sva49fi56jaz6xqhvr"; depends=[RColorBrewer]; };
-  clustcurv = derive2 { name="clustcurv"; version="1.0.0"; sha256="055hxwpvfm37gvgc5ar8qk6ksny89hmr79w1jmxyynml47lwllrl"; depends=[doParallel doRNG foreach ggfortify ggplot2 Gmedian survival wesanderson]; };
+  clustcurv = derive2 { name="clustcurv"; version="2.0.0"; sha256="1zjyf81ifd2sgkgs548iy1awjhjmb541rrrw2pb92cn8ph7z7nc1"; depends=[data_table doParallel doRNG foreach ggfortify ggplot2 Gmedian KernSmooth npregfast RColorBrewer survival tidyr wesanderson]; };
   cluster = derive2 { name="cluster"; version="2.1.0"; sha256="055af3yz2biqbsbwm4arwr1yqnj4gicpzv2i6dbfl5pnz2z5byga"; depends=[]; };
   cluster_datasets = derive2 { name="cluster.datasets"; version="1.0-1"; sha256="0i68s9305q08fhynpq24qnlw03gg4hbk4184z3q3ycbi8njpr4il"; depends=[]; };
   clusterCrit = derive2 { name="clusterCrit"; version="1.2.8"; sha256="10pz1bikdbkm2ky3xnagp0qv60whalavp6j39b4p7d75jj5xcxgk"; depends=[]; };
@@ -6145,6 +6171,7 @@ in with self; {
   cnbdistr = derive2 { name="cnbdistr"; version="1.0.1"; sha256="05qi41jimslbngjgbwzfda0q25hb28ax79v9yckvrbpgjc8dk990"; depends=[hypergeo]; };
   cncaGUI = derive2 { name="cncaGUI"; version="1.0"; sha256="1v55kvrc05bsm1qdyfw3r3h64wlv3s6clxbr8k512lfk99ry42kn"; depends=[MASS plotrix rgl shapes tcltk2 tkrplot]; };
   cnmlcd = derive2 { name="cnmlcd"; version="1.2-0"; sha256="1vpn926wf8vkifscnb35y4c74721iar2wykrl50fcv0fg16yggnd"; depends=[lsei]; };
+  cnum = derive2 { name="cnum"; version="0.1.0"; sha256="0hiinaa5sp5fvklgdwb3wb58cr7sczd87i4jmp23jm2nx5f4hjs6"; depends=[stringr]; };
   coRanking = derive2 { name="coRanking"; version="0.2.1"; sha256="10489vbd917mzz5lw7ygi6q8q5qa7sp5d8xgv1ykn4lfx0avch69"; depends=[]; };
   coala = derive2 { name="coala"; version="0.6.0"; sha256="0h7kc12yc90y5i733l6sfd9h12h0a2c7wv9wscjslj18sl3w3ccv"; depends=[assertthat digest R6 Rcpp RcppArmadillo rehh scrm]; };
   coalescentMCMC = derive2 { name="coalescentMCMC"; version="0.4-1"; sha256="0xxv1sw5byf84wdypg5sfazrmj75h4xpv7wh4x5cr9k0vgf80b3s"; depends=[ape coda lattice Matrix phangorn]; };
@@ -6181,12 +6208,12 @@ in with self; {
   coil = derive2 { name="coil"; version="1.2.1"; sha256="0s11v1hcksljpxnlkmrlnnamx4mlsck45hsjm4xlhc1zb7x9kqf5"; depends=[ape aphid seqinr]; };
   coin = derive2 { name="coin"; version="1.3-1"; sha256="0qi03fyqw42a2vnqcia5l2m1mzyarj2q1iblknx9n19bdsd53qjx"; depends=[libcoin matrixStats modeltools multcomp mvtnorm survival]; };
   coindeskr = derive2 { name="coindeskr"; version="0.1.0"; sha256="0iwkg9qx5gymzjxw3w1zlwq9336kbqp4z8a9wf9a1p2gp9727qcm"; depends=[httr jsonlite]; };
-  coinmarketcapr = derive2 { name="coinmarketcapr"; version="0.3"; sha256="149ilps378rvk4g3icasb843d90vmx69kfdcl6a8828v1mg0pcvs"; depends=[cli crayon curl data_table ggplot2 jsonlite]; };
   cointReg = derive2 { name="cointReg"; version="0.2.0"; sha256="0n4s809avhlrmrjdqzc2s752m7x96c4432gnjd4qv77r2nns7dw4"; depends=[checkmate MASS matrixStats]; };
   cointmonitoR = derive2 { name="cointmonitoR"; version="0.1.0"; sha256="0rsacvib9prgb199m5ndi0zlgfsvf1giqc5s41wp0yvxdxjdq5lw"; depends=[cointReg matrixStats]; };
   cold = derive2 { name="cold"; version="2.0-0"; sha256="10kn2kycyc6di30ji6lk5agsczh1zdv65s8ryj6q2f40v0y0zlck"; depends=[cubature]; };
   colf = derive2 { name="colf"; version="0.1.3"; sha256="1av82yrp6csw7700ymipd02j73cmzn0apv7ykachjw09nzk86kvj"; depends=[nlsr]; };
   collUtils = derive2 { name="collUtils"; version="1.0.5"; sha256="0gbk3lrb2lwq2ixrpcngng6qz6axjb4iyqy5606x1zmjm71c060p"; depends=[Rcpp rJava]; };
+  collapse = derive2 { name="collapse"; version="1.0.0"; sha256="1kcyw8483nvayz317ff7grqi1c1y6nxj87zj054dnx644mmsmbr7"; depends=[lfe Rcpp]; };
   collapsibleTree = derive2 { name="collapsibleTree"; version="0.1.7"; sha256="0b65pbp1wnpsrayqi630ds4r98jvcvynnlp6wxdqrnnr9nzw5343"; depends=[data_tree htmlwidgets]; };
   collateral = derive2 { name="collateral"; version="0.4.2"; sha256="1i1fzvm838s2cfmxw654vwmp9rl9f9985vjildkxyx2f6571sjfm"; depends=[crayon pillar purrr]; };
   collectArgs = derive2 { name="collectArgs"; version="0.4.0"; sha256="0fz5w1xsxiddzrwahrg50px4igyhd4plq655jaix6grancs7kvix"; depends=[magrittr]; };
@@ -6235,8 +6262,8 @@ in with self; {
   compactr = derive2 { name="compactr"; version="0.1"; sha256="0f2yds6inmx0lixj08ibqyd2i61l2cbg1ckgpb8dl2q7kcyyd6mx"; depends=[]; };
   compare = derive2 { name="compare"; version="0.2-6"; sha256="0k9zms930b5dz9gy8414li21wy0zg9x9vp7301v5cvyfi0g7xzgw"; depends=[]; };
   compareC = derive2 { name="compareC"; version="1.3.1"; sha256="0dachfr23lps2jj1y5gc958k54vskmww84gdgk4amihsdgjsnphg"; depends=[]; };
-  compareDF = derive2 { name="compareDF"; version="2.0.1"; sha256="1b9059r7mpkarkp7crr847a12vhgmazqsr0wji4lq09m8vi8rz6n"; depends=[dplyr htmlTable magrittr openxlsx stringr tidyr]; };
-  compareGroups = derive2 { name="compareGroups"; version="4.2.0"; sha256="0lq5yd6d1vz8lzy1lnfav2726g3xdfxlbza055g0paxbxzxgs2n0"; depends=[chron epitools flextable HardyWeinberg kableExtra knitr officer rmarkdown SNPassoc survival writexl]; };
+  compareDF = derive2 { name="compareDF"; version="2.0.2"; sha256="1bsrb9v1rr4s67q01gqf9bjp7hla47kxxkc4a4kflmjjixb4fzz3"; depends=[dplyr htmlTable magrittr openxlsx stringr tidyr]; };
+  compareGroups = derive2 { name="compareGroups"; version="4.4.1"; sha256="1pyqlqfb3km4ggl8z8nf5hyfa4az0nav98ik1f6zlrdydswdyl71"; depends=[chron flextable HardyWeinberg kableExtra knitr officer rmarkdown SNPassoc survival writexl]; };
   compareODM = derive2 { name="compareODM"; version="1.2"; sha256="019hq8j56asjvh4x1p65785mf38xr05j3by0749gl9k9yl8645da"; depends=[XML]; };
   comparison = derive2 { name="comparison"; version="1.0-4"; sha256="0pc462rhk8gr8zrf08ksi315kmhydlp027q5gd40ap5mmhk7rd82"; depends=[isotone]; };
   compas = derive2 { name="compas"; version="0.1"; sha256="1ckryllwd8avz6456970qhfa3wpcsmhkicnibnv7gl4crzf44xgx"; depends=[bio3d Rcpp RcppEigen]; };
@@ -6292,20 +6319,20 @@ in with self; {
   conicfit = derive2 { name="conicfit"; version="1.0.4"; sha256="1d704xgiyqmbwfxnsmhqg885x10q8yqxmrk4khqpg3lh696bw97d"; depends=[geigen pracma]; };
   conics = derive2 { name="conics"; version="0.3"; sha256="06p6dj5dkkcy7hg1aa7spi9py45296dk0m6n8s2n3bzh3aal5nzq"; depends=[]; };
   conjoint = derive2 { name="conjoint"; version="1.41"; sha256="1iq3226a6fn1gddmh2nxlzvjcvbj7502r9520g9d4xdmk8smfx33"; depends=[AlgDesign broom cluster fpc ggfortify ggplot2]; };
-  conjurer = derive2 { name="conjurer"; version="1.1.0"; sha256="0pzc71prq1s2pfl2yvns8qgcgys140qrcy0glrflikpm4j71a54w"; depends=[]; };
+  conjurer = derive2 { name="conjurer"; version="1.1.1"; sha256="0rxbmr2s270sy7rbyb876sidbcjzv0g99s1n0w6pd6aymmf0715c"; depends=[]; };
   connections = derive2 { name="connections"; version="0.1.1"; sha256="08fbyzyp26nh1a46p0zi3q0wzgl0cd9bjp4lhw2bwv1bv7yayamp"; depends=[DBI dbplyr dplyr pins rscontract uuid]; };
   conover_test = derive2 { name="conover.test"; version="1.1.5"; sha256="0f1p10klidk1xic1wd48j9rjh2fb3z6pfjx4y021lglx1w3av68k"; depends=[]; };
   conquestr = derive2 { name="conquestr"; version="0.5.1"; sha256="1ha2jxh4xi39w4cznbdbbdhq5s5csmbf4p4j7blr80g72b46jvcp"; depends=[Rcpp reshape]; };
   constants = derive2 { name="constants"; version="0.0.2"; sha256="1j9d52riwx7v1ppfdw0x517j7xh92qgskd4mj5yk9qa233brcwyy"; depends=[]; };
   constellation = derive2 { name="constellation"; version="0.2.0"; sha256="1d49rnyf2z3bvx158nsmgmb0x7xcgxl9f8y98pwg5wlqck7af99q"; depends=[data_table]; };
   constrainedKriging = derive2 { name="constrainedKriging"; version="0.2.4"; sha256="1a91s0b7yka37fb5pm172fmlqrhm6da370cqb9knvkg5n8vi4hys"; depends=[RandomFields rgeos sp spatialCovariance]; };
-  contact = derive2 { name="contact"; version="1.2.0"; sha256="1kmfhr1s5p28wjkkbshcc2sr7rp6m1jpz6lkm8yfc790zn7ch42s"; depends=[ape data_table doParallel foreach geosphere igraph lubridate raster rgdal rgeos sf sp]; };
+  contact = derive2 { name="contact"; version="1.2.1"; sha256="1xh6m6qsz4lhjy2mhzygxwjxp5d94y3sp6sfnhdp395y56zxp211"; depends=[ape data_table doParallel foreach geosphere igraph lubridate raster rgdal rgeos sf sp]; };
   container = derive2 { name="container"; version="0.3.0"; sha256="128fj97mx52kap299fmhn3whnaismsd4cq3zqpbfvwxx2ii4fd33"; depends=[R6]; };
   contextual = derive2 { name="contextual"; version="0.9.8.3"; sha256="0mpbbg13ba5lwsh6rcy5g8vbfycv3182bqkgw66rn3r8fvkmy516"; depends=[data_table doParallel foreach Formula iterators itertools R_devices R6 rjson]; };
   contfrac = derive2 { name="contfrac"; version="1.1-12"; sha256="0sq5c7ny235yrkv2xc4insgxby6rvzc1qsj8h301cd2if3lwbgwm"; depends=[]; };
   conting = derive2 { name="conting"; version="1.7"; sha256="08f271j3gxcp4shda08kkv0v9ayaadvxgcglfsn6hjmw4hn298zg"; depends=[BMS coda gtools mvtnorm tseries]; };
   contoureR = derive2 { name="contoureR"; version="1.0.5"; sha256="1izq1alkf24zd2sf2ir2adyrkwhdj7n89cv6z0dfh5mfqld5bkdn"; depends=[geometry plyr Rcpp reshape]; };
-  contrast = derive2 { name="contrast"; version="0.21"; sha256="1fgm6qm3svqg8ryq2kd1h9z6f3ni8kki7gl3izvjw6wir97ph8nw"; depends=[geepack Hmisc MASS nlme rms sandwich]; };
+  contrast = derive2 { name="contrast"; version="0.22"; sha256="11zz59dn63gpn455ryp0cmrx32li30yylf6ldrmw1wnn0zq702ww"; depends=[nlme rms sandwich]; };
   contribution = derive2 { name="contribution"; version="0.1.0"; sha256="06y6qa7c0zifg6fqfpwry4z367ckiyk9v09n8cqc6q98c3ddkwj3"; depends=[dplyr ggplot2 gh magrittr rlang tidyr]; };
   control = derive2 { name="control"; version="0.2.5"; sha256="02s8h5kwpzfrivx3ign84gwlybkcs03ibawyxdny9zz5yhb7x3bs"; depends=[expm Matrix pracma signal]; };
   controlTest = derive2 { name="controlTest"; version="1.1.0"; sha256="19r8nvi35ldzgayifskjj706fv76hv6sj68yvggybp27rgyqbjfl"; depends=[survival]; };
@@ -6321,7 +6348,7 @@ in with self; {
   coop = derive2 { name="coop"; version="0.6-2"; sha256="052n2h7yhjj88x87sd3ci9ahhhn5r5rvsm79kh3r2zqbxsr8zzrh"; depends=[]; };
   coopProductGame = derive2 { name="coopProductGame"; version="2.0"; sha256="1348pgqfvvysdixsjibgkvwjsmqasnlmwf9kyr39lw8jb81z25h0"; depends=[dplyr GameTheory ggplot2 gtools kappalab lpSolveAPI]; };
   cooptrees = derive2 { name="cooptrees"; version="1.0"; sha256="0izvwna1jsqik3v5fz1r4c86irvma42clw0p4rdvwswv5pk698i1"; depends=[gtools igraph optrees]; };
-  copBasic = derive2 { name="copBasic"; version="2.1.4"; sha256="0bcnpqc54lxgnxr6zgp2rz8vcbsicnjcs3vs3lsdhymlxifps7la"; depends=[lmomco randtoolbox]; };
+  copBasic = derive2 { name="copBasic"; version="2.1.5"; sha256="0p7ngjpfhl4mjrcjmadik2ly5zzyjfafywjmaxza7frgrj6bflf4"; depends=[lmomco randtoolbox]; };
   copCAR = derive2 { name="copCAR"; version="2.0-2"; sha256="032gphv64v2mmy63q86qgpa31i36ix6fkjsdxmzgqyxcyzgb0jcy"; depends=[mcmcse numDeriv Rcpp RcppArmadillo spam]; };
   cope = derive2 { name="cope"; version="0.2.3"; sha256="1r02nb6wy25ixhdcbqqz167s7ny3hydpxfxry5ar4136qvcamgyy"; depends=[abind fields maps MASS Matrix mvtnorm nlme]; };
   coppeCosenzaR = derive2 { name="coppeCosenzaR"; version="0.1.3"; sha256="1chwsfyaf5rmlsypr43n7px8b2220dfa5mzcriq1swylgbx4181l"; depends=[]; };
@@ -6360,7 +6387,7 @@ in with self; {
   correlbinom = derive2 { name="correlbinom"; version="0.0.1"; sha256="1ix3ccxzr7vqblbda5awsva3h95b69v7kc6adz622bbi8r36xxcq"; depends=[Rmpfr]; };
   corrgram = derive2 { name="corrgram"; version="1.13"; sha256="1g5159vihsz5a2cfmg4g4i1lildn2x2wzck5sd0vml5810rxjpma"; depends=[seriation]; };
   corrplot = derive2 { name="corrplot"; version="0.84"; sha256="1k03qd8db7pwg1v318xapx5mpiypiz2n07qr19c4b45diri5xkhd"; depends=[]; };
-  corrr = derive2 { name="corrr"; version="0.4.1"; sha256="1vyakqfdm0dh1scwi395008hvzmyb53vxcjxx0hx0kfknqara8nn"; depends=[dplyr ggplot2 ggrepel purrr rlang seriation tibble]; };
+  corrr = derive2 { name="corrr"; version="0.4.2"; sha256="1mk6vvsmankrc6m5rm3y58wblsbyqar6js36c73x5g3fs95s58fj"; depends=[dplyr ggplot2 ggrepel purrr rlang seriation tibble]; };
   corrsieve = derive2 { name="corrsieve"; version="1.6-8"; sha256="0ak3j9khcwv5rxbicck2sr260wpmd3xj254y7pdavx2fk0b72yxs"; depends=[]; };
   corset = derive2 { name="corset"; version="0.1-4"; sha256="0ladyqvkys4cldvbhkii9jwn1k5p1ym2g5bgdlz1hq1sv30ixn2f"; depends=[]; };
   corto = derive2 { name="corto"; version="1.0.5"; sha256="042bz48qiwkhms5ad6189dlng91nz6mdfwjar7816ry7vzfn92iw"; depends=[dplyr knitr pbapply plotrix rmarkdown]; };
@@ -6395,6 +6422,8 @@ in with self; {
   covequal = derive2 { name="covequal"; version="0.1.0"; sha256="1qj6djqf1rnjmnaz1nryj9dc104082w258dzjjp5q18gg1ck8v0c"; depends=[corpcor RMTstat]; };
   covfefe = derive2 { name="covfefe"; version="0.1.0"; sha256="178qc77y4bn04qad3g70wr8y4v0ggyg807w67m8wvhbcxqr8yq7c"; depends=[tokenizers]; };
   covglasso = derive2 { name="covglasso"; version="1.0.1"; sha256="1wyh5f7rhwrk042wcr31db4v0wpd12kxwfg1qqszdg3jq6xbyz25"; depends=[Rcpp RcppArmadillo]; };
+  covid19italy = derive2 { name="covid19italy"; version="0.1.0"; sha256="1wd4f97gmw7l9zc0dpfwxii8gfhnwhk0c04gjvwk9xjdp5psx5gb"; depends=[devtools]; };
+  covid19us = derive2 { name="covid19us"; version="0.1.1"; sha256="1rqfi0rgx7kl6pdvjiwrh4x4hr5x7jxr1v9sxma9jgqhg82mlmpi"; depends=[curl dplyr glue httr lubridate magrittr purrr snakecase stringr tibble tidyr]; };
   covr = derive2 { name="covr"; version="3.5.0"; sha256="1pvr95h7jg9hqq1qq1cccy323pkxldrwafl08151cc410499k4fb"; depends=[crayon digest httr jsonlite rex withr yaml]; };
   covreg = derive2 { name="covreg"; version="1.0"; sha256="0v19yhknklmgl58zhvg4szznb374cdh65i7s8pcj2nwrarycwzaq"; depends=[]; };
   covsep = derive2 { name="covsep"; version="1.1.0"; sha256="19dvwhl85yx9ddwxvnq5sdd534s6llcw61gckrav48hq49x1bqld"; depends=[mvtnorm]; };
@@ -6404,7 +6433,7 @@ in with self; {
   coxed = derive2 { name="coxed"; version="0.3.2"; sha256="1pj0w7a40zmnsmvlqi8kxa4psyijqwwjyjmvcvbs9xylqlwna6ih"; depends=[dplyr ggplot2 gridExtra mgcv PermAlgo rms survival tidyr]; };
   coxinterval = derive2 { name="coxinterval"; version="1.2"; sha256="0vb7vmzbb2dsihx04jbp2yvzcr033g435mywmwimqhfqdrmjx3fi"; depends=[Matrix survival timereg]; };
   coxme = derive2 { name="coxme"; version="2.2-16"; sha256="04aid8v0y2afwwbfm39np1pgdla4jw427gy2wazsphf495b4pkm0"; depends=[bdsmatrix Matrix nlme survival]; };
-  coxmeg = derive2 { name="coxmeg"; version="1.0.9"; sha256="19p2j6i34jg6akfyr6hv2xmashpsvf8y5bbql6a62b3f5yz5639v"; depends=[coxme MASS Matrix matrixcalc microbenchmark nloptr rARPACK Rcpp RcppEigen SNPRelate]; };
+  coxmeg = derive2 { name="coxmeg"; version="1.0.10"; sha256="00gp0a7fx7xjk6wccrmwywgvxk8bcdqv9ph1z53qx8mqxyqnz4g6"; depends=[coxme MASS Matrix matrixcalc microbenchmark nloptr rARPACK Rcpp RcppEigen SNPRelate]; };
   coxphMIC = derive2 { name="coxphMIC"; version="0.1.0"; sha256="0lmma5wzcczr762xqa4yamvwvyviqxk8gdrps3sydg3n14hckp6d"; depends=[numDeriv survival]; };
   coxphSGD = derive2 { name="coxphSGD"; version="0.2.1"; sha256="17ga33v7a89dsygk5yypkz03x7dvjhibnwlvwfvgb2p7djd8w465"; depends=[survival]; };
   coxphf = derive2 { name="coxphf"; version="1.13"; sha256="16bman8xv5xx7gg8s54sj3hc4isqxk4h3q93h4q3h3j0bdvww2yy"; depends=[survival]; };
@@ -6484,7 +6513,7 @@ in with self; {
   crs = derive2 { name="crs"; version="0.15-31.1"; sha256="1p16nnxskjf3fdrdm5y1n5zj0acyrmc73ff75rgry1b1fd4yk61x"; depends=[boot np quantreg rgl]; };
   crseEventStudy = derive2 { name="crseEventStudy"; version="1.2"; sha256="1fgjj78p54fk0bkvx0fq1h7c5j4c64g10cdjzmmqhhxlyjwp5z7y"; depends=[sandwich]; };
   crskdiag = derive2 { name="crskdiag"; version="1.0.1"; sha256="0100wbyvchx6jwlrwc6rwhdjanips5c0f5zqzs2c0dgwygpqw30w"; depends=[cmprsk]; };
-  crsmeta = derive2 { name="crsmeta"; version="0.1.7"; sha256="14g89fkpw9zslg08kpkq08k7yi1wam9xzd5b7f8bik4mbrdziz4r"; depends=[]; };
+  crsmeta = derive2 { name="crsmeta"; version="0.2.0"; sha256="11wd83c1jcrba3zndd0nmg882fls2hjpxv6knnc0y7cm9ka4g4q3"; depends=[]; };
   crsnls = derive2 { name="crsnls"; version="0.2"; sha256="0rv0xrdl9ix6bhaf554gma8zf923w47f8j1dkbs8g6xjqjr1c40a"; depends=[]; };
   crso = derive2 { name="crso"; version="0.1.1"; sha256="1r10vz8z5y52a5v5phw22fhqwv9p7g66xfsx0906bcx74dn3f2b3"; depends=[foreach]; };
   crsra = derive2 { name="crsra"; version="0.2.3"; sha256="1rkqm88zmvp9gw442cby6qpvfw4pfw65wz0gyl2h37w87c3wwvrw"; depends=[digest dplyr knitr purrr rcorpora readr tibble tidytext]; };
@@ -6493,7 +6522,6 @@ in with self; {
   crunch = derive2 { name="crunch"; version="1.26.3"; sha256="1hnzx9kc0h1x9pjpq9vmdk79vxqwwgh1ncskj9zvmjdmbaj6vyj3"; depends=[crayon curl httpcache httr jsonlite]; };
   crunchy = derive2 { name="crunchy"; version="0.3.1"; sha256="1qvwzym2hj61zjlm7j34j8jl5kfpkpx35xfjjyl5y35a5y50sz8g"; depends=[crunch httpcache miniUI rstudioapi shiny]; };
   cruts = derive2 { name="cruts"; version="1.1"; sha256="1ih6h9qk4yflzars00d61smjqj7s4bfvc2ikp6vlki9f6k012xcx"; depends=[lubridate ncdf4 raster sp stringr]; };
-  crypto = derive2 { name="crypto"; version="1.1.3"; sha256="0n8b5cp7fp65zp99i8mr6gxi4w0m0l9pyjzq572p2fd8pss1g5nr"; depends=[cli crayon curl dplyr httr jsonlite lubridate progress reshape2 rstudioapi rvest tibble tidyr xml2 xts]; };
   cryst = derive2 { name="cryst"; version="0.1.0"; sha256="04da19dy3mkngd3ma44cd8cdkb5acjy9lbhfipa9flp339j1pp57"; depends=[flux pracma]; };
   csSAM = derive2 { name="csSAM"; version="1.2.4"; sha256="1ms8w4v5m9cxs9amqyljc2hr1178cz6pbhmv7iiq9yj1ijnl4r1x"; depends=[]; };
   csabounds = derive2 { name="csabounds"; version="1.0.0"; sha256="15l7i15w5jk4h3148dlk8v2i4awns5vxvv6m59qcv0hzns6jhx9j"; depends=[BMisc ggplot2 pbapply progress qte]; };
@@ -6516,7 +6544,7 @@ in with self; {
   ctmcd = derive2 { name="ctmcd"; version="1.4.1"; sha256="01nflgdyb70kh4f8bnxpavr31fz4fh02kgz2nlx3zzblnm2idbcx"; depends=[coda expm numDeriv Rcpp RcppArmadillo]; };
   ctmcmove = derive2 { name="ctmcmove"; version="1.2.9"; sha256="1pxyxbbhfa8arqfb7qw10ya1b8hy9ylqbqqzys6d9dsixvdk98h0"; depends=[fda gdistance Matrix raster sp]; };
   ctmle = derive2 { name="ctmle"; version="0.1.2"; sha256="0qc1ji8fjpr88dn6mrpijfcx1ij4zkrxsbcw405hxal7rli0gyp3"; depends=[glmnet SuperLearner tmle]; };
-  ctmm = derive2 { name="ctmm"; version="0.5.8"; sha256="17bqq67pwkkdmhv45n85w6y2n59vgaf5zhma2bhq1bn6dimgf1dq"; depends=[data_table digest expm fasttime Gmedian gsl manipulate MASS numDeriv pbivnorm pracma raster rgdal shape sp]; };
+  ctmm = derive2 { name="ctmm"; version="0.5.9"; sha256="0in7dc83gbqpf6gcz0nz23a2fq5xwjx8qkgy0bgsnsrwmx32b0ar"; depends=[data_table digest expm fasttime Gmedian gsl manipulate MASS numDeriv pbivnorm pracma raster rgdal shape sp]; };
   ctqr = derive2 { name="ctqr"; version="1.1"; sha256="1iv6mms7p0xca91mpj61cj8kxv2bwqrpvwdsbx2lk6hgys8g70y2"; depends=[pch survival]; };
   ctrdata = derive2 { name="ctrdata"; version="1.2"; sha256="146nb5sv6mj43kqs8iz58nzyx4xrrk5khay2hjjpfrh1g076bw8k"; depends=[clipr curl httr jsonlite nodbi rvest xml2]; };
   ctrlGene = derive2 { name="ctrlGene"; version="1.0.1"; sha256="0x7j11v7jj4k1jml6lrnjq79awhrvsm3pig1yxsd337jlfml3ra9"; depends=[psych]; };
@@ -6579,6 +6607,7 @@ in with self; {
   cytoDiv = derive2 { name="cytoDiv"; version="0.5-3"; sha256="00c0gqgypywgbhavb15bvj6ijrk4b5zk86w85n9kwr4069b7jvwc"; depends=[GenKern plotrix]; };
   cytofan = derive2 { name="cytofan"; version="0.1.0"; sha256="0gqs98mnwiawnyfb9hs5nlin8d1fj64bszn4b40gs8ajyh36r9pp"; depends=[ggplot2 RColorBrewer]; };
   cytometree = derive2 { name="cytometree"; version="2.0.2"; sha256="18g7av73lmnyga1kk24bf8jy599zn9n6qhr13mxsqgi0zdinicfa"; depends=[cowplot ggplot2 GoFKernel igraph mclust Rcpp RcppArmadillo]; };
+  cytominer = derive2 { name="cytominer"; version="0.2.1"; sha256="0snifz15ijn5bfl3ppfqjp7ac68hsx0rzxlcnxj3285d10p0wljq"; depends=[caret doParallel dplyr foreach futile_logger magrittr Matrix purrr rlang tibble tidyr]; };
   d3Network = derive2 { name="d3Network"; version="0.5.2.1"; sha256="1gh979z9wksyxxxdzlfzibn0ysvf6h1ij7vwpd55fvbwr308syaw"; depends=[plyr rjson whisker]; };
   d3Tree = derive2 { name="d3Tree"; version="0.2.0"; sha256="0xjr36hdd00dy8s8z1a1s44dn2wg0nm6yqc1rri2l0dqrbh4nrbn"; depends=[dplyr htmlwidgets magrittr plyr stringr]; };
   d3heatmap = derive2 { name="d3heatmap"; version="0.6.1.2"; sha256="1ici8j0wzzklhmw94qlxm292qs562vc32wq8mnjsas2n1p35vkmk"; depends=[base64enc dendextend htmlwidgets png scales]; };
@@ -6593,7 +6622,7 @@ in with self; {
   dMod = derive2 { name="dMod"; version="1.0.1"; sha256="1xw52kliyiv9vrw0m9y7baqdcpqz4706625if8b63nfr70i77a9p"; depends=[cOde deSolve doParallel dplyr foreach ggplot2 plyr rootSolve stringr]; };
   dSVA = derive2 { name="dSVA"; version="1.0"; sha256="0vy0flyg82x0n9vw6jf9f76qy84sp0wnis91faj37ac5hdv3pvsb"; depends=[sva]; };
   daarem = derive2 { name="daarem"; version="0.4.1"; sha256="1krixphwjh4wp38in7ypwc4y4ncdrryhsnjnn1y48fm2jgc8zvjl"; depends=[]; };
-  dabestr = derive2 { name="dabestr"; version="0.2.3"; sha256="11gbfijssv86k81fc1vlymk8zagjxfflx2qc9w1sfapnlk42b2aj"; depends=[boot cowplot dplyr ellipsis forcats ggbeeswarm ggforce ggplot2 magrittr rlang simpleboot stringr tibble tidyr]; };
+  dabestr = derive2 { name="dabestr"; version="0.2.4"; sha256="1xy1fzfjajphpqwa3x0hsl6fyr55zq1az7la5wpdh0n3sbj1wkbd"; depends=[boot cowplot dplyr ellipsis forcats ggbeeswarm ggforce ggplot2 magrittr plyr rlang simpleboot stringr tibble tidyr]; };
   dad = derive2 { name="dad"; version="3.4.0"; sha256="0jgirdnp3gaychnjg4mp4p1mdn31hlngs1znzvlxhrd0cqyi4ccd"; depends=[DescTools e1071 ggplot2]; };
   dae = derive2 { name="dae"; version="3.1-23"; sha256="1qpsnyjq2imci45hn0c00cwgvhdrcbrfrvwmjm87k8vb3g0wqhgr"; depends=[ggplot2 plyr]; };
   daewr = derive2 { name="daewr"; version="1.2-3"; sha256="0ic7lpydsdiilqsbvc5yskrrl6a2l6kmgiz1idz0ic0klyk6rnig"; depends=[FrF2 lattice stringi]; };
@@ -6650,6 +6679,7 @@ in with self; {
   datasus = derive2 { name="datasus"; version="0.4.1.1"; sha256="1vcyn0iia71c58959d3wcdqlh6336p3lsxbvwsj0fd9sll0a605s"; depends=[dplyr httr magrittr RCurl readr rvest stringi stringr xml2]; };
   dataverse = derive2 { name="dataverse"; version="0.2.0"; sha256="0lyga8rdsir2yr1n9nr10iiaf6a7dxp1nb04bx8mq8ljrvpkgr8n"; depends=[httr jsonlite xml2]; };
   date = derive2 { name="date"; version="1.2-39"; sha256="0mwp1619rxqyyyyxk224fh0x6g4rgyvr97q0kj076cxp71b97cdm"; depends=[]; };
+  daterangepicker = derive2 { name="daterangepicker"; version="0.1.0"; sha256="1605ch84ad3nmmad0yy3id0izv0nz536lxwib6rkdkjik5761gqk"; depends=[htmltools jsonify shiny]; };
   datetime = derive2 { name="datetime"; version="0.1.4"; sha256="0nn1yxknsn3crmwbkws5kvfjhd65dw0fkfbg67gba0dyaqp1jg37"; depends=[]; };
   datetimeutils = derive2 { name="datetimeutils"; version="0.3-0"; sha256="1f63vzinj39pf85bw9xa4szkwmy4d4rxxnqm1jd396ywppgxzn7c"; depends=[]; };
   datoramar = derive2 { name="datoramar"; version="0.1.0"; sha256="0zq6vhq6dmsyagmqrmb85z6fy9qhwra3s3iasr3jgc4ryr009pml"; depends=[httr jsonlite tibble]; };
@@ -6661,12 +6691,13 @@ in with self; {
   dbConnect = derive2 { name="dbConnect"; version="1.0"; sha256="1vab5l4cah5vgq6a1b9ywx7abwlsk0kjx8vb3ha03hylcx546w42"; depends=[gWidgets RMySQL]; };
   dbEmpLikeGOF = derive2 { name="dbEmpLikeGOF"; version="1.2.4"; sha256="0vhpcxy702cp3lvlif2fzmvccys8iy7bv1fbg6ki2l8bvn2f7c5p"; depends=[]; };
   dbEmpLikeNorm = derive2 { name="dbEmpLikeNorm"; version="1.0.0"; sha256="0h5r2mqgallxf9hin64771qqn9ilgk1kpsjsdj2dqfl3m8zg967l"; depends=[dbEmpLikeGOF]; };
-  dbarts = derive2 { name="dbarts"; version="0.9-16"; sha256="1yj2d5siicd2l0wfqjchh6llcd393yvvkix88m9p4596ga404svl"; depends=[]; };
+  dbarts = derive2 { name="dbarts"; version="0.9-17"; sha256="1zbjri8d22m56dkj3rdzfvwn4h046367vjzl6l173wkq1fhraxwh"; depends=[]; };
   dbfaker = derive2 { name="dbfaker"; version="0.1.0"; sha256="00n2z4q5drpg26pw826i16rg07m7w66a0r466q2lrl14hxs4rcaq"; depends=[assertive DBI dplyr foreach parsedate RPostgreSQL tidyr]; };
   dbflobr = derive2 { name="dbflobr"; version="0.0.1"; sha256="1j97gwmqr8mv05yfd1dxm0v3l0vxrjrqf0drvkms2nja5asbhinq"; depends=[checkr DBI flobr glue RSQLite]; };
   dblcens = derive2 { name="dblcens"; version="1.1.7"; sha256="02639vyaqg7jpxih8cljc8snijb78bb084f4j3ns6byd09xbdwcw"; depends=[]; };
   dblr = derive2 { name="dblr"; version="0.1.0"; sha256="0wzmhmp706mw0pkh81nsb7qzclwyhm6f2mjvpvz043ng5xrxwvvw"; depends=[CatEncoders data_table Metrics xgboost]; };
   dbmss = derive2 { name="dbmss"; version="2.7-1"; sha256="0gasvpgmmpq8x776qmfrv4xiniz2fi1zxywzi7rm8xgmwr5q9kp3"; depends=[cubature ggplot2 Rcpp RcppParallel reshape2 spatstat spatstat_utils tibble]; };
+  dbnR = derive2 { name="dbnR"; version="0.3.3"; sha256="1bafj92p7wajcrfwndwb0hbpgrs4yh1506l1pq43m60bar1f4njn"; depends=[bnlearn data_table magrittr Rcpp]; };
   dbparser = derive2 { name="dbparser"; version="1.1.0"; sha256="12fx17bj076nl493mian9rz3iv1fx86qr0q2k2z6hqsvg4866q1j"; depends=[DBI dplyr odbc purrr readr RMariaDB RSQLite tibble XML]; };
   dbplot = derive2 { name="dbplot"; version="0.3.3"; sha256="1svizj9hcd417yii8ll9s3mnvdqpa5awy9xl71kbwpfcnpdzqf1r"; depends=[dplyr ggplot2 magrittr purrr rlang]; };
   dbplyr = derive2 { name="dbplyr"; version="1.4.2"; sha256="1q2dflr88s5a1amzfld3087q422vf70052qn84zyd8895kdg10xp"; depends=[assertthat DBI dplyr glue purrr R6 rlang tibble tidyselect]; };
@@ -6688,7 +6719,7 @@ in with self; {
   ddi = derive2 { name="ddi"; version="0.1.0"; sha256="0pnkylz7l6brx6i73wys637w811psxhnr39lcmkag41s6jcgabd5"; depends=[]; };
   ddiv = derive2 { name="ddiv"; version="0.1.0"; sha256="1r2sxlkw1vxf2svdi1nary3hb7c5k1b4j820mj268r9swmy632ch"; depends=[MASS segmented]; };
   ddpca = derive2 { name="ddpca"; version="1.1"; sha256="1qsanid7sr2nc9pwzyz4cbjc1vg0rj255d3rnh1rb22agrgj2bc1"; depends=[MASS Matrix quantreg RSpectra]; };
-  ddpcr = derive2 { name="ddpcr"; version="1.13"; sha256="0g8cfrc22wd209ikm1pyw4zz1xxk3pabkx9g2md4zx4csb8yv1kf"; depends=[dplyr DT ggplot2 lazyeval magrittr mixtools plyr readr shiny shinyjs]; };
+  ddpcr = derive2 { name="ddpcr"; version="1.14"; sha256="16f80bg5zfjq2vzd7f9bk2s6alia3rcv21p04bjvj47aq5pk22ys"; depends=[dplyr DT ggplot2 lazyeval magrittr mixtools plyr readr shiny shinyjs tibble]; };
   ddsPLS = derive2 { name="ddsPLS"; version="1.1.4"; sha256="0h0iiycprham72k3yq81d15gnliln0i2r71lxhsqrcbrly9hpanr"; depends=[corrplot doParallel foreach MASS RColorBrewer Rcpp Rdpack]; };
   ddst = derive2 { name="ddst"; version="1.4"; sha256="1y0immm337adkd2bjx8c5pf02w9wysv3gj26f4qf0jiba0f2wk8n"; depends=[evd orthopolynom]; };
   deBInfer = derive2 { name="deBInfer"; version="0.4.2"; sha256="108vijk71sgsj14hwfv78r4lnn68cybvnpr92zvrvl0d82b7qxfd"; depends=[coda deSolve MASS mvtnorm PBSddesolve plyr RColorBrewer truncdist]; };
@@ -6826,7 +6857,7 @@ in with self; {
   diagonals = derive2 { name="diagonals"; version="1.0.1"; sha256="0m9hlxww6n405fn26gbw36kjlb7b9759hj56lz820wkj972zw301"; depends=[]; };
   diagram = derive2 { name="diagram"; version="1.6.4"; sha256="0f6ffprn5k0ir1s7m9s7izc64aa17r3gnygagz5bihrlsvawaavw"; depends=[shape]; };
   dialr = derive2 { name="dialr"; version="0.3.0"; sha256="1wdl3m6mlpxhy75kyzxypf053n2zaf8skk0xq1m4gklq4disbg32"; depends=[dialrjars rJava]; };
-  dialrjars = derive2 { name="dialrjars"; version="8.11.4"; sha256="02992ynq7pdga0gccpqr7y4j2wl0dkiqh13vjzvf8bdgkjk0g5w4"; depends=[rJava]; };
+  dialrjars = derive2 { name="dialrjars"; version="8.12.0"; sha256="0c68n2i29v69xlyzsivzajhrh55b1ih55sr6j907klxgds1hb767"; depends=[rJava]; };
   dials = derive2 { name="dials"; version="0.0.4"; sha256="04vz6spp8lw011a9fn8z0bkba9nghgj2hvsxy3n6dqqs3ajd4nfa"; depends=[DiceDesign dplyr glue purrr rlang scales tibble withr]; };
   diaplt = derive2 { name="diaplt"; version="1.3.0"; sha256="1kkqhkv3s8rrpqd05jidjdnqmlnb3s9f8rr34rfqj7k4nh0qzzcz"; depends=[]; };
   dice = derive2 { name="dice"; version="1.2"; sha256="0gic7lqnsdmwv3dbzwwmcwdfyfqlq8kpr2pciqphd1j2ligzwl3s"; depends=[gtools]; };
@@ -6851,7 +6882,7 @@ in with self; {
   diffee = derive2 { name="diffee"; version="1.1.0"; sha256="01lb1prz70mxgymhhsvx48kbfy69xyyaabsmfhf28af9wfb89662"; depends=[igraph pcaPP]; };
   diffeqr = derive2 { name="diffeqr"; version="0.1.3"; sha256="1696bxh916688zlfxbm6jaqk245xw51ar7rqz7m2nla0ibka86sj"; depends=[JuliaCall stringr]; };
   diffman = derive2 { name="diffman"; version="0.1.1"; sha256="08b4kqxfg8pmyl2xg8flb581s9wnkdcy5rrmrxp8a89y265qmirx"; depends=[data_table dplyr igraph Matrix progress Rcpp sf tidyverse]; };
-  diffobj = derive2 { name="diffobj"; version="0.2.3"; sha256="17wq3haj2i8x5cy1xx2c8hj2p65hasrjyiqxcq61kzvxd0zyjxzw"; depends=[crayon]; };
+  diffobj = derive2 { name="diffobj"; version="0.2.4"; sha256="1nygk8qly4jypwsvxwrvgq2v9mj1d619g6qrzxk3v1bi89vqws18"; depends=[crayon]; };
   diffpriv = derive2 { name="diffpriv"; version="0.4.2"; sha256="12q2v93369bshid83rsy1csbr9ay6rfpd8zdxm12zi7py3f9sjs8"; depends=[gsl]; };
   diffr = derive2 { name="diffr"; version="0.1"; sha256="0ydwnpyzirynffsnvip667y0jqzy7yfqlfpqhb38xvmd9rmwfbp8"; depends=[htmlwidgets]; };
   diffrprojects = derive2 { name="diffrprojects"; version="0.1.14"; sha256="1mnqf5zs1w8dx9y5iwn4blyzb9j60ayzc04zxj5l8804nd527n25"; depends=[dplyr hellno magrittr R6 Rcpp RSQLite rtext stringb stringdist]; };
@@ -6864,12 +6895,13 @@ in with self; {
   digitize = derive2 { name="digitize"; version="0.0.4"; sha256="1qw4x4z9vrs79sd9b2daw668nc6nvjl4qhayfqmd87yxa2ydv6x0"; depends=[readbitmap]; };
   dils = derive2 { name="dils"; version="0.8.1"; sha256="1q6ba9j14hzf7xy895mzxc6n9yjgind55jf350iqscwzxf7ynp33"; depends=[igraph Rcpp]; };
   dimRed = derive2 { name="dimRed"; version="0.2.3"; sha256="110d6y83ib1nfpxzmvkvb3fn3brskwkdbsk4dqrdrswrd4znxrg6"; depends=[DRR magrittr]; };
+  dimensionsR = derive2 { name="dimensionsR"; version="0.0.1"; sha256="1g0jwf3lvv3zaarrcvqh3a8fgzm4p8d7g73hqg29lgmb6q8shb8d"; depends=[httr jsonlite]; };
   dina = derive2 { name="dina"; version="2.0.0"; sha256="1sq7998xc5qhvd8clc8r32ch7axinh2a2dc7i1w2p148wv130yhd"; depends=[Rcpp RcppArmadillo rgen simcdm]; };
   dinamic = derive2 { name="dinamic"; version="1.0"; sha256="0mx72q83bbwm10ayr3f1dzwr5wgz7gclw7rh39yyh95slg237nzr"; depends=[]; };
   dineq = derive2 { name="dineq"; version="0.1.0"; sha256="1xrhrdc970f7hm9xng9z7xmshnmmz89cn3gmnyabzprx44ccr9sl"; depends=[boot Hmisc]; };
   dint = derive2 { name="dint"; version="2.1.3"; sha256="0nxppn7gx4sjwn7jns5bwbqfid3jkbsx2lxi0rjdkbsawy77fc85"; depends=[]; };
   dipsaus = derive2 { name="dipsaus"; version="0.0.5"; sha256="0brzlfh9ja6lf8mx383x4rrlhn4m5w30whpkw951fhlk8yzlzxzd"; depends=[base64enc base64url cli crayon digest fastmap future future_apply jsonlite progressr R6 Rcpp RcppParallel rlang shiny stringr synchronicity txtq]; };
-  diptest = derive2 { name="diptest"; version="0.75-7"; sha256="0rcgycgp0bf8vhga1wwgfcz3pqs5l26hgzsgf2f97dwfna40i1p1"; depends=[]; };
+  diptest = derive2 { name="diptest"; version="0.75-7"; sha256="06xnc5gv1284ll0addxnxb6ljz6fn8dbyrp5vchyz6551h800aa6"; depends=[]; };
   directPA = derive2 { name="directPA"; version="1.4"; sha256="0rbdygdslr2gvg4mvnp09lc9rv0sg9jwdf5a5ks50v67n25x6y5d"; depends=[calibrate rgl]; };
   directlabels = derive2 { name="directlabels"; version="2020.1.31"; sha256="08s1gnwp4bn8xahwjaq0f1qzhwh2dvybzhq3z7xyzn8cnyzmis6c"; depends=[quadprog]; };
   directotree = derive2 { name="directotree"; version="1.0.0"; sha256="1yv703mb3fnvjxr2rrxvb8x869hbbjx4l94qbbsmy0ssknayq60y"; depends=[collapsibleTree data_tree]; };
@@ -6917,7 +6949,7 @@ in with self; {
   disto = derive2 { name="disto"; version="0.2.0"; sha256="09pafy8y1ifgglqmal32dy34acx06ypsq2bgwsn6fjiqr9kw401j"; depends=[assertthat broom dplyr factoextra fastcluster fastmatch ggplot2 pbapply proxy tidyr]; };
   distory = derive2 { name="distory"; version="1.4.3"; sha256="1mszk8fv1z46d7y1q37mhq9b5yk39w2i9rq6mgdf03afdslrmrip"; depends=[ape]; };
   distr = derive2 { name="distr"; version="2.8.0"; sha256="1dyff4m33xmw6hxb3jxzr8vvajg3qz3rfcrfxjxwsswlddfz0zdv"; depends=[MASS sfsmisc startupmsg]; };
-  distr6 = derive2 { name="distr6"; version="1.3.4"; sha256="0qak33p63f6fmapvcgffs2g53lv6a7sx8p5qkqkddbj51nx8wfc3"; depends=[checkmate data_table R6 R62S3 set6]; };
+  distr6 = derive2 { name="distr6"; version="1.3.5"; sha256="0qx5r8rwxpw6sqnyygr3z76srdfnkz1b72ymirpwbp865kmphx3j"; depends=[checkmate data_table R6 R62S3 set6]; };
   distrDoc = derive2 { name="distrDoc"; version="2.8.0"; sha256="1iq2gbfbsf3h279yh3fnqsi39gdw15vc6r1g33xcb8kgmmqmvf0p"; depends=[distr distrEx distrMod distrSim distrTeach distrTEst MASS RandVar startupmsg]; };
   distrEllipse = derive2 { name="distrEllipse"; version="2.8.0"; sha256="1ymfa8xpgs8zjp4psiwmll5z0vji496fivxmcavspzxy31cw70wx"; depends=[distr distrEx distrSim mvtnorm setRNG startupmsg]; };
   distrEx = derive2 { name="distrEx"; version="2.8.0"; sha256="1gwhsnlrnzyp2x97d9wfdy5pa9z3q5il934wjv4kxs9wsvkwsr5h"; depends=[distr startupmsg]; };
@@ -7012,7 +7044,7 @@ in with self; {
   dparser = derive2 { name="dparser"; version="0.1.8"; sha256="1yx425s3iq03j043g41pyfp3cgmajb4qh50zirhd0qpplzwy8xj5"; depends=[digest]; };
   dpcR = derive2 { name="dpcR"; version="0.5"; sha256="17l9g11qqs2fkskg331889m8nkkrwzrq0n684rdn62pnd5j2n5pi"; depends=[binom chipPCR dgof e1071 evd multcomp pracma qpcR rateratio_test readxl shiny signal spatstat]; };
   dpcid = derive2 { name="dpcid"; version="1.0"; sha256="1gx8gyrxvm07mjiasl0b80y0x3crq6gy170v6s817d11jw44n86z"; depends=[]; };
-  dplR = derive2 { name="dplR"; version="1.7.0"; sha256="1ylzki6wvsbcxlz4k532a8yh0kwc6817vkbks7l060acssbycipr"; depends=[digest lattice Matrix matrixStats plyr png R_utils signal stringi stringr XML]; };
+  dplR = derive2 { name="dplR"; version="1.7.1"; sha256="1df4g9zz47h0flx5ww6bvlm364q81l2c5flzpa985sv87rq6cz4j"; depends=[digest lattice Matrix matrixStats plyr png R_utils signal stringi stringr XML]; };
   dplRCon = derive2 { name="dplRCon"; version="1.0"; sha256="10xnawgnhxp5y949fxs1vvadc1qz2ldy0s9w9w7kf6iqh59d35sw"; depends=[]; };
   dplyr = derive2 { name="dplyr"; version="0.8.5"; sha256="0602b4a9nffxx67q57csqp87nkrv33nn9wlaw1458yys9fzx6l2p"; depends=[assertthat BH ellipsis glue magrittr pkgconfig plogr R6 Rcpp rlang tibble tidyselect]; };
   dplyr_teradata = derive2 { name="dplyr.teradata"; version="0.3.2"; sha256="1pq630hlvpfrhaxqn6yh0kgapgibrnbic78g130d40visak60j1p"; depends=[bit64 DBI dbplyr dplyr odbc rstudioapi]; };
@@ -7055,6 +7087,7 @@ in with self; {
   dsrTest = derive2 { name="dsrTest"; version="0.2.1"; sha256="1kljlfi7jf6fa8b5f3wxjsa9rlmzcp4qix3m2qyapz2lqd85mbb7"; depends=[asht exactci loglognorm]; };
   dssd = derive2 { name="dssd"; version="0.2.1"; sha256="0lfr3bb3nba6pkg13d3kiblbp4naqxcdkvdqsa0y1zlhak74cgcj"; depends=[plot3D rgdal sf]; };
   dst = derive2 { name="dst"; version="1.4.0"; sha256="0zr04m33ky98y5n6jbczcfn898i7y8zc1hygfm8p9rrnw93d2lin"; depends=[]; };
+  dstack = derive2 { name="dstack"; version="0.1.0"; sha256="05a44d9wzl7jxd1q1jcrnih6w99rblchwh072fw3bhxsh7x35hga"; depends=[base64enc httr nanotime rjson rlist uuid yaml]; };
   dstat = derive2 { name="dstat"; version="1.0.4"; sha256="023jp0xdbg200ww1gnr3fzgjqd82acag0jps7q6j6m27q11psvgz"; depends=[]; };
   dtangle = derive2 { name="dtangle"; version="2.0.9"; sha256="0yg1fbrqixqp93vdw3grvz1la5l2kidgs730qp6yihkp3260cxf3"; depends=[DEoptimR]; };
   dti = derive2 { name="dti"; version="1.5.1"; sha256="08da7v7sl88g2jixfplvw9rc5rvlifq3fvyrgh9naa5jsmd8h5ia"; depends=[adimpro aws awsMethods gsl oro_dicom oro_nifti quadprog rgl]; };
@@ -7119,6 +7152,7 @@ in with self; {
   eDMA = derive2 { name="eDMA"; version="1.5-3"; sha256="0wyp81si6lcispqng4c7lii22qbyblvijgnlxvcsnkcxj5hpm76j"; depends=[Rcpp RcppArmadillo xts zoo]; };
   eGST = derive2 { name="eGST"; version="1.0.0"; sha256="0qi4vg0pwy55js9ww1cw85ssim3x7s2p98cjijxvlrvid8sns5bq"; depends=[MASS matrixStats mvtnorm purrr]; };
   eMLEloglin = derive2 { name="eMLEloglin"; version="1.0.1"; sha256="087zw48lykls2jcsmpqd5jkrlpr0j423snp00liszjhdpdh59saq"; depends=[lpSolveAPI]; };
+  eNchange = derive2 { name="eNchange"; version="1.0"; sha256="07vdi05fr6mynb86haas21izdcjiagw14p1h8n0qr1hb3klvs8n5"; depends=[ACDm doParallel foreach hawkes iterators Rcpp]; };
   eNetXplorer = derive2 { name="eNetXplorer"; version="1.1.0"; sha256="1n84rf9axvvjf6s0mamf5z889hg3y32mhypasmxc455698z3d1k5"; depends=[calibrate expm glmnet gplots Matrix progress RColorBrewer survcomp survival survivalROC]; };
   ePCR = derive2 { name="ePCR"; version="0.9.9-11"; sha256="0bkvjvygdnzcc23sslgkcrx11mzwgsqss37lwnbr7rq0jp1sw46s"; depends=[Bolstad2 glmnet hamlet impute pracma survival timeROC]; };
   eRTG3D = derive2 { name="eRTG3D"; version="0.6.2"; sha256="04m39jkp4lvv145wmcswc87qx36wpfkm95kq9fik8a3jb5myvjll"; depends=[CircStats ggplot2 gridExtra pbapply plotly plyr raster rasterVis sp tiff]; };
@@ -7144,16 +7178,16 @@ in with self; {
   easyanova = derive2 { name="easyanova"; version="7.0"; sha256="1zpwh3r1r0n11hgqzph8f2aac44qb6rpnhk73hcblq0f9vs0an55"; depends=[nlme]; };
   easycsv = derive2 { name="easycsv"; version="1.0.8"; sha256="1i2k5372b6a5pypk6m0rsvvkcy0y51pvh57a60rpgqk8q0yq8pig"; depends=[data_table]; };
   easynls = derive2 { name="easynls"; version="5.0"; sha256="1ma2q4y5dxk6q99v880vqfsgy1fha96j7pi8ch699l0pi6bx0d6c"; depends=[]; };
-  easypackages = derive2 { name="easypackages"; version="0.1.0"; sha256="00paxdwz4bw3imqhcsw6hj1h0gmnpishlxcj79n826vhdy23jc4y"; depends=[assertthat devtools]; };
+  easypackages = derive2 { name="easypackages"; version="0.1.0"; sha256="0r911lys38jr60pvifkdp6d7gspdrcq3g7dn2fqhacz8pqvg1b5f"; depends=[assertthat devtools]; };
   easypower = derive2 { name="easypower"; version="1.0.1"; sha256="1vf0zv55yf96wjxja6ifdjvgc9nw0jl0hnc1ygyjd8pmwbgdz9bl"; depends=[pwr]; };
-  easyr = derive2 { name="easyr"; version="0.2-0"; sha256="16z5b67wpyaagkpaiw0w5s3gp0djpa6pzb7k6aihsa59ag1k1f3i"; depends=[data_table digest dplyr foreign glue Hmisc lubridate openssl readxl rlang stringr tibble XML]; };
+  easyr = derive2 { name="easyr"; version="0.3-1"; sha256="139xg91j01i5sczbifga3476j98qv9n3vs5wp4ai66blfsiqf1yy"; depends=[data_table digest dplyr foreign glue Hmisc lubridate openssl qs readxl rlang stringr tibble XML]; };
   easyreg = derive2 { name="easyreg"; version="4.0"; sha256="1w4wlhziyhdyldm0zgnm73fnxrh0fv8hwcw5j8ircxb4npx7bcgg"; depends=[nlme]; };
   ebGenotyping = derive2 { name="ebGenotyping"; version="2.0.1"; sha256="1jllzc7kvvckrws8qhgvwy626llyb68sp1davp7swx48sf7rwcxc"; depends=[]; };
   ebSNP = derive2 { name="ebSNP"; version="1.0"; sha256="0x3ijwg4yycsfy6jch1zvakzfvdgpiq8i7sqdp5assb8z1823w0b"; depends=[]; };
   eba = derive2 { name="eba"; version="1.9-0"; sha256="1xbjd7n895wzzybpjf634a1jpbwqxwh7l17phz6zv7h6dfw19nx4"; depends=[nlme psychotools]; };
   ebal = derive2 { name="ebal"; version="0.1-6"; sha256="1cpinmbrgxxv0fzi9qi2inv4hw2lz7iq4b0ggp316rdqqb5bj9r0"; depends=[]; };
   ebdbNet = derive2 { name="ebdbNet"; version="1.2.5"; sha256="0kal4sqx12y04696ilwnwkmss4rn16dkbnalgqimz6i4jhz8n23h"; depends=[igraph]; };
-  ebirdst = derive2 { name="ebirdst"; version="0.2.0"; sha256="1wpcbgs2a032zwyp1xzxm4wws6yjkzr16r9fifp91yw5pn2h72fd"; depends=[car data_table dplyr fasterize ggplot2 gridExtra mgcv PresenceAbsence rappdirs raster rgdal rlang scales sf stringr tidyr viridisLite xml2]; };
+  ebirdst = derive2 { name="ebirdst"; version="0.2.1"; sha256="1cmi0hdh6363hcbqwglald3bn22rlvl4yqg4l3by6005mirjgx2i"; depends=[car data_table dplyr ggplot2 gridExtra magrittr mgcv PresenceAbsence rappdirs raster rgdal rlang scales sf stringr tidyr viridisLite xml2]; };
   ebmc = derive2 { name="ebmc"; version="1.0.0"; sha256="0v9hkzy8ljddmi6wdjd1jga4ib566ikr1vgrvxba67ka524r6bbp"; depends=[C50 DMwR e1071 pROC randomForest rpart]; };
   ebreg = derive2 { name="ebreg"; version="0.1.0"; sha256="033ldzj9r9y14nq5bsy1ds9vys8imk1ysii8b889zd1bi319b05y"; depends=[lars Rdpack]; };
   ecb = derive2 { name="ecb"; version="0.2"; sha256="17hj4d48j6rran64ajzlgkgz17mab51fa3lz8rm3mw0qhahkjlmc"; depends=[curl httr rsdmx xml2]; };
@@ -7176,22 +7210,25 @@ in with self; {
   econetwork = derive2 { name="econetwork"; version="0.3"; sha256="1id17gcbfv5sx1lhyf7qcqqn5y3qdd5pv1svxxjam3smpdymax3y"; depends=[igraph Matrix_utils rdiversity]; };
   economiccomplexity = derive2 { name="economiccomplexity"; version="1.0"; sha256="1bqayzpfz26lb985l66j27qybyqx0148fiikb8diamq0mbx3picc"; depends=[igraph Matrix]; };
   econullnetr = derive2 { name="econullnetr"; version="0.2.0"; sha256="1amgwcsm42ffrdx5a11nkvdx37qqjfh7z54z1hl4b07n8rg1rp7c"; depends=[bipartite gtools reshape2]; };
-  ecoreg = derive2 { name="ecoreg"; version="0.2.2"; sha256="1yzyqvhshgc7ip251y7hsvip4xwf8i92bvvz84mn0mzv5b4mq3im"; depends=[]; };
+  ecoreg = derive2 { name="ecoreg"; version="0.2.3"; sha256="1bhh4bnvrvgz49wim5r0b4awfsn9l23wvl4kl0vny0s4hm7cgahc"; depends=[]; };
   ecoseries = derive2 { name="ecoseries"; version="0.1.5"; sha256="1q35hp5hl6z28hns5rnp3mjn6hqp5qh714pagw7fw4d4a6wnvacy"; depends=[magrittr RCurl readr rjson rvest tibble xml2 zoo]; };
   ecosim = derive2 { name="ecosim"; version="1.3-1"; sha256="0gpgjswqmibnz9lpcidvw3y1wmd38l4lyha4fbs0agiz6yyfiyjn"; depends=[deSolve stoichcalc]; };
   ecospace = derive2 { name="ecospace"; version="1.3.1"; sha256="0xrhlhpndycj2hdf50lygymc1hwmczx74r6l9f2qmm6v90c0729k"; depends=[FD]; };
   ecotox = derive2 { name="ecotox"; version="1.4.2"; sha256="0i4wjarg8gj4hfr0d4fqk74ymhkzrq3vkklpv5v1511ci19hpv16"; depends=[tibble]; };
   ecotoxicology = derive2 { name="ecotoxicology"; version="1.0.1"; sha256="084xkr59d7x9zxmsnsyym2x8jshz6ag6rvnmhd1i6fzar8ypwccb"; depends=[]; };
-  ecoval = derive2 { name="ecoval"; version="1.2.5"; sha256="0rlgi8cd7jdybb2dqx6ndp8rg02bvsvhksmh8vk8g5fg2wk0rll3"; depends=[jpeg rivernet utility]; };
+  ecoval = derive2 { name="ecoval"; version="1.2.6"; sha256="1kizssw71a0sq4z48lqsj5yrnq8f0iw4p4xsbbskiz45c6j8nsa5"; depends=[jpeg rivernet utility]; };
   ecp = derive2 { name="ecp"; version="3.1.2"; sha256="11f9p869xr0zg779i46gmflxlq4xclk9wxbab0nj2fan26pn4sfy"; depends=[Rcpp]; };
   ecr = derive2 { name="ecr"; version="2.1.0"; sha256="0vvkdxlcqaim9mkgwgdxrx1xhw3lshi1nxfw3kqllq14p3l6xss4"; depends=[BBmisc checkmate ggplot2 parallelMap ParamHelpers reshape2 smoof]; };
   ectotemp = derive2 { name="ectotemp"; version="0.1.2"; sha256="0dy6n2gaz6qgfj2gvavlgl4ic15wq1lb9ykynihi77nyxnz67i46"; depends=[dplyr psych]; };
   ed50 = derive2 { name="ed50"; version="0.1.1"; sha256="058p1750ba5hp4rczi26grgwjia2ny1880v1vfp6wxad13r459pq"; depends=[boot]; };
   ed50simulation = derive2 { name="ed50simulation"; version="0.1.1"; sha256="00fknpssrpin8bpjhf2lsjx3lbpinrmqa6jzmgy3nslkc51x0939"; depends=[boot]; };
   eda4treeR = derive2 { name="eda4treeR"; version="0.2.0"; sha256="0fh6nfgvbkvjm1f0b292ggi0mr8ylq5pg2wp8cph46j8rhbgbdxz"; depends=[dae dplyr emmeans ggplot2 lme4 magrittr pbkrtest tidyverse]; };
+  edbuildmapr = derive2 { name="edbuildmapr"; version="0.1.0"; sha256="1wk0xxdlvpa9wj2cbiwj23kh6f24x29391lmwvw1rnhlqxrfypk7"; depends=[dplyr lwgeom magrittr sf spdep stringr tidyselect tmap]; };
+  edbuildr = derive2 { name="edbuildr"; version="0.1.1"; sha256="0cbwkvlj5w3vbg2k20fqxanrahly3ca22zdlfqk62v38i78cpldq"; depends=[dplyr magrittr openxlsx scales stringr tidyselect]; };
   edcc = derive2 { name="edcc"; version="1.0-0"; sha256="036fi6mnn9480hkb378xb5jilkfvdydjmkyw4mcc9s1lz195f62w"; depends=[spc]; };
   edci = derive2 { name="edci"; version="1.1-3"; sha256="1f1ry2adfranfrrvf1gkiy58pra3z6bray4v5fgr0z9n1ybcaff0"; depends=[]; };
   eddi = derive2 { name="eddi"; version="0.0.1"; sha256="19cgrqdcji509igb6rmlwb75xyyvrh34nv6zyjjfcsc31p5nvf95"; depends=[raster rgdal]; };
+  eddington = derive2 { name="eddington"; version="2.1.1"; sha256="0v88v2xmvirnj661jsg2qh7n8afaw71mqks9csnmmz3c16agp7b6"; depends=[Rcpp]; };
   edeR = derive2 { name="edeR"; version="1.0.0"; sha256="1dg0aqm5c4zyf015hz1hhn3m4lfvybc4gc1s7sp8jcsk46rxz0cc"; depends=[rJava rjson rJython]; };
   edeaR = derive2 { name="edeaR"; version="0.8.4"; sha256="14skrsgnd4nslmhi3cpg5v8vz8q11diywd5ad0wbr01aak2bv10c"; depends=[bupaR data_table dplyr ggplot2 ggthemes glue hms lubridate miniUI purrr rlang shiny shinyTime stringr tibble tidyr zoo]; };
   edf = derive2 { name="edf"; version="1.0.0"; sha256="14ikm6j0ndxrk7c7lh5mbd2aci46d4j9a30mvcgnxy3kq6046a7b"; depends=[]; };
@@ -7201,11 +7238,13 @@ in with self; {
   edgeCorr = derive2 { name="edgeCorr"; version="1.0"; sha256="19n67yc58ksin7xydrnfsyyw7fqawm5xli67cz4lv4wb62w6r6ld"; depends=[]; };
   edgeRun = derive2 { name="edgeRun"; version="1.0.9"; sha256="0d5nc8fwlm61dbi00dwszj1zqlij4gfds3w1mpcqnnfilr2g3di1"; depends=[data_table edgeR]; };
   edgebundleR = derive2 { name="edgebundleR"; version="0.1.4"; sha256="0pajr95qqppk2m4l7rfi46rll32z8a7lmq0vmb3p8n0aks5ajn1n"; depends=[htmlwidgets igraph rjson shiny]; };
+  edina = derive2 { name="edina"; version="0.1.0"; sha256="07czmpaach7fdql1qrhnfx32q2igvmr9ngg2fs0wy34pq1mw5ff7"; depends=[ggplot2 jjb Rcpp RcppArmadillo reshape2 rgen]; };
   editData = derive2 { name="editData"; version="0.1.2"; sha256="1ibpd2rlm6i9izyizmdhzxv8agrw920hxbin5y79cmf78rdg1sxy"; depends=[DT miniUI rstudioapi shiny tibble]; };
   editrules = derive2 { name="editrules"; version="2.9.3"; sha256="07j8wj0fk34irqgsz70h2wad3wdjv5xl1cl702vxbr0nvmpw2ngl"; depends=[igraph lpSolveAPI]; };
   edrGraphicalTools = derive2 { name="edrGraphicalTools"; version="2.2"; sha256="105jv2sz10xbl881lkhgmxzgmb8629mqsminhd197khrkf9nv40i"; depends=[lasso2 MASS mvtnorm rgl]; };
   edstan = derive2 { name="edstan"; version="1.0.6"; sha256="1gm1rxwywigyfdlcm2yj1m9qjb4s6w7chr1ck7b32x1pdxdl3ns5"; depends=[ggplot2 rstan]; };
   educineq = derive2 { name="educineq"; version="0.1.0"; sha256="0qd6kvcy280glv3q6lcrawmnsfvp90as95chgi3hav0yj2dpakn6"; depends=[flexsurv ineq]; };
+  edwards97 = derive2 { name="edwards97"; version="0.1.0"; sha256="1ybksvrp7pd78ncmzdn67q9w3baxx6kf886214cqa5yfbi8jsc4z"; depends=[broom cli glue rlang tibble withr]; };
   eechidna = derive2 { name="eechidna"; version="1.4.0"; sha256="07537brbdinkrmygbd2galyl6acbcbg2pkjafkdhxdgklpxv7j9m"; depends=[colourpicker dplyr ggplot2 ggthemes magrittr plotly purrr rgdal rgeos shiny sp stringi tibble tidyr tidyselect]; };
   eegkit = derive2 { name="eegkit"; version="1.0-4"; sha256="1r1lack4ps9hwqq56rq37431rcxf3x79zgvda6vrmh4s0ziy6v4x"; depends=[bigsplines eegkitdata ica rgl signal]; };
   eegkitdata = derive2 { name="eegkitdata"; version="1.0"; sha256="1krsadhamv1m8im8sa1yfl7injvrc4vv3p88ps1mpn8hibk5g51m"; depends=[]; };
@@ -7219,7 +7258,7 @@ in with self; {
   effectsize = derive2 { name="effectsize"; version="0.2.0"; sha256="1liix8rf8xq3hzi7684bl0s20iflsq6g5mxr5k59wp2qwn1i6aww"; depends=[bayestestR insight parameters]; };
   effectsizescr = derive2 { name="effectsizescr"; version="0.1.0"; sha256="0shfjk6r3bz04jakrn5nwgymjx60lk83i0akcx7zqfxp3k8yncs5"; depends=[Kendall]; };
   efflog = derive2 { name="efflog"; version="1.0"; sha256="1sfmq7xrr6psa6hwi05m44prjcpixnrl7la03k33n0bksj8r1w6b"; depends=[]; };
-  effsize = derive2 { name="effsize"; version="0.7.8"; sha256="1y1r2xjcj3w1ccx475q00alrxd6mw0afhzajl5hllhqyc4ympnb6"; depends=[]; };
+  effsize = derive2 { name="effsize"; version="0.7.9"; sha256="01gl6bacsn7yyg9a3s5f6z6i115rxrdfi19vz551xq287k4i6qqn"; depends=[]; };
   efreadr = derive2 { name="efreadr"; version="0.2.2"; sha256="1h27by1m451wrnw017005avs5yj3fjzrm2lq5153aqm1mbbxxwvs"; depends=[dplyr ensurer magrittr readr]; };
   efts = derive2 { name="efts"; version="0.9-0"; sha256="1cdn37sij3q73z9gal6x3nnnds55whfj5ywyww119hx092xcb2h4"; depends=[lubridate magrittr ncdf4 plyr stringr udunits2 xts]; };
   ega = derive2 { name="ega"; version="2.0.0"; sha256="04kwh24aap22yclmcrix3vi553qb30hd43mgfzpdl0cw3ibrh7xg"; depends=[ggplot2 mgcv]; };
@@ -7238,6 +7277,7 @@ in with self; {
   eigenmodel = derive2 { name="eigenmodel"; version="1.11"; sha256="1l3n0z736xf3x6cyxzmmq1jb2glxi2b75z7v39y4471knh6nbb4d"; depends=[]; };
   eigenprcomp = derive2 { name="eigenprcomp"; version="1.0"; sha256="156qyv7sl8nng55n3ay6dnpayyfrqv27ndz40xf4w92is9zmymy0"; depends=[]; };
   eikosograms = derive2 { name="eikosograms"; version="0.1.1"; sha256="13s5wqcc8iwnhn3msrh9dfrvq9bwlby93p9v5wcnrm8m9iskax1s"; depends=[plyr]; };
+  eimpute = derive2 { name="eimpute"; version="0.1.0"; sha256="0q8b98fmfrbk00jr7gzqaij781g5v9wj883xphyrvr0khlr499xl"; depends=[Rcpp RcppEigen]; };
   eive = derive2 { name="eive"; version="2.3"; sha256="073hwx944db7zxq6yib6yvciaic11k49zl1iqphippcd5ygkad80"; depends=[Rcpp]; };
   eivtools = derive2 { name="eivtools"; version="0.1-8"; sha256="0ynmrql6dv10m7cwba5mzwlbvp6ab53nzqqvk3ihwyiqzmnnmpk4"; depends=[R2jags]; };
   eiwild = derive2 { name="eiwild"; version="0.6.7"; sha256="1fp4kvlmcjjnzn2a5cmlzaf6y5q6cdbbi2nmvjyqc4y1bmwh3srf"; depends=[coda gtools lattice]; };
@@ -7267,6 +7307,7 @@ in with self; {
   elliptic = derive2 { name="elliptic"; version="1.4-0"; sha256="1dhba0yfxjd5rlqsxp5a7s2hclfkla9wigsr39dlma67l6qjjmxn"; depends=[MASS]; };
   elmNNRcpp = derive2 { name="elmNNRcpp"; version="1.0.1"; sha256="1n71b5pqd1szhmp4q1h9aqgkx7s54f5i3xk5nljwzsn7cyih1kb3"; depends=[KernelKnn Rcpp RcppArmadillo]; };
   elo = derive2 { name="elo"; version="2.1.1"; sha256="1i6qcw2plw12v065142kx58d911zr1gcsd1xic152zxvh89nmhxx"; depends=[pROC Rcpp]; };
+  elsa = derive2 { name="elsa"; version="1.1-28"; sha256="01sj2a4yhv5m6qj6ih26zw4yzd8s27lll7yp0yysjjrwz79a0fbq"; depends=[raster sp]; };
   emIRT = derive2 { name="emIRT"; version="0.0.11"; sha256="1h91q9vi9cv14bmkaakyynw2z9sx51w0c2kw2in0x91wx7scmd0p"; depends=[pscl Rcpp RcppArmadillo]; };
   emax_glm = derive2 { name="emax.glm"; version="0.1.2"; sha256="04di6bp97cxjbbszakb64y15bjmnd2j8zvxdj8gdbgmhxk9wmbwd"; depends=[AER MASS pander pracma pROC]; };
   emayili = derive2 { name="emayili"; version="0.3.9"; sha256="0cc4i0d56k1l87ifa0x9vpfw0615hk7hzgyxfp68fh5yrj0fc6ab"; depends=[base64enc curl glue httr magrittr mime stringi]; };
@@ -7328,7 +7369,7 @@ in with self; {
   enviPat = derive2 { name="enviPat"; version="2.4"; sha256="1gvb7jmwwh4l44b50xmrq3bysr2iv6442yh9pdk6n81g3bgpz1d0"; depends=[]; };
   enviPick = derive2 { name="enviPick"; version="1.5"; sha256="04q6zwqq2ip8b8h2n1jpgx1bzcvi7lazljs0806wiakbc79x232p"; depends=[readMzXmlData shiny]; };
   envirem = derive2 { name="envirem"; version="2.1"; sha256="175190l81r24v6ygr759l4qwi4i3v6n57jmgswamr01px4pvhxag"; depends=[huxtable palinsol raster RSAGA sp]; };
-  envlpaster = derive2 { name="envlpaster"; version="0.1-2"; sha256="11a5n40k1ln5gxxvwq1vh4dhmhifhlm89hkhf36qnhj4bjh3v3y0"; depends=[aster aster2 caTools MASS]; };
+  envlpaster = derive2 { name="envlpaster"; version="0.1-2"; sha256="1h8qpwb2jzbczyg416yhll2szqw419wvv1i51xb4z78d3rpmspzj"; depends=[aster aster2 caTools MASS]; };
   envnames = derive2 { name="envnames"; version="0.4.0"; sha256="12mfbcksrp733jycasaiavlsmx138xmjpywly1wha4ds6bfw93hr"; depends=[]; };
   envoutliers = derive2 { name="envoutliers"; version="1.0.0"; sha256="1wkd6xpsw5n9jx0qq5p88h6j8vkcyiyajd3zb6im5bc4d73nmi07"; depends=[car changepoint ecp ismev lokern MASS robustbase]; };
   eoR = derive2 { name="eoR"; version="0.4.0"; sha256="0vn4s4af94n9h6x7z14qwpz94rgsd5m3mv55wva7x3h99ryhm83s"; depends=[data_table]; };
@@ -7354,11 +7395,12 @@ in with self; {
   episplineDensity = derive2 { name="episplineDensity"; version="0.0-1"; sha256="0nmh97xajnnh54i04yq8fdici4n5xvcbpdbjdbz79483gnils4vn"; depends=[nloptr pracma]; };
   epistasis = derive2 { name="epistasis"; version="0.0.1-1"; sha256="0dfh26bs72i01hpxpgpgyiwpmg9mjpib8zynhc5ssxa0skm518wz"; depends=[glasso igraph Matrix tmvtnorm]; };
   epitab = derive2 { name="epitab"; version="0.2.2"; sha256="0yi65bblsikwsa9i7wys1mqf6pp6j01kyc8xkyrhs5n62y1k68nc"; depends=[kableExtra knitr MASS survival xml2]; };
-  epitools = derive2 { name="epitools"; version="0.5-10"; sha256="1qqa2kam3j3mkbgk62g6lwygk2fkdlrpbi27wl37j4dkdkvx013m"; depends=[]; };
+  epitools = derive2 { name="epitools"; version="0.5-10.1"; sha256="0jqn3pas4lsans50jwakmvpyc7m7x0kxq6dzyckd3vgww56qa65l"; depends=[]; };
   epitrix = derive2 { name="epitrix"; version="0.2.2"; sha256="1rqpvdky002h6mz636b77l4kd0im16pww62l6vnwh83si1m9pkki"; depends=[distcrete sodium stringi]; };
   eplusr = derive2 { name="eplusr"; version="0.12.0"; sha256="1h8adyh1cjy3giqc3vj5gdx77h5fqfx44abw816k640h758lkjmp"; depends=[callr cli crayon data_table lubridate processx progress R6 RSQLite stringi units]; };
   eply = derive2 { name="eply"; version="0.1.2"; sha256="0al44pvqf6ls3dh129vlv3g56hk1nbql09rj0qsb04d9kaz9anrp"; depends=[magrittr]; };
   epoc = derive2 { name="epoc"; version="0.2.6-1.1"; sha256="1qlj4cl7mh5k52v2ippfs3cish5iadnix5w46p25hjqiriksclna"; depends=[elasticnet irr lassoshooting Matrix survival]; };
+  eponge = derive2 { name="eponge"; version="0.1.0"; sha256="19wd80l35acij793spxglcwz346i2iivk6n0q2304wjcca6qzds7"; depends=[rlang]; };
   epr = derive2 { name="epr"; version="3.0"; sha256="0czfz6qkcpa2qqs3pqii27hgpdvdzfrvxl0ip67v58hamq7kvjfv"; depends=[car lme4]; };
   epsiwal = derive2 { name="epsiwal"; version="0.1.0"; sha256="0lmcmiqcc1pjj1d0zyn0hc23if1lkm85p6vcjqbddpnv9ags2mbh"; depends=[]; };
   epubr = derive2 { name="epubr"; version="0.6.1"; sha256="0rp9q6hriilps5h6nc1226w5dvzws1g78pg3ldrq2r4dakpvsmjj"; depends=[dplyr magrittr tibble tidyr xml2 xslt]; };
@@ -7395,6 +7437,7 @@ in with self; {
   errorizer = derive2 { name="errorizer"; version="0.2.1"; sha256="10p7ydm81x2gls0wn692llgj2rxhg4s96rv7gvihmgi5dflraypq"; depends=[]; };
   errorlocate = derive2 { name="errorlocate"; version="0.3.0"; sha256="04vr2ll3mdy1znm11lv739drckv82n45qbpda3qyjyzlffvgkmhg"; depends=[lpSolveAPI validate]; };
   errors = derive2 { name="errors"; version="0.3.3"; sha256="037spyvw4rm2fcsq7a53svljlsgssrzrshyq01fnky0kq3z0iqqm"; depends=[]; };
+  errum = derive2 { name="errum"; version="0.0.3"; sha256="18frrfnhnmg4fjlpfwj8aklzfwafpwqvagm0aschkqc8mz6wnjbz"; depends=[Rcpp RcppArmadillo]; };
   es_dif = derive2 { name="es.dif"; version="1.0.1"; sha256="0cpncj68dhqfcpw7fjqc23d84rq767hqpw6la6iszfrrc27bx4lw"; depends=[]; };
   esDesign = derive2 { name="esDesign"; version="1.0.2"; sha256="16dhddw4gp210bb1mmx5df1ziffadiz06s4i3znnzac8rv5564hp"; depends=[]; };
   esaBcv = derive2 { name="esaBcv"; version="1.2.1"; sha256="0hgjcdbiy1a71vsb2vcyp0xmhy6wi4nlh1sqsfb2vxckc95i9i21"; depends=[corpcor svd]; };
@@ -7412,7 +7455,7 @@ in with self; {
   essurvey = derive2 { name="essurvey"; version="1.0.5"; sha256="078bm5knrhij4rdv7hqv5ci0dfdci7lw4yrqbikp8miapivv88vp"; depends=[haven httr rvest tibble xml2]; };
   estatapi = derive2 { name="estatapi"; version="0.3.0"; sha256="0gjc5x1b2l5qnwdg77nzy6d7bf9q93ll39sfy89izqm8wsydwwkp"; depends=[dplyr httr purrr readr]; };
   estimability = derive2 { name="estimability"; version="1.3"; sha256="0cifdaa71spkcxl4db4z884jrya865sg3dhcv4isd8fnzg2pjcd3"; depends=[]; };
-  estimatr = derive2 { name="estimatr"; version="0.20.0"; sha256="0mrx14chg9qb90hlivn90l1jv9la4n1bkznbdx58ghli73k8dvdz"; depends=[Formula generics Rcpp RcppEigen rlang]; };
+  estimatr = derive2 { name="estimatr"; version="0.22.0"; sha256="1kfih2fak7w9zqbhjgfrysdzrk4lpcx9p23x0gys4f9hxl9j1pm2"; depends=[Formula generics Rcpp RcppEigen rlang]; };
   estmeansd = derive2 { name="estmeansd"; version="0.2.0"; sha256="07xbdsfz8vidp8pv2ix5g2y6y2cks14fzbjx74pa17696rnklrw3"; depends=[metaBLUE]; };
   estout = derive2 { name="estout"; version="1.2"; sha256="0whrwlh4kzyip45s4zifj64mgsbnrllpvphs6i5csb7hi3mdb3i5"; depends=[]; };
   estprod = derive2 { name="estprod"; version="1.1"; sha256="15grcpyhaazd1sl8544gx4zpjqi9p17d6siyb6a1ykzzyy1v1fln"; depends=[boot Formula gmm lazyeval minpack_lm]; };
@@ -7465,7 +7508,7 @@ in with self; {
   exactLoglinTest = derive2 { name="exactLoglinTest"; version="1.4.2"; sha256="0j146ih9szzks9r45vq1jf47hrwjq081q1nsja5h1gpllks8217h"; depends=[]; };
   exactRankTests = derive2 { name="exactRankTests"; version="0.8-31"; sha256="1154dkcid3njhamdp87qs9bnx7l8bdqkcjsds9q9f2xmizs9x8gw"; depends=[]; };
   exactci = derive2 { name="exactci"; version="1.3-3"; sha256="03r35f6dyrck5pf43ypb1sjwfnvkhjkm1mbms3wh67ayfs2ypn0s"; depends=[ssanv]; };
-  exactextractr = derive2 { name="exactextractr"; version="0.2.0"; sha256="194bqn9gwaiq3s6c5kvcvcl6nv8fnflxi1f3f87ws83pcvy7aasn"; depends=[raster Rcpp sf]; };
+  exactextractr = derive2 { name="exactextractr"; version="0.2.1"; sha256="0wspmg4vb96yq38g17f10q54k8ijpzlhh3hac1d2dn9zgk3riffh"; depends=[raster Rcpp sf]; };
   exactmeta = derive2 { name="exactmeta"; version="1.0-2"; sha256="1v807ns799qajffky4k18iah0s3qh2ava6sz5i85hwx9dhkz19h4"; depends=[]; };
   exampletestr = derive2 { name="exampletestr"; version="1.5.2"; sha256="0lfhgjirsl2b1vksjfrw3wlvw6x34d20vldh313qkjrg2yihpk1q"; depends=[checkmate filesstrings fs glue magrittr ore purrr readr rlang roxygen2 stringr styler usethis withr]; };
   exams = derive2 { name="exams"; version="2.3-4"; sha256="1sa76qnzf7llj97xc41l2s8n4fqlg1wcvyq9sq59f1blfwxcnnd7"; depends=[]; };
@@ -7557,7 +7600,7 @@ in with self; {
   fabCI = derive2 { name="fabCI"; version="0.1"; sha256="123bc56nnx6hcj257imsd8sc6d0pggw08lf4m0lr90631gcm1mkn"; depends=[]; };
   fabMix = derive2 { name="fabMix"; version="5.0"; sha256="1gii3mdii9nw423xxn9mhv1pjbw967wdarn828w04zm9dkdcwm48"; depends=[coda corrplot doParallel foreach ggplot2 label_switching MASS mclust mvtnorm RColorBrewer Rcpp RcppArmadillo]; };
   fable = derive2 { name="fable"; version="0.1.2"; sha256="0v5nqxdjwvzanzzl0fcb04zlrah8irbz09grlhd04lz8mmj8n8ih"; depends=[dplyr fabletools Rcpp rlang tidyr tsibble]; };
-  fabletools = derive2 { name="fabletools"; version="0.1.2"; sha256="0b5syqswaj4qzjcgd8a5hsrhdgh3n77c8p10xna4jv7ixdg7pc2f"; depends=[dplyr generics ggplot2 R6 rlang tibble tidyr tidyselect tsibble vctrs]; };
+  fabletools = derive2 { name="fabletools"; version="0.1.3"; sha256="16lkr26sl88vnww2fsqiqdv4ljk0y1fyha55g0sq4vsnypg9bhdz"; depends=[dplyr generics ggplot2 R6 rlang tibble tidyr tidyselect tsibble vctrs]; };
   fabricatr = derive2 { name="fabricatr"; version="0.10.0"; sha256="0kh2mfgyqz3fpilc4wycxj3vihhbdnjzsjrsp88nmsk0p5mjmljj"; depends=[rlang]; };
   face = derive2 { name="face"; version="0.1-5"; sha256="0n7vlq29krsdcp8r32irhvf7xbcxy5g7663qncmbhj5x45sviqh6"; depends=[Matrix matrixcalc mgcv]; };
   facerec = derive2 { name="facerec"; version="0.1.0"; sha256="1dipcnxjz6yd34w0jrrvj5p0pwdgz1l5m9zvri7mflnz7g34gmaj"; depends=[dplyr httr jsonlite knitr magrittr rlang snakecase stringr]; };
@@ -7703,9 +7746,9 @@ in with self; {
   fgac = derive2 { name="fgac"; version="0.6-1"; sha256="0paddf5a4w0g2i0ay7my0bppwh534d8ghy6csfxl5jj034xjgwkk"; depends=[]; };
   fgdr = derive2 { name="fgdr"; version="1.0.0"; sha256="0wf0ayn2vx2pkid08ssr7ygq9k9qxsw86wwppm2r9b7i8cw7kbf8"; depends=[jpmesh magrittr purrr raster readr rlang sf sp stars stringr tibble xml2]; };
   fgeo = derive2 { name="fgeo"; version="1.1.4"; sha256="0axglmk05li3plb79rccskhddjzq3pdx3mgxr8yqysymf1nscrq6"; depends=[cli crayon dplyr fgeo_analyze fgeo_plot fgeo_tool fgeo_x glue magrittr purrr rlang rstudioapi]; };
-  fgeo_analyze = derive2 { name="fgeo.analyze"; version="1.1.12"; sha256="0g8i4z9s6ydpk580fkjkshryhmm4cvlw2p9m8l17fnl7wa6s5i4a"; depends=[dplyr fgeo_tool glue lubridate magrittr MASS purrr rlang tibble tidyr withr]; };
+  fgeo_analyze = derive2 { name="fgeo.analyze"; version="1.1.13"; sha256="1cj4bazggpic0i5sq9iqq0y0j2xvp01i9ccv0pchg82xlgis33gw"; depends=[dplyr fgeo_tool glue lubridate magrittr MASS purrr rlang tibble tidyr withr]; };
   fgeo_plot = derive2 { name="fgeo.plot"; version="1.1.9"; sha256="18zw4bsqdqdpy103kdyl40162mii6s1lp2w4cpi50svx7g7xhgh5"; depends=[dplyr fgeo_tool ggplot2 ggrepel glue magrittr purrr rlang stringr]; };
-  fgeo_tool = derive2 { name="fgeo.tool"; version="1.2.5"; sha256="1sy0w2n2727v44fv56zijj03q732q3qnxyn1r1j8spmb257bhvn6"; depends=[dplyr glue magrittr purrr readr rlang tibble tidyselect]; };
+  fgeo_tool = derive2 { name="fgeo.tool"; version="1.2.6"; sha256="0di1alxmxh47akbhy75b7vpix674xg4iynac4ga859nia56fisz1"; depends=[dplyr glue magrittr purrr readr rlang tibble tidyselect]; };
   fgeo_x = derive2 { name="fgeo.x"; version="1.1.4"; sha256="0swps9rli74fmfb2j4kf55kw39gxz0q49m74ad4vcs0ylyp0sxrb"; depends=[memoise]; };
   fgm = derive2 { name="fgm"; version="1.0"; sha256="0i6lbqxxjq78dql14qwqs7slnn0kyls2g3a9biabny2narwf6n3m"; depends=[fdapace JGL]; };
   fgof = derive2 { name="fgof"; version="0.2-1"; sha256="0bclkb3as0fl2gyggqxczndfyj9pfnni5pa3inpn5msrnjg4g2j2"; depends=[mvtnorm numDeriv]; };
@@ -7774,7 +7817,7 @@ in with self; {
   flare = derive2 { name="flare"; version="1.6.0.2"; sha256="1ybrsx1djqldw0l5l1iz4pfh6xxb8ckkg1ric7wnsr51wm9ljlh5"; depends=[igraph lattice MASS Matrix]; };
   flars = derive2 { name="flars"; version="1.0"; sha256="06qma1ar1nj7n6g9alk1qydm5bkj6lsjx0pqkikxpb41d91civqk"; depends=[fda MASS Matrix Rcpp RcppEigen]; };
   flashClust = derive2 { name="flashClust"; version="1.01-2"; sha256="0l4lpz451ll7f7lfxmb7ds24ppzhfg1c3ypvydglcc35p2dq99s8"; depends=[]; };
-  flashlight = derive2 { name="flashlight"; version="0.7.0"; sha256="0f7s5wajwhy69s817wzag820a9hqhjbjfb0sx23j0yc9k875n2ic"; depends=[dplyr ggplot2 ggpubr MetricsWeighted rlang rpart rpart_plot tidyr]; };
+  flashlight = derive2 { name="flashlight"; version="0.7.1"; sha256="0sbq4jklp5idh850wvkszw2cpcxsyfrcn8icdg0fn3bbn55gls6x"; depends=[dplyr ggplot2 ggpubr MetricsWeighted rlang rpart rpart_plot tidyr]; };
   flatr = derive2 { name="flatr"; version="0.1.1"; sha256="10l98a3f57wahfpdqxj70r25zfhk4vzzd014pdnriy458yrfd7rw"; depends=[dplyr magrittr tibble]; };
   flatxml = derive2 { name="flatxml"; version="0.0.2"; sha256="1f7pc3chzimkg23490qvppy63sk4ds3aaahc36sa4dc4qmhabyms"; depends=[RCurl xml2]; };
   flexclust = derive2 { name="flexclust"; version="1.4-0"; sha256="0x7wxk8y46ndyz6fdacym0rd6p9wh3pcfr28chjcg5d7fm849zl2"; depends=[class lattice modeltools]; };
@@ -7858,11 +7901,11 @@ in with self; {
   formula_tools = derive2 { name="formula.tools"; version="1.7.1"; sha256="15d3ikfmsh9zszfgfkrxb3jkipl41inm7n6bhs73kwlnklnygq2g"; depends=[operator_tools]; };
   formulaic = derive2 { name="formulaic"; version="0.0.6"; sha256="020sbchj445kwwfj17ixmhsgl38qpwb723r6r8pbc6b3q0zw4b3d"; depends=[data_table DT]; };
   formulops = derive2 { name="formulops"; version="0.5.0"; sha256="1mkpv5xjykrhgknq0gh4yg2a3j4xb8q2d6dh0wv8zd9h59hvrzda"; depends=[]; };
-  forrel = derive2 { name="forrel"; version="1.0.0"; sha256="1spyr0mzan00ky8zcbbpzk36k4i70n7s04p4zxgk2gj6736lzbii"; depends=[glue maxLik pedmut pedprobr pedtools]; };
+  forrel = derive2 { name="forrel"; version="1.0.1"; sha256="0apx62cwg3xb64gmflgq500h8vclqbwazd9aj0s6c7ix0j0phs73"; depends=[glue maxLik pedmut pedprobr pedtools]; };
   fortunes = derive2 { name="fortunes"; version="1.5-4"; sha256="109ly9kpfn6hy294ava8795wy5z9l1bnl98hhhv8kn9naf4camdg"; depends=[]; };
   forward = derive2 { name="forward"; version="1.0.5"; sha256="0cc0s534s32b9ark2zazwqhgy0zsxb2p63r6503v82784rpqv2yv"; depends=[MASS]; };
   forwards = derive2 { name="forwards"; version="0.1.3"; sha256="07374a1ak5h8q3diqyvsw3q1grqi3679w9sshf1jkhlrj7wn0dmv"; depends=[]; };
-  fossil = derive2 { name="fossil"; version="0.3.7"; sha256="188hyb3r1dnxkmqf2czh1kdzmk4mjc0v1kn1zml2yvxaxk7adsrz"; depends=[maps shapefiles sp]; };
+  fossil = derive2 { name="fossil"; version="0.4.0"; sha256="1hbls9m8yapnfzpv9s850ixakmnan8min1ynk7dqkbpb2px85h1p"; depends=[maps shapefiles sp]; };
   foto = derive2 { name="foto"; version="1.0.0"; sha256="10mfxgg5f1r85cwr0jjnsa4csp1afcrjvyjvp31060nm638clcgh"; depends=[raster]; };
   fourPNO = derive2 { name="fourPNO"; version="1.1.0"; sha256="0a0z2403kdh3fjb0ypjjk3m6fg77bg6m7hwb5jhlymcy2rwkay7w"; depends=[Rcpp RcppArmadillo]; };
   fourierin = derive2 { name="fourierin"; version="0.2.4"; sha256="140721p4h5mjr7r25ckv8wfhbj88xw6v47b613r5bpalg8gw650l"; depends=[Rcpp RcppArmadillo]; };
@@ -7932,12 +7975,13 @@ in with self; {
   fst = derive2 { name="fst"; version="0.9.0"; sha256="0ya5lh8p0qy5pcr6wxsrn43wj1r9gb9qycyn8gvl26ic3hxwk2rf"; depends=[Rcpp]; };
   fsthet = derive2 { name="fsthet"; version="1.0.1"; sha256="0z6az1jcvdahgn97r6cpj1s6fn0lvr7j12gcw2r7wbpajrvyl5j6"; depends=[]; };
   ftDK = derive2 { name="ftDK"; version="1.0"; sha256="1xs2rr2afjza97kpym5zkas3k78pilxjlh7lp1gc66banldr71g2"; depends=[dplyr httr pbapply purrr tibble]; };
+  ftExtra = derive2 { name="ftExtra"; version="0.0.1"; sha256="0zgz4sjxx6ls27afb9djmxvwq46pp5jwxxbb87wnjc9fn5vvnnxy"; depends=[dplyr flextable jsonlite magrittr purrr rlang rmarkdown stringr tidyr tidyselect]; };
   ftnonpar = derive2 { name="ftnonpar"; version="0.1-88"; sha256="0df9zxwjpfc939ccnm1iipwhpf76b34v0x74nsi1mm1g927dfl0i"; depends=[]; };
   fts = derive2 { name="fts"; version="0.9.9.2"; sha256="08pwhi19db173d4nsk5rl8xa8qmaddj4bn3cjxb8ql4kny59i57q"; depends=[BH zoo]; };
   ftsa = derive2 { name="ftsa"; version="5.5"; sha256="1c7b3b6zrm45y2110j0dqlgilfiiyx4wqhgdiq82q6kagng32cl1"; depends=[colorspace fda forecast MASS pcaPP pdfCluster rainbow sde]; };
   ftsspec = derive2 { name="ftsspec"; version="1.0.0"; sha256="12f9yws1r26i240ijq0xqprl3pgbw50wv68jsm75ycplbs2jsyhs"; depends=[sna]; };
   fuel = derive2 { name="fuel"; version="1.0.2"; sha256="0ziw370ch8g2hnlimxfgski4n28b83jnwrhlh7ibszk0lz593rkr"; depends=[]; };
-  fueleconomy = derive2 { name="fueleconomy"; version="0.1"; sha256="1svy5naqfwdvmz98l80j38v06563vknajisnk596yq5rwapl71vj"; depends=[]; };
+  fueleconomy = derive2 { name="fueleconomy"; version="1.0.0"; sha256="16a8wyliiidi6rw14ksimygfkl4a7yhxvss7l9bcvr1wfiplrn65"; depends=[]; };
   fugeR = derive2 { name="fugeR"; version="0.1.2"; sha256="0kd90s91vzv0g3v9ii733h10d8y6i05lk21p5npb3csizqbdx94l"; depends=[Rcpp snowfall]; };
   fugue = derive2 { name="fugue"; version="0.1.7"; sha256="1myvi9cizxvahb6wn2k26v3x958xsrm2p414ar05injmfjdfnsmi"; depends=[]; };
   fullfact = derive2 { name="fullfact"; version="1.3"; sha256="1dy5ppa22i9axqcwx2184qv2vjcbml0yh5b89zx9rg2zsnv4ygym"; depends=[afex lme4]; };
@@ -7978,6 +8022,7 @@ in with self; {
   future_apply = derive2 { name="future.apply"; version="1.4.0"; sha256="1kgq6dv96hdy35kysqkn606nj7s9dp4ibgpm6n46gqhc5n75lzkk"; depends=[future globals]; };
   future_batchtools = derive2 { name="future.batchtools"; version="0.8.1"; sha256="034sgd5pcv6d4jbi21ishwz5r1ym82g1pvyv3s0sl1jsy5g55v0w"; depends=[batchtools future]; };
   future_callr = derive2 { name="future.callr"; version="0.5.0"; sha256="0rjvjmffc4m9kr4p40q1gyv1zf49m8q0fb04kmdi7a8q2jfflpna"; depends=[callr future]; };
+  future_tests = derive2 { name="future.tests"; version="0.2.1"; sha256="1f75y7s9yrsz8c3vbsvp55zllp6sbpjrxbxknm1rfhg4sc2ak33c"; depends=[cli crayon future prettyunits sessioninfo]; };
   futureheatwaves = derive2 { name="futureheatwaves"; version="1.0.3"; sha256="122b2z86bzxfch67y6cpq8wj62mw0dgkzbmnpwi247kdx7w5mw1f"; depends=[data_table dplyr ggplot2 ggthemes leaflet Rcpp stringr tidyr]; };
   fuzzr = derive2 { name="fuzzr"; version="0.2.2"; sha256="1cwq7a5j6lzrlz9dw3hsfap988rh1kkgf03yni7c33zl69xp5w77"; depends=[assertthat progress purrr]; };
   fuzzyFDR = derive2 { name="fuzzyFDR"; version="1.0"; sha256="0zd8i9did0d9gp42xjmwrccm32glabvvy08kl8phhwb1yaq53h7w"; depends=[]; };
@@ -7999,6 +8044,7 @@ in with self; {
   gDefrag = derive2 { name="gDefrag"; version="0.2"; sha256="0z2jbb53x0knxajap1f2w25s732xqy1fyayxh2mzlbhm0zf3pjjw"; depends=[igraph maptools rgdal rgeos sp]; };
   gIPFrm = derive2 { name="gIPFrm"; version="3.1"; sha256="08rfdac442picbw1r3xyxjzf2dc57svg44am0714z4r72mshvj04"; depends=[]; };
   gLRTH = derive2 { name="gLRTH"; version="0.2.0"; sha256="1drmmr576n3pbr0q1cnnx4k7r4iz061n2cizv1kpr3wcc1g291pn"; depends=[]; };
+  gMCP = derive2 { name="gMCP"; version="0.8-15"; sha256="01048j9489rrhv9syqrbw4c5i5gsll41ysm27awxw6l1rshbqsqn"; depends=[CommonJavaJars JavaGD MASS Matrix multcomp mvtnorm PolynomF rJava xlsxjars]; };
   gMOIP = derive2 { name="gMOIP"; version="1.4.3"; sha256="0zk2m81kbsb40bjgvv29cl7azr2kfa528ph1lhrp88zsiv3hv3py"; depends=[dplyr geometry ggplot2 ggrepel MASS Matrix plyr purrr Rfast rgl rlang]; };
   gMWT = derive2 { name="gMWT"; version="1.1.1"; sha256="1vbw548fyrf012ry54p3gybdsil8c9llg2r9njhsiy7rb0gz2613"; depends=[clinfun Rcpp RcppArmadillo]; };
   gPCA = derive2 { name="gPCA"; version="1.0"; sha256="1ylb1d24dxnzpws9bbanwhyizjr3ljky2bhrph4c5yaq0zwwbrkw"; depends=[]; };
@@ -8203,7 +8249,7 @@ in with self; {
   geoops = derive2 { name="geoops"; version="0.2.0"; sha256="0n9n0j849jbqv6y6lqhyhddr5zfz8i9yi03gpg9862nzkvxd3c4k"; depends=[Rcpp]; };
   geophys = derive2 { name="geophys"; version="1.4-1"; sha256="1s64sbr0chv0z2vaw059khfkv8iga1kr6428kkglgafq5x2d6h3q"; depends=[cluster GEOmap RFOC RPMG RSEIS]; };
   georob = derive2 { name="georob"; version="0.3-12"; sha256="1a67p2xbc8zhr9pgp3k224af8gjf5xvxfg81471mic9cfcs6j1qw"; depends=[abind constrainedKriging fields lmtest nleqslv nlme quantreg RandomFields robustbase snowfall sp]; };
-  geosample = derive2 { name="geosample"; version="0.2.1"; sha256="1gpzrsza8ys2jdazb2ixc70y1w5lrkahlmvws1i071zby1la01iy"; depends=[pdist sf sp splancs]; };
+  geosample = derive2 { name="geosample"; version="0.2.1"; sha256="088dv21vh71p3g35cgx3chyin5v9nk416kqksyz3sjfzla512yrz"; depends=[pdist sf sp splancs]; };
   geosapi = derive2 { name="geosapi"; version="0.4-1"; sha256="00c2566r50v4vgqzjvghf4spyfqqxnwkhxj38ivym3l8b0d5fd2x"; depends=[httr openssl R6 XML]; };
   geoscale = derive2 { name="geoscale"; version="2.0"; sha256="0gisds0in32xhw54fxfyxvwxgrfjs871wmqf6l915nr896rlx0bm"; depends=[]; };
   geosed = derive2 { name="geosed"; version="0.1.1"; sha256="07j4q6sgrf83h2gi2j5qap5rifz8gimdacd3b7ld1p3b6ai6kv3r"; depends=[]; };
@@ -8243,7 +8289,7 @@ in with self; {
   gfcanalysis = derive2 { name="gfcanalysis"; version="1.5.0"; sha256="1cg34c4hr8kwc23qlv2m6qw2k7ah4w8s70q0hf4hnvp66rw4kaqh"; depends=[animation geosphere ggplot2 plyr raster rasterVis RCurl rgdal rgeos sp stringr]; };
   gfer = derive2 { name="gfer"; version="0.1.10"; sha256="1y0ra8k7zka43ibiii16vbwnc3m1i77yc9zj8rhzhmvhajjwad3l"; depends=[circlize data_table ggplot2 ggrepel googlesheets gsheet httr jsonlite rvest scatterpie stringi tidyr V8 xml2]; };
   gfmR = derive2 { name="gfmR"; version="1.1-0"; sha256="0qzzbcra1fnbp0h31b1as20yhmqmi7p62xrhikj64an9avg9b277"; depends=[faraway nnet]; };
-  gfoRmula = derive2 { name="gfoRmula"; version="0.3.0"; sha256="04qlshpg5h4x8w2xbhndc71n18k35mkf31mcjzcc6qwgiliyz35r"; depends=[data_table ggplot2 ggpubr nnet progress stringr survival truncnorm truncreg]; };
+  gfoRmula = derive2 { name="gfoRmula"; version="0.3.1"; sha256="1y1k5zwv06kc6qk7ki7x7c1618irvwd6iw26gs5n8lv8z3cifqmy"; depends=[data_table ggplot2 ggpubr nnet progress stringr survival truncnorm truncreg]; };
   gg_gap = derive2 { name="gg.gap"; version="1.3"; sha256="0m66050ryn31xmsmmikjsssllasvjdmp9yjbwfdwfpwdv106zn9h"; depends=[cowplot ggplot2]; };
   ggBubbles = derive2 { name="ggBubbles"; version="0.1.4"; sha256="116rl8j0s9xwhh9jl5yj9fspkhv2zrirbx9247hhns9ngrdn4i3x"; depends=[dplyr ggplot2]; };
   ggChernoff = derive2 { name="ggChernoff"; version="0.2.0"; sha256="09bh9isvx3hwwvg72fv6z3fvp8dimpbhvbp328z8amq8jjhph4vf"; depends=[ggplot2 scales]; };
@@ -8274,7 +8320,7 @@ in with self; {
   ggdistribute = derive2 { name="ggdistribute"; version="1.0.3"; sha256="07bsnfp1chf52gprw7g5kyqf6l6yzmnlv13x9dj1wa6rjwq1342i"; depends=[data_table dplyr ggplot2 magrittr tibble]; };
   ggdmc = derive2 { name="ggdmc"; version="0.2.6.0"; sha256="1gncv7npl548k3zd41x2gwg5qywn5rp6zb4i7ga78sy77mvi3x92"; depends=[coda data_table ggplot2 matrixStats Rcpp RcppArmadillo]; };
   gge = derive2 { name="gge"; version="1.4"; sha256="0plwk5j2n0309ghgn8r4ws3azwn7n4jb7yfykiiwwalhs3k05lsa"; depends=[nipals reshape2 rgl]; };
-  ggeasy = derive2 { name="ggeasy"; version="0.1.1"; sha256="0iy9557bl5gci4d416w4qj719lb5kps653lsckl2h5ss1842axlk"; depends=[ggplot2 rlang]; };
+  ggeasy = derive2 { name="ggeasy"; version="0.1.2"; sha256="06rynzv6vqngay5cjrig550dfada66075qs69l4rpfqci0vh05km"; depends=[ggplot2 rlang]; };
   ggedit = derive2 { name="ggedit"; version="0.3.0"; sha256="1v9apfkm47jcqyhjrvv8ig09gz6zsss5xj5mrckfjybd5ca08rzn"; depends=[colourpicker dplyr ggplot2 magrittr miniUI plyr purrr rlang rstudioapi scales shiny shinyAce shinyBS tidyr]; };
   ggeffects = derive2 { name="ggeffects"; version="0.14.2"; sha256="1y3yfb07jrr6vkc8hk6rp52l70dj7042jvqgjzllslzy7hx2jhyw"; depends=[insight MASS sjlabelled]; };
   ggenealogy = derive2 { name="ggenealogy"; version="1.0.1"; sha256="19six9ln1yaqv268abm9qvb61nl8zdz3gghwr8hmwsa94xwhzhkq"; depends=[ggplot2 igraph plotly plyr reshape2 tibble]; };
@@ -8293,7 +8339,8 @@ in with self; {
   gghalves = derive2 { name="gghalves"; version="0.0.1"; sha256="03s1wrfgkd55zmf3scv6kp32s3lcpbm5prnc5ndgad43zq8jyi09"; depends=[ggplot2 gtable]; };
   gghighlight = derive2 { name="gghighlight"; version="0.2.0"; sha256="1500lv7lsf2aaw4jny61apx62nnj76mnwfvr8kl3qidip53cah48"; depends=[dplyr ggplot2 ggrepel lifecycle magrittr purrr rlang scales tibble]; };
   ggimage = derive2 { name="ggimage"; version="0.2.7"; sha256="01yymg5q4bjnchlxpc7yjskjaz1bkf707fvr01kn18cr4bb606mg"; depends=[ggplot2 ggplotify jsonlite magick rvcheck scales tibble]; };
-  gginference = derive2 { name="gginference"; version="0.1.0"; sha256="0dikyqryz25ikm047clkwn0ihlxa5zia2bxp71fh8ynxxvzixz3k"; depends=[ggplot2 rlang]; };
+  ggimg = derive2 { name="ggimg"; version="0.1.0"; sha256="0lgak04690xvy0j1g8rgbj9x81ychkx6hp1f8d92piz432wb1z71"; depends=[abind ggplot2 jpeg png]; };
+  gginference = derive2 { name="gginference"; version="0.1.1"; sha256="1nla93arkq68j6w56y4p6mj4i8j6rg8rpl0p2yhdzcq8bgzkqym8"; depends=[ggplot2 rlang]; };
   gginnards = derive2 { name="gginnards"; version="0.0.3"; sha256="15ly88wjsd2fqvp483376rm2fczcbmj1s1vagb70z9z7968407xy"; depends=[ggplot2 magrittr rlang stringr tibble]; };
   ggiraph = derive2 { name="ggiraph"; version="0.7.0"; sha256="1002mf2dp7ram5yrj9qlg9rawz083k130k6bjvdidq0x800ps7b4"; depends=[gdtools ggplot2 htmltools htmlwidgets purrr Rcpp rlang uuid xml2]; };
   ggiraphExtra = derive2 { name="ggiraphExtra"; version="0.2.9"; sha256="1qmw7z10h1x6xnlpq7shafg6w2bal8ni02c07fyy9f7hm02xfnzs"; depends=[dplyr ggforce ggiraph ggplot2 magrittr mgcv mycor plyr ppcor purrr RColorBrewer reshape2 scales sjlabelled sjmisc stringr tidyr webshot ztable]; };
@@ -8305,6 +8352,7 @@ in with self; {
   ggm = derive2 { name="ggm"; version="2.5"; sha256="11wc6k2kj2ydy0dyks5mbvbhxm1r43id87anl1jg6dn0yv4m78di"; depends=[graph igraph]; };
   ggmap = derive2 { name="ggmap"; version="3.0.0"; sha256="13dmzl6z62pzjiffilarkji46vy0sacxa8a7mhrhc3biq3ylzhln"; depends=[bitops digest dplyr ggplot2 glue httr jpeg magrittr plyr png purrr RgoogleMaps rjson scales stringr tibble tidyr]; };
   ggmcmc = derive2 { name="ggmcmc"; version="1.3"; sha256="0p3akjbi0044nma8ynvqa42bkrgrb0jjx323k2pbrnlkq8x3ma1b"; depends=[dplyr GGally ggplot2 tidyr]; };
+  ggmix = derive2 { name="ggmix"; version="0.0.1"; sha256="19dp4ic3mxrqdzr0hi44fm2axfi2b693k4xfs28h664123c9kyvn"; depends=[glmnet MASS Matrix]; };
   ggmosaic = derive2 { name="ggmosaic"; version="0.2.0"; sha256="0byhp7125r015wbbnv6fq13bx38krf11r39jx9dzbr0ci6kqzkdb"; depends=[dplyr ggplot2 plotly productplots purrr rlang tidyr]; };
   ggmr = derive2 { name="ggmr"; version="0.1.1"; sha256="0941rvh7m5knlhp0m0mhm4j8spmch0pyvwhzs3bycq3vzlvzv1w7"; depends=[MASS]; };
   ggmsa = derive2 { name="ggmsa"; version="0.0.2"; sha256="1ryzifcm1qsqng5gljdhgx6p81i8wg9s86j9bnlcllp0d6mbca2x"; depends=[Biostrings ggplot2 ggseqlogo magrittr tidyr treeio]; };
@@ -8338,7 +8386,7 @@ in with self; {
   ggrepel = derive2 { name="ggrepel"; version="0.8.2"; sha256="1qaifn3dazdqbqlii210xhw7yf142iw7g9p2axmmxbz90p0by08d"; depends=[ggplot2 Rcpp scales]; };
   ggridges = derive2 { name="ggridges"; version="0.5.2"; sha256="03pz257aw0mkh5k75rby9givkc1ky3n5scvhjhjiz9vry9fpffmh"; depends=[ggplot2 plyr scales withr]; };
   ggrisk = derive2 { name="ggrisk"; version="1.0"; sha256="02a11q0mz3a5qqssakys8jxy5rqmi6cwk6japv65fkz741fh65wx"; depends=[cutoff do egg fastStat ggplot2 nomogramFormula rms set survival]; };
-  ggroups = derive2 { name="ggroups"; version="2.0.2"; sha256="1zsg82qb89dnz4dvkv0xb68p2v8rlhc35b6l00n9d25b4cxbmwck"; depends=[]; };
+  ggroups = derive2 { name="ggroups"; version="2.0.3"; sha256="1qlx1jfmmpygswwbrqs7pxm426zggxgvd4q3jp9abfaq9aczs10p"; depends=[]; };
   ggsci = derive2 { name="ggsci"; version="2.9"; sha256="0g73x6grbka7ahjh6z23m3wrcifp5rdfdiasbl8lq4sp6rplxwaa"; depends=[ggplot2 scales]; };
   ggseas = derive2 { name="ggseas"; version="0.5.4"; sha256="1jpdijwll5l7bg7cmjnklkxffysi9ckzg50rw2a2cd00zwby11q9"; depends=[ggplot2 rlang seasonal zoo]; };
   ggseqlogo = derive2 { name="ggseqlogo"; version="0.1"; sha256="13q6kcpxrqxqbji889fx63p0nsi08lk5yymkchig75r5k1d18ky1"; depends=[ggplot2]; };
@@ -8350,6 +8398,7 @@ in with self; {
   ggspatial = derive2 { name="ggspatial"; version="1.0.3"; sha256="0ka15qj3f0yq9nfkgk77wp490nz9ymi80918apv9zp6x39kcprj9"; depends=[abind ggplot2 plyr raster reshape2 rlang rosm scales sf tibble tidyr]; };
   ggspectra = derive2 { name="ggspectra"; version="0.3.5"; sha256="0pvkh4cr9nyhhv9ikjs7nhjagal63k8zfbik28cmw2c2x31m019v"; depends=[dplyr ggplot2 ggrepel lubridate photobiology photobiologyWavebands scales tidyr]; };
   ggstance = derive2 { name="ggstance"; version="0.3.3"; sha256="0kdksay61hyb6612b07r84chh7a9aibjyclk3qcypvr9aang8hkh"; depends=[ggplot2 plyr rlang withr]; };
+  ggstar = derive2 { name="ggstar"; version="0.0.4"; sha256="02mvbp3pdx90b36nwpm975h0c11vza9177h3pym9nqxyx2dp72qa"; depends=[ggplot2 gridExtra scales]; };
   ggstatsplot = derive2 { name="ggstatsplot"; version="0.3.1"; sha256="05ily9798akg53w1k0sr9paizmz121y6acc74pghi09x9xdv3lbm"; depends=[broomExtra cowplot dplyr ggcorrplot ggExtra ggplot2 ggrepel ggsignif groupedstats insight ipmisc pairwiseComparisons paletteer purrr rlang statsExpressions tidyr]; };
   ggswissmaps = derive2 { name="ggswissmaps"; version="0.1.1"; sha256="0is48x6k2p5dgj9q4km0dv33a9pcpfhlai9vz295y3acpyrkmnn4"; depends=[ggplot2]; };
   ggtern = derive2 { name="ggtern"; version="3.1.0"; sha256="1fhs5s3sxhb46abzni7cyymyknk9z7ff8fanln41pkih76s5i18j"; depends=[compositions ggplot2 gridExtra gtable latex2exp lattice MASS plyr proto scales]; };
@@ -8370,7 +8419,7 @@ in with self; {
   gim = derive2 { name="gim"; version="0.28.0"; sha256="1m9pb3dcphyjmadxr87lrd4fb2jacrx2mmcgrvqzc16gfm66n6d5"; depends=[numDeriv]; };
   gimme = derive2 { name="gimme"; version="0.7-1"; sha256="117157nyyyzb102cs2in7s44dl3v6d0aqbfyybq4rqb5cqqmfsvj"; depends=[data_tree igraph imputeTS lavaan MIIVsem nloptr qgraph]; };
   gimmeTools = derive2 { name="gimmeTools"; version="0.1"; sha256="1g170rz3c3qx27yy67f7xab4gkm0pbbvwlwkcsczfxphad609ryl"; depends=[easycsv magrittr miniUI rhandsontable rintrojs rstudioapi shiny shinyjs shinyWidgets]; };
-  gimms = derive2 { name="gimms"; version="1.1.1"; sha256="06vq0apsadyfgnz7906v2kjy0nx3yn0agq4yschxz1r1zmgrnyki"; depends=[curl Kendall ncdf4 raster RCurl zyp]; };
+  gimms = derive2 { name="gimms"; version="1.1.3"; sha256="0ij252zz75nfngh5idzznrdi4jn1ymbn24s6qilpf2qf8zilh89i"; depends=[curl Kendall ncdf4 raster zyp]; };
   giphyr = derive2 { name="giphyr"; version="0.2.0"; sha256="0273f7lama8bhaalafs66m6ksp32vx0j6rmh1qr4484i7wkmdfqn"; depends=[dplyr httr miniUI purrr rstudioapi shiny tibble]; };
   gistr = derive2 { name="gistr"; version="0.5.0"; sha256="07k9p5sfy0k45frx63dwp6pk3gyh5zdv79f4knsciakk6xq9ds59"; depends=[assertthat dplyr httr jsonlite knitr magrittr rmarkdown]; };
   git2r = derive2 { name="git2r"; version="0.26.1"; sha256="0dbl845sahv2i641ncaf06w06djravwc5wknp9syzx0ad8l0kmhk"; depends=[]; };
@@ -8405,9 +8454,10 @@ in with self; {
   glmaag = derive2 { name="glmaag"; version="0.0.6"; sha256="1yk5bx1gyj97b5qjy30q1gsjlp9amklwf070i0129f8dj7vjyaf0"; depends=[data_table foreach ggplot2 gridExtra huge Matrix maxstat OptimalCutpoints plotROC pROC Rcpp RcppArmadillo shiny survival survminer]; };
   glmbb = derive2 { name="glmbb"; version="0.3"; sha256="12yabwswps0fmprh8nb9jdny9xrm13jvc0d9m3w04ppmsvalrmwl"; depends=[digest]; };
   glmc = derive2 { name="glmc"; version="0.3-1"; sha256="0x6jk2l5rpjkp5x815gpiwv8maa7mhmy6m8gaxbv1cbn3zyccynn"; depends=[emplik]; };
-  glmdisc = derive2 { name="glmdisc"; version="0.4"; sha256="1pk731086lhga9a7ay4pqzysavlpyqx1la5aj1j8msh5imgw9cim"; depends=[caret gam MASS nnet Rcpp RcppEigen RcppNumerical]; };
+  glmdisc = derive2 { name="glmdisc"; version="0.5"; sha256="0985j4gh4069pwcf3spsi8czq6xn9vhajliprxjwlv3xbisjcf8s"; depends=[caret gam MASS nnet Rcpp RcppEigen RcppNumerical]; };
   glmdm = derive2 { name="glmdm"; version="2.60"; sha256="09vljki24fccqkvxkmg2i6a8pxqhfwm155b41m2q51lqaq29bfw7"; depends=[]; };
   glmertree = derive2 { name="glmertree"; version="0.2-0"; sha256="0lfn6dap38i6cnfy4gdap13aq81h9cm3bip7ci57q9br9b00x7ib"; depends=[Formula lme4 partykit]; };
+  glmglrt = derive2 { name="glmglrt"; version="0.1.0"; sha256="0y3bwf6lg6wh2kq5p4flmvnc15c87w4xgxb0qnbvwmdnabsjd7zh"; depends=[MASS parameters]; };
   glmgraph = derive2 { name="glmgraph"; version="1.0.3"; sha256="16sq6i7kbw20nvwikpa02z3pb7wqw3270j6ss7f8sgf548skhmx0"; depends=[Rcpp RcppArmadillo]; };
   glmlep = derive2 { name="glmlep"; version="0.2"; sha256="0rq2vxbr732r725pn8qdvppxcrhjhyvlr550svfgy1inq985c1w4"; depends=[]; };
   glmm = derive2 { name="glmm"; version="1.3.0"; sha256="088m626c2f75ij457mskdyi927y6g01m5rgfsjaxpm7xbywk51sw"; depends=[doParallel foreach itertools Matrix mvtnorm trust]; };
@@ -8488,7 +8538,7 @@ in with self; {
   googlenlp = derive2 { name="googlenlp"; version="0.2.0"; sha256="0d0g18i3im2s5f14k69ym3vwf9a7zkaval3nwrip97xcl6kf4x9h"; depends=[dplyr httr jsonlite purrr readr rlang]; };
   googler = derive2 { name="googler"; version="0.0.1"; sha256="1aayji3ncqxl58k29d93dbx05s9rp9bc63fl2cpl1cys7gilblxx"; depends=[jsonlite tibble]; };
   googlesheets = derive2 { name="googlesheets"; version="0.3.0"; sha256="11q07nxys72wkxx9mawmjyf20gvwvrb7h3gpa73h6lgh2vgrwnv8"; depends=[cellranger dplyr httr jsonlite purrr readr stringr tibble tidyr xml2]; };
-  googlesheets4 = derive2 { name="googlesheets4"; version="0.1.0"; sha256="1n12s92cbn6cnnkm629brdkghvj0r8x7rz191c0lbdfd8mgbw1pw"; depends=[cellranger curl gargle glue googledrive httr magrittr purrr rematch2 rlang tibble]; };
+  googlesheets4 = derive2 { name="googlesheets4"; version="0.1.1"; sha256="1vj6viw9mbmwn0gs9s9yr9lsjl83dlzf37g64qi4vr3p28vg5cjs"; depends=[cellranger curl gargle glue googledrive httr magrittr purrr rematch2 rlang tibble]; };
   googleway = derive2 { name="googleway"; version="2.7.1"; sha256="0axpr81p3gdp1nmfn000lk288sdn8z5qmzjvagdxqn5j44hq6sj1"; depends=[curl googlePolylines htmltools htmlwidgets jpeg jqr jsonlite magrittr scales shiny viridisLite]; };
   goric = derive2 { name="goric"; version="1.1-0"; sha256="1smjq9vljszgngs5i6x55jwg0imzc5gsfdqxzcs4541fp3pvk999"; depends=[MASS Matrix mvtnorm nlme quadprog]; };
   gorica = derive2 { name="gorica"; version="0.1.0"; sha256="09b5i6r2s449gvk0vagvf7kd6y0pgr4cz7hdwplq01x246bhjs6q"; depends=[bain lavaan lme4 MASS mvtnorm quadprog]; };
@@ -8522,7 +8572,7 @@ in with self; {
   granova = derive2 { name="granova"; version="2.1"; sha256="161fznqlnwmw53abmg2n62lhxxda7400ljnadvcdvsm8f6kcjf80"; depends=[car]; };
   granovaGG = derive2 { name="granovaGG"; version="1.4.0"; sha256="0khqlqc6jg9cpdq06g6jlpfjcw3m6rj40ipljfai8g1630ril6q4"; depends=[ggplot2 gridExtra plyr RColorBrewer reshape2]; };
   grapes = derive2 { name="grapes"; version="1.0.0"; sha256="079b7w2xhb0a481s7qihhka0l9ydkjdph0865wjjkcbpr4775p26"; depends=[magrittr]; };
-  graph4lg = derive2 { name="graph4lg"; version="0.2.0"; sha256="1y0kc7jm878ck287h3088nmfwfky1m7j88085zb5fd04273cy8hl"; depends=[ade4 adegenet diveRsity doBy ecodist ggplot2 igraph Imap MASS Matrix mclust pegas raster Rdpack rgdal sf sp spatstat stringr tidyr vegan]; };
+  graph4lg = derive2 { name="graph4lg"; version="0.3.0"; sha256="0sy8jd771r16hnzpal0di4w0qmjmdpgny7zj4xq1y2bnsnlhv5bh"; depends=[ade4 adegenet diveRsity doBy ecodist ggplot2 igraph Imap MASS Matrix mclust pegas raster Rdpack rgdal sf sp spatstat stringr tidyr vegan]; };
   graphTweets = derive2 { name="graphTweets"; version="0.5.3"; sha256="0jf52lclwvqgybdj6fknzx046bh6jgwxvqs4c5g1ii8f2lsz9y07"; depends=[combinat dplyr igraph magrittr purrr rlang tidyr zeallot]; };
   grapherator = derive2 { name="grapherator"; version="1.0.0"; sha256="071by9b8figbsf4g0f8a8mgcdksjksc57mnlgggilw7py1yjnjlh"; depends=[BBmisc checkmate deldir ggplot2 lhs reshape2 vegan]; };
   graphframes = derive2 { name="graphframes"; version="0.1.2"; sha256="1bv7d0sggwab4rd486ayw9gkb5ja5p5fin5pn92xnrmz8cgwsfxq"; depends=[forge sparklyr tibble]; };
@@ -8638,7 +8688,6 @@ in with self; {
   gwfa = derive2 { name="gwfa"; version="0.0.4"; sha256="0jz82d9lfyd07z0jjlfqzsg7a3vnyz0s1j0rrb5sg9pnvcfjk9qy"; depends=[Rcpp sp]; };
   gwrpvr = derive2 { name="gwrpvr"; version="1.0"; sha256="0x15nv2pfv99c04lgs6q6hgczarld34xc4aqw9bn179m7j02v6m3"; depends=[]; };
   gwrr = derive2 { name="gwrr"; version="0.2-1"; sha256="1fjk217pimnmxsimqp9sn02nr1mwy3hw3vsr95skbfsd6vdda14d"; depends=[fields lars]; };
-  gwsem = derive2 { name="gwsem"; version="0.1.15"; sha256="13h28yqj9hassi3frwpjh41kawgbsv5idvdx8mxglisig8ya72dc"; depends=[BH data_table lifecycle OpenMx qqman Rcpp]; };
   gym = derive2 { name="gym"; version="0.1.0"; sha256="0vcwzgawqwjsf65hr1mbjkz3px8zsibfkn42jpsg39n13jpfjq8v"; depends=[httr jsonlite]; };
   h2o = derive2 { name="h2o"; version="3.28.0.4"; sha256="1nsbw4fbwizj30y0qvw8ln078ayaisl4zydjx9917hlsbc8wc3aq"; depends=[jsonlite RCurl]; };
   h2o4gpu = derive2 { name="h2o4gpu"; version="0.2.0"; sha256="06d2rrr27xvnsai6zjiaiw0jjfzdza1cc39c03d6pjkvnh0mqh2c"; depends=[magrittr reticulate]; };
@@ -8649,7 +8698,7 @@ in with self; {
   hR = derive2 { name="hR"; version="0.2.1"; sha256="1y0rzcrxb21fhxnpvhijxg0syhj8n20882cy79g5x4rv4xrngw1z"; depends=[data_table data_tree knitr rhandsontable shiny]; };
   hSDM = derive2 { name="hSDM"; version="1.4.1"; sha256="1jwqjzr0zpckzh2jpqh17v6ypq4mzn5khlv6p37y59zz8bh9mvxp"; depends=[coda]; };
   haarfisz = derive2 { name="haarfisz"; version="4.5"; sha256="1qmh4glwzqwqx3pvxc71rlcimp1l0plgdf380v9hk0b4gj7g3pkf"; depends=[wavethresh]; };
-  hablar = derive2 { name="hablar"; version="0.2.0"; sha256="0242gqcjh04kgv1zf9idm4v2vrxm1vm8nvwhcl3mf08w9a8la2aw"; depends=[dplyr]; };
+  hablar = derive2 { name="hablar"; version="0.3.0"; sha256="12gm5n3p2kmjwhkf60n4bjn3lrj7lrs5sgmvads9sfp2ckhaiysk"; depends=[dplyr lubridate purrr]; };
   hackeRnews = derive2 { name="hackeRnews"; version="0.1.0"; sha256="0vrdbk4dxbykb3hs35nxkl3s2ds92gs5qz66p85w8j5zjmwbw2x6"; depends=[future_apply httr jsonlite tibble]; };
   hagis = derive2 { name="hagis"; version="3.0.1"; sha256="1bljpva3j7x87hdmy8s9sh37r5vd8wkjzjqbk57akl654x6b0gfv"; depends=[data_table ggplot2 pander]; };
   hail = derive2 { name="hail"; version="0.1.1"; sha256="1nrc9msqyy5iq2i6p8875anbqswxl2z6vdd4hvihnl22qh5fnbvh"; depends=[]; };
@@ -8719,7 +8768,7 @@ in with self; {
   heatmaply = derive2 { name="heatmaply"; version="1.0.0"; sha256="0576gml3bcl7r1biigzj1rag2xzz422knbw7arc8d2gsakjj757g"; depends=[assertthat colorspace dendextend egg ggplot2 htmlwidgets magrittr plotly RColorBrewer reshape2 scales seriation viridis webshot]; };
   heatwaveR = derive2 { name="heatwaveR"; version="0.4.2"; sha256="1fp38vlb4646jg397gsxmf5ws15grmmg6hdzijwll5zsg6a9xhg4"; depends=[data_table dplyr ggplot2 lubridate plotly Rcpp RcppArmadillo RcppRoll tibble zoo]; };
   heavy = derive2 { name="heavy"; version="0.38.196"; sha256="05k788ynw9fhhmjydzp8dbk1vhl44j2rz2shqwn02i40jmwdvwrk"; depends=[]; };
-  heddlr = derive2 { name="heddlr"; version="0.5.0"; sha256="1xjlp283vv6fwdjyschjriijczhiiinjmkd3i1m5f57n0yvwpq03"; depends=[rlang utf8 yaml]; };
+  heddlr = derive2 { name="heddlr"; version="0.6.0"; sha256="0ixmcgvfbq4hi3wv1fyzpwacmxmixsw5yq6mq5xygk6ji03m1v23"; depends=[rlang utf8 yaml]; };
   hedgehog = derive2 { name="hedgehog"; version="0.1"; sha256="1mvjnm2zlc4pvw9vnhxr0dj1g1sfqvlrnnhcipzfbvr147yan9l5"; depends=[rlang testthat]; };
   heemod = derive2 { name="heemod"; version="0.11.0"; sha256="0zzjq4cmyr25p4x91jw542jiqmds6qikbp8gyix34dcmk765drnk"; depends=[dplyr ggplot2 lazyeval memoise mvnfast plyr pryr rlang tibble]; };
   heims = derive2 { name="heims"; version="0.4.0"; sha256="0vnq31jwn09grni4gdhf1hzd87b62as4f65b2qw7ky6mi38ahr5d"; depends=[bit64 data_table fastmatch hutils lubridate magrittr]; };
@@ -8741,7 +8790,7 @@ in with self; {
   hett = derive2 { name="hett"; version="0.3-2"; sha256="1kmspw0738pdall5scmllsa79dynliai2glk1h5rzm4030r5rd6j"; depends=[lattice MASS]; };
   hettx = derive2 { name="hettx"; version="0.1.1"; sha256="0zfxg88l83pzj37c5khpv4vi0v28fdnp0p8yz39scm8d8lya1dkm"; depends=[doParallel dplyr foreach formula_tools MASS moments mvtnorm plyr purrr quantreg tidyverse]; };
   heuristica = derive2 { name="heuristica"; version="1.0.2"; sha256="1wqdwggnma6p667ivr0xja4vvn3jgzbkc5whkkijmdmxpjzg1wz6"; depends=[Hmisc]; };
-  heuristicsmineR = derive2 { name="heuristicsmineR"; version="0.2.2"; sha256="0pwr2n172571y7c8wyia4a3sqnr6m1cn17yf4iznr9v4jddkb20h"; depends=[BH bupaR data_table DiagrammeR dplyr ggplot2 ggthemes magrittr petrinetR processmapR purrr Rcpp rlang scales tidyr]; };
+  heuristicsmineR = derive2 { name="heuristicsmineR"; version="0.2.3"; sha256="17x8msw0nf9y1y4ls8fbvcjyh3xfp9n36im33mzwsfaig6b9m3m2"; depends=[BH bupaR data_table DiagrammeR dplyr ggplot2 ggthemes magrittr petrinetR processmapR purrr Rcpp rlang scales tidyr]; };
   hexSticker = derive2 { name="hexSticker"; version="0.4.6"; sha256="02zdnxnhci0d9dclb6z3zc8sm1c4bj8zzbapwy34h8bs3sz1c8xn"; depends=[ggimage ggplot2 hexbin showtext sysfonts]; };
   hexView = derive2 { name="hexView"; version="0.3-4"; sha256="01hiqyibsd4as7jcklzg09pl12la341mg561vn16z4jzdarfvkfc"; depends=[]; };
   hexbin = derive2 { name="hexbin"; version="1.28.1"; sha256="1ry6jm3lqz3mj0s5rzbs6mpkz2hxpnvbw8c1vwc4pj7b173r5l22"; depends=[lattice]; };
@@ -8752,7 +8801,7 @@ in with self; {
   hglm_data = derive2 { name="hglm.data"; version="1.0-1"; sha256="0mw1s0kahsh9jmwkxysfy5f7vbld7mpzmdnnww6im5h21jhnczx2"; depends=[MASS Matrix sp]; };
   hgm = derive2 { name="hgm"; version="1.18"; sha256="0d0s4hkn46cg85wl7nmjn707iw38kjs69p6xz33pzc1yf51l8z7w"; depends=[deSolve]; };
   hgutils = derive2 { name="hgutils"; version="0.2.7"; sha256="1svxhz80h84wn1fj58p8g3rp553ima1wfdbbkm2cqnihwjxhha62"; depends=[crayon dplyr limSolve magrittr stringr]; };
-  hhh4contacts = derive2 { name="hhh4contacts"; version="0.13.0"; sha256="17f31xhh6kk7sx5d5dvpwpvl72wd45zgb4fcpdayx3yrm719csz9"; depends=[surveillance]; };
+  hhh4contacts = derive2 { name="hhh4contacts"; version="0.13.1"; sha256="1cqwn09iqgh6131cm4b5j0kx7k5vil0ak42v064g4maayj0yqy7p"; depends=[surveillance]; };
   hhi = derive2 { name="hhi"; version="1.2.0"; sha256="1yl52c3nqdi8v60sr01l0vv8359803dm2i4c9ifazgj3h3a4h0yp"; depends=[ggplot2]; };
   hht = derive2 { name="hht"; version="2.1.3"; sha256="022a8zz2m34q89h29jglfj21knlqd8dwi85qmsi78ly1vacnzap8"; depends=[EMD fields spatstat]; };
   hiPOD = derive2 { name="hiPOD"; version="1.0"; sha256="1i15ickz2s0kffh99qq30pl5hsl0lbj0kp55jnbv4x72hndzhmla"; depends=[rgl]; };
@@ -8848,7 +8897,7 @@ in with self; {
   htdp = derive2 { name="htdp"; version="0.1.4"; sha256="0w579qp0p544xryb5r08m1nhqf7rmgv9q0lyx6my4av62l70ka5w"; depends=[Rcpp]; };
   htm2txt = derive2 { name="htm2txt"; version="2.1.1"; sha256="09q026yy8qm1fb3a4bf9vsp4j09kayl7xmk0p58ikar5l3bmfdjv"; depends=[]; };
   htmlTable = derive2 { name="htmlTable"; version="1.13.3"; sha256="0g9r156k9yl1f092hfw3b9wjx11akf0shbi3x0d0mvpnflvc8nfl"; depends=[checkmate htmltools htmlwidgets knitr magrittr rstudioapi stringr]; };
-  htmltab = derive2 { name="htmltab"; version="0.7.1"; sha256="0lymagm7z6zn0ddygqxi831ikk74112lkqkbvs5j1djhmr359ajc"; depends=[httr XML]; };
+  htmltab = derive2 { name="htmltab"; version="0.7.1.1"; sha256="0nmb8zq6n13zj4rzgg74xpc6y8vkkwn8cqnyszq5h23gnn61inyl"; depends=[httr XML]; };
   htmltidy = derive2 { name="htmltidy"; version="0.5.0"; sha256="1djkjff3750fm1sp54kf9cjvsqz2x7ia1ns12h5vqqcvwzfd0701"; depends=[htmltools htmlwidgets Rcpp XML xml2]; };
   htmltools = derive2 { name="htmltools"; version="0.4.0"; sha256="06l17d8jkf438yk2mchpsp4j90bynnapz3nabh5vkcc324p5a62v"; depends=[digest Rcpp rlang]; };
   htmlwidgets = derive2 { name="htmlwidgets"; version="1.5.1"; sha256="10fp306l1nybkah6jrlrqwwdb6zvklbddp8i3w9v9naj8la5jbnl"; depends=[htmltools jsonlite yaml]; };
@@ -8923,7 +8972,8 @@ in with self; {
   iFad = derive2 { name="iFad"; version="3.0"; sha256="0jrl9bayihp3wb4k5w9kc71qlsdxk7vl83ydfibx2bg79c4hf3cs"; depends=[coda MASS Rlab ROCR]; };
   iGSEA = derive2 { name="iGSEA"; version="1.2"; sha256="1xlz8mbxqnrwyqj7jwma7vmvjlaccajbfxf3hi4wp5qs2pch8806"; depends=[]; };
   iGasso = derive2 { name="iGasso"; version="1.4"; sha256="17xxqncl5xcphdqclghcazygcgibf8ijdf4kkl3ga11xf70sahj2"; depends=[CompQuadForm lattice]; };
-  iMRMC = derive2 { name="iMRMC"; version="1.2.1"; sha256="0n0i37cqj82cv5ksyva5pkwm5lasgpwljsqm692n4dkmkimc1wv9"; depends=[]; };
+  iIneq = derive2 { name="iIneq"; version="1.0.1"; sha256="1mcr084ik1dc5fndj6ci7px4l1y8jz9kr59riqkf0bm6hras5rfg"; depends=[doParallel foreach]; };
+  iMRMC = derive2 { name="iMRMC"; version="1.2.2"; sha256="12ljry3gqzqjk72ndc557pn6jz3c23y5hcjlphw4kggrz7wb7b91"; depends=[]; };
   iMediate = derive2 { name="iMediate"; version="0.5.5"; sha256="1lwhrzm4g2fcazh782g7p11v5pyx165ig1dzgkmdmjffpwk0w8b4"; depends=[MBESS mvtnorm plotly]; };
   iNEXT = derive2 { name="iNEXT"; version="2.0.20"; sha256="14bagsb0ja3j53i0g4a2ax2gj7lyc6sjcc7isdjx94clbnc2zcsg"; depends=[ggplot2 reshape2]; };
   iNZightTools = derive2 { name="iNZightTools"; version="1.8.3"; sha256="1sf3gsxss4xnncjrlw49ljvlzz70zckq14mm5n6kmsz9nwaay2jk"; depends=[chron dplyr forcats haven lubridate magrittr readr readxl stringr survey tibble tidyr validate zoo]; };
@@ -8974,7 +9024,7 @@ in with self; {
   icmm = derive2 { name="icmm"; version="1.1"; sha256="1w9f1rniz67rrvq0akc64s5433ddmr2cgbcljil4c58yyz8hinx8"; depends=[EbayesThresh]; };
   icosa = derive2 { name="icosa"; version="0.10.0"; sha256="1vd1qn1070rml7mygj9k13b96zrc77bw90g8f44s7wmhabn6214q"; depends=[igraph Rcpp sp]; };
   icpsrdata = derive2 { name="icpsrdata"; version="0.4.0"; sha256="01whs8wssjx3qgdnc1ixh59gvn1bajqm5q3zj1jpw1dqjh71qzf0"; depends=[httr purrr rvest]; };
-  icr = derive2 { name="icr"; version="0.6.1"; sha256="1hmlh01p286zq26ya2x7hn4xba2g0q988pmvmxy6lfv0nigys0gs"; depends=[Rcpp]; };
+  icr = derive2 { name="icr"; version="0.6.2"; sha256="1xqvzn02x13d706irv83zycpxhm8yq1c34rh1nphddy5gri7gwjb"; depends=[Rcpp]; };
   icrf = derive2 { name="icrf"; version="1.0.0"; sha256="1qz4wv23hspbrfzrj80qmhi0759zh3gn23rnns18j3020f506jdd"; depends=[Icens]; };
   icsw = derive2 { name="icsw"; version="1.0.0"; sha256="0g7bcqs0rpbs1p202i9wjbl8hhy3r196zambm044xyf7kvsbzzf6"; depends=[]; };
   idar = derive2 { name="idar"; version="1.1"; sha256="0nac7sav4rrp6a94aqgp8qyb22wg7y7gc5n1dhid894yc9z47a5f"; depends=[ape FD picante spatstat]; };
@@ -9006,7 +9056,7 @@ in with self; {
   ifultools = derive2 { name="ifultools"; version="2.0-5"; sha256="040kvbczcmmbaiaz0k0pdq9af541pjj6iwzh1a3w4szh9w6b5a3j"; depends=[MASS splus2R]; };
   ig_vancouver_2014_topcolour = derive2 { name="ig.vancouver.2014.topcolour"; version="0.1.2.0"; sha256="0yclvm6xppf4w1qf25nf82hg1pliah68z7h3f683svv0j62q748h"; depends=[]; };
   igate = derive2 { name="igate"; version="0.3.3"; sha256="0b8dk976z0764cmxwcq6w2f3akv7iivivharinq029p90b600qza"; depends=[dplyr ggplot2 kableExtra knitr rmarkdown stringr xtable]; };
-  igraph = derive2 { name="igraph"; version="1.2.4.2"; sha256="0scrbqb26pam8akblb4g9rkz888s0xffw3gcly78s4ijj67barxd"; depends=[magrittr Matrix pkgconfig]; };
+  igraph = derive2 { name="igraph"; version="1.2.5"; sha256="126z1ygbmi3g7hk97snf22rnx680dyi30idssm5zacba5rdngp8c"; depends=[magrittr Matrix pkgconfig]; };
   igraphdata = derive2 { name="igraphdata"; version="1.0.1"; sha256="19w5npa4b8c054v94xlr7nmhhg2fhq4m8jbds86skp8zvipl4rkl"; depends=[]; };
   igraphinshiny = derive2 { name="igraphinshiny"; version="0.1"; sha256="1ww5s4jfihzcx4k35lbhzsf54z720xh7b2p5alzk843m6rx77986"; depends=[igraph shiny]; };
   igraphtosonia = derive2 { name="igraphtosonia"; version="1.0"; sha256="0vy9jnpjp68l8s0hi1l57j9p41c543h3iqv16pwl550f38zqp8j6"; depends=[igraph]; };
@@ -9016,7 +9066,7 @@ in with self; {
   iilasso = derive2 { name="iilasso"; version="0.0.2"; sha256="043m1n5840459zsknkb54801apb0a2cqfprncmj2wp235rbqj832"; depends=[BH Matrix Rcpp]; };
   ijtiff = derive2 { name="ijtiff"; version="2.0.4"; sha256="1jfvqn22v2rji8rnyjmpa2y3q14r514q2wdmh7ykiplvhlm9kyga"; depends=[checkmate dplyr filesstrings fs glue magrittr purrr Rcpp readr rlang stringr withr]; };
   ilc = derive2 { name="ilc"; version="1.0"; sha256="0hs0nxv7cd300mfxscgvcjag9f2igispcskfknb7sn7p8qvwr5ki"; depends=[date demography forecast rainbow survival]; };
-  imageData = derive2 { name="imageData"; version="0.1-59"; sha256="096y589r1mrbvzax5i7sdczkl613kyn8g93qcddqb6jjljw03qmi"; depends=[dae GGally ggplot2 Hmisc RColorBrewer reshape XLConnect]; };
+  imageData = derive2 { name="imageData"; version="0.1-60"; sha256="1ry4l45az9az8wk1k16jxbszxwh0m9s3g838w7dad0midr2hs8qr"; depends=[dae GGally ggplot2 Hmisc RColorBrewer readxl reshape]; };
   imagefluency = derive2 { name="imagefluency"; version="0.2.3"; sha256="0f4kizxc86q6pgx5dbp14y6866b1ldyf7zgpfikd2iqhvxbs7qwa"; depends=[magick OpenImageR pracma R_utils readbitmap]; };
   imagefx = derive2 { name="imagefx"; version="0.4.1"; sha256="1mxd33y8zbq8kig6m6xihb5w8wrjppgmpyjspvaxjwk7si9a09k1"; depends=[moments signal]; };
   imager = derive2 { name="imager"; version="0.42.1"; sha256="1d7a49lcna77wyfjf5q1b89jck3p3vnysnkgz4drb0qkpy6hz76b"; depends=[downloader igraph jpeg magrittr png purrr Rcpp readbitmap stringr]; };
@@ -9041,7 +9091,7 @@ in with self; {
   implyr = derive2 { name="implyr"; version="0.3.0"; sha256="1i0m95azyi46wnh59dcs52l78i1yqy677rlr4b6c0r945m67advn"; depends=[assertthat DBI dbplyr dplyr rlang tidyselect]; };
   r_import = derive2 { name="r_import"; version="1.1.0"; sha256="0blf9539rbfwcmw8zsb4k58slb4pdnc075v34vmyjw752fznhcji"; depends=[]; };
   importar = derive2 { name="importar"; version="0.1.1"; sha256="0xv445fmjhsbdlsq03k2rlycnggn3rcyq5a49zrg4jvjamzr0rgr"; depends=[]; };
-  importinegi = derive2 { name="importinegi"; version="1.1.0"; sha256="1jb2ls5zi3lcfja53p8lx94cj1saw5nwp4023v5iwy86gg1lddc9"; depends=[data_table dplyr foreign haven rgdal]; };
+  importinegi = derive2 { name="importinegi"; version="1.1.1"; sha256="0lhlrmij4ggwpjcyimyhjywp18i0rr2f9fkvs4nf9pj1xb87rd3l"; depends=[data_table dplyr foreign haven rgdal]; };
   imptree = derive2 { name="imptree"; version="0.5.1"; sha256="0f087000092ydnpj3ch4mbip8wp32scn8xw4vlkq5lf6130gfs1b"; depends=[Rcpp]; };
   imputeFin = derive2 { name="imputeFin"; version="0.1.0"; sha256="1k61q4cd3j7rj0d35y3gyahjz4ac970m6mifc9pzxryi3w5373c4"; depends=[MASS zoo]; };
   imputeLCMD = derive2 { name="imputeLCMD"; version="2.0"; sha256="10v3iv1iw6mnss6ry836crq9zdgid2y1h3pvigzjsrmnp5n89mfz"; depends=[impute norm pcaMethods tmvtnorm]; };
@@ -9071,7 +9121,7 @@ in with self; {
   ineq = derive2 { name="ineq"; version="0.2-13"; sha256="09fsxyrh0j7mwmb5hkhmrzgcy7kf85jxkh7zlwpgqgcsyl1n91z0"; depends=[]; };
   ineqJD = derive2 { name="ineqJD"; version="1.0"; sha256="0anv384jwzn5gkc0jqsl81bkmrjd21br99c5q30xd6ncxavj4s57"; depends=[]; };
   infer = derive2 { name="infer"; version="0.5.1"; sha256="0m22bv71hmi3p89p1cx4rjqp7547i4sma8nl12qjvq1d4955lf28"; depends=[dplyr ggplot2 glue lifecycle magrittr purrr rlang tibble]; };
-  inference = derive2 { name="inference"; version="0.1.0"; sha256="0j92isfkbhk13yx2hd3a5dd7ikcbgjc04zisd1n5kmg6ajw2aj6r"; depends=[sandwich]; };
+  inference = derive2 { name="inference"; version="0.1.0"; sha256="0qh9lhjffqhrdl8pqqkkps3jq7dj6y7qi2qdccp7d682wv0cxjis"; depends=[sandwich]; };
   inferference = derive2 { name="inferference"; version="1.0.0"; sha256="1x6i8ycba9z57m1n143p1j9pmlfrhjhi4iw0fsny8xmcvqrlr85p"; depends=[Formula lme4 numDeriv]; };
   inferr = derive2 { name="inferr"; version="0.3.0"; sha256="1z5bfq0gv1h6iw8nwc19ar6f2sgsvgs3ghq52s09wclqk2yy4azz"; depends=[dplyr magrittr purrr Rcpp rlang shiny tibble tidyr]; };
   infix = derive2 { name="infix"; version="0.1.0"; sha256="1zgy8f8b9pmpvpgqh3niczkr94xkc53xcjim73djmd10azw3kgrk"; depends=[magrittr]; };
@@ -9125,7 +9175,7 @@ in with self; {
   interferenceCI = derive2 { name="interferenceCI"; version="1.1"; sha256="19ky10nn6ygma6yy5h1krxx61aikh3yx5y39p68a944mz8f72vsn"; depends=[gtools]; };
   interflex = derive2 { name="interflex"; version="1.0.8"; sha256="117bq8cid36v6d2lrcywv5xqh6wm2z0fj9hwkjzwqhfkd8qhpq0a"; depends=[doParallel foreach ggplot2 lfe Lmoments lmtest mgcv pcse Rcpp RcppArmadillo sandwich]; };
   interfr = derive2 { name="interfr"; version="0.1.0"; sha256="1wn7i8dsll1qq3v39hgpbqnkjc8f4wlffy73453rw9lpq61y2fgj"; depends=[CircStats colorSpec plotrix]; };
-  intergraph = derive2 { name="intergraph"; version="2.0-2"; sha256="1ipxdrfxhcxhcbqvrzqh3impwk4xryqlqlgjl7f2mwrf365zs6ph"; depends=[igraph network]; };
+  intergraph = derive2 { name="intergraph"; version="2.0-2"; sha256="18a7xgb2rp0w9jl2rkh8nzyjprrs5w7h2iidvc8c38bzx3qpggkc"; depends=[igraph network]; };
   interim = derive2 { name="interim"; version="0.8.0"; sha256="1hcq1cx6fv4ivvyd3ww3gsbw12g6rw83qqqbrcgzlnjl1q0jh3nf"; depends=[]; };
   interimApp = derive2 { name="interimApp"; version="0.0.1"; sha256="1g2f1plsgzqf277jy2afhchjlcamr9znm02rj4rvky7nnp63gph0"; depends=[interim shiny shinyBS]; };
   interlineaR = derive2 { name="interlineaR"; version="1.0"; sha256="0y1ym6iwly8sv94pdzwv2qy1g7z4hpqlrbcrpb1ds5a62a6axqj5"; depends=[reshape2 xml2]; };
@@ -9178,6 +9228,7 @@ in with self; {
   iplots = derive2 { name="iplots"; version="1.1-7.1"; sha256="1bz8n9cnx6zy3wsr49h55r0l5ikfl0xjg4r76fi4giid2a3ba4lf"; depends=[png rJava]; };
   ipmisc = derive2 { name="ipmisc"; version="1.2.0"; sha256="0ga92xpq3inc1anwn4qr3xzrnlp79szb46ybvgyvxmg682wphlnf"; depends=[broomExtra crayon dplyr forcats rlang rstudioapi tibble tidyr zeallot]; };
   ipptoolbox = derive2 { name="ipptoolbox"; version="1.2"; sha256="0scbny4crgr23qcp0vgsxhwmj5g5q5c1c4mb5mmb5njyvc34s01l"; depends=[AlgDesign copula evd kolmim triangle]; };
+  ipr = derive2 { name="ipr"; version="0.1.0"; sha256="1db06r784c6jga0anp6p5b3k47yfhr84nzxyjn52pc9zkg3yifjm"; depends=[]; };
   ipred = derive2 { name="ipred"; version="0.9-9"; sha256="0vs1hqfx7yd0xdbmfsf2gim7spkni0845cj6gswn0nhdfdq7ma0d"; depends=[class MASS nnet prodlim rpart survival]; };
   iprior = derive2 { name="iprior"; version="0.7.3"; sha256="15qzqwikxy85fcd7psz363b5wb0kpi85icfyb47hbgdhln8fi2qb"; depends=[doSNOW foreach ggplot2 mvtnorm Rcpp RcppEigen reshape2 scales]; };
   ips = derive2 { name="ips"; version="0.0.11"; sha256="02jxanfhsjrabj33nwjv71vdc87hiyzikyqrfdj9ix6dky6lm199"; depends=[ape phangorn plyr seqinr XML]; };
@@ -9310,6 +9361,7 @@ in with self; {
   jpmesh = derive2 { name="jpmesh"; version="1.1.3"; sha256="0ybv19bmrcwzan151p4px0vv6qnaqmk4fgqvqlh4syjnrb6xv0c5"; depends=[leaflet magrittr miniUI purrr rlang sf shiny tibble units]; };
   jpndistrict = derive2 { name="jpndistrict"; version="0.3.4"; sha256="1z1rgqibksxrz0048zk78xlsm595jbm3y6xkrqcifm1xnqgh1fys"; depends=[dplyr jpmesh leaflet magrittr miniUI purrr rlang sf shiny tibble tidyr tidyselect]; };
   jqr = derive2 { name="jqr"; version="1.1.0"; sha256="00x5a61bsn2ywzc2haz19f6h0sqhlx7z3k1n9y0729dwm4id89ms"; depends=[lazyeval magrittr]; };
+  jquerylib = derive2 { name="jquerylib"; version="0.1"; sha256="0spq9x6fmnw9nnxanwrm17pwsc29mfw7v7v91ypzwb79wkyx3lys"; depends=[htmltools]; };
   jrc = derive2 { name="jrc"; version="0.3.1"; sha256="0vzmmzblwx055jvd90bz6s5iy901kqanbrs64c3wpaxvjigwf87z"; depends=[httpuv jsonlite mime R6 stringi stringr]; };
   jrich = derive2 { name="jrich"; version="0.60-35"; sha256="1y486bfqmfg3f22wm0lfk3lh20ljgi8qrgn5jji0f417wh48nf0x"; depends=[ape]; };
   jrt = derive2 { name="jrt"; version="1.0.1"; sha256="023i0xqz8mhnjnii92vjw64mjnnlf8jaji99i4c2vxcr7m83jm0r"; depends=[directlabels dplyr ggplot2 ggsci irr mirt psych tidyr]; };
@@ -9328,7 +9380,7 @@ in with self; {
   jstable = derive2 { name="jstable"; version="0.9.2"; sha256="0vp6bb2yqnh81avy085y6ylb3qll671xmjddi6gilzmbxpks9xl6"; depends=[car coxme data_table dplyr geepack labelled lme4 magrittr purrr survey survival tableone tibble]; };
   jstor = derive2 { name="jstor"; version="0.3.7"; sha256="0if7ngqs9ncnkg9kiag3k51ipxiyrkaqm7lzmvp84hysqq8536jc"; depends=[cli crayon dplyr furrr magrittr pryr purrr readr rlang stringr tibble tidyr xml2]; };
   jtGWAS = derive2 { name="jtGWAS"; version="1.5.1"; sha256="06cgsncgrqslxcc7s0lb3zwa85bhzkmjzz3f04716xpzwa186vxq"; depends=[Rcpp]; };
-  jtools = derive2 { name="jtools"; version="2.0.2"; sha256="1vm2jd70w4a9qfnq2wjixnvpv9yilal6xpfjajgqx289c19csvq9"; depends=[crayon generics ggplot2 magrittr pander pkgconfig rlang tibble]; };
+  jtools = derive2 { name="jtools"; version="2.0.3"; sha256="1xnifd77ygvkq73wyfw2ic6x3m00k7jj1rw0q8jf0q29qbpda6an"; depends=[crayon generics ggplot2 magrittr pander pkgconfig rlang tibble]; };
   jtrans = derive2 { name="jtrans"; version="0.2.1"; sha256="18zggqdjzjhjwmsmdhl6kf35w9rdajpc2nffag4rs6134gn81i3m"; depends=[]; };
   jubilee = derive2 { name="jubilee"; version="0.3.3"; sha256="1j2y44pfx9z2k169lh42b4dnfrrnk8jqsjn3wz4l9iscr6r91lx7"; depends=[data_table dplyr readxl xts yaml zoo]; };
   junctions = derive2 { name="junctions"; version="1.1"; sha256="1v5jx4mw6x4q3fivsvidd49b8czzbvv5icj39h6jrpmqvrnc8w32"; depends=[Rcpp]; };
@@ -9367,6 +9419,7 @@ in with self; {
   kequate = derive2 { name="kequate"; version="1.6.3"; sha256="1ii3wlypm2qqkfxr3z1sdnmgc43h2zzlw6v4h2xxjdlznzxkp3mr"; depends=[equateIRT ltm mirt]; };
   keras = derive2 { name="keras"; version="2.2.5.0"; sha256="14a1mhx95446s8smd4s7adzlmpzx18kqsbgzva4gbya1b48bkw3l"; depends=[generics magrittr R6 reticulate tensorflow tfruns zeallot]; };
   kerasR = derive2 { name="kerasR"; version="0.6.1"; sha256="1yi7710vgcwz0jhishbga41sc6qyk83a0avmq01dvqjsz3cdfsfc"; depends=[reticulate]; };
+  kerastuneR = derive2 { name="kerastuneR"; version="0.1.0.1"; sha256="09vvs6pbjdniyfip86kbfrfyjzqzvf382sba4c733ww8qgbngv9i"; depends=[data_table dplyr plotly reticulate rjson RJSONIO rstudioapi tensorflow tidyjson]; };
   kerdiest = derive2 { name="kerdiest"; version="1.2"; sha256="16xj2br520ls8vw5qksxq9hqlpxlwmxccfk5balwgk5n2yhjs6r3"; depends=[chron date evir]; };
   kergp = derive2 { name="kergp"; version="0.5.1"; sha256="16zb7gsbp3bg4kpn7lszw8rn24i40f6jmxcf751vca1f7pfn38pj"; depends=[doFuture doParallel lattice MASS nloptr numDeriv Rcpp testthat]; };
   kernDeepStackNet = derive2 { name="kernDeepStackNet"; version="2.0.2"; sha256="04bdggxvggmppp289n2zw6ijdm7y05gws6z7bp6fr8n1zsxy2w3c"; depends=[caret DiceKriging DiceOptim GA GenSA glmnet globalOptTests lhs matrixStats mvtnorm Rcpp RcppEigen]; };
@@ -9460,7 +9513,7 @@ in with self; {
   ktaucenters = derive2 { name="ktaucenters"; version="0.1.0"; sha256="15ddjr4c90b5hc4977gk35zb2kswrcvai3xighy7qj6g9lgiszgf"; depends=[dbscan dplyr GSE MASS]; };
   ktsolve = derive2 { name="ktsolve"; version="1.2"; sha256="1606b9anlqjwcbf3jp1rpwzvyx94k79q6zw3p9j0a4nxdvgxlx1j"; depends=[BB nleqslv rootSolve]; };
   ktspair = derive2 { name="ktspair"; version="1.0"; sha256="1v63982jidxlcf2syahcb29myv34kc790l7lwyfxx9l50ssb812n"; depends=[Biobase]; };
-  kubik = derive2 { name="kubik"; version="0.1.2"; sha256="1cjr8vcvjgy425sgr23cl2xrsz9smgil4lkkzm94b8g5rwyk731g"; depends=[intoo]; };
+  kubik = derive2 { name="kubik"; version="0.2.0"; sha256="1f5v88pfm9szkshbnkkd0pdphqwrbblfmmys7j8k60y919lwgv0z"; depends=[]; };
   kuiper_2samp = derive2 { name="kuiper.2samp"; version="1.0"; sha256="0gcgayh7qdic9zprdvs6r8qvpqs467zrm0qzp2acb7alcp01jhpi"; depends=[]; };
   kulife = derive2 { name="kulife"; version="0.1-14"; sha256="070ayy6fr9nsncjjljikn2i5sp2cx3xjjqyc64y2992yx74jgvvd"; depends=[]; };
   kutils = derive2 { name="kutils"; version="1.69"; sha256="12pg26a85h0jxlfcyai68dbh4bq1gnq8v1ngi8k9qvafbrpc6gx8"; depends=[foreign lavaan openxlsx plyr RUnit xtable]; };
@@ -9508,7 +9561,7 @@ in with self; {
   landsepi = derive2 { name="landsepi"; version="0.0.8"; sha256="0k2hkrj0r3hx5jvmgx852s030md3cqhm7yixl0xxlkxwqrylw7qc"; depends=[fields maptools MASS Matrix Rcpp rgdal rgeos sf sp splancs]; };
   languageR = derive2 { name="languageR"; version="1.5.0"; sha256="1iipnr2b4hd2w718prbh075j56m5xnchlcb2vg26m16qpydp6afn"; depends=[]; };
   languagelayeR = derive2 { name="languagelayeR"; version="1.2.4"; sha256="1q82shdcdd84nr6bnfwgyyb81z8dycvj1i3vhwvdg710s15rgiyk"; depends=[attempt curl httr jsonlite]; };
-  languageserver = derive2 { name="languageserver"; version="0.3.4"; sha256="1l9vwlc19kj4zavhxsh04iidndjh28fj8qc1dm6187hb755dfjpw"; depends=[callr collections desc fs jsonlite lintr R6 readr repr stringr styler xml2 xmlparsedata]; };
+  languageserver = derive2 { name="languageserver"; version="0.3.5"; sha256="04i7pasvj2varq3khk6w0z1liwnwfr648gwvqz9qs7gkyknydp4y"; depends=[callr collections desc fs jsonlite lintr R6 repr stringi styler xml2 xmlparsedata]; };
   languageserversetup = derive2 { name="languageserversetup"; version="0.1.1"; sha256="07vwfgdw79zcr8wlmzs4b5mqmd7fa2ja76vpyjvlf07ifg7x82jw"; depends=[]; };
   lans2r = derive2 { name="lans2r"; version="1.0.5"; sha256="1m3hz85gl9m4vafdy7mj3z560d11mdwlwvnzy8n7d1cjqryn7a2b"; depends=[dplyr ggplot2 lazyeval R_matlab reshape2 tidyr]; };
   lar = derive2 { name="lar"; version="0.1-2"; sha256="0qda0y4ag10kg83wxs3z754kc8c1dg2rwciy64klk7an4ln43i5b"; depends=[data_table treemap xlsx]; };
@@ -9520,7 +9573,7 @@ in with self; {
   lassoscore = derive2 { name="lassoscore"; version="0.6"; sha256="1i3i07da8sw9w47rcflhylz8zxvzkyycbc1a4gf6hbcpp21rqd7d"; depends=[glasso glmnet Matrix]; };
   lassoshooting = derive2 { name="lassoshooting"; version="0.1.5-1"; sha256="0ixjw8akplcfbzwyry9p4bhbcm128yghz2bjf9yr8np6qrn5ym22"; depends=[]; };
   latdiag = derive2 { name="latdiag"; version="0.2-4"; sha256="051chvky3hlfr4hwm9qickl6aaxwnxa88zksmzczqfspby771hq6"; depends=[]; };
-  latentnet = derive2 { name="latentnet"; version="2.10.1"; sha256="1xabby9b5idbs2q04shg05sw26mnrvc3dsngcdrcz7s2crz9mr57"; depends=[abind coda ergm MASS mvtnorm network sna statnet_common]; };
+  latentnet = derive2 { name="latentnet"; version="2.10.5"; sha256="05yjf7a16imv1p2lg5dmfk183xll49crnkg0mbz4c4b39nksy85v"; depends=[abind coda ergm MASS mvtnorm network sna statnet_common]; };
   later = derive2 { name="later"; version="1.0.0"; sha256="11xjavj7siz0xv2ffq1ld4bwl35jyrcfpvvs4p3ilpifxx49hyr7"; depends=[BH Rcpp rlang]; };
   latex2exp = derive2 { name="latex2exp"; version="0.4.0"; sha256="12nbcgfmv13k6sc6m326ras9bcvy380b7rxcxphn06r3cfkby0zw"; depends=[magrittr stringr]; };
   latexpdf = derive2 { name="latexpdf"; version="0.1.6"; sha256="07g33z5lyxinlrzpk6pd41m4c4bbfql611yqcqxasf8wra9bb0jr"; depends=[]; };
@@ -9542,9 +9595,9 @@ in with self; {
   lazyWeave = derive2 { name="lazyWeave"; version="3.0.2"; sha256="1a7l0rgkp3xq2s6bikciq778fwyr282baa6jk9ip4a71s931p2ag"; depends=[Hmisc labelVector]; };
   lazyeval = derive2 { name="lazyeval"; version="0.2.2"; sha256="1m10i059csrcqkcn59a8wspn784alxsq3symzhn24mhhl894346n"; depends=[]; };
   lazyraster = derive2 { name="lazyraster"; version="0.5.0"; sha256="0zf9xlxyzmgxy1nl2kg7fvpfamjz04gf4yxjn3r9j7fjkik35cnp"; depends=[quadmesh raster vapour]; };
-  lazyrmd = derive2 { name="lazyrmd"; version="0.2.0.1"; sha256="0yzamy1bfq0d7mnrr24wzvvw6lq7rhfs6qnqypfmym65j5kfj0f8"; depends=[digest htmltools htmlwidgets knitr rmarkdown]; };
+  lazyrmd = derive2 { name="lazyrmd"; version="0.2.0.1"; sha256="0cyfmq02p2rvxvg7n6rd24f3jdxs9b03sqk9abwid84m22hasnl7"; depends=[digest htmltools htmlwidgets knitr rmarkdown]; };
   lazysql = derive2 { name="lazysql"; version="0.1.3"; sha256="18vff80rl8ckjwfqi9dhzs1q35a1wrxvynidji6dy2kvvk38xnpa"; depends=[checkmate magrittr plyr]; };
-  lazytrade = derive2 { name="lazytrade"; version="0.3.9"; sha256="1lms83qf0vpflszxjzpxrsr7991lkzqr1ch9ivx70anjaaijgql3"; depends=[dplyr ggplot2 h2o lubridate magrittr openssl readr ReinforcementLearning stringr]; };
+  lazytrade = derive2 { name="lazytrade"; version="0.3.10"; sha256="1m8wv5ii4inqw45nzqfqyrhzajr37mk9v4h8vxvy0ya00cibs9hb"; depends=[dplyr ggplot2 h2o lubridate magrittr openssl readr ReinforcementLearning stringr]; };
   lba = derive2 { name="lba"; version="2.4.4"; sha256="0izqndm992zv3sg8v5lpnxbdbxhpxl6hq3bf6xgq3pnw8vl3f6nb"; depends=[alabama MASS plotrix rgl scatterplot3d]; };
   lbfgs = derive2 { name="lbfgs"; version="1.2.1"; sha256="0p99g4f3f63vhsw0s1m0y241is9lfqma86p26pvja1szlapz3jf5"; depends=[Rcpp]; };
   lbfgsb3 = derive2 { name="lbfgsb3"; version="2015-2.13.1"; sha256="15g465dy4izybmgmbgzmiyaxdfa6l1mcvyh6rc3hgapnlmnvb66m"; depends=[numDeriv]; };
@@ -9620,7 +9673,7 @@ in with self; {
   lg = derive2 { name="lg"; version="0.4.1"; sha256="1srlklq6hkb4yd3lbbazswj866i3wzk2524hhj1v45yr7d5qhxv0"; depends=[ggplot2 ks localgauss logspline mvtnorm np tseries]; };
   lgarch = derive2 { name="lgarch"; version="0.6-2"; sha256="05xksc4d6dbf5ls4lf2gpk9xyi99fikr7dva88b84rfgads1yhrh"; depends=[zoo]; };
   lgcp = derive2 { name="lgcp"; version="1.6"; sha256="1bsf69l81w7182ay4lrq1miqdr4f4jv5ppcalrqhqjcwhkq1nlkb"; depends=[fields iterators maptools Matrix ncdf4 RandomFields raster rgeos rpanel sp spatstat spatstat_utils]; };
-  lgr = derive2 { name="lgr"; version="0.3.3"; sha256="1ivab8vw4bp206yq21dz7ix3slghjdzh4k6q6w9xpvphwscx0h48"; depends=[R6]; };
+  lgr = derive2 { name="lgr"; version="0.3.4"; sha256="14qq2q526iv2wxdssddv0sqqaz8vj7xgw1rrqspjvqnl8l6bckab"; depends=[R6]; };
   lgrdata = derive2 { name="lgrdata"; version="0.1.1"; sha256="0h1crdhqfp6hzx30lp0w015scf2566hhrl2i7mkxy868rkl3aig9"; depends=[]; };
   lgtdl = derive2 { name="lgtdl"; version="1.1.5"; sha256="1sixq56d2px36q0xq3kl0zwj2yzm3q8fhgqjvmajcdd5jl8l7130"; depends=[]; };
   lhmixr = derive2 { name="lhmixr"; version="0.1.0"; sha256="1c4ydgq1z2y0xk8xqdsim6xvgxdbl3gglfk5kcr9k4m01arvv0rf"; depends=[]; };
@@ -9683,6 +9736,7 @@ in with self; {
   lisa = derive2 { name="lisa"; version="0.1.1"; sha256="1i5fbcac24rp8s7z2v23aqy7xv0p610zj5xfb6vscsvhdlvg4w1a"; depends=[]; };
   lisp = derive2 { name="lisp"; version="0.1"; sha256="025sq46277q9i21189cbmx5dnrh5wfshc5k6la1wjilhr1iqf6nj"; depends=[]; };
   lisrelToR = derive2 { name="lisrelToR"; version="0.1.4"; sha256="0zicq0z3hhixan1p1apybnf3v5s6v6ysll4pcz8ivygwr2swv3p5"; depends=[]; };
+  list = derive2 { name="list"; version="9.2"; sha256="1gn0g4qq9rr6vwnwq6525hx7iy3q3vmy3g2v3ba69v4jcdc0a0mx"; depends=[arm coda corpcor gamlss_dist magic MASS mvtnorm quadprog sandwich VGAM]; };
   listWithDefaults = derive2 { name="listWithDefaults"; version="1.2.0"; sha256="1rv9jq9zlr5dm08mimba6ni2p5vkfybrgrqk1alm7y6mqpx56byp"; depends=[assertthat]; };
   listarrays = derive2 { name="listarrays"; version="0.3.1"; sha256="0nfpqywq9pl9yj566y0jw0h89g0ppsc614538ns1jc3l5r2myils"; depends=[]; };
   listdtr = derive2 { name="listdtr"; version="1.0"; sha256="08drps03nndpdxswyv8bjm1bcckjav5pjj7fdx3dzyn0v4dfy619"; depends=[ggplot2]; };
@@ -9746,13 +9800,14 @@ in with self; {
   localgauss = derive2 { name="localgauss"; version="0.40"; sha256="0y0pcg2i7lr4wipxawn06hy0q11znhcn2ah6rqwnlyy8pab70pyq"; depends=[foreach MASS matrixStats]; };
   localsolver = derive2 { name="localsolver"; version="2.3"; sha256="1d18rihzqf1f5j9agfp8jysll7lqk1ai23hkdqkn6wwxj442llv4"; depends=[]; };
   locfdr = derive2 { name="locfdr"; version="1.1-8"; sha256="1falkbp2xz07am8jlhwlvyqvxnli4nwl188kd0g58vdfjcjy3mj2"; depends=[]; };
-  locfit = derive2 { name="locfit"; version="1.5-9.1"; sha256="0lafrmq1q7x026m92h01hc9cjjiximqqi3v1g2hw7ai9vf7i897m"; depends=[lattice]; };
+  locfit = derive2 { name="locfit"; version="1.5-9.2"; sha256="00l0s6cxnv95zybkgki0380fih2kr1kbm7m88x56phklln3nx27b"; depends=[lattice]; };
   locits = derive2 { name="locits"; version="1.7.3"; sha256="0sjnwqiqwzdkglvbdxbkg17gjp0vyqvywsy0qq7adxj5hh0yah05"; depends=[igraph wavethresh]; };
   locpol = derive2 { name="locpol"; version="0.7-0"; sha256="1p915n0l09kbwkly627074jslxl01yssp1rf0c7sygvsw6sgy5lm"; depends=[]; };
   lodGWAS = derive2 { name="lodGWAS"; version="1.0-7"; sha256="0g5b44d3wb5hnx5l2n76myb1pc9ml3a052n1a4gvgqapa5as35s2"; depends=[rms survival]; };
   loder = derive2 { name="loder"; version="0.2.0"; sha256="0m6g8c25dmq0wgpy8y6cbggymxdvqwb6lp2yzs5bgpq183512spb"; depends=[]; };
   lodi = derive2 { name="lodi"; version="0.9.2"; sha256="16xqcza87gsqi6kzx0bdv3w9zyvvppjd20rq08lc8vb75nlkx1yb"; depends=[rlang]; };
   loe = derive2 { name="loe"; version="1.1"; sha256="1n16pgfxg9vcn729xxjbbvavg2ywbdcch9v2ph8nv3z7psc0q46c"; depends=[MASS]; };
+  loewesadditivity = derive2 { name="loewesadditivity"; version="0.1.0"; sha256="0j9vvh2ys09hy2k3mbrlf0p493ymrxvfsdcjw0p6rlls54z9lqqc"; depends=[dplyr ggplot2 gridExtra magrittr metR rlang rootSolve tidyr viridis]; };
   log4r = derive2 { name="log4r"; version="0.3.2"; sha256="18r5g0817wfn0kmqwv6vf7r2vavi0xh6mqmxrh59y9w3c84npfhl"; depends=[]; };
   logKDE = derive2 { name="logKDE"; version="0.3.2"; sha256="09gachibj0klqa9ijw572lwphbh9qj6zqray5byq1dh7zsiq516q"; depends=[pracma Rcpp]; };
   logNormReg = derive2 { name="logNormReg"; version="0.3-0"; sha256="172d0y9rb7j0d3m7d22ycfip6s8hk8hlp9810d7r95ra5dr5dx8z"; depends=[]; };
@@ -9874,13 +9929,13 @@ in with self; {
   mHG = derive2 { name="mHG"; version="1.1"; sha256="1rz5ncrvvv9h9grls15apa63v2nh9j87fmp4mwjjil37jx6a5zki"; depends=[]; };
   mHMMbayes = derive2 { name="mHMMbayes"; version="0.1.1"; sha256="0dwywrnzdzkq48x2li9waj1yrm9r5b3qnksad42kf1bm28r1mdl5"; depends=[MCMCpack mvtnorm Rdpack]; };
   mMPA = derive2 { name="mMPA"; version="1.2.0"; sha256="0g4zjknz52fpk7f436j95aw93aa8q2jwcrb1pqkm294kr276nnd9"; depends=[]; };
-  mQTL = derive2 { name="mQTL"; version="1.0"; sha256="0k80xvkr0b0mp3bj2s558fjxi2zf4k7ggnw6hsjm8lr84i108dks"; depends=[MASS outliers qtl]; };
+  mQTL = derive2 { name="mQTL"; version="1.0"; sha256="0whv9nqsi7s344cfgr7v6mg53kmdd1yshjr8nzr81lpjzdhkh691"; depends=[MASS outliers qtl]; };
   mRMRe = derive2 { name="mRMRe"; version="2.1.0"; sha256="1m41859sa0nd4hdnsq3ir337834cpmgg564f6ph57dmmwz0wa8zy"; depends=[igraph survival]; };
   mRpostman = derive2 { name="mRpostman"; version="0.3.0"; sha256="18ky3xpgb4rns65574jr9fy8jwi6nrz6py9ai8nqf2r1s0bdmww3"; depends=[assertthat base64enc curl magrittr stringr]; };
   mSTEM = derive2 { name="mSTEM"; version="1.0-1"; sha256="0mh09mqqpq9k8jrxs9d39009idld3b4y98ik75czdy580jmdg7mm"; depends=[doParallel foreach latex2exp]; };
   mSimCC = derive2 { name="mSimCC"; version="0.0.1"; sha256="1f15r214srcdb4yacmy4hq890a674iqd2s7bry5dk20k46qdl026"; depends=[doParallel foreach]; };
-  maSAE = derive2 { name="maSAE"; version="2.0.0"; sha256="0hg7d7n6b7z510d6y2c9bcgg4vmxjvw095n77apsmymmslfmd8ma"; depends=[]; };
-  mable = derive2 { name="mable"; version="2.0.1"; sha256="1jz0nnjx0sidxgvqfsmps3h4g4f73fpks37r6v11da0dmkcb1biz"; depends=[aftgee icenReg survival]; };
+  maSAE = derive2 { name="maSAE"; version="2.0.1"; sha256="0c7vs0pc4yva726g2vly07r1dnf4ahdkdkq6y6ni0d1hgz296w87"; depends=[]; };
+  mable = derive2 { name="mable"; version="2.1.1"; sha256="14bjyij9m86bha1g79aay6x127aq6pqw3hgdklf943inggqb3ava"; depends=[aftgee icenReg survival]; };
   maboost = derive2 { name="maboost"; version="1.0-0"; sha256="18d36cgvn8p75nidfr6al458jbzwc1i7x77y1ks50y9phrz3wf65"; depends=[C50 rpart]; };
   macc = derive2 { name="macc"; version="1.0.1"; sha256="1qj4mlikbqrxa6m46527xmxdbk7b3l95z6jdgpmi0ifywjiv52a4"; depends=[car lme4 MASS nlme optimx]; };
   machQA = derive2 { name="machQA"; version="0.1.4"; sha256="1rdrjy9sxql2c9y691a1jrmgsv7m1ihsschixxb6wc7aahf7mav6"; depends=[machina plyr]; };
@@ -9927,7 +9982,7 @@ in with self; {
   mapStats = derive2 { name="mapStats"; version="2.4"; sha256="18pp1sb9p4p300ffvmzjrg5bv1i7f78mhpggq83myc26c3a593na"; depends=[classInt colorspace Hmisc lattice maptools RColorBrewer reshape2 sp survey]; };
   mapcan = derive2 { name="mapcan"; version="0.0.1"; sha256="1a4135wc1h4nzcv6xq0bg75i744wyq8p7q0ix7y2x2gb6s35w46k"; depends=[dplyr ggplot2 magrittr]; };
   mapdata = derive2 { name="mapdata"; version="2.3.0"; sha256="0xnxh73rgcq55zrw81a2bq8yd67bxc2rafp4shf6nyrqj04iip0y"; depends=[maps]; };
-  mapdeck = derive2 { name="mapdeck"; version="0.2.1"; sha256="1slj4yrw7qir3cz70yqawbsz521n4614h6gjn0qpj75rj12wnxlk"; depends=[BH colourvalues geojsonsf googlePolylines htmltools htmlwidgets jsonify magrittr rapidjsonr Rcpp shiny spatialwidget]; };
+  mapdeck = derive2 { name="mapdeck"; version="0.3.1"; sha256="1ff2wlwf6nbwr09aiiidqnk4aqwgnww88m75iwqalan553v0pv9g"; depends=[BH colourvalues geojsonsf googlePolylines htmltools htmlwidgets jsonify magrittr rapidjsonr Rcpp sfheaders shiny spatialwidget]; };
   mapedit = derive2 { name="mapedit"; version="0.6.0"; sha256="1ix0sjsqb6646xyi73am9ic97plw9y9p4pl8mrkpzvqzm0pxdhxx"; depends=[dplyr htmltools htmlwidgets jsonlite leafem leaflet leaflet_extras leafpm mapview miniUI raster scales sf shiny sp]; };
   mapfit = derive2 { name="mapfit"; version="0.9.7"; sha256="16a318bz3my27qj0xzf40g0q4bh9alg2bm6c8jbwgswf1paq1xmx"; depends=[Matrix]; };
   mapi = derive2 { name="mapi"; version="1.0.1"; sha256="0qfwxrd0ya5amw7f96pfxf3f8m97s7vhaz62clqn083mw8ddaz2l"; depends=[data_table pbapply Rcpp sf]; };
@@ -9936,6 +9991,7 @@ in with self; {
   mapproj = derive2 { name="mapproj"; version="1.2.7"; sha256="0nscsfq8md6ri9258xz57c3dj81wdl6kdwf4a9qcrwwbn20i427h"; depends=[maps]; };
   mapr = derive2 { name="mapr"; version="0.4.0"; sha256="169ah9v7cpw3hmaj6n575gi1zwazf4vh59n46zghb1x68nc2gqs0"; depends=[data_table ggplot2 gistr jsonlite leaflet RColorBrewer rworldmap sp spocc]; };
   maps = derive2 { name="maps"; version="3.3.0"; sha256="05i2ppl5z4p8rawgqmy3z4ia05fcblpq1vvrmrkgkkpdlhczx6hr"; depends=[]; };
+  mapsFinland = derive2 { name="mapsFinland"; version="0.1.0"; sha256="183p5vaq87g2iin7amg0b6c288v0bphyy5a9fsmq9iwil491dzsy"; depends=[]; };
   mapsRinteractive = derive2 { name="mapsRinteractive"; version="1.0.0"; sha256="0lpmizhaan7zp201wjaq544wadizwpswch7sn6m3sjwn8rswg6av"; depends=[gstat raster rgdal rgeos sp]; };
   mapsapi = derive2 { name="mapsapi"; version="0.4.2"; sha256="1l7sp65ghdcli6ajkvlnhfizjq16mw2cmlf8jbif3al1vhbv4dvw"; depends=[bitops magrittr plyr sf xml2]; };
   maptools = derive2 { name="maptools"; version="0.9-9"; sha256="0v4llkxk8qs61vq4ykvaim4k23aagdaz0p62ns7zfq02sln3pfk9"; depends=[foreign lattice sp]; };
@@ -9988,8 +10044,8 @@ in with self; {
   matrixcalc = derive2 { name="matrixcalc"; version="1.0-3"; sha256="1c4w9dhi5w98qj1wwh9bbpnfk39rhiwjbanalr8bi5nmxkpcmrhp"; depends=[]; };
   matrixpls = derive2 { name="matrixpls"; version="1.0.9"; sha256="13wsd0kbn77mjd5rkfdv9di8pxg898adrgdpqcyridvikjhqlh0j"; depends=[assertive lavaan MASS matrixcalc psych]; };
   matrixsampling = derive2 { name="matrixsampling"; version="2.0.0"; sha256="05dbn7rj07jx1hj7i6k3akf11hysxg6v32kav9fvsqmiy2zkippa"; depends=[keep]; };
-  matsbyname = derive2 { name="matsbyname"; version="0.4.11"; sha256="0v236k0wsj1i92fmh1jikh7qwq7gxsi7dc7kamls611p48wk9082"; depends=[dplyr Hmisc magrittr]; };
-  matsindf = derive2 { name="matsindf"; version="0.3.3"; sha256="1jdqxgy7xpsrwsgaf6z8i98125r3nhl30w7crvx1pmnpp4c3pr9b"; depends=[dplyr magrittr matsbyname purrr rlang rlist tibble tidyr]; };
+  matsbyname = derive2 { name="matsbyname"; version="0.4.12"; sha256="0pryr18xz06w9jlnq2wcy0nddlr456zqwcc4d8bfj1mm3mr9q9j7"; depends=[dplyr Hmisc magrittr purrr rlang tibble]; };
+  matsindf = derive2 { name="matsindf"; version="0.3.4"; sha256="0r8hs53c4xv7lldz8mzh3hy5jq64c3cza9yifjjzpwvlw42y631l"; depends=[dplyr magrittr matsbyname purrr rlang rlist tibble tidyr]; };
   mau = derive2 { name="mau"; version="0.1.2"; sha256="1wgiai8f1kbjh9hfwv4m0kavd44ib5xb33p8m16zpawnw14m7sj5"; depends=[data_table ggplot2 gtools igraph RColorBrewer Rdpack stringr]; };
   mauricer = derive2 { name="mauricer"; version="2.0.5"; sha256="01x1cigwr95hzyz1pm9w5xi2j9z4zf54p6bwhn0y865gln80wvnz"; depends=[beastier stringr]; };
   maxLik = derive2 { name="maxLik"; version="1.3-8"; sha256="1rfzd2n7ak69pbnnzbvd0c4kk9h812sq1f17hamnqx77pw84sh1k"; depends=[miscTools sandwich]; };
@@ -10040,7 +10096,7 @@ in with self; {
   mclogit = derive2 { name="mclogit"; version="0.6.1"; sha256="1flq3g5jbp8nnx066wz35bg8wzlnnp9jp731w87vba483amakcds"; depends=[Matrix memisc]; };
   mclust = derive2 { name="mclust"; version="5.4.5"; sha256="0whandnda1fnjn5k3hgxdbp3b0xr7nlzy1j37saqb536h8q9dwkm"; depends=[]; };
   mclustcomp = derive2 { name="mclustcomp"; version="0.3.1"; sha256="0jdfdmgd46w7b38nbpd0lj9vqzi2nnf8fv0crj08lfin5ng7jvaa"; depends=[Rcpp RcppArmadillo Rdpack]; };
-  mcmc = derive2 { name="mcmc"; version="0.9-6.1"; sha256="1i1nhdapyijvm58zx38q28zk01ndmi6smjivxk5xs2cx9b6v2av9"; depends=[]; };
+  mcmc = derive2 { name="mcmc"; version="0.9-7"; sha256="0q42m8ab7b6bxhns494ksjdss5f3c5m2jjfdlfj6fk1nz7ax7i5p"; depends=[]; };
   mcmcabn = derive2 { name="mcmcabn"; version="0.3"; sha256="0p4g7bnaq87kgfhsc3a8wdifngs4lb5il5wy9im81gz30ji9gbn7"; depends=[abn coda cowplot ggplot2 ggpubr gRbase]; };
   mcmcderive = derive2 { name="mcmcderive"; version="0.0.1"; sha256="12asjw8rnnr7249fb7z7mp5w8y5vb0zig93jzsf77gghhfjmp4dl"; depends=[abind checkr err mcmcr purrr]; };
   mcmcplots = derive2 { name="mcmcplots"; version="0.4.3"; sha256="0187z79gmvcrwqybxh3ckhcrqi0nqhvcvlczgxfkpq95y5czprdq"; depends=[coda colorspace denstrip sfsmisc]; };
@@ -10085,7 +10141,7 @@ in with self; {
   mechkar = derive2 { name="mechkar"; version="1.14.6"; sha256="1yrxp0qkfr96sf8lprn33cjfjmpkhpw0wpbz7w2600a923zdhwqc"; depends=[car coxphw dplyr ggplot2 givitiR gmodels Hmisc InformationValue MASS pROC ResourceSelection rlang ROSE tibble writexl]; };
   medExtractR = derive2 { name="medExtractR"; version="0.1"; sha256="08hzl5kk3jqs8vc53zrd1qj5g24dkpvwwvswqp57719c4ybi3ia3"; depends=[stringr]; };
   mederrRank = derive2 { name="mederrRank"; version="0.0.8"; sha256="1fvvik3bhjm6c0mhi2ma915986k2nj3lr2839k5hfrr7dg3lw3f4"; depends=[BB numDeriv]; };
-  medfate = derive2 { name="medfate"; version="0.8.2"; sha256="0f86cpczzkpx8sy6krx970zy1fmsn93mjkm9mq00w2nw91kqjrh6"; depends=[ggplot2 GSIF meteoland Rcpp sp spdep]; };
+  medfate = derive2 { name="medfate"; version="0.9.0"; sha256="0vxrj9x9f975vxfjsv83riyazlvbpn5q9z49ywnayiikn1snbrnh"; depends=[ggplot2 meteoland Rcpp sp spdep]; };
   medflex = derive2 { name="medflex"; version="0.6-6"; sha256="04cjqhyihxf1imbl9y9s58qpy6lmxsh2gwy4bras03hx52slzl5r"; depends=[boot car Matrix multcomp sandwich]; };
   mediacloudr = derive2 { name="mediacloudr"; version="0.1.0"; sha256="1r11mpz44msla71lqw45r9s8z7rwvbnqi026l0ljx6crby183h0w"; depends=[httr jsonlite rvest xml2]; };
   mediation = derive2 { name="mediation"; version="4.5.0"; sha256="0i88wvqqw8cmxmh9i78rqzp4s16zhf12dgl9fsk9bhw7hxhhc0i1"; depends=[boot Hmisc lme4 lpSolve MASS Matrix mvtnorm sandwich]; };
@@ -10139,16 +10195,16 @@ in with self; {
   metabolighteR = derive2 { name="metabolighteR"; version="0.1.0"; sha256="1kbwxwcx5f836bhwx32a41c6753832wigx0b6gi9zblc4qsnqvlq"; depends=[dplyr httr magrittr purrr]; };
   metacart = derive2 { name="metacart"; version="2.0-2"; sha256="1rn246avzisbrw9parap7hpgxb7pj5y43zfvayaiz4ilhdl5vj4y"; depends=[ggplot2 gridExtra Rcpp rpart]; };
   metacoder = derive2 { name="metacoder"; version="0.3.3"; sha256="0d7fpx5zpggc8k3y882mlw4szn7ghzckyiaxj9x652xink8zi397"; depends=[ape biomformat cowplot crayon dplyr GA ggfittext ggplot2 ggrepel igraph lazyeval magrittr phylotate RColorBrewer Rcpp RCurl readr reshape reshape2 rlang scales seqinr stringr svglite taxa taxize tibble traits vegan viridisLite zoo]; };
-  metacom = derive2 { name="metacom"; version="1.5.2"; sha256="0v2rscql8vks12v5s9rvfrylh175if2mnpr69wsvr2snlcjxmirq"; depends=[vegan]; };
+  metacom = derive2 { name="metacom"; version="1.5.3"; sha256="0c0gzn28cl2sl52wx2n36jm9c18d9s3yqjyx88kgbmd9069z1nvk"; depends=[vegan]; };
   metacor = derive2 { name="metacor"; version="1.0-2.1"; sha256="0y3z7jbhw5c2dbn9fx9wlw1311irjc2xvnm5hnaixbbj53qz24n0"; depends=[gsl rmeta]; };
   metadynminer = derive2 { name="metadynminer"; version="0.1.6"; sha256="0zg08lwnimnmfwac0d5kg8yhsl88gmn029dra18phy1jzkfnsx34"; depends=[Rcpp]; };
   metadynminer3d = derive2 { name="metadynminer3d"; version="0.0.1"; sha256="0riqr2hhk4h0rm7m4njb2dd2f24jff7lzf9chh83sq4q3wldgpz5"; depends=[metadynminer misc3d Rcpp rgl]; };
   metafolio = derive2 { name="metafolio"; version="0.1.0"; sha256="18s78lljwnn3j0l3mqc0svszcb3c8yzyzlpnimndbiq9yxagxnnf"; depends=[colorspace MASS plyr Rcpp RcppArmadillo]; };
-  metafor = derive2 { name="metafor"; version="2.1-0"; sha256="009x5w163g4pbak23i5xw3ipk5s9xljkdj9py5vir3vpxxazk267"; depends=[Matrix nlme]; };
+  metafor = derive2 { name="metafor"; version="2.4-0"; sha256="1b599fxk7s0brkchmx698fr5k4g1kzkia2rnlvhg349ffs5nfjmn"; depends=[Matrix nlme]; };
   metaforest = derive2 { name="metaforest"; version="0.1.3"; sha256="1q6m60cd7gl7y0gdjd10ky25hwv5jc4x5g5sr5w61xc3j2hnw8in"; depends=[data_table ggplot2 gtable metafor ranger]; };
   metafuse = derive2 { name="metafuse"; version="2.0-1"; sha256="1zdw22f5kzvy2xr3c2csy873hcags60as567brc2sw17d0apfy8j"; depends=[evd glmnet MASS Matrix]; };
   metagam = derive2 { name="metagam"; version="0.1.0"; sha256="1mya00bvbxz3fg506s4km1193yamgzqqq8v6v286jcp19w4jr07s"; depends=[dplyr furrr ggplot2 knitr metafor metap purrr rlang stringr tibble tidyr viridis]; };
-  metagear = derive2 { name="metagear"; version="0.4"; sha256="0ww1j34600y99wyanj9ffg1019xqshb9c32wiqnsblyw8pq4va5f"; depends=[EBImage gWidgets gWidgetsRGtk2 hexView MASS Matrix metafor RCurl stringr]; };
+  metagear = derive2 { name="metagear"; version="0.5"; sha256="12q8g8dwz3xb31kqlj9d2k8czmkibcr3ll9s0xdl756pf5408l6y"; depends=[EBImage hexView MASS Matrix metafor RCurl stringr]; };
   metagen = derive2 { name="metagen"; version="1.0"; sha256="0jvbm22976aqvmfnjzs51n2w099yj5hpx6hd0pgvbia80jk7b9vk"; depends=[BatchExperiments BatchJobs BBmisc ggplot2 lhs MASS metafor ParamHelpers plyr]; };
   metaheuristicOpt = derive2 { name="metaheuristicOpt"; version="2.0.0"; sha256="0ra4hl9l1jlzymj218m2i6xrxfacyx4aaln5pk7q4di2ks0nq11m"; depends=[]; };
   metamedian = derive2 { name="metamedian"; version="0.1.5"; sha256="1v2nha2qc9vs2s9nfvbia033ppprkwxj5fadlrpy20fj2lr8z7z6"; depends=[estmeansd Hmisc metafor]; };
@@ -10185,7 +10241,7 @@ in with self; {
   mewAvg = derive2 { name="mewAvg"; version="0.3.0"; sha256="16gc78ccjffp9qgc7rs622jql54ij83ygvph3hz19wpk22m96glm"; depends=[]; };
   mexhaz = derive2 { name="mexhaz"; version="1.7"; sha256="1z0516i7asyn3248xzvvc377slcy2zv6f9qalkd33r3dlc0js4s8"; depends=[lamW MASS numDeriv statmod survival]; };
   mfGARCH = derive2 { name="mfGARCH"; version="0.1.9"; sha256="0vmxyjg2jj39dd1307d5jwz3033j8ldfqhysmmzl3i1b5ypfd5q5"; depends=[maxLik numDeriv Rcpp zoo]; };
-  mfbvar = derive2 { name="mfbvar"; version="0.5.2"; sha256="02gvh3qvqb08j684y3ylwz1rddi11884xs8nr7b93p5nypgfr9bp"; depends=[dplyr ggplot2 GIGrvg lubridate magrittr Rcpp RcppArmadillo RcppParallel RcppProgress stochvol tibble]; };
+  mfbvar = derive2 { name="mfbvar"; version="0.5.3"; sha256="065bpwlzqmvgrdm9jp8030jcs4sqnckyxvrgdn0jcnmmgiq88vgx"; depends=[dplyr ggplot2 GIGrvg lubridate magrittr Rcpp RcppArmadillo RcppParallel RcppProgress stochvol tibble]; };
   mfe = derive2 { name="mfe"; version="0.1.4"; sha256="1lif39zr6x1ysv8s90b1wgshp5pa175fxcjvx0hz6g15d29gwgy6"; depends=[cluster clusterCrit e1071 ECoL infotheo MASS rpart rrcov]; };
   mfp = derive2 { name="mfp"; version="1.5.2"; sha256="1i90ggbyk2p1ym7xvbf4rhyl51kmfp6ibc1dnmphgw15wy56y97a"; depends=[survival]; };
   mfx = derive2 { name="mfx"; version="1.2-2"; sha256="04pwp67i4sn4rf497pgy6qifwvrcmwyxn8x5sn96fy8qyrdzjfhj"; depends=[betareg lmtest MASS sandwich]; };
@@ -10313,7 +10369,7 @@ in with self; {
   mixedsde = derive2 { name="mixedsde"; version="5.0"; sha256="0ss1ng4nx91gxj85wxxfyh9ljxsj3ag6lsj1a5d2815p9jzl7dsv"; depends=[MASS moments plot3D sde]; };
   mixexp = derive2 { name="mixexp"; version="1.2.5"; sha256="0nbf10xhrr51rb1b2apcj4p3ci8xbi7flgz500ar3mxh8h8l74sq"; depends=[daewr gdata lattice]; };
   mixggm = derive2 { name="mixggm"; version="1.0"; sha256="1wiiayld7rwp3mwz93zizrv0dzw02mqrzprc4z6c4jj25c8pypw5"; depends=[foreach GA mclust memoise network Rcpp RcppArmadillo]; };
-  mixl = derive2 { name="mixl"; version="1.1"; sha256="0v3yxhar1ms6y2j73a5hgyh1c9v6lg5xl646mv0ischqj21bysbh"; depends=[maxLik numDeriv randtoolbox Rcpp readr sandwich stringr]; };
+  mixl = derive2 { name="mixl"; version="1.1.2"; sha256="03ylzl5fyypyxhjfhbnhcswmq2cngzspvkzn8bnlgkd496qr14j8"; depends=[maxLik numDeriv randtoolbox Rcpp readr sandwich stringr]; };
   mixlink = derive2 { name="mixlink"; version="0.1.5"; sha256="0ywgrcplhspc0x5fniw52xqz20y7j9mwgy4ky8lv3vii659mr52m"; depends=[mvtnorm numDeriv Rcpp RcppGSL]; };
   mixlm = derive2 { name="mixlm"; version="1.2.4"; sha256="0jwz918qnz1p71y82ayrgir9rpij8zk3jgmn63nq5xrlf0jbjcdd"; depends=[car leaps multcomp pls pracma]; };
   mixmeta = derive2 { name="mixmeta"; version="1.0.8"; sha256="1wx95pgd096d359n5mrl98hpwc2c1r2jw3pzvilkawx0y8lw68na"; depends=[]; };
@@ -10358,7 +10414,7 @@ in with self; {
   mlmmm = derive2 { name="mlmmm"; version="0.3-1.2"; sha256="1m5ziiqs3ll1xjm1yf7x4sdc910jypn3kjnbadf95xxkvqmfrsqq"; depends=[]; };
   mlogit = derive2 { name="mlogit"; version="1.0-3.1"; sha256="034vymf296abpajkic303j0x4mak62m8iav86k3d3g6hy3c03dp4"; depends=[Formula lmtest MASS Rdpack statmod zoo]; };
   mlogitBMA = derive2 { name="mlogitBMA"; version="0.1-6"; sha256="1wl8ljh6rr1wx7dxmd1rq5wjbpz3426z8dpg7pkf1x9wr94a2q25"; depends=[abind BMA maxLik]; };
-  mlr = derive2 { name="mlr"; version="2.17.0"; sha256="0x7jggvhg8pf1hw013qrg7zdaf8yq5znjl2ap0f9a6w2j34b32yf"; depends=[backports BBmisc checkmate data_table ggplot2 parallelMap ParamHelpers stringi survival XML]; };
+  mlr = derive2 { name="mlr"; version="2.17.1"; sha256="0fwjl5dy516vrh2lx5rgps85q0jz8ka5dx61bz7lfxk21k8bjw8b"; depends=[backports BBmisc checkmate data_table ggplot2 parallelMap ParamHelpers stringi survival XML]; };
   mlr3 = derive2 { name="mlr3"; version="0.1.8"; sha256="02928qw5yc2zhfj69zrnmz0zraq2xf5vb7q7d11np2wdb0vsj1zk"; depends=[backports checkmate data_table digest lgr mlbench mlr3measures mlr3misc paradox R6 uuid]; };
   mlr3data = derive2 { name="mlr3data"; version="0.1.0"; sha256="0cdicfrrmba87adkcnpzm9gkcspjskqsbs8xryj1d0c48lzws7ab"; depends=[]; };
   mlr3db = derive2 { name="mlr3db"; version="0.1.5"; sha256="09hins00pc569vz26mkyg3736vhl01szl8hbwp2vyrh3mdn21c9m"; depends=[backports checkmate data_table digest dplyr mlr3 R6]; };
@@ -10367,7 +10423,7 @@ in with self; {
   mlr3measures = derive2 { name="mlr3measures"; version="0.1.2"; sha256="0ni9r7xniybnkhy20wlrazl10ickav34510br8pf9s604494kxp1"; depends=[checkmate]; };
   mlr3misc = derive2 { name="mlr3misc"; version="0.1.8"; sha256="168d6az4paf3am4id6c9dnsyggnac3ccazr14594zs87a6cv87mn"; depends=[backports checkmate data_table R6]; };
   mlr3pipelines = derive2 { name="mlr3pipelines"; version="0.1.2"; sha256="14clmipbqinmyrxfa363gjffdzijz1vd2zzbgkkldv44xszgb7p9"; depends=[backports checkmate data_table digest mlr3 mlr3misc paradox R6 withr]; };
-  mlr3proba = derive2 { name="mlr3proba"; version="0.1.3"; sha256="0k9xcw2bs3agbkn6i2nymfdr3irch4crdw4h733lrgyzds9rwigj"; depends=[checkmate data_table distr6 mlr3 mlr3misc mlr3pipelines paradox R6 survival]; };
+  mlr3proba = derive2 { name="mlr3proba"; version="0.1.4"; sha256="13bmpn20hkh19lhp6hpi9lbz8y5fily2mr5j931dm7839zc735q4"; depends=[checkmate data_table distr6 mlr3 mlr3misc mlr3pipelines paradox R6 survival]; };
   mlr3tuning = derive2 { name="mlr3tuning"; version="0.1.2"; sha256="0559jj4xbzg63df2rn0sw6r6fz5b463k2lcx83l4q3mki72pl9xx"; depends=[checkmate data_table lgr mlr3 mlr3misc paradox R6]; };
   mlr3verse = derive2 { name="mlr3verse"; version="0.1.1"; sha256="1spwmylnsks479nkj688nd8h3slkh8cnmrxrvh7s2zyqla6arigx"; depends=[mlr3 mlr3db mlr3filters mlr3learners mlr3misc mlr3pipelines mlr3tuning mlr3viz paradox]; };
   mlr3viz = derive2 { name="mlr3viz"; version="0.1.1"; sha256="0k5a0h2jhk375hl4hwn1dxapjnm2hxhayw8rfh1i1p3qvswhgwla"; depends=[checkmate data_table ggplot2 mlr3misc]; };
@@ -10379,7 +10435,7 @@ in with self; {
   mltest = derive2 { name="mltest"; version="1.0.1"; sha256="14gyssfph088v936mpywmd4y8z9vdv0zk8638vlg23j8cf5j4al2"; depends=[]; };
   mltools = derive2 { name="mltools"; version="0.3.5"; sha256="045v28w7vz1zjxim8vfc6ncvg2mavr1q332x0hzlqpfzrk7gz4vh"; depends=[data_table Matrix]; };
   mlxR = derive2 { name="mlxR"; version="4.1.0"; sha256="1jb214isf0zbx1j7xkidmc4jrvlw3hfvs7q2if3489p0si1n2k23"; depends=[ggplot2]; };
-  mma = derive2 { name="mma"; version="10.0-0"; sha256="1p62j60q7zbsabzv26cra510jdwinls11rqw2zjg7qm88nwagybh"; depends=[car doParallel foreach gbm gplots lattice plotrix survival]; };
+  mma = derive2 { name="mma"; version="10.2-2"; sha256="021nc865rdis0m939y8qvk9nnhp9lmfn4rlqhvfxfc4774sphmll"; depends=[car gbm gplots lattice plotrix survival]; };
   mmabig = derive2 { name="mmabig"; version="2.0-0"; sha256="1kp7q2xvkbwa8syk82dsynzizjmhh9z3p7r5hnnvp169as0yvgwl"; depends=[car glmnet gplots mma survival]; };
   mmand = derive2 { name="mmand"; version="1.6.1"; sha256="19s6v083iry95akhc2ccj617sjcddalb6dp87j3lqjlgybxws62q"; depends=[Rcpp]; };
   mmap = derive2 { name="mmap"; version="0.6-19"; sha256="0s3vlwdcwifl2a2byr0f2cc4vmbdparc55x889a3h115ga7k91w2"; depends=[]; };
@@ -10394,7 +10450,7 @@ in with self; {
   mmm2 = derive2 { name="mmm2"; version="1.2"; sha256="1h9pn5s3jjs4bydrr1qysjb4hv7vs4h3m7mvi22ggs2dzyz3b298"; depends=[gee]; };
   mmmgee = derive2 { name="mmmgee"; version="1.20"; sha256="0y3pwnc9h7y2l9cvgfl62nl1vnnkla2y8082jhdvxsb3mk88rgad"; depends=[Matrix mvtnorm]; };
   mmod = derive2 { name="mmod"; version="1.3.3"; sha256="1dz6887mlqbagjj98wcabmxj9hvsz8pgsizy1fqkwjhhs44c62y4"; depends=[adegenet pegas]; };
-  mmpca = derive2 { name="mmpca"; version="2.0.0"; sha256="15jmfp8dyrxnl2hsc815np1qvkjh6j1h6zf040bnqa7c7jlr5gpy"; depends=[digest gsl Rcpp RcppEigen]; };
+  mmpca = derive2 { name="mmpca"; version="2.0.1"; sha256="05vir7hjv5dccfcizyn5n6qxx2p53111if16l44a7ifg5k599xj9"; depends=[digest gsl Rcpp RcppEigen]; };
   mmpf = derive2 { name="mmpf"; version="0.0.5"; sha256="1w1ll1l7yzwb1wmlrcfpgqyzni7yb20kxy422y867hx2ndxlfwpz"; depends=[checkmate data_table]; };
   mmpp = derive2 { name="mmpp"; version="0.6"; sha256="16aypjf4i0ya3qgxqrrg8y0xbnq1pnqky1dpkgln5q494hphyg91"; depends=[]; };
   mmppr = derive2 { name="mmppr"; version="0.1"; sha256="0fswkqcw0xkqd9gmqabb61i32zscp5jzfx0z43wq7mrlwynryylv"; depends=[expm reshape2]; };
@@ -10495,7 +10551,7 @@ in with self; {
   mousetrack = derive2 { name="mousetrack"; version="1.0.0"; sha256="0lf0xh0c3xl27nh5w8wwyrm2jfzfajm2f73xjdgf746dp365qc8n"; depends=[pracma]; };
   mousetrap = derive2 { name="mousetrap"; version="3.1.4"; sha256="1iizlcq6ak9hfqwaz8d0zmijfnw2v7fwgksxng9mxiqiva98is8a"; depends=[cstab diptest dplyr fastcluster fields ggplot2 magrittr pracma psych RColorBrewer Rcpp scales tidyr]; };
   movMF = derive2 { name="movMF"; version="0.2-4"; sha256="0j5gp1l374479lsijw1hz00pxs09zzh7hapljv80lsvr24vfscpa"; depends=[clue skmeans slam]; };
-  move = derive2 { name="move"; version="3.2.2"; sha256="14wmiyk52iar90kbzi6ksl75i0kg2nmsq08sms9rr2wgswr9f7km"; depends=[geosphere httr memoise raster Rcpp rgdal sp xml2]; };
+  move = derive2 { name="move"; version="3.3.0"; sha256="03i3qin4yjg7dvk78r4hgb5v3pqs4mgq9i88q63ma1fd0qs2fx9r"; depends=[geosphere httr memoise raster Rcpp rgdal sp xml2]; };
   moveHMM = derive2 { name="moveHMM"; version="1.7"; sha256="031msh427hgjyr37imalr7smd79yqscw9xq5rjrixxc2w5qly9jj"; depends=[boot CircStats geosphere ggmap ggplot2 MASS numDeriv Rcpp RcppArmadillo sp]; };
   moveVis = derive2 { name="moveVis"; version="0.10.4-1"; sha256="01shqgn35f29y3s93b2f8r1dv587v1b07wrswhbf3592kcfjscf2"; depends=[av cowplot curl dplyr geosphere ggplot2 gifski lubridate magick magrittr move pbapply plyr raster RStoolbox sf slippymath sp zoo]; };
   moveWindSpeed = derive2 { name="moveWindSpeed"; version="0.2.3"; sha256="14a2iymn4j831xlh42z5qxmhnh7xpp5bxasgpkhnb3v0b5ldyilh"; depends=[move Rcpp]; };
@@ -10504,7 +10560,7 @@ in with self; {
   mp = derive2 { name="mp"; version="0.4.1"; sha256="0awvwqwb25q47j14b450k1k5mh2yzwhn7gizjv5j7lyiamk30iwq"; depends=[Rcpp RcppArmadillo]; };
   mpMap2 = derive2 { name="mpMap2"; version="1.0.1"; sha256="187qrxbgcws98ghjjz40dafd33bzd5cyhiyixmrgpplfs82ciwj7"; depends=[car fastcluster ggplot2 igraph jsonlite Matrix nnls progress pryr qtl RColorBrewer Rcpp sn]; };
   mpa = derive2 { name="mpa"; version="0.7.3"; sha256="0mhnsbgr77fkn957zfiw8skyvgd084rja1y4wk5zf08q5xjs2zvn"; depends=[network]; };
-  mpath = derive2 { name="mpath"; version="0.3-23"; sha256="02hi39s7zix3jrcajw41sw5iiq6l8z74hl513x0fc7jcij5rwzqr"; depends=[bst doParallel foreach MASS numDeriv]; };
+  mpath = derive2 { name="mpath"; version="0.3-24"; sha256="0bwshhjmb5p5lm4c948yfr2dqms3k4g97xcd4avy5znxh30ra71z"; depends=[bst doParallel foreach MASS numDeriv pscl]; };
   mpbart = derive2 { name="mpbart"; version="0.2"; sha256="1145n0lxmm0kjm2lc358d79hqws48crj17pjvmchl1pbfd7zi4r8"; depends=[bayesm cvTools mlbench mlogit]; };
   mpcmp = derive2 { name="mpcmp"; version="0.1.3"; sha256="11j12ns04g2xdw5r34x86bacwacf3618rzpqz8wvfs1l192l001c"; depends=[]; };
   mpcv = derive2 { name="mpcv"; version="1.1"; sha256="0vwycspiw9saj811f6alkbijivy7szpahf35bxn2rpn2bdhbn21i"; depends=[lpSolve]; };
@@ -10525,6 +10581,7 @@ in with self; {
   mra = derive2 { name="mra"; version="2.16.11"; sha256="0268msdy4cs2ifpagmwiabi6aav54ckn214ai18aqv2h97hmixw0"; depends=[]; };
   mratios = derive2 { name="mratios"; version="1.4.0"; sha256="0pjcwqx3zykpwyykwgqziwignd41sjm2s1blyjwc1lhymis4ldzq"; depends=[mvtnorm]; };
   mrbayes = derive2 { name="mrbayes"; version="0.1.0"; sha256="0p0a1g6xv7g3scmn290ja4bicbdz5c9y6c4hfn4c7advd6ha6ang"; depends=[]; };
+  mrbin = derive2 { name="mrbin"; version="1.3.0"; sha256="1wn80icmg1fcjrv739l47wcbx9l1p4zl0l0vphw5pmj4kd03x7sh"; depends=[]; };
   mrbsizeR = derive2 { name="mrbsizeR"; version="1.2.1"; sha256="0kvzvbvw3ygx09bjil7wqw2345dzh1bkbaqdk4q5c1szk95rw93b"; depends=[fields maps Rcpp]; };
   mrds = derive2 { name="mrds"; version="2.2.1"; sha256="1prhzyps4sckl24d4fpmkafiawx8c0xdwiixn9fa3i2cxv9ia6hd"; depends=[mgcv numDeriv optimx Rsolnp]; };
   mreg = derive2 { name="mreg"; version="1.1"; sha256="06la0yy2yys161jhlzlcm5lcv0664wm6sa8gjdnpd1s1nx52jkqf"; depends=[]; };
@@ -10541,8 +10598,9 @@ in with self; {
   msSurv = derive2 { name="msSurv"; version="1.2-2"; sha256="02qm3mq17d2yj5mbz6gapd3zfi1wmiad5hpyimcb39impk43n2hf"; depends=[class graph lattice]; };
   msaFACE = derive2 { name="msaFACE"; version="0.1.0"; sha256="1lh8crz507nlddm946lmn73xbnsh4cs0kg238ysnsvxs726c83fs"; depends=[]; };
   msaR = derive2 { name="msaR"; version="0.3.0"; sha256="0lj9yhsissr4rgavyhgdxi2nrkq2088darzraisx9jsirjr49jf8"; depends=[ape htmlwidgets]; };
+  msae = derive2 { name="msae"; version="0.1.0"; sha256="10h3nh840p7r0y83zcarcgf5na8fzihgisagwhiq7zwpsmcldxa2"; depends=[magic]; };
   msaenet = derive2 { name="msaenet"; version="3.1"; sha256="067p97z54dwhxy0w4ihi8dddcbvglh8ssynbh29fl9jyxfwjr1ms"; depends=[foreach glmnet Matrix mvtnorm ncvreg survival]; };
-  msap = derive2 { name="msap"; version="1.1.8"; sha256="0z5lm782jjb9w1h5vgz8bmxjdcrq9zb3xp1w5cb479jjc7krlgg3"; depends=[ade4 ape]; };
+  msap = derive2 { name="msap"; version="1.1.8"; sha256="1m0bdv5qgzi7piqyrvm0jmm3iq8lngidaqm622cvixs0n0b6hrcw"; depends=[ade4 ape]; };
   mschart = derive2 { name="mschart"; version="0.2.5"; sha256="08j342slv4ca6qkd12hh7jmmv5wv6kfxamw34dr6sd89kzrfdj0p"; depends=[cellranger data_table htmltools officer R6 writexl xml2]; };
   mscstexta4r = derive2 { name="mscstexta4r"; version="0.1.2"; sha256="1hjcasmn33xav2mw085lcndv0432l6sz327aikf63491wj1sj7mw"; depends=[dplyr httr jsonlite pander stringi]; };
   mscstts = derive2 { name="mscstts"; version="0.5.2"; sha256="1zvicr1c9lh7cscbx7j5d98zkjwq7piggyz6ssz19gpp2gfc4igy"; depends=[httr jsonlite tuneR]; };
@@ -10579,7 +10637,7 @@ in with self; {
   muRty = derive2 { name="muRty"; version="0.3.1"; sha256="0v7wfb6347h4inf9jcbp6n4xfsqjzgj0i5sdfgqmbw0d5pcpnvhz"; depends=[clue lpSolve]; };
   muStat = derive2 { name="muStat"; version="1.7.0"; sha256="18727xj9i9hcnpdfnl1b9wd6cp7wl1g74byqpda2gsrcardl57wz"; depends=[]; };
   muckrock = derive2 { name="muckrock"; version="0.1.0"; sha256="16lm1iiaaws7clby7qgblqdiznw6abjjgvsxlfpza7l2xdvplxpg"; depends=[]; };
-  mudata2 = derive2 { name="mudata2"; version="1.1.1"; sha256="1hp5fg050kj00ikdy7y55y23r6rr574gxk60nr801cdkp4hzyr46"; depends=[dplyr fs ggplot2 glue jsonlite lubridate magrittr readr rlang stringr tibble tidyr tidyselect withr]; };
+  mudata2 = derive2 { name="mudata2"; version="1.1.2"; sha256="0c8x39m7cy9l2r3ywbircgp79g7lmd37m2500z3icmkx6x6k6393"; depends=[dplyr fs ggplot2 glue jsonlite lubridate magrittr readr rlang stringr tibble tidyr tidyselect withr]; };
   mudens = derive2 { name="mudens"; version="1.3.2"; sha256="18kv8xfmmmk0dyw64lwrlrks0gana0s7gaff6nxs59ndgb1pj6yp"; depends=[Rcpp survival]; };
   mudfold = derive2 { name="mudfold"; version="1.1.2"; sha256="1g66axwrrvlsb03yhwa16pvxbl2wvpm7fzzl6nlw0cxlh99w7r33"; depends=[boot broom dplyr ggplot2 glmnet mgcv reshape2 zoo]; };
   mueRelativeRisk = derive2 { name="mueRelativeRisk"; version="0.1.1"; sha256="16yclfmgxc32pv00vyb9fjdh4syax8ynizr8a29haiq22q5fqclh"; depends=[]; };
@@ -10679,7 +10737,7 @@ in with self; {
   mvnTest = derive2 { name="mvnTest"; version="1.1-0"; sha256="0p37skzpljzz19x1hwh2hbxqins19zkbz7nlgfws5pgp9apazafq"; depends=[MASS mvtnorm]; };
   mvna = derive2 { name="mvna"; version="2.0.1"; sha256="10i42hjm5bk62c20pmxhya283yzw1902ivkflmyqy79jri266dxf"; depends=[lattice]; };
   mvnfast = derive2 { name="mvnfast"; version="0.2.5"; sha256="122zjzr0v4943cax10lp6flwfv479mncvalaj09kb173s5rgmf91"; depends=[BH Rcpp RcppArmadillo]; };
-  mvngGrAd = derive2 { name="mvngGrAd"; version="0.1.5"; sha256="0ir4pakfb2jq84rbfqix6rph8q6cgadjdn49rrdl4439b8hlsg8k"; depends=[]; };
+  mvngGrAd = derive2 { name="mvngGrAd"; version="0.1.5"; sha256="1cjy8rbcj7j82ii4wzh2gkxja89jl1fxzcxky5p95p1ky9hv0sz4"; depends=[]; };
   mvnmle = derive2 { name="mvnmle"; version="0.1-11.1"; sha256="131k2bnn6194y3f35r9cgys8g1z2y52123ng8iijpkpbfd147y92"; depends=[]; };
   mvnormtest = derive2 { name="mvnormtest"; version="0.1-9"; sha256="1iaxjwp7bgxhaa4xqvgqb61316mq2fb0452d0pabhmbxkvmvdnj6"; depends=[]; };
   mvnpermute = derive2 { name="mvnpermute"; version="1.0.0"; sha256="0mbyj5i5vysrnl3pgypl0cjf3sylsvzfl1pcxkn0q16560vqh2ba"; depends=[]; };
@@ -10703,7 +10761,7 @@ in with self; {
   mycor = derive2 { name="mycor"; version="0.1.1"; sha256="00hqmvga22bv43833s974s7ky7lbry3r2bb5kza7kvkn1p6773rg"; depends=[lattice]; };
   myepisodes = derive2 { name="myepisodes"; version="1.1.1"; sha256="0xk9bwgpl630nhc8qa2pc0rwqbqk3haxnp78gfxq6sn6z7i44k1p"; depends=[XML]; };
   mztwinreg = derive2 { name="mztwinreg"; version="1.0-1"; sha256="1rg6ikaqdrc7q44s3r3km8h45prnvcpzpxd7nxbmh209iz9j19ai"; depends=[mclogit rms]; };
-  n1qn1 = derive2 { name="n1qn1"; version="6.0.1-6"; sha256="1xlp5j2fnmbc2aqlgf4ybcvpfvmxmg84v7fxfwz0dliclc7sysa7"; depends=[Rcpp RcppArmadillo]; };
+  n1qn1 = derive2 { name="n1qn1"; version="6.0.1-7"; sha256="1mwcv8gp6c2vj8n9w8y17318a2qrl6rjq8qcfx611fqf6dfrfchq"; depends=[Rcpp RcppArmadillo]; };
   nCDunnett = derive2 { name="nCDunnett"; version="1.1.0"; sha256="0q2db1pixqr0wbx4bd05c98i1p0vgaqsfa1iwjxr08c62a5xhkks"; depends=[]; };
   nCal = derive2 { name="nCal"; version="2018.8-20"; sha256="1idgpzivw5wa423z86rf60ri50cyh8p38p4r493i9b2m9qzzqf1x"; depends=[drc gdata gWidgets kyotil]; };
   nCopula = derive2 { name="nCopula"; version="0.1.1"; sha256="03qbfvx0lg9prg52fk1jxar2bng2x6scac4g2c64kvp6vmf6x4mv"; depends=[copula Deriv stringi stringr]; };
@@ -10773,7 +10831,7 @@ in with self; {
   needs = derive2 { name="needs"; version="0.0.3"; sha256="16dkjpijz3rz7kd5ggxsdg55iwd42nll1vk6g5ix4xdbqrx6cp9x"; depends=[]; };
   needy = derive2 { name="needy"; version="0.2"; sha256="1ixgpnwrg6ph1n5vy91qhl1mqirli9586nzkmfvzjrhdvrm0j5l0"; depends=[]; };
   negenes = derive2 { name="negenes"; version="1.0-12"; sha256="0b82822vl86gni0pv5f6pjfzmks35i7q2rqkhgyb9z9c677g991q"; depends=[]; };
-  neighbr = derive2 { name="neighbr"; version="1.0.2"; sha256="1l85x3p4h2z2npj1xqggviyd3kvkgni5cnx5p3g52s9jwqrj43kb"; depends=[]; };
+  neighbr = derive2 { name="neighbr"; version="1.0.3"; sha256="1rmglfjmx6bfd4w1cpx4rvp7hy2vqvcamy854h5dq0l3kwk4pjcm"; depends=[]; };
   neldermead = derive2 { name="neldermead"; version="1.0-11"; sha256="0gf9rfwz48sadl6960mpfb6a3l9n5p28yq3n0a9vz8mr57vh1dzg"; depends=[optimbase optimsimplex]; };
   neo2R = derive2 { name="neo2R"; version="2.0.0"; sha256="1a85wqsc1qrqrxc25pxr23y4kw8rxfn8xj3fng437d1kh4m6sdgq"; depends=[base64enc jsonlite RCurl]; };
   neo4r = derive2 { name="neo4r"; version="0.1.1"; sha256="0s4rjhn2mc8ca4p8p474a83dc277vrf7l968xwxkiac0d4fgbra7"; depends=[attempt data_table glue httr igraph jsonlite magrittr purrr R6 rlang rstudioapi shiny tibble tidyr tidyselect]; };
@@ -10786,6 +10844,7 @@ in with self; {
   netassoc = derive2 { name="netassoc"; version="0.6.3"; sha256="1hyshnbpq60a3y13b4sh1c2rk78x09q01b7q6xrgv10w7bn9r2sg"; depends=[corpcor huge igraph infotheo vegan]; };
   netchain = derive2 { name="netchain"; version="0.2.0"; sha256="1skpf1n6a17mjkcxqpl6vrskk04yvqa0v4n2zw9x5r1h46q9m6qk"; depends=[gtools igraph Matrix Rcpp stringr]; };
   netcom = derive2 { name="netcom"; version="1.0.4"; sha256="0fka14sffm0p1gldk27fd62ng05spfpbn665b4w5hdf1z4z0bs20"; depends=[clue expm igraph Matrix pdist pracma vegan]; };
+  netcontrol = derive2 { name="netcontrol"; version="0.1"; sha256="1gskb728ycnhz9a9g9ghm0dz3ajf3dzgyv23bsk9i01wj9hrxhc0"; depends=[expm MASS Matrix pracma Rcpp RcppArmadillo Rdpack]; };
   netdep = derive2 { name="netdep"; version="0.1.0"; sha256="0mrbqn5d8iqvs98a0kski0vya135z7l902xafya96s2h288jchx7"; depends=[igraph igraphdata MASS mvrtn]; };
   netgen = derive2 { name="netgen"; version="1.3.2"; sha256="1yqi4rb6w9ipxgbl1j1s2s81cg7nzrn65irn5gs82hsq94d6vv2j"; depends=[BBmisc checkmate ggplot2 igraph lhs mvtnorm stringr]; };
   netgsa = derive2 { name="netgsa"; version="3.1.0"; sha256="0mn4dnvckdskigdfbszjnfmb3m6yfbz4qc26qwh1wznwx5wmcbf0"; depends=[corpcor dplyr glassoFast glmnet graph graphite igraph magrittr Matrix msigdbr quadprog rlang]; };
@@ -10826,7 +10885,7 @@ in with self; {
   ngramrr = derive2 { name="ngramrr"; version="0.2.0"; sha256="1p8s4p3h27g647rxx9qjfad5dzbngjbmvhw4gz0jbsmfqrsf72by"; depends=[tau tm]; };
   ngspatial = derive2 { name="ngspatial"; version="1.2-1"; sha256="1c65ws9b9s2grr44lqg8026c4p2875d0426dfmrakpb44mw2zppp"; depends=[batchmeans Rcpp RcppArmadillo]; };
   nhanesA = derive2 { name="nhanesA"; version="0.6.5"; sha256="0bb53s379qrm8xqp4bsi5vgk6v6hvwadzjv09pvdp1n45z7rqj86"; depends=[Hmisc magrittr plyr rvest stringr xml2]; };
-  nhdR = derive2 { name="nhdR"; version="0.5.2"; sha256="0qi7ls10pdjcihkdnhbvbnv8dwcy1448pd5fzhpy0kjky7hfi7bj"; depends=[curl dplyr foreign gdalUtils ggplot2 httr maps memoise purrr rappdirs rgdal rlang rvest sf stringr units xml2]; };
+  nhdR = derive2 { name="nhdR"; version="0.5.3"; sha256="0zd10zy9kn97nm2i0y8h5wjdmzxblv5azybycwf08aqr0x6axh3n"; depends=[curl dplyr foreign gdalUtils ggplot2 httr maps memoise purrr rappdirs rgdal rlang rvest sf stringr units xml2]; };
   nhdplusTools = derive2 { name="nhdplusTools"; version="0.3.12"; sha256="0111yy4pqxhqz7lk30zm7lryzarpjlxnvkzvix630xzvms8jkx1n"; depends=[dplyr httr igraph jsonlite magrittr prettymapr R_utils RANN rosm sf tidyr units xml2]; };
   nhds = derive2 { name="nhds"; version="1.0.3"; sha256="1cgw3hmsik3vlnb1lgalhvhrqzwdv08dp80vwpw1nwbf8whcbxjn"; depends=[]; };
   nhlscrape = derive2 { name="nhlscrape"; version="0.1.3"; sha256="0x6y747j6lha3jw4v2wavgd12xw5nx4m8biv9rmq9z0qy53vncjc"; depends=[DBI httr jsonlite RSQLite rvest xml2]; };
@@ -10854,6 +10913,7 @@ in with self; {
   nlmeODE = derive2 { name="nlmeODE"; version="1.1"; sha256="1zp1p98mzbfxidl87yrj2i9m21zlfp622dfnmyg8f2pyijhhn0y2"; depends=[deSolve lattice nlme]; };
   nlmeU = derive2 { name="nlmeU"; version="0.70-3"; sha256="05kxymgybziiijpb17bhcd9aq4awmp5km67l2py9ypakivi0hc6l"; depends=[nlme]; };
   nlmixr = derive2 { name="nlmixr"; version="1.1.1-7"; sha256="1dl3f0lns8cm32gx64i2jims4wknannl776mn2spzqh5z6g3nnzw"; depends=[BH brew cli dparser fastGHQuad flextable generics ggplot2 huxtable lbfgsb3c magrittr Matrix memoise n1qn1 nlme Rcpp RcppArmadillo RcppEigen RxODE StanHeaders stringr tidyr vpc yaml]; };
+  nlmm = derive2 { name="nlmm"; version="1.0.1"; sha256="0q5vz4xqdb510i26zbcq4djcribn7h477akh8f56nzjgq231vhcq"; depends=[BH HI lqmm MASS Matrix mvtnorm nlme numDeriv Qtools Rcpp RcppArmadillo statmod]; };
   nlmrt = derive2 { name="nlmrt"; version="2016.3.2"; sha256="1g0qq0a933ay65gkp04qgn2wqk6vw79pj2a228c2ski4rcmkjxyn"; depends=[]; };
   nloptr = derive2 { name="nloptr"; version="1.2.2.1"; sha256="1bhh2v14phzndjhiq7yw9vych6vzn5yy3vk9q35zcp3jhjjbwdyh"; depends=[]; };
   nlpred = derive2 { name="nlpred"; version="1.0.1"; sha256="05jna8hzd5v36a0dwag6zr8ms1pkryas3qarwb946bkxlslffp27"; depends=[assertthat bde cvAUC data_table np Rdpack ROCR SuperLearner]; };
@@ -10876,7 +10936,7 @@ in with self; {
   nltm = derive2 { name="nltm"; version="1.4.2"; sha256="02f3rn5l1hfvjpymy7vljmh6iq9w1w96016kx75qw563zwhmp5kx"; depends=[survival]; };
   nlts = derive2 { name="nlts"; version="1.0-2"; sha256="0s49qjwavl9ns2746nn4zy4h4dh0njfcvznm3qd61qhs7np9w1db"; depends=[acepack locfit]; };
   nmadb = derive2 { name="nmadb"; version="1.2.0"; sha256="17r5vc57ilhy6cfcqpfyp9nzzjaa5gc8qkgfn3y8sppqh1g1mi40"; depends=[devtools jsonlite RCurl readxl]; };
-  nmathresh = derive2 { name="nmathresh"; version="0.1.4"; sha256="0nsywahzph06c7grk3ch65fvll4ninqz97y007d6qdqgmym9vxjq"; depends=[ggplot2 gridExtra gtable Matrix nnls]; };
+  nmathresh = derive2 { name="nmathresh"; version="0.1.5"; sha256="0ndrkd68wkkj0ib0qamfmawfy4j07cg1nx4rx32amx2j0rc851yl"; depends=[ggplot2 gridExtra gtable Matrix nnls]; };
   nmfem = derive2 { name="nmfem"; version="1.0.5"; sha256="0hlddml20bp38yp1dji3l9mc1vnzmdrj6myf19n9p9xb85a30b9c"; depends=[capushe d3heatmap dplyr mixtools plyr tidyr]; };
   nmfgpu4R = derive2 { name="nmfgpu4R"; version="0.2.5.2"; sha256="05066rgbbp6kj2d67nzf3d1pf32gypz9ammz4ba88yxblydb3cwk"; depends=[Matrix Rcpp SparseM stringr]; };
   nmixgof = derive2 { name="nmixgof"; version="0.1.0"; sha256="0cbwrsxrcf8pn4ycn6r0z8jdidw5l6kdvwyrks69fq4pjzx988d6"; depends=[Rcpp unmarked]; };
@@ -10909,7 +10969,7 @@ in with self; {
   noncomplyR = derive2 { name="noncomplyR"; version="1.0"; sha256="1a9m6r9cizw42nmy24jdsrsbllg5z84fs8b239axnh1fxzskg2qy"; depends=[MCMCpack]; };
   nonet = derive2 { name="nonet"; version="0.4.0"; sha256="1043vplj8libbzll172h82dfwnz2lsdba5na2g9liryg8p08h4v8"; depends=[caret dplyr e1071 ggplot2 glmnet pROC purrr randomForest rlang rlist tidyverse]; };
   nonlinearICP = derive2 { name="nonlinearICP"; version="0.1.2.1"; sha256="1m9a1f0yrbjl0nx2l7r76pyi78b2bxj8v4jx92yga91f975mw6np"; depends=[caTools CondIndTests data_tree randomForest]; };
-  nonlinearTseries = derive2 { name="nonlinearTseries"; version="0.2.7"; sha256="0p6gkhiajk168jw92gkfl4nf93fp6a4ya0c3gvsn9vz8r07pvkbr"; depends=[Matrix Rcpp RcppArmadillo rgl TSA tseries zoo]; };
+  nonlinearTseries = derive2 { name="nonlinearTseries"; version="0.2.8"; sha256="0m1pmw1vj6qsn5iavxbcpjlx5higp2viqvah5ivxxbvf0595zy1v"; depends=[Matrix Rcpp RcppArmadillo rgl TSA tseries zoo]; };
   nonmem2R = derive2 { name="nonmem2R"; version="0.2.1"; sha256="0a7h9wb8dqjgzyk4hd9ivhy90n80wrrp4zkrxnvgfvza1619qd52"; depends=[ggplot2 gridExtra lattice latticeExtra MASS mvtnorm reshape2 splines2]; };
   nonmemica = derive2 { name="nonmemica"; version="0.9.0"; sha256="1vn70qynw2j2sf0z55dr9cl0inqzdk48xybsavcivn5dbl5lzzg2"; depends=[csv dplyr encode lazyeval magrittr metaplot rlang spec tidyr xml2]; };
   nonneg_cg = derive2 { name="nonneg.cg"; version="0.1.6"; sha256="15361k0kjy1465s8pr9jb5jy22mibi37zcnza7mbfh5l66hr29kh"; depends=[Rcpp]; };
@@ -10934,7 +10994,7 @@ in with self; {
   nos = derive2 { name="nos"; version="1.1.0"; sha256="0hbncama8cx8q0rc56bil38fbj33z49v4d6zdkvxs6wgmmglnrfs"; depends=[dplyr gmp]; };
   nose = derive2 { name="nose"; version="1.0"; sha256="17l78vmfqc22inq6zaqpnk2m91wp0nfjbbwfcpfqykf8lk9ipqna"; depends=[]; };
   nosoi = derive2 { name="nosoi"; version="1.0.1"; sha256="01gyc42dhp03x5br5wlhdhnmc9dfq4jlf2lakf2ff9ab79d0xvn7"; depends=[data_table dplyr magrittr raster reshape2 stringr]; };
-  not = derive2 { name="not"; version="1.2"; sha256="1671j3yirzdyhb02khx1yddslyig5jlnb0bdbgdlkb21n4zwaqa4"; depends=[]; };
+  not = derive2 { name="not"; version="1.2"; sha256="1hpqrfsraylwnj58q4jrmqll4p7z4d9mh11nckwg3c3m599f2p3f"; depends=[]; };
   notifyR = derive2 { name="notifyR"; version="1.02"; sha256="0jx76ic5r1crcgg0n0yqnka0gwniflfxakh838a98j9wb11wi6h5"; depends=[RCurl rjson]; };
   notifyme = derive2 { name="notifyme"; version="0.3.0"; sha256="0b6xrv6c4id7rs0dafg96pl4brn4yma5xh9wjz78ql44bg3w5s91"; depends=[dplyr httr magrittr]; };
   nowcasting = derive2 { name="nowcasting"; version="1.1.4"; sha256="1nj34cbkv1xlhmcfhxs32shv00mz02rp95xj59qkq5by53sx8qwq"; depends=[corpcor DBI httr lubridate magic matlab Matrix RCurl RMySQL vars xts zoo]; };
@@ -11028,6 +11088,7 @@ in with self; {
   ocd = derive2 { name="ocd"; version="1.0"; sha256="0r14w09wzyxp685jbzqj3dirnhsq106d23igl1jd5xpwbj2192n5"; depends=[]; };
   oce = derive2 { name="oce"; version="1.2-0"; sha256="18ls8c8ia00dn9f9lxk01mvwqmxd1ilx1d7y59d1nixd40mjy1wr"; depends=[gsw Rcpp testthat]; };
   oceanis = derive2 { name="oceanis"; version="1.0.6"; sha256="16sww5552xx04np8dxlqlhn1qzhjdmwd1z7b8dp9pskxbr9fhdb4"; depends=[classInt dplyr DT foreign ggplot2 leaflet leaflet_extras lwgeom mapview munsell readODS sf sfc shiny shinyBS shinyjs shinythemes stringr tidyr units xlsx]; };
+  oceanmap = derive2 { name="oceanmap"; version="0.1.1"; sha256="06h4yxqcn3rjr3m2n82w128z110a4k5rg6msrbd0gcqksxc4vd2v"; depends=[abind extrafont fields lubridate mapdata maps maptools ncdf4 plotrix raster sp]; };
   oceanwaves = derive2 { name="oceanwaves"; version="0.1.0"; sha256="0izgnqjji3xrvv8xbpsdbrx53wdb3rg3045xx6gcknfl2fj5iky7"; depends=[bspec ggplot2 signal]; };
   ocedata = derive2 { name="ocedata"; version="0.1.6"; sha256="0rf02bx7bb00ipp23jbpj2xdmj15xzi54qw3hms3ccghmaj40a28"; depends=[testthat]; };
   ockc = derive2 { name="ockc"; version="1.0"; sha256="0chzrs3ipa2518r4d35z4fxffgq12p1mwj0hzkxw19gdgq6aa8s7"; depends=[flexclust modeltools]; };
@@ -11045,6 +11106,7 @@ in with self; {
   odk = derive2 { name="odk"; version="1.5"; sha256="0fcnr4c1clwx1sk6fgg4cx506gdi90n2h05g0i47p4s5bra0qwwl"; depends=[gsheet openxlsx]; };
   odpc = derive2 { name="odpc"; version="2.0.2"; sha256="0wmra56w9k1bp27lhv6ssz400ggzmggl7l32vxkhynnxr0aphx7c"; depends=[doParallel foreach forecast Rcpp RcppArmadillo]; };
   odr = derive2 { name="odr"; version="1.0.2"; sha256="0dj5piyd6h92q6agv8yvzky3qpxjn6zpgvf502hf0n6k9gx6kdpl"; depends=[]; };
+  oenb = derive2 { name="oenb"; version="0.0.1"; sha256="1x1jlqp6r27c4gb7wafzpmh5rq6yq61a2d395r5lsmv2g5jb4biz"; depends=[dplyr XML]; };
   ofGEM = derive2 { name="ofGEM"; version="1.0"; sha256="0xdkl8k12an9pdy6i5nay4m2iakrwsp0lr3zl8gphii75j0ywz7k"; depends=[CompQuadForm forestplot MASS]; };
   officer = derive2 { name="officer"; version="0.3.8"; sha256="0xhx5n6qksyh2s9hvwhnc8y0hn362asc5y94ld06snad786hz0rw"; depends=[magrittr R6 uuid xml2 zip]; };
   oglmx = derive2 { name="oglmx"; version="3.0.0.0"; sha256="13axmhbqhv4kkcdsdmp9r7p0d0kyqlsaqgyyllbkxlxb4hfz79b6"; depends=[maxLik]; };
@@ -11071,6 +11133,7 @@ in with self; {
   onemapsgapi = derive2 { name="onemapsgapi"; version="1.0.0"; sha256="11w3xkjxhjf0b78hfjxjk650giswaf1js471backz4pcb97gaigl"; depends=[dplyr furrr future httr purrr rlang stringr tidyr]; };
   onewaytests = derive2 { name="onewaytests"; version="2.4"; sha256="1rsamf6mwpah02zwpv270sn17aaav0c030wlsv90k2awmkms2ka6"; depends=[car ggplot2 moments nortest]; };
   onion = derive2 { name="onion"; version="1.2-7"; sha256="17jx7saxcsahyyivln4v9fzzcmidy6ygjd9n81skv5jpr491zkgk"; depends=[]; };
+  onlineCOV = derive2 { name="onlineCOV"; version="1.3"; sha256="04ikvsd76f6xhja7djyv433m88lfj2vf0y9qi6x1s4i9kh8xkbz9"; depends=[]; };
   onlinePCA = derive2 { name="onlinePCA"; version="1.3.1"; sha256="08qivsfnwz5vp089lv9czsaz3nfi42kn9yhgzf27dji18y2xscic"; depends=[Rcpp RcppArmadillo RSpectra]; };
   onlineVAR = derive2 { name="onlineVAR"; version="0.1-1"; sha256="01z2d91mbdjvwwiqjq1dbqp50jbc9v6d7nw4gs7d1abhsqyiqa13"; depends=[lattice]; };
   onls = derive2 { name="onls"; version="0.1-1"; sha256="0m7pnlzkqwzi6jncjzxzfvznipd4wg03zd9fc0ymwm9jvhm4p14g"; depends=[minpack_lm]; };
@@ -11078,6 +11141,7 @@ in with self; {
   ontologyIndex = derive2 { name="ontologyIndex"; version="2.5"; sha256="127hlf0z5fmbgnq4p9h8nvn6p72d2fpcn846zzb99s213421jnry"; depends=[]; };
   ontologyPlot = derive2 { name="ontologyPlot"; version="1.4"; sha256="0sj1jg9lr1w3ahzw7fj86vp2bnvf4nq0x3hiqb3hzngwyj9bykpn"; depends=[ontologyIndex paintmap Rgraphviz]; };
   ontologySimilarity = derive2 { name="ontologySimilarity"; version="2.3"; sha256="1rh3cpj3r82xp4gqvspvgwwi3a29gyi0azrf4r1nshhi8qdx9avw"; depends=[ontologyIndex Rcpp]; };
+  oolong = derive2 { name="oolong"; version="0.3.4"; sha256="1zhgk9y1iy90kn6kwx2r80jy6fymgkd59c03xx936sijk0wnpwrq"; depends=[cowplot digest dplyr ggplot2 irr miniUI purrr quanteda R6 shiny stm text2vec tibble]; };
   oompaBase = derive2 { name="oompaBase"; version="3.2.9"; sha256="1cmw2s5dznmv675484jgvkzgvi6vhg0zbxsq6zhpqsisf672pjhl"; depends=[cluster]; };
   oompaData = derive2 { name="oompaData"; version="3.1.1"; sha256="0by9qfxlx6fdmp12qnphlli5hdn5balvx4ckg64fw6vwa291g7b0"; depends=[]; };
   opalr = derive2 { name="opalr"; version="1.3.0"; sha256="029sxy31in377p7s25y601vmdhcxxs6cn36xvqhkxcx15j96mprp"; depends=[httr jsonlite mime progress xml2]; };
@@ -11092,7 +11156,7 @@ in with self; {
   openair = derive2 { name="openair"; version="2.7-0"; sha256="1h2hyk93xvcw3i86k1kw7w9y2s39l6xnj7hjqp3wawgm4nnsr5kp"; depends=[cluster dplyr hexbin lattice latticeExtra lubridate mapproj MASS mgcv purrr Rcpp readr rlang tidyr]; };
   openblender = derive2 { name="openblender"; version="0.4.6"; sha256="1dyr6ckcbsb10cdblp435q7scgqyw90jvzx76bzabi1k8m0sjlxc"; depends=[httr jsonlite]; };
   opencage = derive2 { name="opencage"; version="0.1.4"; sha256="1lqs38lml73axsjlsjkmcsb2irgs40mjrx2cn3k0bjb63qyb9hf5"; depends=[dplyr httr jsonlite memoise]; };
-  opencastR = derive2 { name="opencastR"; version="0.1.2"; sha256="0fnp4bsr35knff7q19jqmlwdnfh9qzk2zsvg92y3pg1g64fmxazv"; depends=[httr jsonlite]; };
+  opencastR = derive2 { name="opencastR"; version="0.1.3"; sha256="1ljn7bzrqc2sgah1a6q2g9hi38nm8davhdc2vyzx7d40z7ysfpas"; depends=[httr jsonlite]; };
   opencpu = derive2 { name="opencpu"; version="2.1.6"; sha256="0wv357288j3wl8mgm8yr7yzm2z0hzdg7k1056smhxjlrb42bww95"; depends=[brew curl evaluate httpuv jsonlite knitr mime openssl protolite rappdirs remotes sys webutils zip]; };
   opencv = derive2 { name="opencv"; version="0.1"; sha256="0m649g6k6cgxnljjx8czypjawbyzx7xjcg32wddxkrgi2b236lwh"; depends=[magrittr Rcpp]; };
   opendatatoronto = derive2 { name="opendatatoronto"; version="0.1.2"; sha256="1440i9ps2cf78g1z7hfk306c4ym7w4q2yl7h696lih1kilzmdw0k"; depends=[ckanr magrittr readxl sf tibble xml2]; };
@@ -11125,7 +11189,7 @@ in with self; {
   optim_functions = derive2 { name="optim.functions"; version="0.1"; sha256="1la3v8yd9cdichp3mka4x86hr9lynh6qfg7h9ab6cwijw6kzkn6g"; depends=[lhs randtoolbox stringr]; };
   optimCheck = derive2 { name="optimCheck"; version="1.0"; sha256="1qjkv1mfyn7sw0dkxxcdaqj85vl71cgffpf3k3mvzy0s8yhxjb4n"; depends=[]; };
   optimParallel = derive2 { name="optimParallel"; version="1.0"; sha256="1m7rny7c1x1kaa4swqndhmb83ilihp3ksyfpys9mqlzchja96229"; depends=[]; };
-  optimStrat = derive2 { name="optimStrat"; version="2.0"; sha256="0n9igrxyasl2h2xjsx044ma3nqbd8258psc2h6za2pw6jjwwlz4g"; depends=[cubature mvtnorm shiny]; };
+  optimStrat = derive2 { name="optimStrat"; version="2.1"; sha256="0splvrnrs8ayiycyxs02vcs5m0s2r68sblmcdlbi49fmxgw48di9"; depends=[cubature mvtnorm shiny]; };
   optimalThreshold = derive2 { name="optimalThreshold"; version="1.0"; sha256="1m39q36p7i7z31b90awriq5jf9rfybyw5lj3m1w33v2ssipkzp1n"; depends=[ars coda HDInterval mgcv rjags]; };
   optimbase = derive2 { name="optimbase"; version="1.0-9"; sha256="0ivz24kf3yacgq5bl3s3az1pcyhsz0cza5f8vdksy5gchwqplm8n"; depends=[Matrix]; };
   optimization = derive2 { name="optimization"; version="1.0-7"; sha256="09s62ax3w8zijfp2cmh2lvdqbl3nijbjkwq4n3icasi53lzg2179"; depends=[colorspace Rcpp]; };
@@ -11134,6 +11198,7 @@ in with self; {
   optimsimplex = derive2 { name="optimsimplex"; version="1.0-7"; sha256="1if32133556zwmijlz6085fg1h65442hy03lzia0ahap3yndqfqy"; depends=[optimbase]; };
   optimus = derive2 { name="optimus"; version="0.2.0"; sha256="01njyjfrm6kjwx2qq41c0hsgxzydnrmr3538cpbfdn5i0z5blgyx"; depends=[mvabund ordinal]; };
   optimx = derive2 { name="optimx"; version="2020-2.2"; sha256="1dr281q21563ysh60sqca7in1pvzx776qn9v7wv1sp8hk7w99x21"; depends=[numDeriv]; };
+  optinterv = derive2 { name="optinterv"; version="0.1.0"; sha256="1yvjb9fyqj3pfglfdwdq4kpw9i5g5i3klgpqb05xdnacbnpdxvmp"; depends=[boot distances Hmisc lattice pbapply rootSolve weights]; };
   optional = derive2 { name="optional"; version="2.0"; sha256="0hj0gwvk9svllv44kfdgv3a2mriwqnaxvn3rj7w1djha7mryl6jl"; depends=[magrittr]; };
   optionstrat = derive2 { name="optionstrat"; version="1.4.1"; sha256="0vidaf888zdls5yxy7637fqg6r39l3rxw9bhn16s4xmag7kawljv"; depends=[]; };
   optiscale = derive2 { name="optiscale"; version="1.2"; sha256="185yv0xizrrjik0ydyknms28p8ql9x54bhnq3wpyrbiinjm51fms"; depends=[lattice]; };
@@ -11168,6 +11233,7 @@ in with self; {
   ordinalNet = derive2 { name="ordinalNet"; version="2.7"; sha256="13d7mvjfqdikd9lvdpsn3xr7yhkcqlv9ljy21qai9qna1cfd4x2q"; depends=[]; };
   ordinalRR = derive2 { name="ordinalRR"; version="1.0"; sha256="07gihg8hppxa7bp5wxcshqawj3vkzicmdsrnjyrasr3glv08b9lj"; depends=[rjags]; };
   ordinalgmifs = derive2 { name="ordinalgmifs"; version="1.0.6"; sha256="0axpndyyns649mwifq8f16l8n8x9nic8cv8l71ljyr2gwlm0nqz0"; depends=[survival]; };
+  ordinalpattern = derive2 { name="ordinalpattern"; version="0.2.0"; sha256="0nf7323wd8wm4qxlhr6cvm1l87rwfdr5c4qivhncy0m2n5vknc1c"; depends=[gtools mvtnorm]; };
   ore = derive2 { name="ore"; version="1.6.3"; sha256="1vh6w3arrhgkfjjjw7ci91xmz4wpfr3cmwd5zkqch89dgn07skkv"; depends=[]; };
   ores = derive2 { name="ores"; version="0.3.1"; sha256="12war455cfcn2llig7pkx05b70dp5y7warjq03ayqq6i7c945mhb"; depends=[httr]; };
   orf = derive2 { name="orf"; version="0.1.3"; sha256="19drrxvnh9y33p0g8pv9bhl6i8jpsdc7nkcpbpxbrsc5hs96dycp"; depends=[ggplot2 ranger Rcpp xtable]; };
@@ -11233,14 +11299,14 @@ in with self; {
   pAnalysis = derive2 { name="pAnalysis"; version="2.0"; sha256="0pykdlbynzgcbnjs8xs8frgncf53l8qgf6na34adq7da76n570hi"; depends=[coin ggplot2]; };
   pBrackets = derive2 { name="pBrackets"; version="1.0"; sha256="0cwv609hzp8anfv3cgfbspz8w0g1ljfz05wm4xfhwy15v32fckrj"; depends=[]; };
   pCODE = derive2 { name="pCODE"; version="0.9.3"; sha256="067hhlj75l04b404fidvb2rkj6bb3zxrjy37p5vzvc5a1p1pcnf5"; depends=[deSolve fda MASS pracma]; };
-  pCalibrate = derive2 { name="pCalibrate"; version="0.1-1"; sha256="04a7dmf9sjw44y53i469f8fjm8as2vwr0pgk4s91l63pxdqnjvfl"; depends=[epitools exact2x2 MCMCpack]; };
+  pCalibrate = derive2 { name="pCalibrate"; version="0.2-1"; sha256="0gi4hjnykn4gbj9krmw4z1qy4lbxkvacczkks3zkwalw9ylwkpxl"; depends=[exact2x2 MCMCpack]; };
   pGLS = derive2 { name="pGLS"; version="0.0-1"; sha256="1rlk8q09sikf4vpzsx0c7s6qqh2hxf8dy2bgcm4nnkbv2nfjz438"; depends=[MASS]; };
   pGMGM = derive2 { name="pGMGM"; version="1.0"; sha256="1hkczz38g8a8253jm8vhm8948fs91g6b2rfzkz47srkkby9ksa4x"; depends=[JGL MASS mvtnorm]; };
   pGPx = derive2 { name="pGPx"; version="0.1.1"; sha256="0b3pjrk7496nlw1cv5m6yfp02c663452z67y21yhhm26b17nrldv"; depends=[DiceKriging KrigInv pbivnorm pracma randtoolbox Rcpp RcppArmadillo rgenoud]; };
   pKSEA = derive2 { name="pKSEA"; version="0.0.1"; sha256="1k9javxbhx28hf5k3i66ggqwlws2w9qwp01g8f7jmyp92pxr3qqd"; depends=[]; };
   pMineR = derive2 { name="pMineR"; version="0.31"; sha256="1j71dcldzmk4kzspx4v5s3vqqkllgwkckfm1g145qgg26c1gyc6l"; depends=[cluster DiagrammeR stringr XML]; };
   pRF = derive2 { name="pRF"; version="1.2"; sha256="17srabk7mam16rdzc5g9ggdrhjjk8wibny40gxvgzkv7qgq7m80x"; depends=[dplyr ggplot2 multtest permute randomForest reshape2]; };
-  pROC = derive2 { name="pROC"; version="1.16.1"; sha256="0qkp1byl2xspxaaf0by6mvvrhg7wlz6fxmynz2hkh0ds24w7ig9m"; depends=[plyr Rcpp]; };
+  pROC = derive2 { name="pROC"; version="1.16.2"; sha256="0apwa5zzqh74pjnvf5a1s5qf6i9r5h44jdllfrwymkd2v479d2xn"; depends=[plyr Rcpp]; };
   pRSR = derive2 { name="pRSR"; version="3.1.1"; sha256="1irx95b7cwvx3gpn9brjjn4k947m8frz542r18nilc9f1159mb3s"; depends=[]; };
   pSI = derive2 { name="pSI"; version="1.1"; sha256="0cvw38dqqlyx7cpl27hq33f5xns2d0019lyr98pwndcnbp09mx0b"; depends=[gdata]; };
   pa = derive2 { name="pa"; version="1.2-1"; sha256="1pfgzxirkb0p8f6smjlrbp1qpsh0vsvqf306cvldaj9zx8cw0q9f"; depends=[ggplot2]; };
@@ -11252,10 +11318,10 @@ in with self; {
   packS4 = derive2 { name="packS4"; version="0.9.3"; sha256="0kkh4lfdbr2ydyfpymwrdkms1d4mj8430p6vxvj5wrgl4vh85gwd"; depends=[codetools]; };
   packageDiff = derive2 { name="packageDiff"; version="0.1"; sha256="0qxgx2ac0x7p9j9clj7hgjahf7xwzcjkcw0d2n6w0r9c4g0mw9w2"; depends=[diffr htmlwidgets]; };
   packageRank = derive2 { name="packageRank"; version="0.3.0"; sha256="1617xah0c8rnyjq09k69yrmalfryx921fflpx7k7bk52zwrrblc9"; depends=[cranlogs data_table ggplot2 memoise RCurl rversions]; };
-  packagedocs = derive2 { name="packagedocs"; version="0.4.0"; sha256="0zw9ana7s42ardphhdaklba02yjj1v8gliq4l98397mjmzc6f4xd"; depends=[crayon devtools digest evaluate highlight htmltools lazyrmd magrittr rmarkdown stringr whisker yaml]; };
+  packagedocs = derive2 { name="packagedocs"; version="0.4.0"; sha256="0gmbvcgq60xpnigcpn549l6a5anhcpbl2sjid5nfjj2f7920al3f"; depends=[crayon devtools digest evaluate highlight htmltools lazyrmd magrittr rmarkdown stringr whisker yaml]; };
   packagefinder = derive2 { name="packagefinder"; version="0.2.0"; sha256="0n4pqkik5im6dcf67kbp0gvvi0wjsfs3dj9kxy1nk6six98rnyz0"; depends=[crayon formattable htmlTable httr jsonlite lubridate pander stringr textutils tidyr]; };
   packager = derive2 { name="packager"; version="1.1.0"; sha256="1fsdh21ahhxrw77a3nwib0hypb5wn4xhz02qmm7r6z9bkg5njhak"; depends=[callr checkmate codetools crayon cyclocomp desc devtools fakemake git2r httr pkgbuild pkgload rcmdcheck remotes rprojroot usethis whisker whoami withr]; };
-  packagetrackr = derive2 { name="packagetrackr"; version="0.1.1"; sha256="0xjq27j7bd7lps0vp9gdinxn19wl10k2cp9wb2xjih7p6l0wd57g"; depends=[dplyr httr magrittr rappdirs]; };
+  packagetrackr = derive2 { name="packagetrackr"; version="0.1.1"; sha256="1dgpll7ycn6c8qj9xndi2xrnwsg0mp3ifg11jnlrw4n270444hwi"; depends=[dplyr httr magrittr rappdirs]; };
   packcircles = derive2 { name="packcircles"; version="0.3.3"; sha256="0gik0splf48zfl40297nh7lbgvd2qqlci99wv841mfy7858ai933"; depends=[Rcpp]; };
   packrat = derive2 { name="packrat"; version="0.5.0"; sha256="1xy5dd2hrpqa07jfl4s7dsrya05mf36ms74j833scdz0zf89586n"; depends=[]; };
   pacman = derive2 { name="pacman"; version="0.5.1"; sha256="0z7gngd6h83cpjhq1vg75wvzhdjbgjh7gj5d4zvvi9gd2lmagjcy"; depends=[remotes]; };
@@ -11330,7 +11396,7 @@ in with self; {
   parboost = derive2 { name="parboost"; version="0.1.4"; sha256="087b4as0w8bckwqpisq9mllvm523vlxmld3irrms13la23z6rjvf"; depends=[caret doParallel glmnet iterators mboost party plyr]; };
   parcats = derive2 { name="parcats"; version="0.0.1"; sha256="0bf1kqg3954z47cb4n4wv6pf55f1801qlsj1523ac0j3l3i39xn5"; depends=[dplyr easyalluvial forcats htmlwidgets magrittr purrr stringr tibble tidyr]; };
   parcoords = derive2 { name="parcoords"; version="1.0.0"; sha256="15w0g789a2igagfrgv1978ib4ipxpfkid5jpj4q344mpdvgp6ip2"; depends=[crosstalk htmlwidgets]; };
-  parcor = derive2 { name="parcor"; version="0.2-6"; sha256="10bhw50g8c4ln5gapa7wghhb050a3jmd1sw1d1k8yljibwcbbx36"; depends=[Epi GeneNet glmnet MASS ppls]; };
+  parcor = derive2 { name="parcor"; version="0.2-6"; sha256="0vgs6k92vdr0cmb8cwbv2ff6qavw30agskfd8bfh17hsskrisvx0"; depends=[Epi GeneNet glmnet MASS ppls]; };
   parfm = derive2 { name="parfm"; version="2.7.6"; sha256="1n548gaf62m56n8rlcz1mhpqxikd33vydjwl4wps441drp1dbvs0"; depends=[msm optimx sn survival]; };
   parlitools = derive2 { name="parlitools"; version="0.4.1"; sha256="05xii25acmbdbhrkwgw812352vhxqpp5m8qbl346bp6v74ixi8aj"; depends=[dplyr hansard mnis readr sf snakecase stringi]; };
   parma = derive2 { name="parma"; version="1.5-3"; sha256="0yjpmxz20v6k107qylw42yf1b231hzym9dizjcq1kalivvscczc5"; depends=[corpcor nloptr quadprog Rglpk slam truncnorm]; };
@@ -11357,6 +11423,7 @@ in with self; {
   party = derive2 { name="party"; version="1.3-4"; sha256="0zqyyzpri61kj300b6kqspfhwqvx4c8svia726cg33lnwx7vv2bn"; depends=[coin modeltools mvtnorm sandwich strucchange survival zoo]; };
   partykit = derive2 { name="partykit"; version="1.2-7"; sha256="1h8jld63mm7ri9cny8jz0cibma68n7p66qvyn9g0jx99kir3r6aw"; depends=[Formula inum libcoin mvtnorm rpart survival]; };
   parviol = derive2 { name="parviol"; version="1.1"; sha256="1sfgic86ssd5wjf9ydss9kjd3m4jmm2d1v896sjsv8bydwymbpx3"; depends=[vioplot]; };
+  parzer = derive2 { name="parzer"; version="0.1.0"; sha256="0jfk86j9a5578z7jx7mylfj1w2xf9gb416cfbrkc4h8bda2vv7z4"; depends=[Rcpp]; };
   pass_lme = derive2 { name="pass.lme"; version="0.9.0"; sha256="1rxm509vnkdvdxii4jwniirdb2pv90rjkf6wjc9zrjh88jrl678k"; depends=[]; };
   passport = derive2 { name="passport"; version="0.2.0"; sha256="1jiwivrz7781zmwxmw13rxl80cr9r5pinnk5bvqz8nhfmlx0zmgd"; depends=[]; };
   passt = derive2 { name="passt"; version="0.1.1"; sha256="03ymx1bvbz2qwlkxb5iis6k3d3d5fivhcz1w23fwqhgq976zrdj2"; depends=[dplyr magrittr rlang tidyr]; };
@@ -11463,9 +11530,9 @@ in with self; {
   pedigreemm = derive2 { name="pedigreemm"; version="0.3-3"; sha256="1bpkba9nxbaxnivrjarf1p2p9dcz6smf9k2djawis1wq9dhylvsb"; depends=[lme4 Matrix]; };
   pedmut = derive2 { name="pedmut"; version="0.1.0"; sha256="0b8qlcl4g8kjix4q1drs1yk7wnilxqslv4p8svyabcg8wb4bnvwa"; depends=[]; };
   pedometrics = derive2 { name="pedometrics"; version="0.7.0"; sha256="0rqldc67yrcg16i5q9wrmfmh3lw3qrfdxwdb4mxkjxx18v4fv737"; depends=[lattice latticeExtra Rcpp]; };
-  pedprobr = derive2 { name="pedprobr"; version="0.1.0"; sha256="1nn8pmxzj1lnfynaws87lbrk2p5y8im4cdm46vw91lbk00z7j3vc"; depends=[pedmut pedtools]; };
+  pedprobr = derive2 { name="pedprobr"; version="0.2.0"; sha256="1s986n05wciq0nwvaqhq5d4rdzdh9sli66qihmfm43rqy246kjlr"; depends=[pedmut pedtools]; };
   pedquant = derive2 { name="pedquant"; version="0.1.3"; sha256="11l6h0pvysb02f81rnwsyc8c2xj3p4smgi9dbmsv41ka54v6rss7"; depends=[curl data_table ggplot2 gridExtra httr jsonlite readr readxl rvest scales stringi TTR xml2 zoo]; };
-  pedtools = derive2 { name="pedtools"; version="0.9.2"; sha256="1kmckn6d6n5ssrbfzsg46cz0vhvlql38dqjjhlsibwvwhnp23xj8"; depends=[kinship2]; };
+  pedtools = derive2 { name="pedtools"; version="0.9.3"; sha256="1jc11d1hd4wwc3lfa5h7g9sy6crybidc2mlasc3sbasjdzr1cyxb"; depends=[kinship2]; };
   pegas = derive2 { name="pegas"; version="0.13"; sha256="002i7s4g0nhnq0v05gs0yssqiyhpq2f7rw2rhn31hsbgxc86frvy"; depends=[adegenet ape]; };
   pems_utils = derive2 { name="pems.utils"; version="0.2.26.4"; sha256="13d5cg2wdz84inby017bra6xzwhkp5qcy1b213r387fq771h2xrx"; depends=[baseline dplyr ggplot2 lattice latticeExtra loa RColorBrewer Rcpp rlang]; };
   penDvine = derive2 { name="penDvine"; version="0.2.4"; sha256="0znpvsr7zy2wgy7znha1qiajcrz1z6mypi3f5hpims33z7npa7dl"; depends=[doParallel fda foreach lattice latticeExtra Matrix quadprog TSP]; };
@@ -11542,7 +11609,7 @@ in with self; {
   pheno = derive2 { name="pheno"; version="1.6"; sha256="0xdya1g1ap7h12c6zn3apbkxr725rjhcp4gbdchkvcnwz4y9vw8c"; depends=[nlme quantreg SparseM]; };
   phenoCDM = derive2 { name="phenoCDM"; version="0.1.3"; sha256="1cyqwc36zwa2a4ljy0xnqz0hhw0r98qk2an5y002lrchkqydplwp"; depends=[rjags]; };
   phenocamapi = derive2 { name="phenocamapi"; version="0.1.5"; sha256="1kvb7lsixhh2sqdd5r9si0wbnrzfg3fbs29pb2nvl3086hnshl9i"; depends=[data_table RCurl rjson]; };
-  phenocamr = derive2 { name="phenocamr"; version="1.1.3"; sha256="1wfrzs0sdhp7ivj9n6c2i8dr35gl6dp2rai69ylh5xxlk643a2ck"; depends=[changepoint daymetr httr jsonlite memoise shiny zoo]; };
+  phenocamr = derive2 { name="phenocamr"; version="1.1.4"; sha256="1abcwbds406m1dncn188n8y3fqwxx2h7g7xrca8j6bw2ld69jswd"; depends=[changepoint daymetr httr jsonlite memoise MODISTools zoo]; };
   phenofit = derive2 { name="phenofit"; version="0.2.5-2"; sha256="1mjwg56v6b0mak7hrm821lrckq0j8nzc4w2lyqxsancil5xlqnqd"; depends=[data_table dplyr foreach ggplot2 gridExtra iterators jsonlite lubridate magrittr numDeriv optimx plyr purrr Rcpp RcppArmadillo reshape2 shiny spam stringr tibble tidyr ucminf zoo]; };
   phenology = derive2 { name="phenology"; version="7.3"; sha256="0hklk5k0i6vv733dm3npphg0zrhlb14ps6j6wwvsx50sqr3xl9jg"; depends=[HelpersMG lmf numDeriv optimx]; };
   phenomap = derive2 { name="phenomap"; version="1.2.1"; sha256="0kpngxqrbahild5nblfvgx2kna43hqqldx5q3b127dnqwzbhfvbb"; depends=[doParallel dplyr phenex plyr raster rgdal stringr]; };
@@ -11590,7 +11657,7 @@ in with self; {
   phyr = derive2 { name="phyr"; version="1.0.2"; sha256="1qk4mbchi5dcz6vsmwb93gj5ihp2ygvm1ya63mkw11vkyy2nv67c"; depends=[ape dplyr gridExtra latticeExtra lme4 Matrix mvtnorm nloptr Rcpp RcppArmadillo]; };
   phyreg = derive2 { name="phyreg"; version="1.0.2"; sha256="0m1psq79zl7h8791pl8g6i0ybda7vgddza8r9mwqhg4sw1q4bzcp"; depends=[]; };
   physiology = derive2 { name="physiology"; version="1.2.1"; sha256="1z7xymwgj7bqn0yvcz3q8pvwhpr5vx5qd0x8sayal1vgpqc0nccb"; depends=[Rcpp]; };
-  phytools = derive2 { name="phytools"; version="0.6-99"; sha256="03rrcx2r8sbf6510xdd0259p02apy2z84ifk7f076pvwlz5k5x9f"; depends=[animation ape clusterGeneration coda combinat expm gtools maps MASS mnormt nlme numDeriv phangorn plotrix scatterplot3d]; };
+  phytools = derive2 { name="phytools"; version="0.7-20"; sha256="12fs20w7f921kn6qj397l2n9q9q6ri6hqpikmhbssah58a973isy"; depends=[animation ape clusterGeneration coda combinat expm gtools maps MASS mnormt nlme numDeriv phangorn plotrix scatterplot3d]; };
   phytotools = derive2 { name="phytotools"; version="1.0"; sha256="049znviv2vvzv23biy1l28axm7bc7biwmq4bnn0cnjqgkk48ysz3"; depends=[FME insol]; };
   picante = derive2 { name="picante"; version="1.8.1"; sha256="1b16zm8zjjsl181b8krkdcrbcw347kf772c4w7y5332qmfi7jhz0"; depends=[ape nlme vegan]; };
   picasso = derive2 { name="picasso"; version="1.3.1"; sha256="1z7zm88wjp7fia7054l7i55f152iddrjj9wbcpcskhc8s6kfg53c"; depends=[MASS Matrix]; };
@@ -11636,7 +11703,7 @@ in with self; {
   pkgfilecache = derive2 { name="pkgfilecache"; version="0.1.2"; sha256="07x63w19fg7sl547501r2dx2ds5sfdfb29xvqrvjibf8265x25fw"; depends=[downloader rappdirs]; };
   pkggraph = derive2 { name="pkggraph"; version="0.2.3"; sha256="1isiywgm20rypc5qr03p0k7lis76zzd96x5ncbvia644d2n13brm"; depends=[curl data_table dplyr ggnetwork ggplot2 htmltools igraph intergraph Matrix network networkD3 plyr RColorBrewer tibble]; };
   pkgload = derive2 { name="pkgload"; version="1.0.2"; sha256="0z7jvharafahi2gv5547mk1n499isjzw06kfwymmxc0gd575d1ii"; depends=[desc pkgbuild rlang rprojroot rstudioapi withr]; };
-  pkgmaker = derive2 { name="pkgmaker"; version="0.31"; sha256="0cc6v6kpwxwwh7k7zyw13wqdp0f9qzzr1a7vv02lskgii54aa4nb"; depends=[assertthat bibtex codetools digest magrittr registry stringi stringr withr xtable]; };
+  pkgmaker = derive2 { name="pkgmaker"; version="0.31.1"; sha256="0r0ga20dy25v9y5gjbds4y6kaa5a7qknh503qdkzllcpzbibh0hp"; depends=[assertthat bibtex codetools digest magrittr registry stringi stringr withr xtable]; };
   pkgnet = derive2 { name="pkgnet"; version="0.4.0"; sha256="0da139p57xvy2v5ld3mnddgak59zjr58ndnbgg3y8msni80g52gq"; depends=[assertthat covr data_table DT futile_logger glue igraph knitr magrittr R6 rlang rmarkdown visNetwork]; };
   pkgsearch = derive2 { name="pkgsearch"; version="3.0.2"; sha256="1dvlqav7hp43x30rmwr8h3dscc0hc01i6mfc7hxvf7ny1rzckfv0"; depends=[assertthat httr jsonlite parsedate prettyunits tibble]; };
   pkgverse = derive2 { name="pkgverse"; version="0.0.1"; sha256="0lsv7s9vsjvfpy19nxbdlbm363j01wwqqnrp0nlrik590hfq4w83"; depends=[devtools usethis]; };
@@ -11655,7 +11722,7 @@ in with self; {
   planor = derive2 { name="planor"; version="1.5-3"; sha256="0klnl8c5h1db8dl9jn159f4ypa8sga0yqdhlh1x8gdkbx7amzrzj"; depends=[bit64 conf_design Rcpp RcppArmadillo]; };
   plantecophys = derive2 { name="plantecophys"; version="1.4-4"; sha256="005js9r7xg4jf2aqgsqddkkxhcdnhsiyzc1cqa7j59r4g5xbmh1j"; depends=[]; };
   plaqr = derive2 { name="plaqr"; version="2.0"; sha256="15pdb57123m3cahvcsyrrvxjwxvs2f389yxip91gjxn68jf6cx1l"; depends=[quantreg]; };
-  plater = derive2 { name="plater"; version="1.0.1"; sha256="0v5b9r6iha18qvrjpbr1p8fy06nf31x63ch5cnb4axyqa0x5skpp"; depends=[dplyr]; };
+  plater = derive2 { name="plater"; version="1.0.2"; sha256="0z3s33xpfkd1ln37bpsgycbb35hgjq23yi151imdxyv80493vy4w"; depends=[dplyr]; };
   platetools = derive2 { name="platetools"; version="0.1.2"; sha256="026i0xxci33r1c4zrjwjpw1wqdnj44nryqzzapa367160p9f2v5y"; depends=[ggplot2 RColorBrewer]; };
   plde = derive2 { name="plde"; version="0.1.2"; sha256="1g1b1sgyfxgfkjcr3sdkan8jd6r7yyi0izc83vyj11bdk08jx22h"; depends=[]; };
   pleiades = derive2 { name="pleiades"; version="0.2.0"; sha256="1h3q4yf0w0al7n8l7ca4vgx2bhrrz8clli15svlds7n402s8rzp5"; depends=[crul DBI dbplyr dplyr gistr jsonlite rappdirs RSQLite]; };
@@ -11681,7 +11748,7 @@ in with self; {
   plotMElm = derive2 { name="plotMElm"; version="0.1.5"; sha256="0wwqzrpkmq9gzazdzlk62qig6vz43niada6fxh1wcsjqjwkcccgp"; depends=[ggplot2 interactionTest]; };
   plotROC = derive2 { name="plotROC"; version="2.2.1"; sha256="0bk8j2lp80zcz4kkig1y5a1ig8vbjh7b4inzc46bn07ns1rdjgzg"; depends=[ggplot2 gridSVG plyr rlang shiny]; };
   plotSEMM = derive2 { name="plotSEMM"; version="2.4"; sha256="0fircrayhz92zvkigkyb1zpn07bvssqs1ip15p926zj3rl77fqgy"; depends=[MplusAutomation plotrix plyr Rcpp shiny]; };
-  plotdap = derive2 { name="plotdap"; version="0.0.6"; sha256="0s8i45rqmk96cr7i3xca4900vfcl7j3vd5iiij18gfaxmcn02vjy"; depends=[cmocean dplyr gganimate ggnewscale ggplot2 lazyeval lubridate magrittr maps raster rerddap rgeos scales sf tidyr viridis]; };
+  plotdap = derive2 { name="plotdap"; version="0.0.7"; sha256="1zwf4s2myw20klbc0jnfrbg0hll9528m8vcxnc419nsgm3m2nskb"; depends=[cmocean dplyr gganimate ggnewscale ggplot2 lazyeval lubridate magrittr maps raster rerddap rgeos scales sf tidyr viridis]; };
   plotfunctions = derive2 { name="plotfunctions"; version="1.3"; sha256="0cnmwkfjg45187j490sf01gxijhajrpi6j13hfckli2ysn6xrgz3"; depends=[]; };
   plothelper = derive2 { name="plothelper"; version="0.1.8"; sha256="0g8dnhr1v0k6m1ws35f3mj99fc32i51jxryg1iy5p852g500qqkr"; depends=[farver ggfittext ggplot2 gridExtra magick plyr scales]; };
   plotluck = derive2 { name="plotluck"; version="1.1.1"; sha256="16wqj4xfa8b7kal6v8mp2zlhwf9l3y6y5n44qbpvy652gzb2rw2z"; depends=[ggplot2 hexbin Hmisc plyr quantreg RColorBrewer scales]; };
@@ -11748,7 +11815,7 @@ in with self; {
   poissonMT = derive2 { name="poissonMT"; version="0.3-5"; sha256="14qkc8qz3423b13gp6gsp8cbb1nv9wwjjfa4i9zc15qy5i99ha26"; depends=[checkmate MASS robcbi robustbase]; };
   poistweedie = derive2 { name="poistweedie"; version="1.0"; sha256="18992fafypds3qsb52c09fasm3hzlyh5zya6cw32wnhipmda643m"; depends=[]; };
   poker = derive2 { name="poker"; version="0.8.8"; sha256="14ik77440z22k4kwq0p1fn7adzi0p8mh8j8hd7ayinvrab4b5r85"; depends=[]; };
-  policytree = derive2 { name="policytree"; version="0.9.0"; sha256="15cqmcdxk25y300z5qvhh981bmzph272sciaa40swj5jw5fz357y"; depends=[BH grf Rcpp]; };
+  policytree = derive2 { name="policytree"; version="0.9.2"; sha256="0d0b3rdmcr692rkbg223l0cwc86zlj2p75m9jlgk6w07f1n2h68p"; depends=[BH grf Rcpp]; };
   poliscidata = derive2 { name="poliscidata"; version="2.2.3"; sha256="18mmdzf9hrfz36rh1rg1j5q1m131xadppy272y4f4yay0ljafbm2"; depends=[abind car descr ENmisc gplots Hmisc plotrix plyr survey weights xtable]; };
   polite = derive2 { name="polite"; version="0.1.1"; sha256="15hiifaf63hx0xn453lr0xhdnxqifrgyrgrymp0a9k3j7qja59jk"; depends=[here httr magrittr memoise ratelimitr robotstxt rvest usethis]; };
   politeness = derive2 { name="politeness"; version="0.5.1"; sha256="0vvqh53kj4vm6wfg2fk5gdxyiycg7zg72m8d7qym9si930jbm32s"; depends=[data_table ggplot2 glmnet quanteda spacyr stringr textclean textir tm]; };
@@ -11810,11 +11877,12 @@ in with self; {
   portsort = derive2 { name="portsort"; version="0.1.0"; sha256="0swl39dn7lzwvps18bva4l64a441gkf6lbwcwrhlf93f1ardvxji"; depends=[xts zoo]; };
   postDoubleR = derive2 { name="postDoubleR"; version="1.4.12"; sha256="19z8wisi16g7a78gw16r72dkxh3x5qh888qz260ih5naq0p8vy71"; depends=[doParallel ggplot2 glmnet grf neuralnet progress]; };
   postGIStools = derive2 { name="postGIStools"; version="0.2.4"; sha256="04d6iqnk7j2lgv1h5c94j6y89jk75pmv26sxa51s5iwkjq7rchym"; depends=[DBI jsonlite rgdal rgeos RPostgreSQL sp stringr]; };
+  postHoc = derive2 { name="postHoc"; version="0.1.1"; sha256="0sfwhgh8y6y3df5qx0n488fvddg5fj6cql3gml7fwzjw0hsgkdsw"; depends=[igraph multcomp]; };
   posterdown = derive2 { name="posterdown"; version="1.0"; sha256="13plrrnylw3yldm0md1gr5drccfjk9f2wwlhz6lrmb3px7w5nqs0"; depends=[pagedown rmarkdown yaml]; };
   postinfectious = derive2 { name="postinfectious"; version="0.1.0"; sha256="1v327zxxiwc1cdksk6s39lkkgck5dxg169pp3jiqmm7xs35dcl6y"; depends=[]; };
   postlightmercury = derive2 { name="postlightmercury"; version="1.2"; sha256="1345ckp50jplcdqp3a250c6mhapqh9322jzpxj5dyqmbg2nmgp9i"; depends=[crul jsonlite purrr rvest tibble xml2]; };
   postlogic = derive2 { name="postlogic"; version="0.1.0.1"; sha256="11bpmfn375zpyg90dh44h86cvppzri1smmkn26jyydqjz74f4q9w"; depends=[]; };
-  potts = derive2 { name="potts"; version="0.5-8"; sha256="0j3c7sh50r1lqd8gl0rq7pq8j9v33wcz46gv7lm0n7y89qj6f45x"; depends=[]; };
+  potts = derive2 { name="potts"; version="0.5-9"; sha256="1kiha209w9nyyx4qqsdp51q2y7ny67nzqkdanlrh2106lcab3hj8"; depends=[]; };
   povcalnetR = derive2 { name="povcalnetR"; version="0.1.0"; sha256="11hwb52lrvdxplsx85ps54k2k7cvr0k4g5s2cj2a5l3rlqbyayx8"; depends=[dplyr ggplot2 ggthemes httr js jsonlite memoise naniar purrr readr stringr tibble tidyr]; };
   powdR = derive2 { name="powdR"; version="1.1.0"; sha256="0by1jxqpqjgpsqzgagirz7z6cgvxa5k33m15qsc4dina12hi21n8"; depends=[baseline ggplot2 ggpubr memisc nnls plotly plyr reshape shiny shinyWidgets tidyr]; };
   powdist = derive2 { name="powdist"; version="0.1.4"; sha256="1my88ag5q9hwkn2wy79jl9008gpvg0bsrnyc81gkdfi7pjh2mp1z"; depends=[gamlss_dist normalp rmutil]; };
@@ -11857,7 +11925,7 @@ in with self; {
   pre = derive2 { name="pre"; version="1.0.0"; sha256="07iai8vkxmx0dhnqy28gwh1hwc2iqg7bb0mwm8c68qpp8ffxwplm"; depends=[earth Formula glmnet Matrix MatrixModels partykit rpart stringr survival]; };
   precintcon = derive2 { name="precintcon"; version="2.3.0"; sha256="1sf0mfqa77aqhbx3hg8pv582ibmfnv6vigqcd3xqsbq7nigy2ms9"; depends=[ggplot2 scales]; };
   precrec = derive2 { name="precrec"; version="0.11"; sha256="1y0d0jqpvh0c96zi2fp7q1f25n5sm6ai2k6l54j9c3plkk1vw3lp"; depends=[assertthat data_table ggplot2 gridExtra Rcpp]; };
-  predhy = derive2 { name="predhy"; version="0.1.0"; sha256="1m4ysryh66blqnvnskfwmjbz85pziqlii12jv9gpf2a3jnl5dvij"; depends=[]; };
+  predhy = derive2 { name="predhy"; version="0.2.0"; sha256="0l3x9ivrlb43x3qbrpw5gjyfc3n3b4bbsav1r4hl96znypwi7j9f"; depends=[]; };
   predict3d = derive2 { name="predict3d"; version="0.1.3.3"; sha256="1kb3jacpgzln1ddnkfzhvfpzzf9wig60lppca6iy0fvq5cm8ddr4"; depends=[dplyr ggiraphExtra ggplot2 magrittr modelr moonBook plyr prediction purrr reshape2 rgl rlang stringr TH_data tidyr]; };
   prediction = derive2 { name="prediction"; version="0.3.14"; sha256="0awlq5lxfia6m2b91w73rksp93rbwv5gwqb36wbji4rgq41rzbrx"; depends=[data_table]; };
   predictionInterval = derive2 { name="predictionInterval"; version="1.0.0"; sha256="029hc57cblfcbqckrghf95l2rkn7acgb4yr36da01bx8bmpww0bn"; depends=[ggplot2 MASS MBESS pbapply]; };
@@ -11889,8 +11957,8 @@ in with self; {
   prevalence = derive2 { name="prevalence"; version="0.4.0"; sha256="0vnmglxj1p66sgkw4ffc4wgn0w4s281fk2yifx5cn4svwijv30q0"; depends=[coda rjags]; };
   prevederer = derive2 { name="prevederer"; version="0.0.1"; sha256="0vkx9nrlgp36xbl95lrb5sb5yivxlcw4yvbs8hgbm31kh0vbz32f"; depends=[httr]; };
   prevtoinc = derive2 { name="prevtoinc"; version="0.12.0"; sha256="0ypdxcx9gh87a7ih3cw3yai47rzv41qwh4kpk6007ai8jkjv4n9w"; depends=[dplyr purrr rlang tibble]; };
-  prewas = derive2 { name="prewas"; version="1.0.0"; sha256="163lpip7b1m65laqswgrai5rxpsw226c6n37bs3f1yi89hs5ba30"; depends=[ape future future_apply phangorn vcfR]; };
-  priceR = derive2 { name="priceR"; version="0.1.0"; sha256="09jlf8c1lfiqmpm2vdgkacsracwcjgi6xgvlakny2c4iyir45sh5"; depends=[dplyr gsubfn stringr]; };
+  prewas = derive2 { name="prewas"; version="1.1.0"; sha256="0lsfy3sr59pzhrr4nz1ryvnmb54vk9hhdlnx8mrxlhfg8hs59l6r"; depends=[ape future future_apply phangorn vcfR]; };
+  priceR = derive2 { name="priceR"; version="0.1.1"; sha256="1r276jh95ji6340yya6rnzjy5wpapa192a66cv07qhafvhi8yqfs"; depends=[curl dplyr gsubfn jsonlite lubridate purrr stringi stringr]; };
   pricesensitivitymeter = derive2 { name="pricesensitivitymeter"; version="1.1.1"; sha256="0zlvrzrqndnrwawwzqwpj7c7r86mb80njhv7dcm8l5qygnc4xz3b"; depends=[survey]; };
   prim = derive2 { name="prim"; version="1.0.17"; sha256="037gfs6ibkk7rjv21vi2k5jx24plss0jsxkn12arvfg5p6xan08k"; depends=[misc3d rgl]; };
   primePCA = derive2 { name="primePCA"; version="1.0"; sha256="0kpyqv3l58xcyd98a7c7ggsna30j6k62aliidlyxgv2ya0g0dshv"; depends=[MASS Matrix softImpute]; };
@@ -11932,8 +12000,8 @@ in with self; {
   productivity = derive2 { name="productivity"; version="1.1.0"; sha256="1g8b4vlyqq3xyzd4dki01glhc3g9j3ywgwpxylkmzp0ivqic53yc"; depends=[doParallel foreach iterators lpSolveAPI]; };
   productplots = derive2 { name="productplots"; version="0.1.1"; sha256="1igs6d0qwgsfk0z3vxabgv5kva9w2kpzi535gjfdrbx34j4pf3gx"; depends=[ggplot2 plyr]; };
   prof_tree = derive2 { name="prof.tree"; version="0.1.0"; sha256="0mjvxaacrgkzl0f1wn3fpgah4jh720safni66ri0dnriwcxis6rz"; depends=[data_tree]; };
-  profExtrema = derive2 { name="profExtrema"; version="0.2.0"; sha256="13fn32v4jryyw2sc6g76fmf2ivbwql0z39wqpl6ggmiwnj95sfm7"; depends=[DiceKriging KrigInv lhs MASS microbenchmark pGPx quantreg rcdd RColorBrewer]; };
-  proffer = derive2 { name="proffer"; version="0.0.2"; sha256="083cxxpwkdjnj15ficfb77yiq96j0xf7z5j7h5slm9spazkr38v6"; depends=[processx profile RProtoBuf]; };
+  profExtrema = derive2 { name="profExtrema"; version="0.2.1"; sha256="0gdhamnngh1yh3nb7l656qhdr61s0zn6h1hagh22k2fn11z3xhsl"; depends=[DiceKriging KrigInv lhs MASS microbenchmark pGPx quantreg rcdd RColorBrewer]; };
+  proffer = derive2 { name="proffer"; version="0.1.0"; sha256="19bri9v1i5ghh9az247k9wmj8dpkbfzdykmzx26jrkzqqsdbilzg"; depends=[cli processx profile RProtoBuf withr]; };
   profile = derive2 { name="profile"; version="1.0"; sha256="0m7fm490gqkbmnbdq3lac87zqb9qyx6546rlpa130rq1jnlgxfp6"; depends=[rlang tibble withr]; };
   profileModel = derive2 { name="profileModel"; version="0.6.0"; sha256="0yq8hy43h62hlz8bbf9ila4a3xcwizi1if27b78xc5y857ncwad8"; depends=[]; };
   profileR = derive2 { name="profileR"; version="0.3-5"; sha256="0fgc7585a7194c67irafjnx8g2j6mn3qhcfn76c6dh28clp20qp9"; depends=[ggplot2 lavaan RColorBrewer reshape]; };
@@ -11977,7 +12045,7 @@ in with self; {
   provParseR = derive2 { name="provParseR"; version="0.2"; sha256="13fb4fl395aqjcs2kyvm5z1ac5jkqn5nh2ylzig2p54h313bg0dk"; depends=[jsonlite]; };
   provSummarizeR = derive2 { name="provSummarizeR"; version="1.3"; sha256="0bbiz3lvk0lxxrcgsqww0q79505i0mzxfl03r3pm34amvqc7kl75"; depends=[dplyr provParseR]; };
   provViz = derive2 { name="provViz"; version="1.0.6"; sha256="0pnrprybn48jb02888pzn2y7vi1l24fxk6063sv6aiwpncminf9n"; depends=[]; };
-  provenance = derive2 { name="provenance"; version="2.3"; sha256="1nzgnjfy91r9995jhn7s96jqqlc35s4kxhqscpj9jv93ngddq3zd"; depends=[IsoplotR MASS]; };
+  provenance = derive2 { name="provenance"; version="2.4"; sha256="14dawdlimzbyjwq13kl0z2nkqfykwrj4kqa6pd8id4zyv7kls885"; depends=[IsoplotR MASS]; };
   proxy = derive2 { name="proxy"; version="0.4-23"; sha256="17b6qfllqrhzrxqgx7dccffgybnkcria5a68ap5ly3plg04ypm4x"; depends=[]; };
   proxyC = derive2 { name="proxyC"; version="0.1.5"; sha256="159bc42x4shm6n3rh9fc8ziv3ivq0ipmpbasrh279hhn1prc8gg6"; depends=[Matrix Rcpp RcppArmadillo RcppParallel]; };
   prozor = derive2 { name="prozor"; version="0.2.11"; sha256="1a2k69fvgi6vxgczk81kh8r2jxc6nirc51w6ac239rqjzb1zyhjm"; depends=[AhoCorasickTrie doParallel dplyr foreach Matrix plyr readr seqinr stringr]; };
@@ -12036,6 +12104,7 @@ in with self; {
   pubh = derive2 { name="pubh"; version="1.1.6"; sha256="0788h08nmqxihymb8l46xwjs9j00vmxyim031p29392i8zbqkhc5"; depends=[car dplyr emmeans Epi epiR epitools finalfit ggformula ggplot2 Hmisc lmtest magrittr sandwich sjlabelled sjPlot survival]; };
   publipha = derive2 { name="publipha"; version="0.1.1"; sha256="0ssmkz4bbrp5yvqb2da0i6shzm59ydw2sqkmqkid039782sibjch"; depends=[BH loo Rcpp RcppEigen rstan rstantools StanHeaders truncnorm]; };
   pubmed_mineR = derive2 { name="pubmed.mineR"; version="1.0.16"; sha256="1dcviy347lypbzwwz506d37wy5swla2vjgyqijwc37daic71bnih"; depends=[boot R2HTML RCurl XML]; };
+  pubmedR = derive2 { name="pubmedR"; version="0.0.1"; sha256="0n5v4zw7dv38akskharyrbym7bhmp2ps5w113c27813sc2ds6b2k"; depends=[rentrez XML]; };
   pubtatordb = derive2 { name="pubtatordb"; version="0.1.4"; sha256="0i5azbf75bwxxzpsr5fc2hh22pbwix00hz9dcdpn5jgp2957f7wx"; depends=[assertthat DBI dplyr R_utils readr RSQLite]; };
   pullword = derive2 { name="pullword"; version="0.2"; sha256="14rln0nbd4k2cvf18iwvc56776b9g3m3cs67i7fgzabfrgj8y6db"; depends=[RCurl]; };
   pulsar = derive2 { name="pulsar"; version="0.3.6"; sha256="0r1myng3wmirlp1ixqkkzlgv5i0my37irligah3wwfh0cprip1dm"; depends=[Matrix]; };
@@ -12077,7 +12146,7 @@ in with self; {
   qLearn = derive2 { name="qLearn"; version="1.0"; sha256="1ilxmgazm8gjz8c1hhbp4fccibnvnalxrag8b0rn081zsqmhf094"; depends=[]; };
   qMRI = derive2 { name="qMRI"; version="1.2"; sha256="10x59g8awxjib5j5mc1yd5wsibk3z6ki6zifxsg8azl0zblxbscf"; depends=[adimpro aws awsMethods oro_nifti stringr]; };
   qVarSel = derive2 { name="qVarSel"; version="1.0"; sha256="13x2hnqjsm0ifzmqkkl9ilhykrh80q04lhlkkp06hkysmh5w9rkx"; depends=[lpSolveAPI Rcpp]; };
-  qad = derive2 { name="qad"; version="0.1.1"; sha256="11v291swfl4llgzfffm786xqp9cn82vl8xlqjlma5wah7ig73rgh"; depends=[copula data_table doParallel foreach ggplot2 plyr viridis]; };
+  qad = derive2 { name="qad"; version="0.1.2"; sha256="0xpzv1cliilrc1v4w6k848lphvdamr9ps63zh27bs3gkwncr47qa"; depends=[copula data_table doParallel foreach ggplot2 plyr viridis]; };
   qap = derive2 { name="qap"; version="0.1-1"; sha256="0d2d1ni1camixyi45lfy00f4pn3p063k7bsi8gj5scp6n15mdgb0"; depends=[]; };
   qat = derive2 { name="qat"; version="0.74"; sha256="04n1jnbkf9dzafjh1n5d4q9p7hvyhnr63nmgl51jqxcf3nan5rlx"; depends=[boot fields gdata gplots moments ncdf4 XML]; };
   qboxplot = derive2 { name="qboxplot"; version="0.2"; sha256="07f05n7zxgwyxg2r5fz691ra64m218w9v874xfzjx6671c40y1q2"; depends=[]; };
@@ -12092,7 +12161,7 @@ in with self; {
   qdapRegex = derive2 { name="qdapRegex"; version="0.7.2"; sha256="1xa8q1way3gjadrjh3mv3xr4c6b4h16nd2c6lgl969difplpfz9p"; depends=[stringi]; };
   qdapTools = derive2 { name="qdapTools"; version="1.3.3"; sha256="0a28jn57d2fas3009cm10z07fq77ql3ffcrhcxsiimb57179wj0n"; depends=[chron data_table RCurl XML]; };
   qdm = derive2 { name="qdm"; version="0.1-0"; sha256="0cfxyy8s5zfb7867f9xv9scq9blq2qnw68x66m7y7nqlrrff5xdr"; depends=[]; };
-  qfasar = derive2 { name="qfasar"; version="1.2.0"; sha256="067wnwwz8s0yxig13wrjq37w62kf8p5pa8my5lfpc1ik1b7iysby"; depends=[Rsolnp]; };
+  qfasar = derive2 { name="qfasar"; version="1.2.1"; sha256="14370bmq4qx5j02va13wz52m2lgl4vb992p9587z9v2sxl1v4jjg"; depends=[Rsolnp]; };
   qgam = derive2 { name="qgam"; version="1.3.2"; sha256="0lks2cj0p7irp1i01756v1l7i26d7alax1fbkc20qd6wpz840fi7"; depends=[doParallel mgcv plyr shiny]; };
   qgcomp = derive2 { name="qgcomp"; version="2.2.2"; sha256="0dszh56drh9h4gc4vb31749hjgl9k3yvj8x10d2nkr8ba29ng4x2"; depends=[arm future future_apply generics ggplot2 gridExtra pscl survival tibble]; };
   qgg = derive2 { name="qgg"; version="1.0.2"; sha256="1bxm6gg52ja8n2b54i8zhd4wp3711dq94ch7sr2lqrr6kd7w033s"; depends=[data_table MASS MCMCpack statmod]; };
@@ -12242,7 +12311,7 @@ in with self; {
   rIsing = derive2 { name="rIsing"; version="0.1.0"; sha256="1208lwfk9j8gghj8xf6i8v6s18h89ydqsd4jq3r88n403yzbzzck"; depends=[data_table Rcpp RcppEigen]; };
   rJPSGCS = derive2 { name="rJPSGCS"; version="0.2-10"; sha256="0a00s10yp22fkvk67dkq43sbphcqla65x9j4qpv076bmdchn7arw"; depends=[chopsticks rJava]; };
   rJST = derive2 { name="rJST"; version="1.3"; sha256="0l8znqvg4qiygv6mxwff1ipanzxvcdn54m879sk8z7zn3x5sg6iw"; depends=[magrittr quanteda Rcpp RcppArmadillo RcppProgress reshape2 SnowballC]; };
-  rJava = derive2 { name="rJava"; version="0.9-11"; sha256="0s9cjy1wh7snmbqwznh8f1r4ipylr7mgda4a979z963a8lqy32n2"; depends=[]; };
+  rJava = derive2 { name="rJava"; version="0.9-12"; sha256="03vv0pj6san03c51iyqsyb1rwh3097dfpl2s8iswzzmc7k3shj12"; depends=[]; };
   rJython = derive2 { name="rJython"; version="0.0-4"; sha256="13fpcw37cca738v9idqgi3gv9avfkfwfacxj54p2c4wyg46ghnah"; depends=[rJava rjson]; };
   rKIN = derive2 { name="rKIN"; version="0.1"; sha256="1j6fdi5h869q4d1hq6ha6qyhisa0zk2qmhjrc4ahl9991d680dyn"; depends=[ggplot2 maptools MASS rgeos sp]; };
   rLDCP = derive2 { name="rLDCP"; version="1.0.2"; sha256="0k7zc1xyqmcl7070hhpqw1d2k1ij6bd4wjym8cw263pds2n7nx21"; depends=[XML]; };
@@ -12252,6 +12321,7 @@ in with self; {
   rLindo = derive2 { name="rLindo"; version="8.0.1"; sha256="05qyc4wvpjgw8jxmwn2nwybi695fjn0cdilkprwmjg07c82f0q5n"; depends=[]; };
   rMEA = derive2 { name="rMEA"; version="1.1.0"; sha256="1aarnik0qjxg6h55xpskx1dwkp78nfdyrwpy9r6ffyxhz9jbplnj"; depends=[]; };
   rMR = derive2 { name="rMR"; version="1.1.0"; sha256="0da1hclfnnlkp9by6zf2p079643p8nimplr9p3ipbjdy739j344z"; depends=[biglm]; };
+  rMVP = derive2 { name="rMVP"; version="0.99.18"; sha256="184rln22ljsn0p8xnxapf269r3mr4argh1qc6cndbi34lgfkwxd6"; depends=[BH bigmemory MASS Rcpp RcppEigen RcppProgress]; };
   rModeling = derive2 { name="rModeling"; version="0.0.3"; sha256="0xrjxayp59f31wwcqqkzs5my2j2lpbv1f4pp709fmqxz02vbdzhv"; depends=[caret e1071 MASS]; };
   rMouse = derive2 { name="rMouse"; version="0.1"; sha256="0pzxasap5kwxqq36mb4zi139jllsl4vk06dw2pv9xnwdxiszr3gp"; depends=[rJava]; };
   rNMF = derive2 { name="rNMF"; version="0.5.0"; sha256="1nz6h0j5ywdh48m0swmhp34hbkycd7n13rclrxaw85qi9wc42597"; depends=[knitr nnls]; };
@@ -12267,7 +12337,7 @@ in with self; {
   rQCC = derive2 { name="rQCC"; version="1.20.3"; sha256="01gi447qwm6j682s7ka034g28k74l3fr9ijam6l9n0f228q930gp"; depends=[]; };
   rRAP = derive2 { name="rRAP"; version="1.1"; sha256="1nzvs8bjkbjraa33azxf9mrxsxh87qhh3qlldrcs5y4fq4ancyqb"; depends=[lars lassoshooting MASS]; };
   rSCA = derive2 { name="rSCA"; version="3.1"; sha256="0dhd5325x05cbnw34mlipndw5xnncl9kj7kppb2s5bx2gllcdqqd"; depends=[]; };
-  rSEA = derive2 { name="rSEA"; version="2.1.0"; sha256="0zym2kg7vzi61xiglwr3dw5kvavjqcgjj56219aqyclkqrnf67rc"; depends=[hommel]; };
+  rSEA = derive2 { name="rSEA"; version="2.1.1"; sha256="18108ds65ykxygbw1s4i5rb1ngzwymv1x3dhcv1lcwkmqplnaar9"; depends=[ggplot2 hommel]; };
   rSFA = derive2 { name="rSFA"; version="1.04"; sha256="0gd6ji1ynbb04rfv8jfdmp7dqnyz8pxcl5636fypd9a81fggl0gs"; depends=[MASS]; };
   rSHAPE = derive2 { name="rSHAPE"; version="0.3.2"; sha256="0z6dizsxlkmaymbd24b1m1i8kmndcf21nxxnyfzq6gvdii7bal4h"; depends=[abind DBI doParallel evd foreach RSQLite sn VGAM]; };
   rSPDE = derive2 { name="rSPDE"; version="0.4.8"; sha256="1m8ys6k3f1jy9iiby36sw0gvz282bhpzgnwa801hv59k411wrh2g"; depends=[Matrix]; };
@@ -12275,7 +12345,7 @@ in with self; {
   rSymPy = derive2 { name="rSymPy"; version="0.2-1.2"; sha256="0jdl8ss3dbgjqrmmppb0ix1gqk9g28pbh6w5sybil046ic83s13i"; depends=[rJython]; };
   rTRNG = derive2 { name="rTRNG"; version="4.20-1"; sha256="0l0gs65rbl080f1l67xiygz551q5lj0q48nz8m6gsjfq5ias5gn6"; depends=[Rcpp RcppParallel]; };
   rTableICC = derive2 { name="rTableICC"; version="1.0.7"; sha256="1z896675kmm9p5dnmcnsz2205ynf05laqcxvlc9y0g5i0x8rf8v6"; depends=[aster partitions]; };
-  rTensor = derive2 { name="rTensor"; version="1.4"; sha256="08i94vvk5i25j40dwn497svgrmz90iwzp6qgiir37wgvx355xwzr"; depends=[]; };
+  rTensor = derive2 { name="rTensor"; version="1.4.1"; sha256="1ir2zqs3bvcfi9xwhj1l29qhnh5qvagz9cpw99lb2w73i28x47vz"; depends=[]; };
   rTephra = derive2 { name="rTephra"; version="0.1"; sha256="045f2sp2j4hiwa9k1vs6cxr59x1yr34jq1z2crasxflsxbwa3xz8"; depends=[]; };
   rTorch = derive2 { name="rTorch"; version="0.0.3"; sha256="1v7zvjkbllcjria7slv958bpwv1r0p3li2i8wq55hgm7g7iyfz1j"; depends=[data_table jsonlite logging R6 reticulate rstudioapi]; };
   rUnemploymentData = derive2 { name="rUnemploymentData"; version="1.1.0"; sha256="0p5hba8iv060szp23s05hvpmwan518ykakm6vqzdcki0inxw0hyv"; depends=[choroplethr rvest stringr]; };
@@ -12290,10 +12360,10 @@ in with self; {
   radarBoxplot = derive2 { name="radarBoxplot"; version="1.0.0"; sha256="16s38yy984mb1hmsdw17z4nk2z4xg03xi0yrp7445yqv3fs1fghl"; depends=[]; };
   radarchart = derive2 { name="radarchart"; version="0.3.1"; sha256="0gcxnbgj8ja1m4wzhbjy67m6zphf0c5ni9yx7sr7f0abm03ry753"; depends=[htmltools htmlwidgets]; };
   radiant = derive2 { name="radiant"; version="0.9.9.1"; sha256="18zj6lbs04vqslm4zgga6fvm868a0m55sk45kj5vl46jadb6a52f"; depends=[r_import radiant_basics radiant_data radiant_design radiant_model radiant_multivariate shiny]; };
-  radiant_basics = derive2 { name="radiant.basics"; version="1.0.0"; sha256="188dzsr8lwbam9hvvwqgcf08aj4ja04fvfcw315g4jy1nbhbvg33"; depends=[dplyr ggplot2 gridExtra magrittr psych r_import radiant_data scales shiny tidyr]; };
-  radiant_data = derive2 { name="radiant.data"; version="1.0.6"; sha256="08x7zasxf429m021482p86lx3zc6dqz2mih0id8s34isg4gafapg"; depends=[base64enc broom car curl dplyr DT ggplot2 glue gridExtra jsonlite knitr lubridate magrittr markdown plotly psych r_import readr readxl rlang rmarkdown rstudioapi scales shiny shinyAce shinyFiles stringi tibble tidyr writexl]; };
-  radiant_design = derive2 { name="radiant.design"; version="0.9.9"; sha256="1d5ds24b7mp8xad5pgzvjr17akr7p8m6w0ryd5fkwylnfgnhznrb"; depends=[AlgDesign dplyr mvtnorm polycor pwr r_import radiant_data shiny]; };
-  radiant_model = derive2 { name="radiant.model"; version="1.0.0"; sha256="14zk2yl40694kyri5wr7czc2ymwqa68n7jzk6j1a28l7cbgs8xfx"; depends=[car data_tree DiagrammeR dplyr e1071 ggplot2 gridExtra lubridate magrittr NeuralNetTools nnet psych r_import radiant_basics radiant_data rlang rpart sandwich shiny stringr tidyr yaml]; };
+  radiant_basics = derive2 { name="radiant.basics"; version="1.3.4"; sha256="0y4s3zhphkaxlgwmiz96nwxq1s87i2i1mnph062xghlm7x92bwc3"; depends=[dplyr ggplot2 lubridate magrittr patchwork polycor psych r_import radiant_data scales shiny tidyr]; };
+  radiant_data = derive2 { name="radiant.data"; version="1.3.4"; sha256="19sjjb49inrfl7jzq4zpwhdslni0zrp30bl58pisin29ka3ylpzs"; depends=[base64enc broom car curl dplyr DT ggplot2 glue jsonlite knitr lubridate magrittr markdown MASS patchwork plotly psych r_import randomizr readr readxl rlang rmarkdown rstudioapi scales shiny shinyAce shinyFiles stringi tibble tidyr writexl]; };
+  radiant_design = derive2 { name="radiant.design"; version="1.3.5"; sha256="1514s21jybyvpi2sx06xsxfrzgg07x7xxhwsazc61v3w1mllj2xw"; depends=[AlgDesign dplyr magrittr mvtnorm polycor pwr r_import radiant_data randomizr shiny]; };
+  radiant_model = derive2 { name="radiant.model"; version="1.3.10"; sha256="1i9l819n8xlx9dzw9hdrpl9bfar22ly5dpqlywciffi4p08p3lrl"; depends=[broom car data_tree DiagrammeR dplyr e1071 ggplot2 ggrepel lubridate magrittr NeuralNetTools nnet patchwork pdp psych r_import radiant_basics radiant_data ranger rlang rpart sandwich shiny stringr tidyr xgboost yaml]; };
   radiant_multivariate = derive2 { name="radiant.multivariate"; version="0.9.9.1"; sha256="154q06vbj13y15rz2apvy521gda8jh66yhr87kqvlv9mh2k9ws2h"; depends=[car dplyr ggplot2 ggrepel Gmedian GPArotation gridExtra magrittr MASS psych r_import radiant_data radiant_model rlang scales shiny]; };
   radiomics = derive2 { name="radiomics"; version="0.1.3"; sha256="1ra94yaqw88slznhyv70kbfricxi44m4pnx1zh4ijghm491rphr5"; depends=[Rcpp reshape2 spatstat]; };
   radir = derive2 { name="radir"; version="1.0.4"; sha256="12a99ig3n6kp5wa5rjp2w1nal4qqjs6vq05d3lrqcyl3bind6lqb"; depends=[hermite]; };
@@ -12389,7 +12459,7 @@ in with self; {
   rawKS = derive2 { name="rawKS"; version="0.1.0"; sha256="1yiw9imhgij49qbm9hk6psb73zngqmxxwnaxq144ydwb7fbk6j0z"; depends=[dplyr ggplot2 magrittr ROCR tidyr]; };
   rawr = derive2 { name="rawr"; version="0.1.0"; sha256="1a8r1vyvki3z2ms4miqv6wq9pzympgifsjx0pzzs6f4b40m083lq"; depends=[dplyr jsonlite rvest xml2]; };
   raws_profile = derive2 { name="raws.profile"; version="0.1.0"; sha256="04f7wk7x9j3rb6nn3zqss9vw0h9a4vpcjyilc2vqy0fm2by41xkg"; depends=[stringr tibble withr]; };
-  rayimage = derive2 { name="rayimage"; version="0.2.3"; sha256="17j5kxm6vp2ac3ydg2nc6aizk8i7nbp3j7qn4fnmmy9am9yq6xis"; depends=[doParallel foreach jpeg magrittr png progress raster rayshader Rcpp RcppArmadillo scales]; };
+  rayimage = derive2 { name="rayimage"; version="0.2.5"; sha256="0ihi0i93ypk75h567ay3g46n8x4ni09r4r6p6spm16hji0ri5dp1"; depends=[jpeg magrittr png progress raster Rcpp RcppArmadillo]; };
   rayrender = derive2 { name="rayrender"; version="0.6.0"; sha256="19al04afiibd0hbvlps4zwmm085x0vnfkbn5lpd3mzyilccyjhcb"; depends=[assertthat magrittr png progress purrr raster Rcpp RcppThread tibble]; };
   rayshader = derive2 { name="rayshader"; version="0.13.7"; sha256="0mlygrsbg0nzz8hhz0q28hizqh3ck4vdi67i9cvgpkrrnm13jyqx"; depends=[doParallel foreach ggplot2 magrittr png progress raster rayrender Rcpp RcppArmadillo rgl scales]; };
   rbacon = derive2 { name="rbacon"; version="2.4.1"; sha256="0xxgdh3zr2k0asxklbpyn1d0q67hdmd5r81s9y8x4anjjvz5zx0g"; depends=[coda Rcpp]; };
@@ -12441,7 +12511,7 @@ in with self; {
   rcosmo = derive2 { name="rcosmo"; version="1.1.2"; sha256="01a8g81ld0dy2bn0mqmpdz2bpd7g52jn67136hhvpxndnnlh384k"; depends=[cli entropy FITSio geoR mmap nnls Rcpp rgl tibble]; };
   rcreds = derive2 { name="rcreds"; version="0.6.6"; sha256="1sdrdgn53kgcdnxfjs8jh0h538vb3b9ixz74lbnp54yp09jpqsri"; depends=[collectArgs digest jsonlite magrittr]; };
   rcrimeanalysis = derive2 { name="rcrimeanalysis"; version="0.4.1"; sha256="1nm6hsazjg9qg41067gn3qwlrbqf8awgwb2yczkzdm2106a0rm34"; depends=[dplyr forecast ggmap htmltools igraph KernSmooth leaflet leafsync lubridate pals raster Rcpp rgdal sp]; };
-  rcrossref = derive2 { name="rcrossref"; version="0.9.2"; sha256="1383xlwy3vj08hhghx5zsy0890zsm402x9hdqzs5x5q7mxkqdwjq"; depends=[bibtex crul dplyr DT jsonlite miniUI plyr R6 shiny stringr xml2]; };
+  rcrossref = derive2 { name="rcrossref"; version="1.0.0"; sha256="1743qy5q0n2ij7x88nkk99w59vnl7g9fwpkwgb3a3s235f6lb4df"; depends=[bibtex crul dplyr DT jsonlite miniUI plyr R6 shiny stringr xml2]; };
   rcrtan = derive2 { name="rcrtan"; version="0.1.1"; sha256="0kcp3gnjmp00i1hsjagpp0dlr6zgpc4y5ihpx93hm4m3fnzcmn7x"; depends=[dplyr magrittr purrrlyr tibble tidyr]; };
   rcrypt = derive2 { name="rcrypt"; version="0.1.1"; sha256="002r5wr0bmqbj014iz8wacj883j6gqcxc786m6p9a7zdrjpx2pqi"; depends=[]; };
   rcss = derive2 { name="rcss"; version="1.8"; sha256="0c2i1zqjgl81i91b3bv70v54iib1d7hbsd1h63nip1al6lwnya4c"; depends=[nabor Rcpp RcppArmadillo]; };
@@ -12451,7 +12521,6 @@ in with self; {
   rdataretriever = derive2 { name="rdataretriever"; version="2.0.0"; sha256="0gnvvxvlfh6j887y5w83q5kg6lqqcb0c54lfcx9qp3r28hpdlxkz"; depends=[reticulate]; };
   rdbnomics = derive2 { name="rdbnomics"; version="0.5.2"; sha256="149ma5rvrfd1hcjm47g7yqwiildqcf0q3n70jfhd48fqgs0x30l9"; depends=[curl data_table jsonlite]; };
   rdd = derive2 { name="rdd"; version="0.57"; sha256="1lpkzcjd18x51wzr4d1prdjfsw5978z6zap65psfs02nszy69nqp"; depends=[AER Formula lmtest sandwich]; };
-  rddapp = derive2 { name="rddapp"; version="1.2.1"; sha256="1ypq5w6dwzkxkldj77njhzbz1daz9v3w5h92inxbiyym2bcf2prk"; depends=[AER Formula lmtest plot3D R_utils sandwich shiny sp]; };
   rddensity = derive2 { name="rddensity"; version="1.0"; sha256="0v94izsghy35b33dq5b28p2lqs1fw1snyipdf9vgjz5s3qkzjkd8"; depends=[ggplot2 lpdensity]; };
   rde = derive2 { name="rde"; version="0.1.0"; sha256="1zw9gdh90hl0wc5c0xwl5x7566r611wk73sbqdmpzpswjyyl9aqm"; depends=[clipr]; };
   rdetools = derive2 { name="rdetools"; version="1.0"; sha256="0pkl990viv7ifr7ihgdcsww93sk2wlzp2cg931wywagfp8dijd02"; depends=[]; };
@@ -12475,7 +12544,6 @@ in with self; {
   rdtLite = derive2 { name="rdtLite"; version="1.2.1"; sha256="0mm2psp8j1dfvah5d68a721kl3klins038nwgbv4s6x38a9amvq6"; depends=[curl digest ggplot2 gtools jsonlite knitr provSummarizeR provViz rmarkdown sessioninfo stringi XML]; };
   rdwd = derive2 { name="rdwd"; version="1.3.1"; sha256="0pz2574rbsvg79n98ndvmhxxpk76qlq9qyv052y74871mj6dkzff"; depends=[berryFunctions pbapply]; };
   rdwplus = derive2 { name="rdwplus"; version="0.1.0"; sha256="1y4dnm2bb0w6pim4h79mv2km88s78vhsn5fhs7z45m0564hgk0x2"; depends=[raster rgrass7]; };
-  re2r = derive2 { name="re2r"; version="0.2.0"; sha256="0xv355h4bps4a0picxmi6i15niq4knlail80fp9xvszyn72pm8gq"; depends=[htmlwidgets Rcpp RcppParallel stringi]; };
   reReg = derive2 { name="reReg"; version="1.2.1"; sha256="0nfi02wlmb1n8j134qgv3p03z2j200kkrwhvd5i17ybhzpwfndri"; depends=[BB ggplot2 MASS nleqslv reda scam SQUAREM survival]; };
   reactR = derive2 { name="reactR"; version="0.4.2"; sha256="11rahxskch0r5hlqs7iy285dlhrmzm4vl18kbakx4jggwjqh61f5"; depends=[htmltools]; };
   reactable = derive2 { name="reactable"; version="0.1.0.1"; sha256="0pd9l1dnkglbncr2blbrrz6np69y75rj8fsb6zcw7qm95h579nm3"; depends=[digest htmltools htmlwidgets jsonlite reactR]; };
@@ -12652,7 +12720,7 @@ in with self; {
   retistruct = derive2 { name="retistruct"; version="0.6.2"; sha256="191kpd3fwgv48i4a048lgrir3lcvyjvaj41hxifxgkkg1g0gv3f0"; depends=[foreign geometry png R_matlab R6 rgl RImageJROI RTriangle sp ttutils]; };
   retractcheck = derive2 { name="retractcheck"; version="1.0.0"; sha256="1c4p8afh9g359s560sswcys3manc0lqvk0aqgvd09p4rpzls2dm7"; depends=[httr plyr textreadr]; };
   retrodesign = derive2 { name="retrodesign"; version="0.1.0"; sha256="173jrpzasimplv8vbm8gzpl8aibnsjkgvhz1hd75is0b2l8gnbxy"; depends=[]; };
-  retrosheet = derive2 { name="retrosheet"; version="1.1.0"; sha256="1k0qnq9a3ixk91qmmp5wxwv8l0878yx5h32a458w5a4h4ip434jx"; depends=[data_table httr rvest stringi stringr xml2]; };
+  retrosheet = derive2 { name="retrosheet"; version="1.1.1"; sha256="1x9gh9zjb4r1nyfbcb79c656a8hzrfasdir8p968inqmr08b57v0"; depends=[data_table httr lubridate purrr readr rvest stringi stringr tibble xml2]; };
   reutils = derive2 { name="reutils"; version="0.2.3"; sha256="09dhf4s7wz3anrkzqi16abx64gk8ck2142kfd8pv71mjy3x548l7"; depends=[assertthat jsonlite RCurl tibble XML]; };
   reval = derive2 { name="reval"; version="2.0.0"; sha256="1yxkyc6wdp5h3cp8i42a9cf0b1cwr4nmpd7svlp7bpfxlcnqqa0d"; depends=[doParallel foreach]; };
   revdbayes = derive2 { name="revdbayes"; version="1.3.6"; sha256="15nrmnl3g4l8yn6x1xvbfjn4fznryvgkvaqyxjr929v05rrf3fl0"; depends=[bayesplot Rcpp RcppArmadillo rust]; };
@@ -12668,7 +12736,7 @@ in with self; {
   rfPermute = derive2 { name="rfPermute"; version="2.1.81"; sha256="0mak4r3j5vbjjkcsbxj0yg2xrbipq4rz873b02drkb769nh3d16a"; depends=[abind dplyr ggplot2 gridExtra magrittr randomForest rlang scales swfscMisc tibble tidyr]; };
   rfUtilities = derive2 { name="rfUtilities"; version="2.1-5"; sha256="1anwvmxn3xrc1aqxl75rzlk4wby8l54rmkp0bgi8dgbz2l223xr0"; depends=[cluster randomForest]; };
   rfVarImpOOB = derive2 { name="rfVarImpOOB"; version="1.0"; sha256="1341bicd65qw3pz1j8d6c9baj9d6s70ljdaaf87xvx8pjnajrfsw"; depends=[binaryLogic dplyr ggplot2 ggpubr magrittr prob randomForest titanic]; };
-  rfacebookstat = derive2 { name="rfacebookstat"; version="2.0.1"; sha256="116igd2xfrk7hqvdvwbah0f20mandv54b8jg0z2i92igppb22n99"; depends=[dplyr httr jsonlite purrr stringr tidyr tidyselect]; };
+  rfacebookstat = derive2 { name="rfacebookstat"; version="2.0.2"; sha256="0szzrlszjxapn86mk29f1nn39fmkfwjslbbcmqqj2harlnccafr7"; depends=[dplyr httr jsonlite purrr stringr tidyr tidyselect]; };
   rfbCNPJ = derive2 { name="rfbCNPJ"; version="0.1.1"; sha256="0zvpazxi184ia2wql0120kw7665dn9cs8a2kv91n79pncabb4xfg"; depends=[fs glue httr magrittr progress purrr readr stringr tibble xml2]; };
   rfigshare = derive2 { name="rfigshare"; version="0.3.7"; sha256="1qgzn0mpjy4czy0pnbi395fxxx84arkg8r7rk8aidmd34584gjiq"; depends=[ggplot2 httpuv httr plyr RJSONIO XML yaml]; };
   rfinterval = derive2 { name="rfinterval"; version="1.0.0"; sha256="1z7v0sbql6g2h3fr1268nj79rbx1d33hjfaraxhbikrjgb8mbp0w"; depends=[MASS ranger]; };
@@ -12721,7 +12789,7 @@ in with self; {
   riceidconverter = derive2 { name="riceidconverter"; version="1.1.1"; sha256="143f76v3k2q9ddcxf2nzvd04pjgy7p120ln0zkmxpal20c81dwq6"; depends=[dplyr]; };
   riceware = derive2 { name="riceware"; version="0.4"; sha256="0pky0bwf10qcdgg9fgysafr35xbmnr9q0jbh56fawj99nbyj3m70"; depends=[random]; };
   rich = derive2 { name="rich"; version="1.0.1"; sha256="0kasr9gb85qhngfayqy3fvrsr0a066krwxsx21nsxcnss0mrqygr"; depends=[boot vegan]; };
-  ridge = derive2 { name="ridge"; version="2.4"; sha256="18a16653k850sfxw9rmk4spy44hn93i97b2a0jfx41qh43hmkgqy"; depends=[]; };
+  ridge = derive2 { name="ridge"; version="2.5"; sha256="0v84glz2436a1n6wqrc46x2lya2f3vn94b83cv0rqlvqygqhyz8r"; depends=[]; };
   ridigbio = derive2 { name="ridigbio"; version="0.3.5"; sha256="0526nscxynl3857zybpms1wr3230qby29kxglm919pcdvpjb5kz5"; depends=[httr jsonlite plyr]; };
   ridittools = derive2 { name="ridittools"; version="0.1"; sha256="1m9xbwxb277l4cd85qxmpw66gyavpwamgwr8kyf8vqarzfbwiilr"; depends=[]; };
   riem = derive2 { name="riem"; version="0.1.1"; sha256="0lwhsxb4pm26kb65hs8pa63bsbrgy0zchqm4i6pq9f2r9h8vsm1m"; depends=[httr jsonlite lubridate tibble]; };
@@ -12758,10 +12826,11 @@ in with self; {
   rjmcmc = derive2 { name="rjmcmc"; version="0.4.5"; sha256="14rzvp6z5avlcnmlmvb6w4gvlh6v4ncbcai3v4c4svnjv555vz45"; depends=[coda madness mvtnorm]; };
   rjson = derive2 { name="rjson"; version="0.2.20"; sha256="0v1zvdd3svnavklh7y5xbwrrkbvx6053r4c5hgnk7hz7bqg7qa1s"; depends=[]; };
   rjsonapi = derive2 { name="rjsonapi"; version="0.1.0"; sha256="0qshll0y8b6lbfrqmp69w9kc9hgfrz94dk68nddshk9ilg14lx4d"; depends=[crul jsonlite plumber R6]; };
-  rjstat = derive2 { name="rjstat"; version="0.3.0"; sha256="0r772p0a0x6g96k6r26vb6vjxa68mzjslwg71r0wysa9kqhvypm4"; depends=[checkmate jsonlite]; };
+  rjstat = derive2 { name="rjstat"; version="0.4.1"; sha256="0kqnl4wizmain70ady982aldhscf24870shvf3sviknplshhgk8j"; depends=[checkmate jsonlite]; };
   rjwsacruncher = derive2 { name="rjwsacruncher"; version="0.1.0"; sha256="0pbf3yl7cnx8vv07x9nwgrglv5h8r135fc840pxvapi099nr7ijl"; depends=[XML]; };
   rkafka = derive2 { name="rkafka"; version="1.1"; sha256="0c0hszsmmd876jcfamjcfb7bxw7869zgy99j4i6ksb8za232nmmw"; depends=[rJava rkafkajars RUnit]; };
   rkafkajars = derive2 { name="rkafkajars"; version="1.1"; sha256="121qnzxhipgv145lhmr6h356jpdd6knsx7f21cv9a8r5r009d42z"; depends=[rJava RUnit]; };
+  rkeops = derive2 { name="rkeops"; version="1.4"; sha256="1wwca6ym32a7l0w85sgysyvyjqy43hly76gm28s4bklx58ap7l1y"; depends=[openssl Rcpp RcppEigen stringr]; };
   rknn = derive2 { name="rknn"; version="1.2-1"; sha256="1x9r01314q0wgqwqzd7d13ycjzb4jzghzd3whgjvm2rsmnabai95"; depends=[gmp]; };
   rkt = derive2 { name="rkt"; version="1.5"; sha256="1rgf7dnk4d1b46rns2mb2s1ilxq7hqrh057vrrl00324r4h8bs1k"; depends=[]; };
   rkvo = derive2 { name="rkvo"; version="0.1"; sha256="0ci8jqf9nc8hb063nckxdnp0nlyr4ghby356lxm00anw44jlmw8v"; depends=[Rcpp]; };
@@ -12859,7 +12928,7 @@ in with self; {
   robustSingleCell = derive2 { name="robustSingleCell"; version="0.1.1"; sha256="1rxjw5rwp20ssjgq26ajrbipqfjblmsgf87jgx7xa41mgmhwaq51"; depends=[biomaRt cccd dplyr GGally ggplot2 ggpubr ggrepel gplots igraph limma Matrix RANN RColorBrewer Rcpp reshape2 rslurm Rtsne scales]; };
   robustX = derive2 { name="robustX"; version="1.2-4"; sha256="02476pl6gnv1sgp5qywlm79gkaxlghms2c1arj4b16r0gz0g230r"; depends=[robustbase]; };
   robustarima = derive2 { name="robustarima"; version="0.2.5"; sha256="0mqlp4xmma74rgwb6rihbzs5nillcnddl6smlxmm8lq1wba27jdj"; depends=[splusTimeDate splusTimeSeries]; };
-  robustbase = derive2 { name="robustbase"; version="0.93-5"; sha256="0mkzbsjl5nihyj7mzks14p6kr3spp44xvygjz4ran11gspdn9rdx"; depends=[DEoptimR]; };
+  robustbase = derive2 { name="robustbase"; version="0.93-6"; sha256="1cr478xi4n9jwsdpbq182a7ig47rpb413q28dz6d1am08sk6657a"; depends=[DEoptimR]; };
   robustfa = derive2 { name="robustfa"; version="1.0-5"; sha256="04nk5ipml54snsmiqf5sbhx490i46gnhs7yibf4wscrsj1bh2mqy"; depends=[rrcov]; };
   robustgam = derive2 { name="robustgam"; version="0.1.7"; sha256="0s1z7jylj757g91najbyi1aiqnssd207jfm9yhias746540qp3kw"; depends=[mgcv Rcpp RcppArmadillo robustbase]; };
   robustlmm = derive2 { name="robustlmm"; version="2.3"; sha256="1rfiz29wy20srwd24ja42fh51ng9vyqrkjbb2dzvsqf663hsf1q0"; depends=[cubature fastGHQuad ggplot2 lattice lme4 Matrix nlme Rcpp RcppEigen robustbase xtable]; };
@@ -12892,7 +12961,7 @@ in with self; {
   rootWishart = derive2 { name="rootWishart"; version="0.4.1"; sha256="1l9pr3i20hi5k02qnlb3blxhlvp2j0njn74xslw3gcjvyzjlr12j"; depends=[BH Rcpp RcppEigen]; };
   roots = derive2 { name="roots"; version="1.0"; sha256="1ssmmmrg18xmqxs6f7dqv07357iwcvk21j1gxsl8s9njbj2plxai"; depends=[animation igraph rARPACK]; };
   rope = derive2 { name="rope"; version="1.0"; sha256="06qp6h8cjnz0yacm4r39k99hrw74iyq16h5mqfcki7sf3zqbfm7r"; depends=[]; };
-  ropenaq = derive2 { name="ropenaq"; version="0.2.7"; sha256="161yc2d82iivxaqpl5kzvxcmcqjpv6s5jj9pa304vj8cz0rnxgfr"; depends=[crul dplyr jsonlite lazyeval lubridate tidyr]; };
+  ropenaq = derive2 { name="ropenaq"; version="0.2.8"; sha256="16vl1cwkbrph5cvp3wws2x4d8gj2gdrbmfvljy03h05z5b2psd4m"; depends=[crul dplyr jsonlite lubridate magrittr rlang tidyr]; };
   ropenblas = derive2 { name="ropenblas"; version="0.2.2"; sha256="1sbk41nd2hjv93a7xd1jlpcxs7gdrkp6j27x8312zarwla2ra0qd"; depends=[cli fs getPass git2r glue magrittr RCurl rstudioapi stringr XML]; };
   ropendata = derive2 { name="ropendata"; version="0.1.0"; sha256="1bv6y241abs6pb4wq5ybx9x4zh72kf8ffs3vlcgdsmhw4jwrsxdl"; depends=[httr jsonlite]; };
   ropensecretsapi = derive2 { name="ropensecretsapi"; version="1.0.1"; sha256="0d4yl0h4am3blskdnzk119hk374c3vx0cg99r20w07yh8jfafrw7"; depends=[RCurl RJSONIO]; };
@@ -12922,7 +12991,7 @@ in with self; {
   rpact = derive2 { name="rpact"; version="2.0.6"; sha256="09ikjcvz6jisbl387j5idypwxqn2ir55cq8f19klwc0p0d113wg4"; depends=[Rcpp]; };
   rpanel = derive2 { name="rpanel"; version="1.1-4"; sha256="0yzasb4k5jcx3wfsll9k9alyrwc0l1x6pk91nj7cqrdiapw8j519"; depends=[]; };
   rpart = derive2 { name="rpart"; version="4.1-15"; sha256="0p5frya963ppn476p5dxs2mnarsalksr6gw9zzmjsn8ikq7bx3ib"; depends=[]; };
-  rpart_LAD = derive2 { name="rpart.LAD"; version="0.1.0"; sha256="07mp3gi15h3d5vs27nx2d5nawms3fly2mcqvkr2vb8aq6m377p3b"; depends=[Rcpp rpart]; };
+  rpart_LAD = derive2 { name="rpart.LAD"; version="0.1.1"; sha256="08gmfpp7dllqyhxbls7bahrsz0jw4dnqd02j9l23lfs4fvwgb3w8"; depends=[Rcpp rpart]; };
   rpart_plot = derive2 { name="rpart.plot"; version="3.0.8"; sha256="0y8054jw44jkjg8ijp3p2grsqwrmsdfzk8vps9ksgm7mgfq5732d"; depends=[rpart]; };
   rpart_utils = derive2 { name="rpart.utils"; version="0.5"; sha256="00ahvmly6cdf7qhhcic0dbjlljqq8kbhx15rc7vrkd3hzd55c0im"; depends=[rpart]; };
   rpartScore = derive2 { name="rpartScore"; version="1.0-1"; sha256="15zamlzbf6avir8zfw88531zg5c0a6sc5r9v5cy9h08ypf34xf4y"; depends=[rpart]; };
@@ -12948,7 +13017,7 @@ in with self; {
   rpostgisLT = derive2 { name="rpostgisLT"; version="0.6.0"; sha256="1adwpkfndm6n3s9xcx8zrwnj6bmgvq4nzs072fnl5i6kjy6ngjm6"; depends=[adehabitatLT DBI htmltools leaflet lubridate magrittr mapview rpostgis RPostgreSQL sf shiny shinyWidgets sp]; };
   rpql = derive2 { name="rpql"; version="0.7"; sha256="18llgwk1jfwf3y1dabpc508kfb1k4yh4cr4k76azkziv11arbh0c"; depends=[gamlss_dist lme4 MASS Matrix mvtnorm Rcpp RcppArmadillo]; };
   rpredictit = derive2 { name="rpredictit"; version="0.0.2"; sha256="1gsfcs5l83p4x0glhnq5hidh5rxwipklsj0nzkxaim65w9kqgx30"; depends=[dplyr DT dygraphs httr jsonlite magrittr quantmod shiny stringr xts]; };
-  rprev = derive2 { name="rprev"; version="1.0.3"; sha256="14jc0bszb3cqfqqx5sdvfb3bddrxsifmf97x7cj1lg6pm85wdpvi"; depends=[data_table dplyr ggplot2 lazyeval lubridate magrittr survival tidyr]; };
+  rprev = derive2 { name="rprev"; version="1.0.4"; sha256="1dzqbvfx3fcgfz3b18wwaaprvp0szjfshm8dgmj3r4vyzx71v9lv"; depends=[data_table dplyr ggplot2 lazyeval lubridate magrittr survival tidyr]; };
   rprime = derive2 { name="rprime"; version="0.1.0"; sha256="1v6n1qi0i7x8xgizbyvp1mnwc316lsan4rvam44fgjj45fcd79gd"; depends=[assertthat plyr stringi stringr]; };
   rprintf = derive2 { name="rprintf"; version="0.2.1"; sha256="0rwqpln0igxb4m6d6jyp7h3shfb8sbp0kj7cgkffjp88hn9qm4h3"; depends=[stringi]; };
   rprojroot = derive2 { name="rprojroot"; version="1.3-2"; sha256="12r3fdxmi2pmwn6ic3rhg0b20ll5z420m0d8fziv1n21961namnz"; depends=[backports]; };
@@ -13030,7 +13099,6 @@ in with self; {
   rstpm2 = derive2 { name="rstpm2"; version="1.5.1"; sha256="0p1zqqjss8i5wca4qvr56d6p9ak20ki4cfbxja1wrhkp4kii29r6"; depends=[bbmle deSolve fastGHQuad mgcv Rcpp RcppArmadillo survival]; };
   rstream = derive2 { name="rstream"; version="1.3.6"; sha256="1mr869hff5wdpw6a7x71366y8dxf9vljbb11fssfkhcf7hm2ipnj"; depends=[]; };
   rstudioapi = derive2 { name="rstudioapi"; version="0.11"; sha256="0srh0m4mw4k6s7spwb84l4cx4xnn04cp5cjxi0fwza7bwavpzq0k"; depends=[]; };
-  rsubgroup = derive2 { name="rsubgroup"; version="0.9"; sha256="060kcp3agjjfj23wxsdbmiis9n9hlwydr7x8yj7l6328ibalp61a"; depends=[foreign rJava]; };
   rsurface = derive2 { name="rsurface"; version="1.1.0"; sha256="1pymbgvr72nqd66wap5wrcizzx2k9bfr6vkxv6dkvjmi8q7jl2gv"; depends=[plotly rsm]; };
   rsurfer = derive2 { name="rsurfer"; version="0.2"; sha256="14zd8fhak12yha6miwb84085722v5ipk8lagijhc6af291kp70i9"; depends=[gdata stringr]; };
   rsvd = derive2 { name="rsvd"; version="1.0.3"; sha256="1fvrw46fl5xb2akaa4mp8nja4h7nn4bdhnjdrk22fsdfqc7hwmhk"; depends=[Matrix]; };
@@ -13043,7 +13111,7 @@ in with self; {
   rtematres = derive2 { name="rtematres"; version="0.2"; sha256="1d0vrprvnlk4hl2dbc6px9xn9kx9d1qvlqxd798hzda6qg5wwvf2"; depends=[gdata plyr RCurl XML]; };
   rtemps = derive2 { name="rtemps"; version="0.4.0"; sha256="04ipklqsx4c7h95zj76g55h5kq33mabkydzr9lcvsfrc7ms7jjmi"; depends=[bookdown DT ggplot2 knitr rmarkdown xfun]; };
   rtext = derive2 { name="rtext"; version="0.1.21"; sha256="0j2jfz0mz9552dwa78d527lxipmj5ql8q8np8qq5jw4ka6wj5lbs"; depends=[digest hellno magrittr R6 Rcpp RSQLite stringb]; };
-  rtf = derive2 { name="rtf"; version="0.4-14"; sha256="1v4vb2ijqlbqcjqdhf85kfzs67whkhm6ygp5cw8xa6qw179vkgd5"; depends=[R_methodsS3 R_oo]; };
+  rtf = derive2 { name="rtf"; version="0.4-14.1"; sha256="032ff0yavqmd2d9svgwkmvxwh0cxjbac6pj48v4cshi898f02rhh"; depends=[R_methodsS3 R_oo]; };
   rticles = derive2 { name="rticles"; version="0.14"; sha256="1377fib4asazhhki4aajvld0wa35vd3zjvyl3lf2hjm2qk3vyak7"; depends=[knitr rmarkdown tinytex xfun yaml]; };
   rtide = derive2 { name="rtide"; version="0.0.7"; sha256="1l2fradbknlbgsm6nj89k9bhg7fxdrh0wcnar0mdgqqcr8qzs8hk"; depends=[abind chk dttr2 tibble]; };
   rtiff = derive2 { name="rtiff"; version="1.4.7"; sha256="0l0chjbn8kipnhi37zshphxmxga6id39rm5gzz5gjrv8bnaaxxqb"; depends=[pixmap]; };
@@ -13053,7 +13121,7 @@ in with self; {
   rtist = derive2 { name="rtist"; version="1.0.0"; sha256="0p4jlz0z0nbvmixdrym6nqagz2i28zbsijcj785rd6wiy72d2hg5"; depends=[]; };
   rtk = derive2 { name="rtk"; version="0.2.5.8"; sha256="1ybppi5h86gb324hlkx91m2kk2dw7hi5k5l2fh5h1xnlqjv55n0b"; depends=[Rcpp]; };
   rtkore = derive2 { name="rtkore"; version="1.5.5"; sha256="0srk0ih4gbmhb1pl6zf8sjwrkdmgws9cl1397fcqv6l3bc376622"; depends=[inline Rcpp]; };
-  rtmpt = derive2 { name="rtmpt"; version="0.1-18"; sha256="03ip66wkvg578gmaqq8990216jss8rlayfxb0b62imam5a0l4p3i"; depends=[coda data_table loo matrixcalc stringr truncnorm]; };
+  rtmpt = derive2 { name="rtmpt"; version="0.1-19"; sha256="1cpakgy0rmy27b14krmgdrf1fi0mar4k5rklnvmphivid8150gzn"; depends=[coda data_table loo matrixcalc stringr truncnorm]; };
   rtop = derive2 { name="rtop"; version="0.5-14"; sha256="1wwllckginnzisapbklpsizy47db24r83xahq4qsd8zhqvv9yj33"; depends=[gstat sp]; };
   rtrek = derive2 { name="rtrek"; version="0.3.0"; sha256="0nfkmcyrb1gbgjjy62ffjlg6x93zy4s4qg6ii98gjbn0jp6pcj1j"; depends=[downloader dplyr ggplot2 jpeg jsonlite magrittr memoise purrr rvest tibble tidyr xml2]; };
   rtrends = derive2 { name="rtrends"; version="0.1.0"; sha256="04xdggf36m294drb9z8khdjr6fgsg4bwkb4mmbbvqfzjpq4mq4y1"; depends=[dplyr lubridate tidyr]; };
@@ -13064,7 +13132,7 @@ in with self; {
   rtsplot = derive2 { name="rtsplot"; version="0.1.2"; sha256="1y2is2n2r0xz71ajvxqc22qg8dzidrzq475a7nc7xjgfriayx535"; depends=[quantmod RColorBrewer xts zoo]; };
   rtweet = derive2 { name="rtweet"; version="0.7.0"; sha256="05pbvxm2vmf6935b9s6663k3aifnkr3m52wh2jvnplmrwyrfpn9n"; depends=[httpuv httr jsonlite magrittr progress Rcpp tibble]; };
   rtype = derive2 { name="rtype"; version="0.1-1"; sha256="0wjf359w7gb1nrhbxknzg7qdys0hdn6alv07rd9wm6zynnn1vwxy"; depends=[]; };
-  rtypeform = derive2 { name="rtypeform"; version="2.0.0"; sha256="00as49l9plncc25bn93x36hpxnxachsh382ivhq6k9d9gi8424c0"; depends=[dplyr glue httr jsonlite lubridate purrr tibble tidyr]; };
+  rtypeform = derive2 { name="rtypeform"; version="2.0.1"; sha256="09lcfdkwk274zxkbvg4l1v62xcb9p98qix6rg8ksniz35230f6f0"; depends=[assertthat dplyr glue httr jsonlite lubridate purrr tibble tidyr]; };
   rubias = derive2 { name="rubias"; version="0.3.0"; sha256="18sivq5ilq14mqs62vh6l24fcayvd7ffdbva94ir6n0gx9axmm22"; depends=[dplyr gtools magrittr Rcpp RcppParallel readr rlang stringr tibble tidyr]; };
   rucm = derive2 { name="rucm"; version="0.6"; sha256="1n6axmxss08f2jf5impvyamyhpbha13lvrk7pplxl0mrrrl5g0n8"; depends=[KFAS]; };
   rucrdtw = derive2 { name="rucrdtw"; version="0.1.4"; sha256="0865x8i2n63xjbq0pzalm4gd6rpg72yrcsm4rw40a3kzy2svvnlm"; depends=[Rcpp]; };
@@ -13096,7 +13164,7 @@ in with self; {
   rviewgraph = derive2 { name="rviewgraph"; version="1.2"; sha256="0qw1fdfwg2763a1k1qmryblw5rpagsi5p70rs7fj256zfcjvwrz8"; depends=[rJava]; };
   rvinecopulib = derive2 { name="rvinecopulib"; version="0.5.1.1.0"; sha256="1616xqchjyqqf2nmgx5rlpnw8g4696lvlpmrx7jav2cnvkff7s2i"; depends=[assertthat BH kde1d lattice Rcpp RcppEigen RcppThread wdm]; };
   rvkstat = derive2 { name="rvkstat"; version="2.6.3"; sha256="0vh5gsvfs01f7mw0cl1wap1w1nsgr4fyv9fdays8b8ad3gc17a2r"; depends=[httr jsonlite RCurl tidyr]; };
-  rwalkr = derive2 { name="rwalkr"; version="0.5.1"; sha256="1436qdwx1i8868wj45xdrr79bvsf9qaf5msjc778qlmvyyyswxh7"; depends=[dplyr hms httr tidyr]; };
+  rwalkr = derive2 { name="rwalkr"; version="0.5.2"; sha256="1661vg5mdizgynlniq6pibmhn0spnh3d4w6bh08nyjwwchkagrxi"; depends=[dplyr hms httr tidyr]; };
   rwars = derive2 { name="rwars"; version="1.0.0"; sha256="0kmwpr6gn3xsf0pqx153vblpjbhc34mzlgyv8xb2nw78nf8znfij"; depends=[httr]; };
   rwavelet = derive2 { name="rwavelet"; version="0.4.0"; sha256="0wb3kd97inyh985q1hspnzwxfawfdps43r3zzdpw0jd8sgd7zqxp"; depends=[signal]; };
   rwc = derive2 { name="rwc"; version="1.11"; sha256="1qhgkbkp4nz0wq5c4x8232xiszpiyzcdklfgvpnx4cbp3bbfdi4g"; depends=[MASS Matrix mvtnorm raster]; };
@@ -13142,6 +13210,7 @@ in with self; {
   sadists = derive2 { name="sadists"; version="0.2.3"; sha256="17jlzx5h5l1w7riz0rs99w31n6lxnnxwzbzqn2z5r292j2nxvmkw"; depends=[hypergeo orthopolynom PDQutils]; };
   sads = derive2 { name="sads"; version="0.4.2"; sha256="1j6vdjvpnbqp4kwbvhcl8p51ln29mmk9n150718wsqlifb8d1lw9"; depends=[bbmle GUILDS MASS poilog VGAM]; };
   sae = derive2 { name="sae"; version="1.3"; sha256="1ncrlzgnga9pfa2j8x1y6axl2665rp08aff98zrim6gq6n6yap8z"; depends=[lme4 MASS]; };
+  saeME = derive2 { name="saeME"; version="1.0.1"; sha256="1w77ncha9xs5p3pzfd3y38q8kz2wjzh35zyn4cby0yp2cyw4xxd9"; depends=[expm MASS]; };
   saeRobust = derive2 { name="saeRobust"; version="0.2.0"; sha256="1bdfrsm59xwkga0kxl3r5n83mhhkyzj7gplrgx26gyflashyd1zc"; depends=[aoos assertthat ggplot2 magrittr MASS Matrix memoise modules pbapply Rcpp RcppArmadillo spdep]; };
   saeSim = derive2 { name="saeSim"; version="0.10.0"; sha256="0nh8x2v0g8i0rjq4s5q0ayhyxhl5p0126plmd4vnnhaifm6pn0q3"; depends=[dplyr functional ggplot2 MASS parallelMap spdep]; };
   saemix = derive2 { name="saemix"; version="2.3"; sha256="08n1syv8wkf1nqz8i1n3ippyp63g56xf8xqgczxm630r6802yqab"; depends=[]; };
@@ -13187,6 +13256,7 @@ in with self; {
   sas7bdat = derive2 { name="sas7bdat"; version="0.5"; sha256="0qxlapb6wdhzpwlmzlhscy3av7va3h6gkzsppn4sx5q960310an3"; depends=[]; };
   sasMap = derive2 { name="sasMap"; version="1.0.0"; sha256="11vhhxhakqm1gsb3p4s4966sapmrqfyw79zfppbx5lnqi3xr0ngn"; depends=[readr stringi stringr]; };
   sass = derive2 { name="sass"; version="0.2.0"; sha256="0qzrncsnp0zd8jyp4whss92m7llqsfccmp9p9r3gdc7hlq1amp3z"; depends=[digest fs htmltools rlang]; };
+  sate = derive2 { name="sate"; version="1.1.0"; sha256="0d1b0gp5abh5g7a25ff40xdnncrl2afjnlcc56dbhqkk43gjah17"; depends=[MASS]; };
   satellite = derive2 { name="satellite"; version="1.0.2"; sha256="1ib9g4cplksf9ymp8hcv843lv5bpar31w8h4wnmya5hjsdmlfiv4"; depends=[plyr raster Rcpp]; };
   satscanMapper = derive2 { name="satscanMapper"; version="1.0.1"; sha256="1qr7xz7qp39nylkrx3smzga7rvi2z9yws8kbpmfk13avixr4asvy"; depends=[foreign RColorBrewer SeerMapper sp stringr]; };
   saturnin = derive2 { name="saturnin"; version="1.1.1"; sha256="0cjp4h1s9ivn17v8ar48mxflaj9vgv92c8p9l2k5bc9yqx9mcs36"; depends=[Rcpp RcppEigen]; };
@@ -13201,7 +13271,7 @@ in with self; {
   sboost = derive2 { name="sboost"; version="0.1.1"; sha256="126rqvpqwvwjxvsg1v04nkmd6af55j7sgx43jg2vnggyrlli9j9q"; depends=[dplyr Rcpp rlang]; };
   sbpiper = derive2 { name="sbpiper"; version="1.9.0"; sha256="0pjq88ixk494wlz4nh5anbsn59mmh9wg564qh3vzwwqgxf1k61cg"; depends=[colorRamps data_table factoextra FactoMineR ggplot2 Hmisc reshape2 scales stringr]; };
   sbrl = derive2 { name="sbrl"; version="1.2"; sha256="1d0f2mlzzcghhvqagrr954qa69b5v47milw3iazxihh8q1qlird2"; depends=[arules Rcpp]; };
-  sbtools = derive2 { name="sbtools"; version="1.1.9"; sha256="0azk4sa2h60yyfnskcicpiaqb3wrw0x64drb2z38y5k4jrrjbmlq"; depends=[curl httr jsonlite stringr]; };
+  sbtools = derive2 { name="sbtools"; version="1.1.10"; sha256="0pn4rp8cfvdjbfn4xgzhm5x5r73v11djksh6jdw7mv7nrci9rqpb"; depends=[curl httr jsonlite stringr]; };
   sbw = derive2 { name="sbw"; version="1.0"; sha256="07lr2sh681q0wvyaf7ixif5riw9kfxv4hraxj8hzqaxcsip743vq"; depends=[MASS Matrix quadprog slam spatstat]; };
   scBio = derive2 { name="scBio"; version="0.1.5"; sha256="12wch9dp7n9vigv7rp7i5b5sckn9vvckpclylinnbi1mhawxprv9"; depends=[doSNOW fields foreach LiblineaR limma raster sp]; };
   scMappR = derive2 { name="scMappR"; version="0.1.1"; sha256="1mfbjv7gpj63q5gwqcajjrnbhr918nvl41hk8ggk1l30wqg4k4r1"; depends=[downloader ggplot2 gProfileR gprofiler2 GSVA limSolve pcaMethods pheatmap Seurat]; };
@@ -13210,6 +13280,7 @@ in with self; {
   scRNAtools = derive2 { name="scRNAtools"; version="1.0"; sha256="0x0lniqhq6q87y08kkkyvmk1g5b8i73hm3h86ba8rcv0v0n7ap9a"; depends=[ALL ConsensusClusterPlus corrplot edgeR foreach ggplot2 ggthemes Hmisc igraph lattice limma PerformanceAnalytics plyr reshape2 Rmisc Rtsne scatterplot3d survival TPEA]; };
   scTenifoldNet = derive2 { name="scTenifoldNet"; version="1.2.0"; sha256="1n86fcvx0a34xd2h9d9kmyn991lqh6573rrkicql946pm697g4vz"; depends=[MASS Matrix pbapply reticulate RSpectra]; };
   scaRabee = derive2 { name="scaRabee"; version="1.1-3"; sha256="1yap3hi36f8hk93jn59nxrbgq8iw0xwkkm3pc2gb50cpcpaq41pd"; depends=[deSolve lattice neldermead]; };
+  scaffolder = derive2 { name="scaffolder"; version="0.0.1"; sha256="1va1mlhqv5qn0hm81ypdir9llr68222qxjp3jink69zpaskfbdib"; depends=[reticulate]; };
   scagnostics = derive2 { name="scagnostics"; version="0.2-4.1"; sha256="1azg1xlid63l9mcyns9yyl3a3hykbl0sl0h5jhyvzjzahfyanq53"; depends=[rJava]; };
   scaleboot = derive2 { name="scaleboot"; version="1.0-1"; sha256="1q0bs5f1vgja5gj3id1ny6raja8ljgd8dk50fs1wn90f6080afy7"; depends=[mvtnorm pvclust]; };
   scales = derive2 { name="scales"; version="1.1.0"; sha256="00rdbfj5mwc3kr8pskidn3n2zkp4ms6cx36xazz54pxw3pysdr0y"; depends=[farver labeling lifecycle munsell R6 RColorBrewer viridisLite]; };
@@ -13275,6 +13346,7 @@ in with self; {
   sdPrior = derive2 { name="sdPrior"; version="1.0-0"; sha256="0g4crlasnvxz752n3az5jc681jvvj2g87c3a8s2h1i2vh64p5h37"; depends=[doParallel GB2 MASS mgcv mvtnorm pscl]; };
   sdStaf = derive2 { name="sdStaf"; version="1.0.2"; sha256="0r7lqj30r3f0b18kpahi63zsdizcw2zjf1vvvs04s4cg1djjbcp3"; depends=[dismo dplyr ggplot2 raster rasterVis rgdal rgeos sp tidyr]; };
   sda = derive2 { name="sda"; version="1.3.7"; sha256="1v0kp6pnjhazr8brz1k9lypchz8k8gdaby8sqpqzjsj8klghlcjp"; depends=[corpcor entropy fdrtool]; };
+  sdafilter = derive2 { name="sdafilter"; version="1.0.0"; sha256="0y692j25pln46dp6xvaq17fkym0461yqfa6rv5avfw2b240k8jiq"; depends=[glasso glmnet huge POET]; };
   sdat = derive2 { name="sdat"; version="1.1"; sha256="1mxijw2yfblqjvqqb2xrzhfn9c872i1q9ggw24xicvr2fk4lvjw6"; depends=[]; };
   sdcHierarchies = derive2 { name="sdcHierarchies"; version="0.18.2"; sha256="09f9b6padx6jsjhh0d7qa7qs99rar4j9fbmyp9569ywc9ld7z7mm"; depends=[cli data_table jsonlite rlang shiny shinyjs shinythemes shinyTree]; };
   sdcMicro = derive2 { name="sdcMicro"; version="5.5.1"; sha256="1jabihj878w9wk7lmbnjh9v14jdb14w6ir10ram2bprlxah0bn07"; depends=[car carData cluster data_table DT e1071 ggplot2 haven knitr MASS prettydoc Rcpp rhandsontable rmarkdown robustbase shiny shinyBS VIM xtable]; };
@@ -13315,6 +13387,7 @@ in with self; {
   see = derive2 { name="see"; version="0.4.1"; sha256="0w32jqs9b7bqm27ld21pmlwxsbhwpwwa5bv6w15p1lx56gzi5smi"; depends=[bayestestR dplyr effectsize ggplot2 ggridges insight magrittr parameters rlang]; };
   seeclickfixr = derive2 { name="seeclickfixr"; version="1.1.0"; sha256="1agsqq2msrqrssffc6liyjjs6nqm90xy2inlcjbkdac5dhinjc4n"; depends=[jsonlite RCurl]; };
   seedCCA = derive2 { name="seedCCA"; version="1.0"; sha256="1grs6ykiyp8p5gh93hgb4niggppbh2wzwl6yx0l1qs9fkcz5zvy7"; depends=[CCA corpcor]; };
+  seeds = derive2 { name="seeds"; version="0.9.0"; sha256="18yyiwv00vxfxdrw88hqilcv2307h93wlq1wkg4kqf6s3jsf40l0"; depends=[callr coda Deriv deSolve dplyr ggplot2 Hmisc MASS matrixStats mvtnorm pracma R_utils Ryacas statmod tidyr]; };
   seedwater = derive2 { name="seedwater"; version="1.0"; sha256="0qqhjax16lnyriv6q9n89g93bs1zy8xwx9jp0xbilba7djzjh33g"; depends=[rpanel tkrplot]; };
   seer = derive2 { name="seer"; version="1.1.4"; sha256="02vv9vrnp8rj44qpn9yiigg95n7bg5v89pjdmrl5y8y1n8ax86xn"; depends=[dplyr ForeCA forecast forecTheta furrr future magrittr Mcomp purrr randomForest repmis stringr tibble tsfeatures urca]; };
   seewave = derive2 { name="seewave"; version="2.1.5"; sha256="1qg8f5gik9pw6f9mcxqmrc9x3003s8vdm6g01pjjpyc9qaqiz2vi"; depends=[tuneR]; };
@@ -13380,6 +13453,7 @@ in with self; {
   senstrat = derive2 { name="senstrat"; version="1.0.3"; sha256="0j6mb55v5ivqvk8nn8fjlzrbdgj6csa58yc6gy1g07m7gk2qz2np"; depends=[BiasedUrn MASS]; };
   sentimentr = derive2 { name="sentimentr"; version="2.7.1"; sha256="13myh7w9pynmgvqspsxpnj8mz8jz8nwkwjyax4hahvwb9707hf2s"; depends=[data_table ggplot2 lexicon stringi syuzhet textclean textshape]; };
   sentometrics = derive2 { name="sentometrics"; version="0.8.1"; sha256="1kfip67fiplkwcsj35vhkihgnaczx2fj6cvv0mha2pm5c2n5j8l0"; depends=[caret data_table foreach ggplot2 glmnet ISOweek quanteda Rcpp RcppArmadillo RcppParallel RcppRoll stringi]; };
+  sentryR = derive2 { name="sentryR"; version="1.1.0"; sha256="0kz81dbxg4zyns829cjhjm2g88pxzaaxdk7c8qabvl0zgqys2chy"; depends=[httr jsonlite stringr tibble uuid]; };
   separationplot = derive2 { name="separationplot"; version="1.3"; sha256="0ggyr4asp86hvdp4bwdkljz9b2gzdxm2y9nbz2srlgh3m4hlz2cs"; depends=[foreign Hmisc MASS RColorBrewer]; };
   seplyr = derive2 { name="seplyr"; version="0.8.5"; sha256="0cccnggnix5w2a31prvnsp2hl6x8k4rm4nchik9aiqwj2x5kz3hq"; depends=[dplyr rlang tidyr wrapr]; };
   seqCBS = derive2 { name="seqCBS"; version="1.2.1"; sha256="176ggpdcgmpsjixmz0ldknyd0vw120kjyrid3bq2bn4cgkwzb74z"; depends=[clue]; };
@@ -13417,12 +13491,12 @@ in with self; {
   setter = derive2 { name="setter"; version="0.0-1"; sha256="10fwrx8yysp99rrkbnn3rbz79vyzr2h3p7zxxlqapw1k2lllp0r5"; depends=[assertive_base]; };
   settings = derive2 { name="settings"; version="0.2.4"; sha256="092sv6nccm6p2d695l9w0zfi2xgymk12c8p8lhl9nb86mxrb3nry"; depends=[]; };
   severity = derive2 { name="severity"; version="2.0"; sha256="1mp19y2pn7nl9m8xfljc515kk5dirv0r2kypazpmd956lcivziqq"; depends=[]; };
-  sf = derive2 { name="sf"; version="0.8-1"; sha256="17wyv74m1ppc3s5jdv60r74jj23nidxpzl46vjhfclfhnpvm7sx9"; depends=[classInt DBI magrittr Rcpp units]; };
+  sf = derive2 { name="sf"; version="0.9-0"; sha256="117r9l3v7nkdj9bfy6qr0yz0gd5bv0pwnkc9vk2gv3xqj0h1fpf6"; depends=[classInt DBI magrittr Rcpp units]; };
   sfa = derive2 { name="sfa"; version="1.0-1"; sha256="1acqxgydf8j5csdkx0yf169x3yaa31r0ccdrqarh6vj1hacm89ad"; depends=[]; };
   sfadv = derive2 { name="sfadv"; version="1.0.1"; sha256="1rfpm6km5pckwhqgpvidm6qsj5sjdaqqj5b0sgvpslivfa4c80cr"; depends=[gmm minpack_lm]; };
   sfc = derive2 { name="sfc"; version="0.1.0"; sha256="0cm4mfcfd9bhf2j5fppsihzrfipnldb6q3xradd88z9pwgrkfx2a"; depends=[dplyr sna tidyr triangle zoo]; };
   sfdct = derive2 { name="sfdct"; version="0.0.6"; sha256="0ilh89mfwp1yqn44yn80vz1a6g65hryk6w87ngzvak3pd6jxq6aa"; depends=[dplyr RTriangle sf sp tibble]; };
-  sfheaders = derive2 { name="sfheaders"; version="0.1.0"; sha256="1bbiqym7kvhyq7d39gmqyvivh5pa7q4d75vya2wrg6m930ihmvqw"; depends=[Rcpp]; };
+  sfheaders = derive2 { name="sfheaders"; version="0.2.1"; sha256="0rkx7z10mrkqglxpyjz20y32hbidwpaws2k4hbx2g6a3by1qwddf"; depends=[Rcpp]; };
   sfinx = derive2 { name="sfinx"; version="1.7.99"; sha256="14v47y00qwvc2s0vzjw19hwn85nzj8lna539c75qq6zkn6kir6va"; depends=[]; };
   sfsmisc = derive2 { name="sfsmisc"; version="1.1-5"; sha256="173qgm2bn84x544fc3x9gc2rv995sbsvji9lnn2drx8drvzyy8lf"; depends=[]; };
   sft = derive2 { name="sft"; version="2.2-1"; sha256="0fxz64ba58n6ghfqsgq64n1c7qkvi8c3lsa86732mil9w71yxw33"; depends=[fda SuppDists]; };
@@ -13460,6 +13534,7 @@ in with self; {
   shiftR = derive2 { name="shiftR"; version="1.5"; sha256="18y2qzqx8hd6yph1wnsq4ygm16pcdszynh174xsrxrhvx2h9mi4x"; depends=[]; };
   shiny = derive2 { name="shiny"; version="1.4.0.2"; sha256="0r70ynic4wi9cxizk2gg097mfjps3a17ngi763cs6rijs21sr9nw"; depends=[crayon digest fastmap htmltools httpuv jsonlite later mime promises R6 rlang sourcetools xtable]; };
   shiny_i18n = derive2 { name="shiny.i18n"; version="0.1.0"; sha256="15llwr4yrx6rlk32b92wcq3dn360y5cvy4mh2aqkza9ikcvlhcvv"; depends=[jsonlite yaml]; };
+  shiny_info = derive2 { name="shiny.info"; version="0.2.0"; sha256="162wvb02z5h1y7xgsyl6wv88zlfmbm1jlnz48f56fyybs54baw41"; depends=[git2r glue shiny]; };
   shiny_router = derive2 { name="shiny.router"; version="0.1.1"; sha256="0biwni6bk39qafvsh8w32crlgm4hf8r9kwkmnlc3w5za2x2fja4c"; depends=[magrittr shiny]; };
   shiny_semantic = derive2 { name="shiny.semantic"; version="0.3.0"; sha256="0kcwkl0rjll8b73g43hk2fclwchr6pl71p632b302zz44vbnvg15"; depends=[htmltools htmlwidgets jsonlite magrittr purrr shiny]; };
   shinyAce = derive2 { name="shinyAce"; version="0.4.1"; sha256="1m33dfm2kjirvgix7ybv1kbzgjkicdpv411g9c0q3fw6rnyhfxxn"; depends=[jsonlite shiny]; };
@@ -13503,12 +13578,13 @@ in with self; {
   shinymanager = derive2 { name="shinymanager"; version="1.0.200"; sha256="00dvzcpba4awmdgy8wcn8h7qdc8mdrfaq3kp28h509xn3gax02wn"; depends=[billboarder DBI DT htmltools openssl R_utils R6 RSQLite shiny]; };
   shinymaterial = derive2 { name="shinymaterial"; version="1.0.1"; sha256="1vmbc5g55d3nsz18r2s2z5wgm2yrxygnyarsfhkqf3vyj8vndglw"; depends=[jsonlite shiny]; };
   shinypanels = derive2 { name="shinypanels"; version="0.5.0"; sha256="1rslz9wl3gx11dm6il77j4k5swxvcfy5mf0zffbs4zk8xjgpzzj6"; depends=[glue htmltools shiny shinyjs]; };
+  shinyr = derive2 { name="shinyr"; version="0.2.6"; sha256="16bknhab23by0h1b6c9q6rzyzyqnrcjhpsgw0gv427jycap9b0vv"; depends=[caret corrplot DMwR dplyr e1071 knitr nnet plotly randomForest RColorBrewer shiny shinydashboard tm wordcloud]; };
   shinyrecap = derive2 { name="shinyrecap"; version="0.1.0"; sha256="1mic7azxz2in67g3a2ir550w8psh6kc75p6hja6m62a0yy7j2n92"; depends=[CARE1 coda conting dga future ggplot2 ipc LCMCR promises Rcapture reshape shiny shinycssloaders testthat]; };
   shinystan = derive2 { name="shinystan"; version="2.5.0"; sha256="18alf5kiqw7y2l6m5nxxizwc2znsf9frxfsqhvgcad8hld9cbya5"; depends=[bayesplot colourpicker DT dygraphs ggplot2 gridExtra gtools markdown reshape2 rsconnect rstan shiny shinyjs shinythemes threejs xtable xts]; };
   shinytest = derive2 { name="shinytest"; version="1.3.1"; sha256="1qn46kgqxfbfimghy5d200rmxpmbp7ckl7dm82m4bnrsf9ivzlgg"; depends=[assertthat callr crayon debugme digest htmlwidgets httpuv httr jsonlite parsedate pingr R6 rematch rstudioapi shiny testthat webdriver withr]; };
   shinythemes = derive2 { name="shinythemes"; version="1.1.2"; sha256="12miz44n2zxfswnia7p8dirxj3miw0aqn4pkx2111ikz67ax84rf"; depends=[shiny]; };
   shinytoastr = derive2 { name="shinytoastr"; version="2.1.1"; sha256="01j2z4gf1wxblrjayykwxdr2s8394i7k930x8g4hmrj7c9pv264n"; depends=[shiny]; };
-  shinyypr = derive2 { name="shinyypr"; version="0.0.1"; sha256="1hqy713ixdsi3b8apxwycmw25lhynsh5gs4ldbj7fsr52jw01apl"; depends=[bsplus chk dplyr DT ggplot2 lifecycle magrittr purrr readr shiny shinyjs waiter ypr]; };
+  shinyypr = derive2 { name="shinyypr"; version="0.0.2"; sha256="1k6jsw6gnpwk90hkpa9grki0b68cab57vbd0h6ldjqr11giwcz8z"; depends=[bsplus chk dplyr DT ggplot2 lifecycle magrittr purrr readr shiny shinyjs waiter ypr]; };
   shipunov = derive2 { name="shipunov"; version="1.7"; sha256="0sq2xk1dsw0jca9lg0j8qypfzxzzw8lfn3ldgcpyn3wmhyg2w1xc"; depends=[]; };
   shock = derive2 { name="shock"; version="1.0"; sha256="11m52al591xjznl62q1waxsg5m1a1afmd0yqcc5zsjlrplykg4lp"; depends=[capushe GGMselect glasso igraph mvtnorm]; };
   shopifyr = derive2 { name="shopifyr"; version="1.0.0"; sha256="05hih1v5vvr7vmwarizsdx8517g74s96fdsz3klcz3g12idx1nqn"; depends=[curl jsonlite R6]; };
@@ -13547,7 +13623,7 @@ in with self; {
   sigora = derive2 { name="sigora"; version="3.0.5"; sha256="1240q42kpb4l1idanywzal7c85kp3ncdl5m2irh8qs5xrs02gdc7"; depends=[]; };
   sigr = derive2 { name="sigr"; version="1.0.6"; sha256="01crx8r9bcq1kwlq66vypnv1r48fp3hbl06ykd8g2k5zm06w0yyi"; depends=[wrapr]; };
   siland = derive2 { name="siland"; version="1.4.6"; sha256="0alnyd3phjv9kg21px96daw21613wjgp1ypqh8b4h0djcjd9xn17"; depends=[fasterize ggforce ggplot2 lme4 raster reshape2 sf sp]; };
-  silicate = derive2 { name="silicate"; version="0.2.0"; sha256="19386cd46jil4fhs6340wbk96igi9jlfgghbm88c0j5ff4ah1bsj"; depends=[decido dplyr geometry gibble gridBase magrittr purrr rlang tibble tidyr unjoin]; };
+  silicate = derive2 { name="silicate"; version="0.3.0"; sha256="08d731pprz3y6r0pdww2vn02q506kjzkgg5y2kbjb11d276ffwzf"; depends=[crsmeta decido dplyr gibble gridBase magrittr purrr rlang tibble tidyr unjoin]; };
   sim1000G = derive2 { name="sim1000G"; version="1.40"; sha256="1avq6xfc34izavvp9vb5ccc2b9nc4m7cwr06ygnsmpgwi5nswbb8"; depends=[hapsim MASS readr stringr]; };
   sim2Dpredictr = derive2 { name="sim2Dpredictr"; version="0.1.0"; sha256="0q1l75h1dcxnd60lcmf4sny1ywidfmm0yv9ylkb3yc13v469167i"; depends=[car dplyr ggplot2 magrittr MASS matrixcalc Rdpack spam tibble tidyverse]; };
   simEd = derive2 { name="simEd"; version="1.0.3"; sha256="1yq0qblrz0zddx682rzwdaa0k0r223i123la7wbp73spnn38g4br"; depends=[rstream]; };
@@ -13558,7 +13634,7 @@ in with self; {
   simMP = derive2 { name="simMP"; version="0.17.3"; sha256="1pzg79dd08ds3pfzxnk9h95gaibicv00mnm0jb4i8v5is4gzrdhr"; depends=[Biostrings BSgenome doParallel foreach GenomeInfoDb GenomicRanges IRanges XVector]; };
   simMSM = derive2 { name="simMSM"; version="1.1.41"; sha256="04icijrdc269b4hwbdl3qz2lyxcxx6z63y2wbak1884spn6bzbs8"; depends=[mvna survival]; };
   simPATHy = derive2 { name="simPATHy"; version="0.4"; sha256="1blvgaadp7iz0mcgax2xc8wa7aa9f82q09qym1wl8xdv01m29b80"; depends=[ggm graph gRbase htmlwidgets igraph mvtnorm qpgraph R_utils shiny shinydashboard]; };
-  simPH = derive2 { name="simPH"; version="1.3.10"; sha256="0br32m28ynmhr4xal69bsv925rlmih898rk5bskn1s6bhsshalqq"; depends=[data_table dplyr ggplot2 gridExtra lazyeval MASS mgcv quadprog stringr survival]; };
+  simPH = derive2 { name="simPH"; version="1.3.11"; sha256="0dlig46jggw39siigblvm2qn9gds5yzm2rv8sdcga75157d7wh1r"; depends=[data_table dplyr ggplot2 gridExtra lazyeval MASS mgcv quadprog stringr survival]; };
   simPop = derive2 { name="simPop"; version="1.2.0"; sha256="05f1azdz202bap4pkqxiacj7wqkbmw3naw6p7xgmvx8nlh5xl40h"; depends=[colorspace data_table doParallel e1071 EnvStats fitdistrplus foreach laeken lattice MASS nnet party plyr ranger Rcpp RcppArmadillo vcd VIM wrswoR]; };
   simSummary = derive2 { name="simSummary"; version="0.1.0"; sha256="1ay2aq6ajf1rf6d0ag3qghxpwj0f8b3fhpr2k0imzmpbyag1i3gj"; depends=[abind gdata svUnit]; };
   simTargetCov = derive2 { name="simTargetCov"; version="1.0.1"; sha256="0gdqqwg9i2hga6l4s5x7wbbsm20b3sgwrci1g6hc04x1h9aawiw2"; depends=[MASS]; };
@@ -13589,6 +13665,7 @@ in with self; {
   simpleboot = derive2 { name="simpleboot"; version="1.1-7"; sha256="0769dmrk8rw5v9598p7xlpawybwsdxnrqkxhavqpzy1vwg885575"; depends=[boot]; };
   simplecolors = derive2 { name="simplecolors"; version="0.1.0"; sha256="08xsha7v9k55fqi9f49j2sh2yz8dm5g99rqcjfd1yrlw2mkcrq6a"; depends=[colorspace dplyr forcats ggplot2 magrittr stringr]; };
   simplegraph = derive2 { name="simplegraph"; version="1.0.0"; sha256="1gcpbljp1fgaprxnmq23izf1h2x3p5dnxlylwqsnlcj50bvm46gq"; depends=[]; };
+  simplevis = derive2 { name="simplevis"; version="1.0.0"; sha256="1vkf2cmfhsci5z0njyy1xrilycjjr2j9k1vqmw5am5dvqaj7nwda"; depends=[dplyr DT forcats ggplot2 janitor leaflet leaflet_extras leafpop lubridate magrittr plotly readr rgdal rlang rmarkdown scales sf shiny shinycssloaders stars stringr tibble tidyr viridis]; };
   simplexdesign = derive2 { name="simplexdesign"; version="0.1.0"; sha256="139c1c2vpn2rf0q7ldciii3x18f5r62x0l7i6hdk25qwr9sp08k8"; depends=[DiceDesign GGally ggplot2 progress Rfast]; };
   simplexreg = derive2 { name="simplexreg"; version="1.3"; sha256="1zkh00xbddhgz0qn0a5pj12n0hpx4f5kihpfj71x92pmxpzglcxh"; depends=[Formula plotrix]; };
   simputation = derive2 { name="simputation"; version="0.2.4"; sha256="16adh97hfszvf934lf8mvwxvx71s7gwhzzhsbqz24zqik20pd6fq"; depends=[gower MASS rpart]; };
@@ -13699,7 +13776,7 @@ in with self; {
   smpic = derive2 { name="smpic"; version="0.1.0"; sha256="0ff2146gjcrc6nvrbf4779jh076abhb843zzlk2zvqir13qfap61"; depends=[ggplot2 imager stringr]; };
   sms = derive2 { name="sms"; version="2.3.1"; sha256="0vr5jy8bxbczaqr9kg0fnanxhv9nj51yzgacrb63k33cs85p981m"; depends=[doParallel foreach iterators]; };
   smss = derive2 { name="smss"; version="1.0-2"; sha256="04lgfdcvnzpnpplyl62fy7slyiy8wkqpjjrzmclgqis3c9zkkncp"; depends=[]; };
-  smurf = derive2 { name="smurf"; version="1.0.4"; sha256="1bk7dbz8dq2f1xam1bbjhn373dclf10cnx445gpp3hg84s1vaw3r"; depends=[glmnet MASS Matrix mgcv RColorBrewer Rcpp RcppArmadillo speedglm]; };
+  smurf = derive2 { name="smurf"; version="1.0.5"; sha256="1ay19ggrhm7jzazcky9r9g0qq3p8jhqr209iqsc22qqwzx6bl1l6"; depends=[catdata glmnet MASS Matrix mgcv RColorBrewer Rcpp RcppArmadillo speedglm]; };
   sn = derive2 { name="sn"; version="1.5-5"; sha256="0ymyyc0di1g2b11wzljiih05z3rxck48wn74bygg3fiby973z49f"; depends=[mnormt numDeriv]; };
   sna = derive2 { name="sna"; version="2.5"; sha256="1j3i6300m686qqfmyvadim377cd3mplzgj6mandygw8brg50id8k"; depends=[network statnet_common]; };
   snahelper = derive2 { name="snahelper"; version="1.1.0"; sha256="0fc1xilbc7dr5gsrhlp8zgbjppxi44lifsj79kh79783w8nyfqm1"; depends=[colourpicker DT formatR ggplot2 ggraph graphlayouts igraph miniUI rstudioapi shiny]; };
@@ -13730,7 +13807,7 @@ in with self; {
   socceR = derive2 { name="socceR"; version="0.1.1"; sha256="1vd0r3vixavg1br2q3kfn3nvl7dw854vkcfwcvyw411k84ivb13y"; depends=[Rcpp]; };
   social = derive2 { name="social"; version="1.0"; sha256="0ny81bhj80rlwwa6cgbkdz2rxz6bp0f3nvjr1sqxr4s8l8rnf4ic"; depends=[Rcpp]; };
   socialmixr = derive2 { name="socialmixr"; version="0.1.6"; sha256="0hrkylasyaalsh4gsazgfz5vyqvwnq5n4lzqmzjs2njlrkgwwf5y"; depends=[countrycode curl data_table httr jsonlite lubridate oai stringr wpp2015 XML]; };
-  sociome = derive2 { name="sociome"; version="1.3.2"; sha256="1iw8pv5vv0yfz2nrgniz66i4b6ah4yqbk03b5ac3dnxdslki2l7f"; depends=[censusapi dplyr magrittr mice psych purrr rlang stringr tidycensus tidyr]; };
+  sociome = derive2 { name="sociome"; version="1.4.0"; sha256="0700xpslbi5f3b32pfqmxrwzymhxmpzl8jzxhvgpbm885f07n41j"; depends=[censusapi dplyr magrittr mice psych purrr rlang stringr tidycensus tidyr]; };
   socviz = derive2 { name="socviz"; version="1.1"; sha256="19naaiqxbqh8vmjx2ijd012lbxam3750zni491vp6aidwaqjznfw"; depends=[dplyr fs magrittr rlang tibble]; };
   sodavis = derive2 { name="sodavis"; version="1.2"; sha256="1jf5sml51qxlpgv5b1rvyig4dm4ijw2hpnk85zf790jp22xm64jw"; depends=[MASS mvtnorm nnet]; };
   sodium = derive2 { name="sodium"; version="1.1"; sha256="1zxzi8xvxnhgcd5qrylf08nz1cdq3aslrswjas440qg63ypmbf6w"; depends=[]; };
@@ -13860,14 +13937,15 @@ in with self; {
   spatialnbda = derive2 { name="spatialnbda"; version="1.0"; sha256="14mx5jybymasyia752f3vnr5vmswcavbz8bpqr69vlxphw27qkwk"; depends=[mvtnorm SocialNetworks]; };
   spatialprobit = derive2 { name="spatialprobit"; version="0.9-11"; sha256="1cpxxylc0pm7h9m83m2cklrh4jni5x79r5m5gibxi6viahwxn9kc"; depends=[Matrix mvtnorm spdep tmvtnorm]; };
   spatialreg = derive2 { name="spatialreg"; version="1.1-5"; sha256="0zdj67rvfvssjch5hwyi4gvyr7pjgfjrkbhnc4q9psfjp9rhggyx"; depends=[boot coda expm gmodels LearnBayes MASS Matrix nlme spData spdep]; };
-  spatialrisk = derive2 { name="spatialrisk"; version="0.6.5"; sha256="0qgy4imk1p35vglj8ahfaf8gy7ixqzdwp75nf1q2y22gjq45d1xa"; depends=[automap classInt dplyr fs ggplot2 gstat lubridate mgcv Rcpp RcppProgress sf sp tmap viridis vroom]; };
+  spatialrisk = derive2 { name="spatialrisk"; version="0.6.6"; sha256="0sdabbjd6d3r2qicq7brbfhayr0dqcfv3wpvw2kgm9zl7xymwaar"; depends=[automap classInt dplyr fs ggplot2 gstat lubridate mgcv Rcpp RcppProgress sf sp tmap viridis vroom]; };
   spatialsegregation = derive2 { name="spatialsegregation"; version="2.45"; sha256="04ibvk6shs15b8piln2lcnlj8s5gy6r7wraz6591dbc31grzaa36"; depends=[spatstat]; };
   spatialwarnings = derive2 { name="spatialwarnings"; version="1.3.1"; sha256="139m6jaw6f5gglwqrd4f5mzr4vkqk2r1a069971y7ap2klzzbhns"; depends=[ggplot2 plyr Rcpp RcppArmadillo reshape2 tidyr VGAM]; };
-  spatialwidget = derive2 { name="spatialwidget"; version="0.2"; sha256="105pgsv4dq3pmk9bylb3fxzvp44frfp6xcvq5d01ja4gnwmb35p2"; depends=[BH colourvalues geojsonsf jsonify rapidjsonr Rcpp]; };
+  spatialwidget = derive2 { name="spatialwidget"; version="0.2.2"; sha256="082w44i9is0cn4kgbqlnzclyp4fj2is0r5kla29nvm4m2y83bdjj"; depends=[BH colourvalues geojsonsf jsonify rapidjsonr Rcpp sfheaders]; };
   spatsoc = derive2 { name="spatsoc"; version="0.1.9"; sha256="1s7vhn3ywsdp91z4psx7nairxcfhblzyvx44v4an4rwhvvhvys3c"; depends=[adehabitatHR data_table igraph rgeos sp]; };
   spatstat = derive2 { name="spatstat"; version="1.63-3"; sha256="0a2mavlvk6faqag3xpm38z85ljlgb64xg7bp657r94bwnfhs3d07"; depends=[abind deldir goftest Matrix mgcv nlme polyclip rpart spatstat_data spatstat_utils tensor]; };
   spatstat_Knet = derive2 { name="spatstat.Knet"; version="1.11-2"; sha256="0jkpj4m44cqid5jdn7fwg3cl15lsmc0dp3bzp6759spivsx1yzq1"; depends=[Matrix spatstat spatstat_utils]; };
   spatstat_data = derive2 { name="spatstat.data"; version="1.4-3"; sha256="18lfj5vkwxgf5w9qz0g5al3zy8y2yi3bnd13w24hszfc82nbcmc9"; depends=[Matrix spatstat_utils]; };
+  spatstat_gui = derive2 { name="spatstat.gui"; version="1.0-2"; sha256="07lk3xrg5cyvgvw2xwvi77s4ma8qbnmy4whsvm1wdfvw40c0mfrz"; depends=[rpanel spatstat spatstat_utils]; };
   spatstat_local = derive2 { name="spatstat.local"; version="3.6-0"; sha256="19kv85smy8jp2bx1mgppav50k07xm8zvmf7snzj29rrspiws7sig"; depends=[spatstat spatstat_utils tensor]; };
   spatstat_utils = derive2 { name="spatstat.utils"; version="1.17-0"; sha256="08h9kzkkxvlnngxnv5mdylfali5jj4yhgbr8kvf8l7glswz6ik9r"; depends=[]; };
   spatsurv = derive2 { name="spatsurv"; version="1.4"; sha256="0sw5a532p3bbbh3pxvscmmmg6jw126ncpihxiv01bpwmf85ld4z2"; depends=[fields geostatsp iterators lubridate Matrix RandomFields raster RColorBrewer rgeos sp spatstat stringr survival]; };
@@ -13911,6 +13989,7 @@ in with self; {
   spgrass6 = derive2 { name="spgrass6"; version="0.8-9"; sha256="05xvdhisad0d7c69mvahzg6pvgvmb6dph50r34981palykic7qhn"; depends=[sp XML]; };
   spgs = derive2 { name="spgs"; version="1.0-3"; sha256="0a7zqih8q4imi49in8d2j9wa82savp7d2g4xy4wlwblwf6f2ggsh"; depends=[]; };
   spgwr = derive2 { name="spgwr"; version="0.6-33"; sha256="1nbg4jacc4iimn79b60c6q9qf09j35yxa2nmlwwijmixa15gmqyd"; depends=[sp spData]; };
+  spherepc = derive2 { name="spherepc"; version="0.1.2"; sha256="1hgl3i0fxwhrcs2zndsqc371c8rrlhb0xcqz44m4wrznlav3fy30"; depends=[geosphere rgl sphereplot]; };
   sphereplot = derive2 { name="sphereplot"; version="1.5"; sha256="1i1p20h95cgw5wqp9bwfs9nygm4dxzsggz08ncjs1xrsvhhq9air"; depends=[rgl]; };
   sphet = derive2 { name="sphet"; version="1.7"; sha256="0savvqz3v5awsr7kcghg6yzkqdpm01kwp7jrg9ajfb3146gg8mlq"; depends=[Matrix nlme sp spdep]; };
   spi = derive2 { name="spi"; version="1.1"; sha256="0gc504f7sji5x0kmsidnwfm7l5g4b1asl3jkn2jzsf2nvjnplx1z"; depends=[]; };
@@ -14026,7 +14105,7 @@ in with self; {
   stabledist = derive2 { name="stabledist"; version="0.7-1"; sha256="0scar396wiq6wkbkvwp4qrxqc1m075y56p37i6iry5rw796p1i86"; depends=[]; };
   stablelearner = derive2 { name="stablelearner"; version="0.1-1"; sha256="19mvk6dzg8zg0nj1q4sraqg6h3zj8xvnfc0jql1xiqas9wcypx7d"; depends=[e1071 MASS partykit]; };
   stablespec = derive2 { name="stablespec"; version="0.3.0"; sha256="0m143cq0baj2lyakhr31mqk2lg78jzpdlpv2bhwz6bzzip7mqi22"; depends=[foreach ggm graph matrixcalc nsga2R polycor Rgraphviz sem]; };
-  stabm = derive2 { name="stabm"; version="1.1.1"; sha256="0qigpm078mjj2c1nc45dx6x901786x4rxz25dmn4pkpxmxsz1bzs"; depends=[BBmisc checkmate Matrix]; };
+  stabm = derive2 { name="stabm"; version="1.1.2"; sha256="01fg6zn6i710xfa9g15q4ca7vfgkfrk0iz6fvn8qp6y3dfrpm1sj"; depends=[BBmisc checkmate Matrix]; };
   stabreg = derive2 { name="stabreg"; version="0.1.2"; sha256="1jrxyv0d33vd9vdlj1cv1a2qdz8iqgr726f54dgazwsz3cpyy2ia"; depends=[numDeriv]; };
   stabs = derive2 { name="stabs"; version="0.6-3"; sha256="17sa0sjxf6h7gx1ga1pxhv17yrz3qisaivbf5cbc3asvshhswqg9"; depends=[]; };
   stackoverflow = derive2 { name="stackoverflow"; version="0.7.0"; sha256="0zv8bxzw4pgaa5ra8wsb9p7g8bwffdhc6gqsfrcs61zva7v9izc2"; depends=[]; };
@@ -14055,7 +14134,7 @@ in with self; {
   statebins = derive2 { name="statebins"; version="1.2.2"; sha256="0qfs796dk5x983qah32w3npv9mxzljp3g7kffdd0ansn3z7i1zbb"; depends=[ggplot2 gridExtra RColorBrewer scales]; };
   states = derive2 { name="states"; version="0.2.2"; sha256="1lw1gljmkn8i8fd4ng5c3jpqrwr0gkiyazppy19dp8xl94m1xa4b"; depends=[dplyr]; };
   statgenGWAS = derive2 { name="statgenGWAS"; version="1.0.4"; sha256="0hmxjm6phgysdkv467nbdmkxfnz55ilaii4hmslsn5p6dl37mqp3"; depends=[data_table ggplot2 Rcpp RcppArmadillo sommer]; };
-  statgenSTA = derive2 { name="statgenSTA"; version="1.0.3"; sha256="002c3zchnz3ywsncvxz2b42i7qn6v1l0js9pfs4zg4i2b3vv2g95"; depends=[emmeans ggplot2 ggrepel gridExtra knitr lme4 mapproj maps qtl scales SpATS xtable]; };
+  statgenSTA = derive2 { name="statgenSTA"; version="1.0.4"; sha256="0iry8gad5kvayvrrnfnhz5gz941wf4v23psqdaxy4ciha468nhlx"; depends=[emmeans ggplot2 ggrepel gridExtra knitr lme4 mapproj maps qtl scales SpATS xtable]; };
   stationaRy = derive2 { name="stationaRy"; version="0.5.1"; sha256="1620fdlybn3hr96yngnp802imr9b7n90835lyyd86r2wn6psdzvl"; depends=[downloader dplyr lubridate lutz magrittr progress readr stringr tidyr]; };
   stationery = derive2 { name="stationery"; version="0.98.24"; sha256="06qn3ck2cgcyrx8l27ka1y5dq8hyf01wq3hky6876a5g65b1wax2"; depends=[knitr kutils rmarkdown]; };
   statip = derive2 { name="statip"; version="0.2.3"; sha256="0kymc3ds1nx0h11ffmm3vmqr1w34gd0k788vf72x2v45h8c1ma2n"; depends=[clue rpart]; };
@@ -14083,7 +14162,7 @@ in with self; {
   stepPlr = derive2 { name="stepPlr"; version="0.93"; sha256="1i54nyz8z5vq3mzfh6h2vd1q0hsdazc4mhrj9ad0zdvn0qnz61lv"; depends=[]; };
   stepR = derive2 { name="stepR"; version="2.0-4"; sha256="1jv2mv1glzap7nsyxwzil9wif3q3p4y9q0c3kphz49hwwrg20k79"; depends=[digest R_cache Rcpp]; };
   stepp = derive2 { name="stepp"; version="3.2.0.0"; sha256="0fnjqbncadscv6ryvqyqf8qqgpfzh2hka5ld2zvw39mjqzy5gadi"; depends=[car survival]; };
-  steps = derive2 { name="steps"; version="1.0.0"; sha256="03f43fbm7k1i3cgyxzfscjxykjnbyy3d9zyc6kqisghlxgkshnkk"; depends=[future future_apply memuse raster rasterVis Rcpp viridisLite]; };
+  steps = derive2 { name="steps"; version="1.1.0"; sha256="1p01cmvh5rbgwaz0r73iry60jq0f8rp3z8ql57vhmnd9kyrzf53m"; depends=[future future_apply memuse raster rasterVis Rcpp viridisLite]; };
   stevedore = derive2 { name="stevedore"; version="0.9.3"; sha256="00zs2bl5h40rwbhnynjw2jbxlixjnk14rxn9chypqg5zgx9pqg2s"; depends=[crayon curl jsonlite yaml]; };
   sticky = derive2 { name="sticky"; version="0.5.6.1"; sha256="1szfpay9cpdwq6v5fmnjyr00r4zhz6zd2rrl3h88v9l5xpfafi4w"; depends=[]; };
   stilt = derive2 { name="stilt"; version="1.3.0"; sha256="0b1bs849hw2wcvaldybxk8h8wgwl6p7x4i7winncvngmhplgrvx4"; depends=[fields]; };
@@ -14105,6 +14184,7 @@ in with self; {
   stockR = derive2 { name="stockR"; version="1.0.74"; sha256="002i0bhyskwyjjczfa752ghn19hvqhdyzdfkpvci3hb66rh94x65"; depends=[gtools RColorBrewer]; };
   stocks = derive2 { name="stocks"; version="1.1.4"; sha256="0b6rl7pfkgzbpwnv7zzkr36hs5f1zb60d16ijslf7g9m25vvcyg6"; depends=[dvmisc Hmisc lubridate quantmod rbenchmark RColorBrewer Rcpp TTR zoo]; };
   stoichcalc = derive2 { name="stoichcalc"; version="1.1-3"; sha256="0z9fnapibfp070jxg27k74fdxpgszl07xiqfj448dkydpg8ydkrb"; depends=[]; };
+  stokes = derive2 { name="stokes"; version="1.0-5"; sha256="0xbjkrm9g7r2xnj629i5cfmmqkw60iq4k6lk3skmkj3xh20lcd5x"; depends=[magrittr partitions permutations spray]; };
   stopwords = derive2 { name="stopwords"; version="1.0"; sha256="1nmi0bpd0c238g5b8ch1v034m5ng9llhs519cgxdrj3sh9fplwlv"; depends=[ISOcodes]; };
   stormwindmodel = derive2 { name="stormwindmodel"; version="0.1.2"; sha256="08f16a68kmw0r1acs82sha83m04d81b7zdpxjw5g424zbvagwdj4"; depends=[dplyr ggplot2 lubridate maps plyr rlang stringr tidyr weathermetrics]; };
   storr = derive2 { name="storr"; version="1.2.1"; sha256="0409gb6wji3cjxkdcd0wc3jvsx61h3rxd8a3nr018y8rh1rpsaj6"; depends=[digest R6]; };
@@ -14221,7 +14301,7 @@ in with self; {
   survRM2 = derive2 { name="survRM2"; version="1.0-2"; sha256="0pvp65c1kkbkcci4l3cvq4a5krmv58jwb9abz5225ql6jyawzlsw"; depends=[survival]; };
   survRM2adapt = derive2 { name="survRM2adapt"; version="1.0-1"; sha256="1r3jvjbc2sb7b00s95b3sdx4d99rmrnd573fx1n4914ydiggi9nn"; depends=[survival]; };
   survSNP = derive2 { name="survSNP"; version="0.24"; sha256="0mzwcp8zfqvsiapa446si9qb6wyymnw5zj6acj6f2cfjpyi76k4w"; depends=[foreach lattice Rcpp survival xtable]; };
-  surveillance = derive2 { name="surveillance"; version="1.17.3"; sha256="11hzjr85vpmrv11n3prhj9jgjfwvz1fg8xbfz9ql0rrrmycq4jii"; depends=[MASS Matrix nlme polyCub Rcpp sp spatstat xtable]; };
+  surveillance = derive2 { name="surveillance"; version="1.18.0"; sha256="01iy6dlkd5w9191vr3agm3fgl3vbh2yaan5rsgn0ki741gf2zdag"; depends=[MASS Matrix nlme polyCub Rcpp sp spatstat xtable]; };
   survexp_fr = derive2 { name="survexp.fr"; version="1.0"; sha256="12rjpnih0xld4dg5gl7gwxdxmrdmyzsymm7j05v98ynldd1jkjl8"; depends=[survival]; };
   survey = derive2 { name="survey"; version="3.37"; sha256="1f31dvh48gzzan13pdrwh84ls35x9116095i7mdrcbrhz809r8dy"; depends=[lattice Matrix minqa mitools numDeriv survival]; };
   surveybootstrap = derive2 { name="surveybootstrap"; version="0.0.1"; sha256="13rp6gj1dgdzcjbi2403pldygp1dyqx8zj0r1nvyghpi06x5gpb7"; depends=[dplyr functional plyr Rcpp RcppArmadillo stringr]; };
@@ -14309,9 +14389,9 @@ in with self; {
   synchronicity = derive2 { name="synchronicity"; version="1.3.5"; sha256="1kgsk64aifjm3mfj102y3va7x1abypq2zi0cqbnjhl8fqyzp69hx"; depends=[BH bigmemory_sri Rcpp uuid]; };
   synchrony = derive2 { name="synchrony"; version="0.3.8"; sha256="1zpxg4dkxnvafiyp0j00wig5ymj10bzfg2376x56rzpnabhg57hi"; depends=[]; };
   synlik = derive2 { name="synlik"; version="0.1.2"; sha256="1pscfqg5x7wpq3vp1i7fy29dwa7cw5g3kzxinanwrwbcznv9nyms"; depends=[Matrix Rcpp RcppArmadillo]; };
-  synoptReg = derive2 { name="synoptReg"; version="1.0.0"; sha256="04bylk31pjraygh1rwa6sa9ahswwkcyzr90l52af2s1i5dlcwviv"; depends=[dplyr ggplot2 lubridate magrittr metR raster RNCEP stringr tibble tidyr]; };
+  synoptReg = derive2 { name="synoptReg"; version="1.0.1"; sha256="16ncbxdyqyd0jrsshllv14pgdlkli1ymwjkh4sijnhzk9yhrbb28"; depends=[dplyr ggplot2 lubridate magrittr metR raster RNCEP stringr tibble tidyr]; };
   syntaxr = derive2 { name="syntaxr"; version="0.8.0"; sha256="1iik9b3x9jx7w31j7hyi3sixg30l5a6w40svhqj1xlchsk60yykn"; depends=[magrittr]; };
-  synthACS = derive2 { name="synthACS"; version="1.5.3"; sha256="1fpaqjxyrgmzsxpd2wqpabpzj6fsp88wac0kaf21nc9k5b8lf0gk"; depends=[acs data_table Rcpp]; };
+  synthACS = derive2 { name="synthACS"; version="1.5.5"; sha256="02c42scd10w65hwjwaw2hj2vf2brm6lrrsm0288x164b6klkmw7f"; depends=[acs data_table Rcpp]; };
   synthpop = derive2 { name="synthpop"; version="1.5-1"; sha256="0cd9g0aa4598l3gyqpywalmkmvibhqkxhkm2qkln11rkwv12lcyv"; depends=[classInt foreign ggplot2 lattice MASS mipfp nnet party plyr polspline proto randomForest rpart]; };
   sys = derive2 { name="sys"; version="3.3"; sha256="14wvy46i2iz9jn7lj3cvifmps932s3395wq681hniva0f8m7q8d6"; depends=[]; };
   sysfonts = derive2 { name="sysfonts"; version="0.8"; sha256="0wng902plryf2d8fc7k7m3jx11acz51kb2d91cqbyhq7xpk06z43"; depends=[]; };
@@ -14329,7 +14409,7 @@ in with self; {
   tabit = derive2 { name="tabit"; version="0.1.1"; sha256="0fk670ws7df77sxf89kp8h608z5400gaia79zj3w9jv3jmfyj1i0"; depends=[]; };
   tablaxlsx = derive2 { name="tablaxlsx"; version="1.2.2"; sha256="1q7ap1dmymf3aj5g860794jfn9zrn3qiwwcdzl95lsbpkhgyspmz"; depends=[openxlsx]; };
   table_express = derive2 { name="table.express"; version="0.3.1"; sha256="00f5xi2dkx1h0mv8ld3ds15w30d9vgvmjrldg43z7zskprshqsxx"; depends=[data_table dplyr magrittr R6 rlang tidyselect]; };
-  table1 = derive2 { name="table1"; version="1.1"; sha256="01r6zlhv3d0ggniv6aaszmzqbappy9zycayiwwlknbwrgiwkp58z"; depends=[Formula htmltools knitr]; };
+  table1 = derive2 { name="table1"; version="1.2"; sha256="1ggf3qkm7zwfdn1y1mhf8ydbg41aiy26p6g9iskryrxg7hgs3ynb"; depends=[Formula htmltools knitr yaml]; };
   table1xls = derive2 { name="table1xls"; version="0.4.0"; sha256="0ixbshbp9hkcg12hj32vgb5bp0pj4rbc3i6g1xdg2zhqp7zanics"; depends=[XLConnect]; };
   tableHTML = derive2 { name="tableHTML"; version="2.0.0"; sha256="19sa5sda4v5dr449ip9z9ah5hdph9q6vb6zbs93jn4rpkvyijny3"; depends=[htmltools jpeg magrittr png shiny webshot]; };
   tableMatrix = derive2 { name="tableMatrix"; version="0.82.0"; sha256="1sskijhbqakamrk2rv7v5zpjsdi8jw0jl2z96l0vhsvsiq0cz1c8"; depends=[data_table]; };
@@ -14340,7 +14420,7 @@ in with self; {
   tableschema_r = derive2 { name="tableschema.r"; version="1.1.1"; sha256="14cnbijxdhf7qbsiqbk8p516mfh9bgdbcg32vn5pycsp30k78b2h"; depends=[config future httr iterators jsonlite jsonvalidate lubridate purrr R6 RCurl rlist stringr urltools]; };
   tabr = derive2 { name="tabr"; version="0.4.2"; sha256="0c3814dnz1vzgbmm3vp0icnzyaqs1kimqnsp4n8id7zn8vlmp21p"; depends=[crayon dplyr ggplot2 magrittr purrr tibble tidyr]; };
   tabuSearch = derive2 { name="tabuSearch"; version="1.1.1"; sha256="0396a8hla508na1hmyyhfbl8w10dbg810cln2xyhhvxi7rr223dj"; depends=[]; };
-  tabula = derive2 { name="tabula"; version="1.5.0"; sha256="0ijamh5lhgaa202ka1kp78i583616rc9w4zay8gx7c3gkjppfpdx"; depends=[arkhe ca ggplot2 rlang]; };
+  tabula = derive2 { name="tabula"; version="1.5.1"; sha256="0mm08rgqdhc3b68xh9hk4rw4i69gb2c45679zni9kkv48pbxvrh7"; depends=[arkhe ca ggplot2 rlang]; };
   tabularaster = derive2 { name="tabularaster"; version="0.5.0"; sha256="0cqax6hq0pbxmqls3cs21cc86662wdzjyx4lkxw42dbw4v13f728"; depends=[dplyr fasterize gibble magrittr raster rlang sp spatstat spbabel spex tibble viridis]; };
   tabulizer = derive2 { name="tabulizer"; version="0.2.2"; sha256="0zd5cfqwgirqchw1mvziscxvzl8pb1y6rbfywkn9i9pxfydkm5vi"; depends=[png rJava tabulizerjars]; };
   tabulizerjars = derive2 { name="tabulizerjars"; version="1.0.1"; sha256="005n2gyzzmq8h0mpj8xs6ri6llzwag7nqzpm4vnzp81vwy8kmf92"; depends=[rJava]; };
@@ -14353,7 +14433,7 @@ in with self; {
   tailr = derive2 { name="tailr"; version="0.1.3"; sha256="0agm83zwj6f3bpicbn2pcwira05v2pbv0g7myc1x06jxbw1qbfwp"; depends=[foolbox glue rlang]; };
   taipan = derive2 { name="taipan"; version="0.1.2"; sha256="192sy5pgq74vs31p7jfn6svdzf9mk9ybppzhp1rlki1bagmm5f1r"; depends=[shiny]; };
   takos = derive2 { name="takos"; version="0.1.0"; sha256="0a26jmxccpyk36sah9nz7pqpkc1rd9kbwrvwh0r0zp7lwvxbjb8w"; depends=[baseline broom colorRamps data_table devEMF MASS minpack_lm pracma segmented sfsmisc smoother]; };
-  tanaka = derive2 { name="tanaka"; version="0.1.1"; sha256="0d7kqgl4kdmgvc8an0h1jqh8h4qw7mgdqmghxs49ssw3db6ir6lh"; depends=[isoband lwgeom raster sf]; };
+  tanaka = derive2 { name="tanaka"; version="0.1.2"; sha256="17847xijmb6rv2vzvzx7piga1ihzsmdq4harjccm6qx0nfwij4vs"; depends=[isoband lwgeom raster sf]; };
   tangles = derive2 { name="tangles"; version="0.8.1"; sha256="06a5hn5hkvgr6pcjz3n0vi1zwmv00wypi5f62agqh8mas80v44vh"; depends=[digest raster sp]; };
   tangram = derive2 { name="tangram"; version="0.4"; sha256="1yj5vwc8jkiic4zjag9k7w3j6dibqw5zsi78q6gssshsi9z0zbgy"; depends=[base64enc digest htmltools magrittr R6 stringi stringr]; };
   tapkee = derive2 { name="tapkee"; version="1.1"; sha256="1s8710m4drhnycfv27bv1w7vqc99dvbcn8zxkahq0lrsx7q8i5mz"; depends=[]; };
@@ -14366,7 +14446,7 @@ in with self; {
   tawny_types = derive2 { name="tawny.types"; version="1.1.5"; sha256="1vg0hv91dif6cfqfzrf7m1qbk57fp8v97fp88whwmvs83yd521hq"; depends=[futile_logger futile_options lambda_r lambda_tools quantmod xts zoo]; };
   taxa = derive2 { name="taxa"; version="0.3.3"; sha256="11x28mxpza0cckj9cf4zizrsz87h48vlxxan8kn8lwzdpy1xn8j8"; depends=[crayon dplyr jsonlite knitr lazyeval magrittr R6 rlang stringr taxize tibble tidyr]; };
   taxadb = derive2 { name="taxadb"; version="0.1.0"; sha256="0nns9jpjawla90f12gi90562llb2j0pdhwlvy62mgcg0ghr39fgr"; depends=[arkdb curl DBI dbplyr dplyr jsonlite magrittr memoise progress rappdirs readr rlang RSQLite stringi tibble]; };
-  taxize = derive2 { name="taxize"; version="0.9.92"; sha256="0wbg3ycvwzzvnnqjn7i25n7h0jbxgg9m6swys5968v8bhs5dw2bl"; depends=[ape bold cli crayon crul data_table foreach jsonlite natserv phangorn R6 ritis rotl rredlist tibble wikitaxa worrms xml2 zoo]; };
+  taxize = derive2 { name="taxize"; version="0.9.93"; sha256="1ic8mbn3bbzla421ssxfd4vpfb48rba57alxfnpn9m5a6nqiaii5"; depends=[ape bold cli crayon crul data_table foreach jsonlite natserv phangorn R6 ritis rotl rredlist tibble wikitaxa worrms xml2 zoo]; };
   taxizedb = derive2 { name="taxizedb"; version="0.1.4"; sha256="15gj9i18ysd83v9fidrrvw938dah04i10ahi3wh5dgjs5fd5ch2s"; depends=[curl DBI dbplyr dplyr hoardr magrittr RMySQL RPostgreSQL RSQLite]; };
   taxlist = derive2 { name="taxlist"; version="0.1.7"; sha256="0a91hdw3n46p851662lx82znbw9hf9akg8mm4yslllwffrkhdn8g"; depends=[foreign stringdist taxa taxize vegdata]; };
   taxonomizr = derive2 { name="taxonomizr"; version="0.5.3"; sha256="0hxvcbyr5b3sxqy5kw1q17qx7c2q90a6x79r9bmjn6c2lnrqn83i"; depends=[data_table R_utils RSQLite]; };
@@ -14377,7 +14457,7 @@ in with self; {
   tbl2xts = derive2 { name="tbl2xts"; version="0.1.3"; sha256="0yy0cpsflwx7fbql3vh0l87cvqgn0ghdqal4m7l9aplqhzdwxs3r"; depends=[dplyr lazyeval PerformanceAnalytics xts zoo]; };
   tbm = derive2 { name="tbm"; version="0.3-2"; sha256="0kaqbyrazkl8gv0jl5n14zdlc4csmj1llmwgp068k79m2bacjmkq"; depends=[basefun coneproj mboost mlt sandwich variables]; };
   tbrf = derive2 { name="tbrf"; version="0.1.3"; sha256="1g6ll9vqhszas3czpnvvxhrih4b1h10dhn40ljh4206m27mzl8v9"; depends=[boot dplyr lubridate purrr rlang tibble tidyr]; };
-  tcR = derive2 { name="tcR"; version="2.2.4"; sha256="17g26cq6zpcmg9kv32v0rvyqmml5wkbwra7p8f1cdzyc0zajbvn2"; depends=[data_table dplyr ggplot2 gridExtra gtable igraph Rcpp reshape2 scales stringdist]; };
+  tcR = derive2 { name="tcR"; version="2.2.4.1"; sha256="1m68wxbxwhiadav4mfcidsa1hgwy7k9x60gfbs4zn6az9ix827m6"; depends=[data_table dplyr ggplot2 gridExtra gtable igraph Rcpp reshape2 scales stringdist]; };
   tcensReg = derive2 { name="tcensReg"; version="0.1.5"; sha256="0sk884pxgr7m46c1lbpji4hr6ch3ia6vygg1z988c21q219is76j"; depends=[maxLik]; };
   tcgsaseq = derive2 { name="tcgsaseq"; version="1.8.1"; sha256="1v5b3qghygb81lqc2h1fijgw856b1778xndppq7r4b0zhhvb81ac"; depends=[CompQuadForm ggplot2 GSA KernSmooth statmod]; };
   tcl = derive2 { name="tcl"; version="0.1.0"; sha256="1ssqx50ii6j2y5n2nxn5ndp20nrjss0xf0fqp8aiwlgnm3d1zggn"; depends=[eRm lattice MASS Matrix numDeriv]; };
@@ -14410,14 +14490,16 @@ in with self; {
   tensorBF = derive2 { name="tensorBF"; version="1.0.2"; sha256="1dw1a6xqcsl4isbzbfiplgqq5nak5n9ffzm23mzzmkh1r1a8kl1y"; depends=[tensor]; };
   tensorBSS = derive2 { name="tensorBSS"; version="0.3.6"; sha256="1ja4h5x1i4rqgq9k15zjy524ki2z2636fg0jcp352jzj87wl3443"; depends=[ggplot2 ICtest JADE Rcpp RcppArmadillo tensor tsBSS]; };
   tensorflow = derive2 { name="tensorflow"; version="2.0.0"; sha256="1cz0l6blr8wan47lslq4lx0aafk61gjxwm6b3nn8zwgx849nqyr4"; depends=[config jsonlite processx reticulate rstudioapi tfruns yaml]; };
+  tensorordinal = derive2 { name="tensorordinal"; version="0.1.0"; sha256="0c54ppnxgmr7m9a3dr1a9i3z2vh5nnqp361lhaf081iib8shrxxv"; depends=[MASS pracma rTensor]; };
   tensorr = derive2 { name="tensorr"; version="0.1.1"; sha256="18xdvp328h96jn8y1iayxh7cyz2s8j5nn43nq18pyaxq271hkfyh"; depends=[assertive_base assertive_properties assertive_types Matrix purrr]; };
   tensorregress = derive2 { name="tensorregress"; version="2.0"; sha256="0whw57rj2jfh4wh30lv7n05ddymzsnxv6137f03s8aa9dh89fiqy"; depends=[MASS pracma speedglm]; };
-  tensorsparse = derive2 { name="tensorsparse"; version="1.0"; sha256="1qy6s58nkqq4spg7sapq3jafmxda0mx0j0cqjaj9pd34qqxifglf"; depends=[clues fields glasso glmnet HDCI mvtnorm RColorBrewer reshape rgl rTensor viridis]; };
+  tensorsparse = derive2 { name="tensorsparse"; version="2.0"; sha256="0midaw95q2gmk7hdlh6zdbm8nx0lm9m3y5liq6xrb3ajlq76ncqw"; depends=[fields glmnet HDCI mvtnorm RColorBrewer reshape rgl viridis]; };
   tensr = derive2 { name="tensr"; version="1.0.1"; sha256="1z6b3ra7fgn88mxbhsq65x3frj5j7p17n119s9kbw7sg9y633vfx"; depends=[assertthat]; };
   tergm = derive2 { name="tergm"; version="3.6.1"; sha256="03yd4l317airz84jfjyczjx43wi6sraid58lmxivm29xjk52xpi1"; depends=[coda ergm MASS network networkDynamic nlme robustbase statnet_common]; };
   tergmLite = derive2 { name="tergmLite"; version="2.1.7"; sha256="0djf7k0svdq4bnc84zxmxjns2fqggf0bs4h59jcl0yc36ka9k94n"; depends=[ergm network Rcpp statnet_common tergm]; };
   term = derive2 { name="term"; version="0.1.0"; sha256="16nphv6kysjjd523ypwdsw6f7l4zvqa6z62012lv71wdkhkfvgnr"; depends=[chk lifecycle]; };
   ternvis = derive2 { name="ternvis"; version="1.2"; sha256="057i6i3ygxrin0npc18gsg3dpdldzafyb5sr6lix5mhy6b09lkxf"; depends=[dichromat maps quadprog]; };
+  terra = derive2 { name="terra"; version="0.5-2"; sha256="1zc2j5a3jgv8ld1wrqq03yllddyq1ljvnyq71ivcj8y6bc4alqma"; depends=[raster Rcpp]; };
   tesseract = derive2 { name="tesseract"; version="4.1"; sha256="1a7cf48n7hdd6inqz23ifqhq6kx6wxri34a79ns2vxaj6f4llxf0"; depends=[curl digest pdftools rappdirs Rcpp]; };
   test2norm = derive2 { name="test2norm"; version="0.1.1"; sha256="11by5a1j6613akxj1nc16r07jfwxr1izkpvymr9yycnddiqyp42c"; depends=[mfp]; };
   testDriveR = derive2 { name="testDriveR"; version="0.5.1"; sha256="0wjdqvsyv33fsg1lljp9m0bhz38mpfgpgickgj4zdspc9x6lbnv6"; depends=[]; };
@@ -14501,12 +14583,13 @@ in with self; {
   tibbrConnector = derive2 { name="tibbrConnector"; version="1.5.1"; sha256="1r58myi7x4hqqvyrphxy4ppa1lnad6x2ginfq2j52ax53zr07ajp"; depends=[RCurl rjson]; };
   tictactoe = derive2 { name="tictactoe"; version="0.2.2"; sha256="1fx8plj5zr04xwk5hfj3zqhcknidxlzya2q14cf0m3y33a86lx42"; depends=[hash]; };
   tictoc = derive2 { name="tictoc"; version="1.0"; sha256="1zp2n8k2ax2jjw89dsri268asmm5ry3ijf32wbca5ji231y0knj7"; depends=[]; };
+  tidyBF = derive2 { name="tidyBF"; version="0.1.0"; sha256="1yxm0qrc0mbpidz5gdyann5xsc7arz21cfvfx29xgpgpidlgr3y8"; depends=[BayesFactor broomExtra dplyr ipmisc metaBMA rlang tibble tidyr]; };
   tidyHeatmap = derive2 { name="tidyHeatmap"; version="0.99.9"; sha256="04vx1ck1s6v4fzxxd4cpm5z3f0dzx3b9262xabnq75swng90w03r"; depends=[circlize ComplexHeatmap dplyr magrittr purrr RColorBrewer rlang tidyr viridis]; };
-  tidyLPA = derive2 { name="tidyLPA"; version="1.0.5"; sha256="15zzqyzkdcmk10n89wm31vs7nwqss11a4fphsqnbvvx55l7g77mm"; depends=[dplyr ggplot2 gtable mclust mix MplusAutomation tibble]; };
+  tidyLPA = derive2 { name="tidyLPA"; version="1.0.6"; sha256="1c3v7zljs6isbxzmyqx065pb31hl15sma00wh7pv3wgzacibbgmx"; depends=[dplyr ggplot2 gtable mclust mix MplusAutomation tibble]; };
   tidyREDCap = derive2 { name="tidyREDCap"; version="0.2.0"; sha256="03kx91avw6zbmrcxvhkb7i3syw3ajkv9ypvgn2iq3ki887vbiwzw"; depends=[dplyr janitor magrittr purrr rlang stringr tibble tidyr]; };
   tidyRSS = derive2 { name="tidyRSS"; version="2.0.1"; sha256="06pqhvgiibf1s72abd0rq3fv55plkd4481b3jhvxm3cd2isa3gbw"; depends=[anytime dplyr httr jsonlite magrittr purrr rlang tibble xml2]; };
   tidyUSDA = derive2 { name="tidyUSDA"; version="0.2.6"; sha256="02vrjpg0b651w5mvwhj60isy79q0nid6vyn2bhkddfaffs823lq0"; depends=[crayon curl dplyr fuzzyjoin ggplot2 jsonlite keyring magrittr nlme rgdal sf stringi tigris usethis]; };
-  tidybayes = derive2 { name="tidybayes"; version="2.0.1"; sha256="1v46rn76k7yc9d0x2q28vy452brr82bkpb0av7spk6xf6rcrpzhh"; depends=[arrayhelpers coda dplyr forcats ggplot2 HDInterval magrittr plyr purrr rlang scales tibble tidyr tidyselect]; };
+  tidybayes = derive2 { name="tidybayes"; version="2.0.2"; sha256="1hwblvis75n2dvbnp955qsb7wb4cd2q6wfwvkm2ma5piygi0zrh2"; depends=[arrayhelpers coda dplyr forcats ggplot2 HDInterval magrittr plyr purrr rlang scales tibble tidyr tidyselect]; };
   tidyboot = derive2 { name="tidyboot"; version="0.1.1"; sha256="0nss1ci763g9p5f33g163ppamx72axc8xhrils0cql3ka8439pmn"; depends=[dplyr modelr purrr rlang tidyr]; };
   tidycells = derive2 { name="tidycells"; version="0.2.2"; sha256="1h1g2kw4q0qgakj716gzd8jcn0hgsy5l1cypk35s6arz73xrxf0r"; depends=[dplyr ggplot2 magrittr purrr rlang stringr tibble tidyr unpivotr]; };
   tidycensus = derive2 { name="tidycensus"; version="0.9.6"; sha256="16lcldbs1h8y1ajsj7lv04h0gq93hfcd0mbws2wb5pgx0jr187yk"; depends=[dplyr httr jsonlite purrr rappdirs readr rvest sf stringr tidyr tigris units xml2]; };
@@ -14514,10 +14597,11 @@ in with self; {
   tidycomm = derive2 { name="tidycomm"; version="0.1.0"; sha256="0xas6nr7fy612r0b5h8ncvirxhzy099zvhdzxbnskm3sa21046ni"; depends=[broom dplyr forcats glue magrittr MBESS purrr rlang stringr tibble tidyr]; };
   tidycwl = derive2 { name="tidycwl"; version="1.0.4"; sha256="1f3lrdl73lx0a0y6kz33i6s8nkcwdjdmc6mvnkqp3n8r851q46lg"; depends=[dplyr htmlwidgets jsonlite magrittr visNetwork webshot yaml]; };
   tidydice = derive2 { name="tidydice"; version="0.0.6"; sha256="1g0x426gri1s0fyn2srl7ni0zvrnx1wvg5zcr19fxgdw9m8rxxp2"; depends=[assertthat dplyr ggplot2 magrittr purrr tibble]; };
-  tidyfst = derive2 { name="tidyfst"; version="0.8.8"; sha256="1cssxs6zfmld8nw567hc12bmcjdyyrz3iljbvxiz47s5qnsbhany"; depends=[data_table fst stringr]; };
+  tidyfast = derive2 { name="tidyfast"; version="0.2.1"; sha256="1bfs2wma705nx1lpndq75ama5dr9kkg8hwpklb20csnccnfrlvf6"; depends=[data_table Rcpp]; };
+  tidyfst = derive2 { name="tidyfst"; version="0.9.3"; sha256="1x19515n1yf2c7cp3nbjvlm7yiq066f11bybck56ih21xmy3p06v"; depends=[data_table fst stringr]; };
   tidygapminder = derive2 { name="tidygapminder"; version="0.1.1"; sha256="1m6bynwnw1msrzvdmy12w3ympinqpd8j3may3rwmg9941nndjv2d"; depends=[data_table dplyr readxl tidyr]; };
   tidygenomics = derive2 { name="tidygenomics"; version="0.1.2"; sha256="1cnwmmmzp9kg4k7iy2kgb22bdllpnz257pv1ahy3l11zy6bl48fc"; depends=[dplyr fuzzyjoin IRanges purrr Rcpp rlang tidyr]; };
-  tidygeocoder = derive2 { name="tidygeocoder"; version="0.2.4"; sha256="0r37s3hfyqz4zqs7cwp72dhc6f1y7zfc22v9b0705bdbqnfllahn"; depends=[dplyr httr jsonlite purrr rlang stringr tibble tidyr tmaptools]; };
+  tidygeocoder = derive2 { name="tidygeocoder"; version="0.2.5"; sha256="03zrl7zvwpcir44a5f2mixyd35rcyx8fpq7fjybb5z0bky068ir4"; depends=[dplyr httr jsonlite purrr rlang stringr tibble tidyr tmaptools]; };
   tidygraph = derive2 { name="tidygraph"; version="1.1.2"; sha256="1zpsarm74afbc7p5dlyb0whc09670qdcddw1ckb25cfc9hfh0hjn"; depends=[dplyr igraph magrittr pillar R6 Rcpp rlang tibble tidyr]; };
   tidyhydat = derive2 { name="tidyhydat"; version="0.5.0"; sha256="0bf8rnk0yhdjjs79d4s833z9j165cwvg3xdmqg3kc5yzc31m4hsg"; depends=[cli crayon DBI dbplyr dplyr httr lubridate rappdirs readr rlang RSQLite tidyr]; };
   tidyjson = derive2 { name="tidyjson"; version="0.2.4"; sha256="1nbg7wg8r38ydvcp3kbxmmnayxrdkl3p7x0fjxny3bj9a0fp99y7"; depends=[assertthat dplyr jsonlite magrittr purrr tibble tidyr]; };
@@ -14608,7 +14692,7 @@ in with self; {
   tm_plugin_lexisnexis = derive2 { name="tm.plugin.lexisnexis"; version="1.4.1"; sha256="0c094z83mcq8blc8w7kvy91d28qqcx6f6193p3frpviznlaq21xk"; depends=[ISOcodes NLP tm xml2]; };
   tm_plugin_mail = derive2 { name="tm.plugin.mail"; version="0.2-1"; sha256="0rn8jqv622qmc0zkz534ka5qnbca2rlabxm3vjbqplr6fh1ahwb1"; depends=[NLP tm]; };
   tm_plugin_webmining = derive2 { name="tm.plugin.webmining"; version="1.3"; sha256="1694jidf01ilyk286q43bjchh1gg2fk33a2cwsf5jxv7jky3gl7h"; depends=[boilerpipeR NLP RCurl RJSONIO tm XML]; };
-  tm1r = derive2 { name="tm1r"; version="1.1.3"; sha256="1r1va052aaya70pvvn950833w0q0sbd67yyg3m2qdikgniq3dn6z"; depends=[httr jsonlite]; };
+  tm1r = derive2 { name="tm1r"; version="1.1.4"; sha256="165yn07nxywyxdd52g917rmzqyjpv6ai11fhl9g6dj163l4vcn5a"; depends=[httr jsonlite]; };
   tmap = derive2 { name="tmap"; version="2.3-2"; sha256="01v4z73xpxpg87daka2vcy1gj170qjg7qdl44vrfjrxib46cn2fa"; depends=[classInt htmltools htmlwidgets leaflet leafsync lwgeom raster RColorBrewer sf tmaptools units viridisLite]; };
   tmaptools = derive2 { name="tmaptools"; version="2.0-2"; sha256="1n8m4c3q7i60p8r2xfhw8rfqmflyaicf8y1bkfkmx74afz6hv184"; depends=[classInt dichromat KernSmooth lwgeom magrittr raster RColorBrewer rgdal rgeos sf sp units viridisLite XML]; };
   tmbstan = derive2 { name="tmbstan"; version="1.0.2"; sha256="1g4b415k36wij028xz15kwpv8hmx92kznsp231bnrprzw2vrninr"; depends=[BH Rcpp RcppEigen rstan StanHeaders TMB]; };
@@ -14626,7 +14710,7 @@ in with self; {
   toOrdinal = derive2 { name="toOrdinal"; version="1.1-0.0"; sha256="0zg4zk7jx8s57g8nb0jw7r7gss00349jmkglf6sz26p7jldpgmff"; depends=[crayon testthat]; };
   todor = derive2 { name="todor"; version="0.1.0"; sha256="0xgw2mz0b96adycwfyga17r5s9k47q5bgvnsxmqm4h6mx7d1fzzx"; depends=[rex rstudioapi stringr]; };
   togglr = derive2 { name="togglr"; version="0.1.33"; sha256="105c9vxa67bqccj31ksk5myfd0v7v0wbz6qqjhxqndlg7v6ggfzc"; depends=[assertthat dplyr getPass glue httr jsonlite keyring lubridate magrittr parsedate prettyunits purrr rstudioapi]; };
-  tokenbrowser = derive2 { name="tokenbrowser"; version="0.1.2"; sha256="1qbqqmn7q5w9cggc72n1r541dw1vmq7kazhpbyhcbpfd5kvjc2r7"; depends=[Rcpp stringi]; };
+  tokenbrowser = derive2 { name="tokenbrowser"; version="0.1.4"; sha256="09bhwqqw2nr5c985ml8d6ik19r8jvxcj1l7v4xhb3y6n9k6dqxwr"; depends=[Rcpp stringi]; };
   tokenizers = derive2 { name="tokenizers"; version="0.2.1"; sha256="006xf1vdrmp9skhpss9ldhmk4cwqk512cjp1pxm2gxfybpf7qq98"; depends=[Rcpp SnowballC stringi]; };
   tokenizers_bpe = derive2 { name="tokenizers.bpe"; version="0.1.0"; sha256="1pwgjrzdcsafpv9rlyly6fckcjiymz0xcjm9byavj069kc4c69mi"; depends=[Rcpp]; };
   tolBasis = derive2 { name="tolBasis"; version="1.0"; sha256="0g4jdwklx92dffrz38kpm1sjzmvhdqzv6mj6hslsjii6sawiyibh"; depends=[lubridate polynom]; };
@@ -14673,6 +14757,8 @@ in with self; {
   trajectories = derive2 { name="trajectories"; version="0.2-1"; sha256="0sw1gcwmz2d27ck8gm5xa9bmmpgpy483brdyi74wccchwb3nfw2m"; depends=[lattice sp spacetime zoo]; };
   trajr = derive2 { name="trajr"; version="1.3.0"; sha256="1p092kqvwg3ncbk9hh8dij2grl1hfs3j5j64cqn227nr5b3xn1rc"; depends=[plotrix signal]; };
   tram = derive2 { name="tram"; version="0.3-2"; sha256="043j8f2vhbm4alr47bv0ghv4358ckvd74hnlq8516b6is3ll1h72"; depends=[basefun Formula Matrix mlt multcomp sandwich survival variables]; };
+  tramME = derive2 { name="tramME"; version="0.0.1"; sha256="1xsh6cm79bzxi2pw3ba5iwdr9077nssz485rpi5x451855pvbjll"; depends=[alabama basefun lme4 Matrix mlt nlme RcppEigen TMB tram variables]; };
+  tramnet = derive2 { name="tramnet"; version="0.0-2"; sha256="0q57cs9y0ssks7c9bbnhkvndl1yz6bsrpmcmml1nlvq2gs9rv9wg"; depends=[basefun CVXR lhs mlr mlrMBO mlt ParamHelpers sandwich smoof tram]; };
   tranSurv = derive2 { name="tranSurv"; version="1.2.0"; sha256="0r698s2yg7ypyzid52a46p0bhl3xi4rh50bfnx0pacc65rigjr6f"; depends=[SQUAREM survival]; };
   transcribeR = derive2 { name="transcribeR"; version="0.0.0"; sha256="0y2kxg2da71i962fhsjxsr2ic3b31fmffhj3gg97b0nykfpcviib"; depends=[httr]; };
   transformr = derive2 { name="transformr"; version="0.1.1"; sha256="186n789zzf2p9ggw9j7gmd4knfq051jhl35x1585jgll2karyn2c"; depends=[lpSolve Rcpp rlang sf tweenr]; };
@@ -14751,6 +14837,7 @@ in with self; {
   tsPI = derive2 { name="tsPI"; version="1.0.3"; sha256="00p7275iq8qn6c6dpqjr5s9fzc0a6njqqi9gvqnh5s9lfx9mbk1v"; depends=[KFAS]; };
   tsSelect = derive2 { name="tsSelect"; version="0.1.8"; sha256="0ysijzhhwaj5n7h50jacshnla6d0h61q0f6lj19ic0lwvlz4yazy"; depends=[forecast]; };
   tsallisqexp = derive2 { name="tsallisqexp"; version="0.9-3"; sha256="0mzqplsj2w4a7jnav43afyk8ymy6p444j7km6kc8c2g4aifpgxcb"; depends=[]; };
+  tsapp = derive2 { name="tsapp"; version="1.0.0"; sha256="0dakmzm65y6w3idfynnigcmyw0n28scfgklmmg7lg8ycsxh0x76l"; depends=[fftwtools Matrix vars]; };
   tsbox = derive2 { name="tsbox"; version="0.2.0"; sha256="0kyw276qi20801ps3kd61k1s4vs0znsyzzy8mwjq312cbjisg6mc"; depends=[anytime data_table]; };
   tsc = derive2 { name="tsc"; version="1.0-3"; sha256="1acsdkxizlkix1sskwqv2a80rshw6f14zvcsjhrmmdfd4bmwh36y"; depends=[]; };
   tscount = derive2 { name="tscount"; version="1.4.2"; sha256="15lvrglv4lq17g425s9lkcb3f04bk0322yl32648ysf7gp7lmdx5"; depends=[ltsa]; };
@@ -14788,6 +14875,7 @@ in with self; {
   ttbbeer = derive2 { name="ttbbeer"; version="1.1.0"; sha256="1azffcizm3460kxvrxxkilc6qxspyi247x8drrw5ywfichwhmdhc"; depends=[]; };
   ttdo = derive2 { name="ttdo"; version="0.0.4"; sha256="1hq1s2rsngx496mhrf9pnpvp25805f17pfj7l0dm5g7lmiq24rr8"; depends=[diffobj tinytest]; };
   ttestshiny = derive2 { name="ttestshiny"; version="0.1.0"; sha256="186569p9h3597z9lxyzm7fj8k6bzgm2kw757dcv2qhhf2k7nfch9"; depends=[dplyr shiny shinyAce shinyjs]; };
+  tth = derive2 { name="tth"; version="4.12-0"; sha256="0bwn8xxswkilv0gagh54fiw90pvjzpz6w6ky4prc3mm070plqf4b"; depends=[]; };
   tttplot = derive2 { name="tttplot"; version="1.1.1"; sha256="0rmgp1888y07w0h8kwq1azpr6bysjq4pyjf6ygpra75jj4563wx9"; depends=[]; };
   ttutils = derive2 { name="ttutils"; version="1.0-1"; sha256="18mk30070mcplybg320vjbk9v5flxnbqi5gx0yyr1z6ymjmnrxbc"; depends=[]; };
   ttwa = derive2 { name="ttwa"; version="0.8.5.1"; sha256="1lhypcwssq0dspizvln3w4dg16ad6mz8cj4w34c5vsrayqid7fyn"; depends=[data_table]; };
@@ -14832,7 +14920,7 @@ in with self; {
   types = derive2 { name="types"; version="1.0.0"; sha256="01shcin8wjbhbmzl979fj3008xqxssw90g3bjg42cnjxkmnaql59"; depends=[]; };
   uCAREChemSuiteCLI = derive2 { name="uCAREChemSuiteCLI"; version="0.2.0"; sha256="1nccgkxv57inhgvgmhwm4fr8cp28sj8n83za5gam9xx1f42mzsqk"; depends=[ChemmineR usethis]; };
   uFTIR = derive2 { name="uFTIR"; version="0.1.1"; sha256="0lpp768x87czdcb6gdgsp454faakx0gdmk9mh1zzh5ljzkxdvbxv"; depends=[raster Rcpp RcppArmadillo rgdal sp]; };
-  uGMAR = derive2 { name="uGMAR"; version="3.2.3"; sha256="1wniaiysmv03rn8slgrxx32kbpic6mnbyhs0s4rcc081314130fk"; depends=[Brobdingnag pbapply]; };
+  uGMAR = derive2 { name="uGMAR"; version="3.2.4"; sha256="16hy74ww747r1kp3xriaj5fyz7ckj04rbd7qcaa8bgl3s8fjs2wz"; depends=[Brobdingnag pbapply]; };
   uHMM = derive2 { name="uHMM"; version="1.0"; sha256="1516ipadxi7rc1dbinr5rva2fbcr5i2zg3rlli5wy7r6naf8fzzl"; depends=[chron class cluster clValid corrplot FactoMineR HMM tcltk2 tkrplot]; };
   uaparserjs = derive2 { name="uaparserjs"; version="0.1.0"; sha256="1zhz39jrvi64sj0wvwkm4y8gakfp6kz1knw4wn08kk4fa9ymyjvq"; depends=[dplyr purrr V8]; };
   uavRmp = derive2 { name="uavRmp"; version="0.5.4"; sha256="0djx6z9489pr03bf01y2d79ar840q4ffj39j72c8phz27yz40y04"; depends=[brew data_table devtools gdalUtils geosphere htmltools htmlwidgets log4r maptools raster rgdal rgeos roxygen2 sf sp spatial_tools stringr zoo]; };
@@ -14883,7 +14971,7 @@ in with self; {
   unival = derive2 { name="unival"; version="1.0.2"; sha256="1sw0z7dmicmka3znrc1c5v0s9g8cpqapacdjzl5i4k5ak2qq35qp"; depends=[optimbase psych]; };
   univariateML = derive2 { name="univariateML"; version="1.0.0"; sha256="1l8b9fll93nhspbhrap94sdgdmligb49qlzvlm0x4msqmh085ib4"; depends=[actuar assertthat extraDistr logitnorm nakagami tibble]; };
   unix = derive2 { name="unix"; version="1.5.1"; sha256="0kb54lgzqnp1nwl8lw2531qj3858szsv7wz17g6lqxkfxsww5vv8"; depends=[]; };
-  unjoin = derive2 { name="unjoin"; version="0.0.3"; sha256="08vjgl4dnh9kycrvdq5ngf57fy61n0nc582bi4znv06pq696rkwp"; depends=[dplyr rlang tibble]; };
+  unjoin = derive2 { name="unjoin"; version="0.0.4"; sha256="094hpb0w6j4l0kmqh9wgfpsya5ldjxm3fms7px4pvj8nqx29ga80"; depends=[dplyr rlang tibble]; };
   unmarked = derive2 { name="unmarked"; version="0.13-2"; sha256="07i0fiz155vs6cbhpg5gx77syf9phswhpz7vg3xxr16i0qdnh3h2"; depends=[lattice MASS Matrix plyr raster Rcpp RcppArmadillo]; };
   unpivotr = derive2 { name="unpivotr"; version="0.5.1"; sha256="0j2q98xm3gg3mscn9ckl4pcihwc4p5gn4sk5sr1nqi4ghc047qaf"; depends=[cellranger dplyr forcats magrittr pillar purrr rlang tibble tidyr tidyselect xml2]; };
   unrepx = derive2 { name="unrepx"; version="1.0"; sha256="1dzvwpza60y9p7kz1f0bm20wid5jyxx9pma4w41az9shq5kkr0aj"; depends=[]; };
@@ -14902,7 +14990,7 @@ in with self; {
   urlshorteneR = derive2 { name="urlshorteneR"; version="1.1.2"; sha256="1gxyc9a81lsn72x7c29lz6k9k5ylqd0j65yhy2qj8lslnmg869vz"; depends=[assertthat httr jsonlite lubridate stringr]; };
   urltools = derive2 { name="urltools"; version="1.7.3"; sha256="04x3my655dd287cbsszbnf75q0swmjlxxrblcsay7a8n3df3a830"; depends=[Rcpp triebeard]; };
   uroot = derive2 { name="uroot"; version="2.1-0"; sha256="1hhq7ns2pyiziwx6sx7sb6445p3nynv7l04rksjngai2vpdaj0iw"; depends=[]; };
-  ursa = derive2 { name="ursa"; version="3.8.16"; sha256="0w92l4pv92szj70d71js0cbmy2y7c054adpq5ghbiqrd9g1a5jc7"; depends=[jpeg png rgdal]; };
+  ursa = derive2 { name="ursa"; version="3.8.17"; sha256="1zhyyv7i8d5qqsb8nah4j2znz74qsrz2klr3q46b1s6c9svxpm8n"; depends=[jpeg png rgdal]; };
   usa = derive2 { name="usa"; version="0.1.0"; sha256="0scdrd6b48n019f7qp77rrkqgmapnrknalq0hml1cy7m43llqf6d"; depends=[tibble]; };
   usdarnass = derive2 { name="usdarnass"; version="0.1.0"; sha256="10fh9anpmbb7i70q3hjxbplrkqa1q86zgh8nldsf2i526p62hpm1"; depends=[httr jsonlite readr]; };
   usdm = derive2 { name="usdm"; version="1.1-18"; sha256="1sis47fri2lrbx2ll5ps7bvycjqhncnia800izf11szgayim5lrv"; depends=[raster sp]; };
@@ -14912,7 +15000,7 @@ in with self; {
   userfriendlyscience = derive2 { name="userfriendlyscience"; version="0.7.2"; sha256="17arxxha8qr876nrf9szpymgamxlvacj3lfbmpiv973kyi3hr7m4"; depends=[BiasedUrn car data_tree DiagrammeR digest diptest GGally ggplot2 ggrepel ggridges GPArotation gridExtra gtable knitr lavaan lme4 MASS MBESS minpack_lm pander plyr psych pwr RColorBrewer rio scales SCRT SuppDists ufs viridis XML xtable]; };
   usethis = derive2 { name="usethis"; version="1.5.1"; sha256="07an5wbikilg7cb3q6x5aykw8dfqnjrc3wpfb7gjmy0d9fh20fcy"; depends=[clipr clisymbols crayon curl desc fs gh git2r glue purrr rlang rprojroot rstudioapi whisker withr yaml]; };
   usfertilizer = derive2 { name="usfertilizer"; version="0.1.5"; sha256="05zjn39hqjjzzp4v4b1zbqq59205s7k0kikms951h57kbyvjz6vk"; depends=[tidyverse]; };
-  ushr = derive2 { name="ushr"; version="0.2.1"; sha256="0jw7wc9nv3z81lzc90pb67xb5mfbdxyvi386p5s0hn8y19jimc1g"; depends=[dplyr ggplot2 tidyr]; };
+  ushr = derive2 { name="ushr"; version="0.2.2"; sha256="04j4hfwsk8idrl7c3lfcd1v7s8xxf2l0rlf2aixszsdbcfr9173n"; depends=[dplyr ggplot2 tidyr]; };
   uskewFactors = derive2 { name="uskewFactors"; version="2.0"; sha256="0ndi5987ak8sa7krgiglsibfg0k7z9j8fg47hg1m8ar0sq4r1yj6"; depends=[MASS MCMCpack mvtnorm tmvtnorm]; };
   usl = derive2 { name="usl"; version="3.0.0"; sha256="1ahry485kpzfc0pzi4zm039d5mpv1jycmhdpn0n0zn0drcrlhw0g"; depends=[nlsr]; };
   usmap = derive2 { name="usmap"; version="0.5.0"; sha256="0fjmmw8xhba31gv8mx9k55881yb94z518csbqas3bvssq5s7048f"; depends=[]; };
@@ -14981,7 +15069,7 @@ in with self; {
   vcrpart = derive2 { name="vcrpart"; version="1.0-3"; sha256="10898qp3sh2cjcfz4ac2q98f3z2wmwd3zvhhcdlxw7xy5a1x8gib"; depends=[formula_tools nlme numDeriv partykit rpart sandwich strucchange ucminf zoo]; };
   vctrs = derive2 { name="vctrs"; version="0.2.4"; sha256="15sgzs6afvmhssk6jcg41rn3bvmzmbm4sgca6f6x8lfrsazvdj6w"; depends=[digest ellipsis glue rlang]; };
   vcvComp = derive2 { name="vcvComp"; version="1.0.1"; sha256="1103hjzd29f8gpsfbagdryq52m6fkhhh9dbqhbmhixxlimc7sd03"; depends=[]; };
-  vdar = derive2 { name="vdar"; version="0.1.1"; sha256="1pxrsmvzn7626ikcwl4dz8lchbg2fr6ww6yjndx50iigb0q3dvbi"; depends=[compositions MASS]; };
+  vdar = derive2 { name="vdar"; version="0.1.2-1"; sha256="1ia3211ah4m2dapdldgpvphk6zjfmx550dn9zz7im5v46b9dk9a0"; depends=[compositions]; };
   vdg = derive2 { name="vdg"; version="1.2.0"; sha256="1hi5d14nh9q784sbdk018awrawh9f1aix0wl26x7n0xb4707rcmy"; depends=[ggplot2 gridExtra proxy quantreg]; };
   vdiffr = derive2 { name="vdiffr"; version="0.3.1"; sha256="1l0vzh7nnwr64cq0nixnr4m0iya4mdpqvh45g2wf1hja51mcvw0a"; depends=[BH devtools diffobj fontquiver freetypeharfbuzz gdtools glue htmltools htmlwidgets purrr R6 Rcpp rlang shiny testthat usethis xml2]; };
   vec2dtransf = derive2 { name="vec2dtransf"; version="1.1"; sha256="029xynay9f9rn0syphh2rhd3szv50ib4r0h0xfhhvbbb37h5dc9s"; depends=[sp]; };
@@ -15021,6 +15109,7 @@ in with self; {
   vinereg = derive2 { name="vinereg"; version="0.7.0"; sha256="1fviqzs879n7rin3b0jks8dfvcxiay8jssqy7salslghpj7rkm84"; depends=[assertthat BH kde1d Rcpp RcppEigen RcppThread rvinecopulib wdm]; };
   vines = derive2 { name="vines"; version="1.1.5"; sha256="057d2fdh03cq9kh4vz94arqscahmz14xbr2g59l0vn205lnyilf1"; depends=[ADGofTest copula cubature TSP]; };
   violinmplot = derive2 { name="violinmplot"; version="0.2.1"; sha256="1j3hb03y988xa704kp25v1z1pmpxw5k1502zfqjaf8cy4lr3kzsc"; depends=[lattice]; };
+  violinplotter = derive2 { name="violinplotter"; version="1.0.0"; sha256="10ikdvxcwaf4y4y6k6ayigbqgp1kihjdch4zq256y3734idkhc4k"; depends=[]; };
   vioplot = derive2 { name="vioplot"; version="0.3.4"; sha256="1fsklymilspzz5fzlj7666x09aglaw0v4x0yfjjzy4vr5qpjc529"; depends=[sm zoo]; };
   viopoints = derive2 { name="viopoints"; version="0.2-1"; sha256="0cpbkkzm1rxch8gnvlmmzy8g521f5ang3nhlcnin419gha0w6avf"; depends=[]; };
   vip = derive2 { name="vip"; version="0.2.1"; sha256="1z3h4rjy15zvf0510ic1p1zxamhc4da74py6zy56c44y9yy1nvp5"; depends=[ggplot2 gridExtra magrittr plyr tibble]; };
@@ -15138,7 +15227,7 @@ in with self; {
   webdriver = derive2 { name="webdriver"; version="1.0.5"; sha256="0l3nz7gf62jlkvkn5sfxfvn0prxz3ds7nlpfb1yhnmdljhbzrgzf"; depends=[base64enc callr curl debugme httr jsonlite R6 showimage withr]; };
   webex = derive2 { name="webex"; version="0.9.1"; sha256="0z85cfnjicy3q1n77ilrh43h6xh6bpr1f1iinzfk1r64031h90yl"; depends=[jsonlite knitr rmarkdown]; };
   webglobe = derive2 { name="webglobe"; version="1.0.2"; sha256="1277d6fkgrgixlhikfwf0r6z8g5b7mah905xi219qsfycxmifgn9"; depends=[geojsonio httpuv jsonlite]; };
-  webmockr = derive2 { name="webmockr"; version="0.6.0"; sha256="073yq5xkim82ls385ndiwwk8pj31z07krn68v7xzafz1d0jzc18b"; depends=[crul curl fauxpas jsonlite magrittr R6 urltools]; };
+  webmockr = derive2 { name="webmockr"; version="0.6.2"; sha256="1mf0f1pb5dkk63m7a63k7pscax6dywz97d2ihsg10qkv0svn2sm6"; depends=[crul curl fauxpas jsonlite magrittr R6 urltools]; };
   webp = derive2 { name="webp"; version="1.0"; sha256="1h17g2zaq6ipsb1w6ix9m68ddmp7dspmaqflqkskylh2n8jhk8cd"; depends=[]; };
   webr = derive2 { name="webr"; version="0.1.5"; sha256="03yhlla74i71nphrfhr5sd57ykj7rjanh2a8nw3cq22rg9g668jk"; depends=[dplyr flextable ggforce ggplot2 magrittr moonBook psych purrr rlang rrtable scales shiny sjlabelled stringr tibble tidyr tidyselect vcd ztable]; };
   webreadr = derive2 { name="webreadr"; version="0.4.0"; sha256="0l3l5g4zj5faxqi1kqwx9lq91gbj40z2q3csrsmpal08qnwkxs90"; depends=[Rcpp readr]; };
@@ -15153,6 +15242,7 @@ in with self; {
   weibullness = derive2 { name="weibullness"; version="1.19.8"; sha256="19s44mxxcnhngifxshsyjr3a9zvbwywmqgby5dxd73yid1p2k9mr"; depends=[]; };
   weibulltools = derive2 { name="weibulltools"; version="1.0.1"; sha256="06blip2dqaz2f3wnghp8yj0qj23s242k3r7bfcka1n52msc58xjz"; depends=[dplyr LearnBayes magrittr plotly Rcpp RcppArmadillo sandwich segmented SPREDA survival]; };
   weightQuant = derive2 { name="weightQuant"; version="1.0"; sha256="1ngz51wr5qpnb98lfbddwvipcra86dq5whm6z8c4xd921anb15bx"; depends=[doParallel foreach quantreg]; };
+  weightedScores = derive2 { name="weightedScores"; version="0.9.5.3"; sha256="1wf01z94snwbqp22waz7qays3ymg5lsxpfpafdarad2b6mg5j2g8"; depends=[mvtnorm rootSolve]; };
   weightr = derive2 { name="weightr"; version="2.0.2"; sha256="1qsyak91kdgv48wf6qhpfbiirlg4ba9w6rw8ynjcsnqqdvmly1lb"; depends=[ggplot2 scales]; };
   weights = derive2 { name="weights"; version="1.0.1"; sha256="1ka2kvzg464vn80qziqy4mrciy9wwd3jfasgq0d33wbiblhmxkj5"; depends=[gdata Hmisc mice]; };
   weirs = derive2 { name="weirs"; version="0.25"; sha256="17a0ppi7ghikrwn39zvhg2cvhmnr3w0qi7r9lj22x65ii9nzadd7"; depends=[]; };
@@ -15165,6 +15255,7 @@ in with self; {
   wfindr = derive2 { name="wfindr"; version="0.1.0"; sha256="0m5xj50hqdjj4lpbgx1kp3my4njr0nz09hd63rf4qf1ls8r7zil9"; depends=[dplyr magrittr]; };
   wgaim = derive2 { name="wgaim"; version="2.0-1"; sha256="1qiyfkpsbzjr9xsq5kqq6rlqpndngkn2irdfh3gyi45h6hn118j4"; depends=[ggplot2 qtl]; };
   wgeesel = derive2 { name="wgeesel"; version="1.5"; sha256="0lybvsq5168cjybzv2dbyx2z8aakcx7i7ivm8zc90haiispm9n5x"; depends=[bindata CRTgeeDR geepack MASS PoisNor]; };
+  whatr = derive2 { name="whatr"; version="1.0.0"; sha256="0l9yvbqib2pf93dlslj5268c8l9zzywmy4kwijlvink6fasllrcn"; depends=[dplyr ggplot2 httr magrittr purrr rlang rvest scales stringr tibble tidyr xml2]; };
   wheatmap = derive2 { name="wheatmap"; version="0.1.0"; sha256="1c1xvzy194vw3idkwkqp9kyrfldzczj30cl15jw1bbnw87zcwdzy"; depends=[colorspace RColorBrewer]; };
   whereami = derive2 { name="whereami"; version="0.1.9"; sha256="0mjq9haacsf0zkgh7xxx8dr67hnw5ijjdhaz8c69mfjmd2zfzfwq"; depends=[cli jsonlite rstudioapi]; };
   whereport = derive2 { name="whereport"; version="0.1"; sha256="1gdqzr2hrnpxbwl7cfps4m3xja8wkgwfs50i2nailybympvdnxm4"; depends=[dplyr]; };
@@ -15244,6 +15335,7 @@ in with self; {
   wrswoR = derive2 { name="wrswoR"; version="1.1"; sha256="0jnb818xz841bx2i03k3hhy4hxcwpxblskg9nrc8kgbc22rxx4lz"; depends=[logging Rcpp]; };
   wrswoR_benchmark = derive2 { name="wrswoR.benchmark"; version="0.2"; sha256="0vzs2lqq48kzk63xz2k9b7qcy0ph5yyvih6z98jfz36kpdfhdps9"; depends=[curl lazyeval]; };
   wru = derive2 { name="wru"; version="0.1-9"; sha256="0xrm3f1khggcvdzzk65mnbfcyji3kjz8hrk9d2n4y15nhpbw8p8h"; depends=[devtools]; };
+  wsbackfit = derive2 { name="wsbackfit"; version="1.0"; sha256="18d64i26mvc6j0l1nylzljypyhf4cpgcp6jc9vrzq7n609v1i882"; depends=[]; };
   wskm = derive2 { name="wskm"; version="1.4.36"; sha256="1vg16plz67abmnbzxfb7cyc0zyvi6in54ry5gg0bmbxaq1rcipmw"; depends=[fpc lattice latticeExtra]; };
   wsrf = derive2 { name="wsrf"; version="1.7.17"; sha256="0gmlvfcy2iqa5sqhwps3hx0hl9fir8nf5xq62f25sn8i3llw752z"; depends=[Rcpp]; };
   wsyn = derive2 { name="wsyn"; version="1.0.2"; sha256="0jl0wnw11yrbiygcpcnl1yi8xf5dd3sbh0c2yic8dc0p64k6iass"; depends=[fields MASS]; };
@@ -15272,10 +15364,10 @@ in with self; {
   xesreadR = derive2 { name="xesreadR"; version="0.2.3"; sha256="1pvdx0mxg2f885bhy4hb3kqzcgva4q7hzzaipkfzyi5lnjdsbc81"; depends=[bupaR data_table dplyr lubridate purrr stringr tidyr XML xml2]; };
   xfun = derive2 { name="xfun"; version="0.12"; sha256="0sgh8kafi9x1glmmcp1ly827pm8q7fsfngbplr41fbb4nc9363df"; depends=[]; };
   xgb2sql = derive2 { name="xgb2sql"; version="0.1.2"; sha256="1gw5dw0ck5hip8mv347zaswrggk395bg2hgn02bvqs0d31jhmgvi"; depends=[data_table xgboost]; };
-  xgboost = derive2 { name="xgboost"; version="0.90.0.2"; sha256="1gy9rzg43mjpfis893vf15drmbigfn0481zrzss9ajnmnk0q8194"; depends=[data_table magrittr Matrix stringi]; };
+  xgboost = derive2 { name="xgboost"; version="1.0.0.1"; sha256="0fx5qjpjjirzhplddqmxlysyqszp79w74x00b5shp6p2lzy6yd9a"; depends=[data_table magrittr Matrix stringi]; };
   xgobi = derive2 { name="xgobi"; version="1.2-15"; sha256="03ym5mm16rb1bdwrymr393r3xgprp0ign45ryym3g0x2zi8dy557"; depends=[]; };
   xgxr = derive2 { name="xgxr"; version="1.0.7"; sha256="1hl2xblq06mgy0a1apfvdinyr8sqqmvqqi42xmcyl9di5x9kb0qx"; depends=[assertthat binom dplyr ggplot2 labeling magrittr pander png scales tibble]; };
-  xhmmScripts = derive2 { name="xhmmScripts"; version="1.1"; sha256="1qryyb34jx9c64l8bnwp40b08y81agdj5w0icj8dk052x50ip1hl"; depends=[gplots plotrix]; };
+  xhmmScripts = derive2 { name="xhmmScripts"; version="1.1"; sha256="0yvb3yxpini7jbiasxhxpxwmxjzz67v1mjs0nz5x8kala1gcfp79"; depends=[gplots plotrix]; };
   xkcd = derive2 { name="xkcd"; version="0.0.6"; sha256="1z2y0ihn68ppay7xkglhw7djki5654g6z4bbpyy41if57z9q554f"; depends=[extrafont ggplot2 Hmisc]; };
   xkcdcolors = derive2 { name="xkcdcolors"; version="1.0"; sha256="07fnjv01r3b951dqca2zs9b9f6hsgbpbpsrggvb8rps53kpid0i7"; depends=[FNN]; };
   xlink = derive2 { name="xlink"; version="1.0.1"; sha256="02ahgjampy92gcwhv269px5w8651a7j50dn1295zwqxj44lk4g9q"; depends=[survival]; };

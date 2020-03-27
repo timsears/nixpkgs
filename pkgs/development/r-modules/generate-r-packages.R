@@ -29,7 +29,8 @@ knownPackages <- sapply(knownPackages, gsub, pattern=".", replacement="_", fixed
 mirrorUrl <- mirrorUrls[mirrorType][[1]]
 nixPrefetch <- function(name, version) {
   prevV <- readFormatted$V2 == name & readFormatted$V4 == version
-  if (sum(prevV) == 1)
+  if ( 1 == 0 ) # force everything. needed too often sadly
+  # if  (sum(prevV) == 1) # assume links point to immutable files. 
     as.character(readFormatted$V6[ prevV ])
 
   else {
