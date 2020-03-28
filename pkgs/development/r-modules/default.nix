@@ -30,7 +30,8 @@ let
       urls = mkUrls (args // { inherit name version; });
     };
     inherit doCheck requireX;
-    propagatedBuildInputs = depends ++ (lib.optionals stdenv.isDarwin [ pkgs.libiconv ]);
+    propagatedBuildInputs = depends ++ (lib.optionals stdenv.isDarwin
+      (with pkgs; [ libiconv pkgconfig flock which ]) );
     nativeBuildInputs = depends;
     meta.homepage = mkHomepage (args // { inherit name; });
     meta.platforms = R.meta.platforms;
@@ -330,6 +331,7 @@ let
     jqr = [ jq.dev ];
     lwgeom = [ proj.dev geos ];
     kza = [ fftw.dev ];
+    matchingMarkets = [ jdk ];
     magick = [ imagemagick.dev ];
     mvabund = [ gsl_1 ];
     mwaved = [ fftw.dev ];

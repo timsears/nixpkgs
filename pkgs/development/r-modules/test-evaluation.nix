@@ -77,7 +77,8 @@ let
 
 in
 
-{ inherit
+{ rpkgs = pkgs.rPackages;
+  inherit
   # package sets, none include packages marked broken
   rWrapper # BIG!
   notbroken_pkgs # BIG!
