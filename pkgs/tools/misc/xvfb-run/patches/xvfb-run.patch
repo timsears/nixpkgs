@@ -1,0 +1,15 @@
+diff -u --label a/xvfb-run --label c/xvfb-run
+--- a/xvfb-run
++++ b/xvfb-run
+@@ -156,7 +156,8 @@
+ fi
+ 
+ # Start Xvfb.
+-MCOOKIE=$(mcookie)
++mcookie=`dd if=/dev/urandom bs=16 count=1 2>/dev/null | hexdump -e \\"%08x\\"`
++MCOOKIE="$mcookie"
+ 
+ if [ -z "$AUTO_DISPLAY" ]; then
+   # Old style using a pre-computed SERVERNUM
+
+Diff finished.  Sat Mar 28 09:18:04 2020
