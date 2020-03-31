@@ -245,12 +245,15 @@ let
     Cairo = [ libtiff libjpeg cairo.dev x11 fontconfig.lib ];
     ChemmineOB = [ openbabel  ];
     JavaGD = [ jdk ];
+    LBLGXE = lib.optional stdenv.isDarwin llvmPackages.openmp;
+    KRIG  = lib.optional stdenv.isDarwin llvmPackages.openmp;
     ModelMetrics = lib.optional stdenv.isDarwin llvmPackages.openmp;
     MSGFplus = [ jdk];
     PKI = [ openssl.dev ];
     R2SWF = [ freetype.dev ];
     RAppArmor = [ libapparmor ];
     RGtk2 = [ gtk2.dev ];
+    RMariaDB = [ libmysqlclient ];
     RMySQL = [ libmysqlclient openssl.dev ];
     RNetCDF = [ netcdf udunits ];
     RODBC = [ libiodbc ];

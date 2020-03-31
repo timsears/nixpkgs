@@ -7,7 +7,7 @@
 let derive2 = derive { biocVersion = "3.10"; };
 in with self; {
   BgeeCall = derive2 { name="BgeeCall"; version="1.2.1"; sha256="0v9aj4nlgx9yj2n2wpispjwlvg53b8x8mz6fnnnn73fyh0pplzmm"; depends=[biomaRt Biostrings GenomicFeatures jsonlite rhdf5 rtracklayer tximport]; };
-  BiocMetaWorkflow = derive2 { name="BiocMetaWorkflow"; version="1.8.0"; sha256="0fx2s26clk67xslclhs5zxjfcra2pczw8389r4w98v8dclhrws4d"; depends=[]; };
+  BiocMetaWorkflow = derive2 { name="BiocMetaWorkflow"; version="1.8.1"; sha256="1zdvnf5f5zdxpaxqn4z1dvv6qszrf6p2hr81jcnsmrl5nwbjv2jy"; depends=[]; };
   CAGEWorkflow = derive2 { name="CAGEWorkflow"; version="1.2.0"; sha256="0xbkbp0aw1vvkp7fq41qbh2mgxypj6y41vk7fzjx06hwhbjaqwdv"; depends=[CAGEfightR nanotubes]; };
   EGSEA123 = derive2 { name="EGSEA123"; version="1.10.0"; sha256="1bhpj102ncbkyx04kgmdj06r1fy9fxvc3zzi97mizn0vysvldihc"; depends=[edgeR EGSEA illuminaio limma]; };
   ExpressionNormalizationWorkflow = derive2 { name="ExpressionNormalizationWorkflow"; version="1.12.0"; sha256="0p8d1bcnzjxc1l8sbrs18jpdr8h08gx7mi69z5l3a7fq3wxv4lcy"; depends=[Biobase limma lme4 matrixStats pvca snm sva vsn]; };

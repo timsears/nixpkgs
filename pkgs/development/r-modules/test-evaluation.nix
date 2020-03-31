@@ -224,7 +224,10 @@ let
    
   java_names = [
     "rJava"
+    "AGread"
     "AntAngioCOOL"
+    "AWR_KMS"
+    "AWR_Athena"
     "arulesNBMiner"
     "bartMachine"
     "bartMachineJARs"
