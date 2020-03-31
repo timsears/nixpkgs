@@ -328,6 +328,7 @@ let
     "openNLP"
     "openNLPdata"
     "OpenStreetMap"
+    "Pairwise3D"
     "PortfolioEffectEstim"
     "PortfolioEffectHFT"
     "prcbench"

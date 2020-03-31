@@ -1,20 +1,24 @@
 #!/bin/bash
-# args: names packageset startAt
-pkgset=$1
+# args: names pkgs start end
+pkgs=$1
 start=$2
 end=100000
-if [[ $3 -gt $end ]] ; then
-end=$3
+if [[ $3 -lt $end ]] ; then
+    end=$3
+    echo "building from $start to $end"
 fi
 
-i=0
 
-for pkg in $(cat $pkgset)
+i=0
+trap "exit" INT
+for pkg in $(cat $pkgs)
 do
-    if [[ $i -ge $start && $i -le $end ]] ; then  
+    if [[ $i -ge $start && $i -le $end ]] ; then
+       echo $i $end
        echo "$i: Building ${pkg}"
        nix build -f test-evaluation.nix rPackages.${pkg}
     fi
     let "i+=1"
+    
 done
 
