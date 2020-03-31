@@ -30,8 +30,10 @@ let
       urls = mkUrls (args // { inherit name version; });
     };
     inherit doCheck requireX;
-    propagatedBuildInputs = depends ++ (lib.optionals stdenv.isDarwin
-      (with pkgs; [ libiconv pkgconfig flock which ]) );
+    propagatedBuildInputs = depends ++ ( with pkgs;
+      (lib.optionals stdenv.isDarwin [ libiconv pkgconfig flock which ])
+      ++ [ gsl_1 fftw.dev liblapack gmp.dev gtk2.dev bzip2.dev
+           lzma icu.dev pcre.dev zlib.dev curl.dev libpng libtiff libjpeg ]);
     nativeBuildInputs = depends;
     meta.homepage = mkHomepage (args // { inherit name; });
     meta.platforms = R.meta.platforms;
@@ -239,158 +241,82 @@ let
   };
 
   packagesWithNativeBuildInputs = with pkgs; {
-    AMOUNTAIN = [ gsl_1 ];
-    BayesSAE = [ gsl_1 ];
-    BayesVarSel = [ gsl_1 ];
     BayesXsrc = [ readline.dev ncurses ];
-    BiocCheck = [ which ];
-    Biostrings = [ zlib ];
-    BitSeq = [ zlib.dev curl.dev ];
     Cairo = [ libtiff libjpeg cairo.dev x11 fontconfig.lib ];
-    Cardinal = [ which ];
-    ChemmineOB = [ openbabel pkgconfig ];
-    DiffBind = [ zlib.dev curl.dev ];
-    DirichletMultinomial = [ gsl_1 ];
-    EMCluster = [ liblapack ];
-    Formula = [ gmp ];
-    GLAD = [ gsl_1 ];
-    HDF5Array = [ zlib.dev ];
-    HiCseg = [ gsl_1 ];
+    ChemmineOB = [ openbabel  ];
     JavaGD = [ jdk ];
-    KFKSDS = [ gsl_1 ];
     ModelMetrics = lib.optional stdenv.isDarwin llvmPackages.openmp;
-    MotIV = [ gsl_1 ];
     MSGFplus = [ jdk];
     PKI = [ openssl.dev ];
-    R2SWF = [ zlib libpng freetype.dev ];
+    R2SWF = [ freetype.dev ];
     RAppArmor = [ libapparmor ];
     RGtk2 = [ gtk2.dev ];
-    RMySQL = [ zlib libmysqlclient openssl.dev ];
+    RMySQL = [ libmysqlclient openssl.dev ];
     RNetCDF = [ netcdf udunits ];
     RODBC = [ libiodbc ];
     RPostgreSQL = [ postgresql postgresql ];
     RProtoBuf = [ protobuf ];
     RSclient = [ openssl.dev ];
-    RVowpalWabbit = [ zlib.dev boost ];
-    RcppCNPy = [ zlib.dev ];
-    RcppGSL = [ gsl_1 ];
-    RcppZiggurat = [ gsl_1 ];
+    RVowpalWabbit = [ boost ];
     Rglpk = [ glpk ];
-    Rhdf5lib = [ zlib.dev ];
-    Rhpc = [ zlib bzip2.dev icu lzma.dev openmpi pcre.dev ];
-    Rhtslib = [ zlib.dev automake autoconf bzip2.dev lzma.dev curl.dev ] ;
-    Rlibeemd = [ gsl_1 ];
-    Rmpfr = [ gmp mpfr.dev ];
+    Rhpc = [ openmpi ];
+    Rhtslib = [ automake autoconf ] ;
+    Rmpfr = [ mpfr.dev ];
     Rmpi = [ openmpi ];
-    Rsamtools = [ zlib.dev curl.dev ];
     Rserve = [ openssl ];
-    Rssa = [ fftw.dev ];
-    Rsubread = [ zlib.dev ];
-    SAVE = [ zlib bzip2 icu lzma pcre ];
-    ShortRead = [ zlib.dev ];
-    TAQMNGR = [ zlib.dev ];
-    TKF = [ gsl_1 ];
     V8 = [ v8 ];
-    VariantAnnotation = [ zlib.dev ];
-    XBRL = [ zlib libxml2.dev ];
+    XBRL = [ libxml2.dev ];
     XML = [ libtool libxml2.dev xmlsec libxslt ];
-    XVector = [ zlib.dev ];
-    abn = [ gsl_1 ];
     adimpro = [ imagemagick ];
-    affyPLM = [ zlib.dev ];
-    affyio = [ zlib.dev ];
-    animation = [ which ];
     audio = [ portaudio ];
-    bamsignals = [ zlib.dev curl.dev ];
     bigGP = [ openmpi ];
-    bio3d = [ zlib.dev ];
-    bnpmr = [ gsl_1 ];
     cairoDevice = [ gtk2.dev ];
-    chebpol = [ fftw ];
-    cit = [ gsl_1 ];
-    curl = [ curl.dev ];
-    data_table = [zlib.dev] ++ lib.optional stdenv.isDarwin llvmPackages.openmp;
+    data_table = lib.optional stdenv.isDarwin llvmPackages.openmp;
     devEMF = [ xorg.libXft.dev x11 ];
-    diversitree = [ gsl_1 fftw ];
-    fftw = [ fftw.dev ];
-    fftwtools = [ fftw.dev ];
     gdtools = [ cairo.dev fontconfig.lib freetype.dev ];
-    git2r = [ zlib.dev openssl.dev libssh2.dev libgit2 pkgconfig ];
+    git2r = [  openssl.dev libssh2.dev libgit2  ];
     glpkAPI = [ gmp glpk ];
-    gmapR = [ zlib.dev ];
     gmp = [ gmp.dev ];
-    graphscan = [ gsl_1 ];
-    gsl = [ gsl ];
     hdf5r = [ hdf5.dev];
-    h5vc = [ zlib.dev curl.dev ];
-    haven = [ libiconv zlib.dev ];
-    iBMQ = [ gsl_1 ];
     igraph = [ gmp libxml2.dev ];
     imager = [ x11 ];
     jpeg = [ libjpeg.dev ];
     jqr = [ jq.dev ];
     lwgeom = [ proj.dev geos ];
-    kza = [ fftw.dev ];
     matchingMarkets = [ jdk ];
     magick = [ imagemagick.dev ];
-    mvabund = [ gsl_1 ];
-    mwaved = [ fftw.dev ];
-    ncdfFlow = [ zlib.dev ];
     ncdf4 = [ netcdf ];
-    nloptr = [ nlopt pkgconfig ];
+    nloptr = [ nlopt  ];
     odbc = [ unixODBC ];
-    oligo = [ zlib.dev ];
-    outbreaker = [ gsl_1 ];
-    pander = [ pandoc which ];
+    pander = [ pandoc  ];
     pbdMPI = [ openmpi ];
     pbdNCDF4 = [ netcdf ];
     pbdPROF = [ openmpi ];
-    pbdZMQ = lib.optionals stdenv.isDarwin [ which ];
     pdftools = [ poppler libjpeg.dev];
-    phytools = [ which ];
-    png = [ libpng.dev ];
     proj4 = [ proj.dev ];
     protolite = [ protobuf ];
-    qtbase = [ qt4.dev  ];
+    qtbase = [ qt4.dev ];
     qtpaint = [ qt4 ];
-    rJava = [ zlib bzip2.dev icu lzma.dev pcre.dev jdk libzip ];
+    rJava = [ jdk libzip ];
     rPython = [ python ];
-    rapport = [ which ];
-    rapportools = [ which ];
     rcdd = [ gmp.dev ];
-    readxl = [ libiconv ];
-    reprex = [ which ];
     rgdal = [ proj.dev gdal ];
     rgeos = [ geos ];
     rggobi = [ ggobi gtk2.dev libxml2.dev ];
-    rhdf5 = [ zlib ];
     rjags = [ jags ];
-    rmatio = [ zlib.dev ];
     rpanel = [ bwidget ];
     rpg = [ postgresql ];
-    rtiff = [ libtiff.dev ];
-    rtracklayer = [ zlib.dev ];
     runjags = [ jags ];
     rzmq = [ zeromq3 ];
-    sdcTable = [ gmp glpk ];
-    seewave = [ fftw.dev libsndfile.dev ];
-    seqinr = [ zlib.dev ];
-    seqminer = [ zlib.dev bzip2 ];
+    sdcTable = [ glpk ];
+    seewave = [ libsndfile.dev ];
     sf = [ gdal proj.dev geos ];
-    showtext = [ zlib libpng icu freetype.dev ];
-    simplexreg = [ gsl_1 ];
-    snpStats = [ zlib.dev ];
-    spate = [ fftw.dev ];
+    showtext = [ freetype.dev ];
     ssanv = [ proj.dev ];
-    stringi = [ icu.dev ];
-    stsm = [ gsl_1 ];
-    survSNP = [ gsl_1 ];
-    sysfonts = [ zlib libpng freetype.dev ];
+    sysfonts = [ freetype.dev ];
     systemfonts = [ fontconfig.dev freetype.dev ];
     tesseract = [ tesseract leptonica poppler ];
-    tiff = [ libtiff.dev ];
     tkrplot = [ xorg.libX11 tk.dev ];
-    topicmodels = [ gsl_1 ];
     udunits2 = [ udunits expat ];
     units = [ udunits ];
     xml2 = [ libxml2.dev ] ++ lib.optionals stdenv.isDarwin [ perl ];
@@ -398,115 +324,23 @@ let
 
   packagesWithBuildInputs = with pkgs; {
     # sort -t '=' -k 2
-    AnnotLists = [ flock ];
-    BANDITS = [ libiconv ];
-    CGEN = [ libiconv ];
-    GenSA = [ libiconv ];
-    GeneSelectMMD  = [ libiconv ];
-    CNAnorm = [libiconv ];
-    Cairo = [ pkgconfig ];
-    Delaporte = [ libiconv ];
-    DESeq2 = [ libiconv ];
-    DNAcopy = [ libiconv ];
-    GRENITS = [ libiconv ];
-    HDTD = [ libiconv ];
-    HilbertVisGUI = [ gtkmm2.dev pkg-config which pkgconfig gnumake ];
-    HiddenMarkov = [ libiconv ];
-    Hmisc = [ libiconv ];
-    Iso = [ libiconv ];
-    KernSmooth = [ libiconv ];
-    LEA = [ libiconv ];
-    LVSmiRNA = [ libiconv ];
-    JunctionSeq = [ libiconv ];
-    Matrix = [ libiconv ];
-    R2SWF = [ pkgconfig ];
-    RCurl = [ curl.dev ];
-    RGtk2 = [ pkgconfig ];
-    RMark = [ which ];
-    RProtoBuf = [ pkgconfig ];
-    RPushbullet = [ which ];
-    RSpectra = [ libiconv ];
-    RcppArmadillo = [ libiconv ];
-    RcppEigen = [ libiconv ];
-    Rpoppler = [ pkgconfig poppler.dev ];
-    Rsymphony = [ pkgconfig doxygen graphviz subversion ];
-    Rtsne = [ libiconv ];
-    SparseM = lib.optionals stdenv.isDarwin [ libiconv ];
-    VariantAnnotation = [ curl.dev ];
-    XML = [ pkgconfig ];
-    acepack = [ libiconv ];
-    ade4 = [ libiconv ];
-    adimpro = [ which xorg.xdpyinfo ];
-    affyPLM = [ libiconv ];
-    ape = [ libiconv ];
-    biglm = [ libiconv ];
-    cairoDevice = [ pkgconfig ];
-    chebpol = [ pkgconfig ];
-    cluster = [ libiconv ];
-    edgeR = [ libiconv ];
-    expm = [ libiconv ];
-    fftw = [ pkgconfig ];
-    gam = lib.optionals stdenv.isDarwin [ libiconv ];
-    gdtools = [ pkgconfig ];
-    genefilter = [ libiconv ];
-    glmnet = [ libiconv ];
-    gridGraphics = [ which ];
-    gsubfn = [ flock xorg.xdpyinfo x11 ];
-    hexbin = [ libiconv ];
-    igraph = [ libiconv ];
-    impute = [ libiconv ];
-    irlba = [ libiconv ];
+    HilbertVisGUI = [ gtkmm2.dev gnumake ];
+    Rpoppler = [  poppler.dev ];
+    Rsymphony = [  doxygen graphviz subversion ];
+    SparseM = lib.optionals stdenv.isDarwin [  ];
+    adimpro = [ xorg.xdpyinfo ];
+    gsubfn = [ xorg.xdpyinfo x11 ];
     jqr = [ jq.lib ];
-    kernlab = [ libiconv ];
-    kza = [ pkgconfig ];
-    magick = [ pkgconfig ];
-    mclust = [ libiconv ];
-    mgcv = [ libiconv ];
-    minqa = [ libiconv ];
-    mnormt = [ libiconv ];
-    mvtnorm = [ libiconv ];
-    mwaved = [ pkgconfig ];
-    mzR = [ netcdf zlib.dev ];
-    nat = [ which ];
-    nat_templatebrains = [ which ];
-    nleqslv = [ libiconv ];
-    nlme = [ libiconv ];
-    nnls = [ libiconv ];
-    odbc = [ pkgconfig ];
-    oligo = [ libiconv ];
-    openssl = [ pkgconfig ];
-    pan = [ libiconv ];
+    mzR = [ netcdf ];
     pbdZMQ = lib.optionals stdenv.isDarwin [ darwin.binutils ];
-    pcaPP = [ libiconv ];
-    phangorn = [ libiconv ];
-    preprocessCore = [ libiconv ];
-    qpdf = [ libjpeg.dev zlib.dev ];
+    qpdf = [ libjpeg.dev ];
     qtbase = [ cmake perl ];
     qtpaint = [ cmake ];
-    quadprog = [ libiconv ];
-    quantreg = lib.optionals stdenv.isDarwin [ libiconv ];
-    rPython = [ which ];
-    randomForest = [ libiconv ];
-    rggobi = [ pkgconfig ];
     rgl = [ libGLU libGLU.dev libGL xlibsWrapper ];
-    rmutil = lib.optionals stdenv.isDarwin [ libiconv ];
-    robustbase = lib.optionals stdenv.isDarwin [ libiconv ];
-    rrcov = [ libiconv ];
-    rsvg = [ librsvg.dev pkgconfig ];    
-    sitmo = [ libiconv ];
-    sf = [ pkgconfig sqlite.dev proj.dev ];
-    showtext = [ pkgconfig ];
-    spate = [ pkgconfig ];
-    statmod = [ libiconv ];
-    stringi = [ pkgconfig ];
-    sundialr = [ libiconv ];
-    svKomodo = [ which ];
-    sysfonts = [ pkgconfig ];
-    systemfonts = [ pkgconfig ];
+    rsvg = [ librsvg.dev  ];    
+    sf = [  sqlite.dev proj.dev ];
     tcltk2 = [ tcl tk ];
-    tesseract = [ pkgconfig ];
-    tikzDevice = [ which texlive.combined.scheme-medium ];
-    ucminf = [ libiconv ];
+    tikzDevice = [ texlive.combined.scheme-medium ];
   };
 
   packagesRequiringX = [
@@ -735,7 +569,6 @@ let
 
   # Packages which cannot be installed due to lack of dependencies or other reasons.
   brokenPackages = [
-    "bigGP"  # openmpi related
     "rpanel" # bwidget/Tk issue?
     "tesseract" # pdftoools, poppler ?
     "Rsymphony" # requires SYMPHONY, never packaged for nixpkgs
@@ -743,9 +576,6 @@ let
     "x12GUI" # depends on x12
     "HDCytoData" "cytofWorkflow" # download fails, depends on HDCytoData
     "rggobi" "explorase" "ggrisk" "PKgraph" # ggobi compile error
-    "gsubfn" # xvb-run can't find mcookie
-    "rae230aprobe"  "rae230bcdf"  "sqldf"  "miRNAtap"  "miRNAtap" "sqldf" "miRNAtap" "miRNAtap_db"# gsubfn fails
-    "HilbertVisGUI"
     # bad download: https://experimenthub.bioconductor.org/metadata/experimenthub.sqlit
     "DuoClustering2018" "FlowSorted_CordBloodCombined_450k" "FlowSorted_CordBlood_450k" "TabulaMurisData"
   ];
@@ -895,13 +725,13 @@ let
     # });
 
     openssl = old.openssl.overrideDerivation (attrs: {
-      PKGCONFIG_CFLAGS = "-I${pkgs.openssl.dev}/include";
-      PKGCONFIG_LIBS = "-Wl,-rpath,${pkgs.openssl.out}/lib -L${pkgs.openssl.out}/lib -lssl -lcrypto";
+      _CFLAGS = "-I${pkgs.openssl.dev}/include";
+      _LIBS = "-Wl,-rpath,${pkgs.openssl.out}/lib -L${pkgs.openssl.out}/lib -lssl -lcrypto";
     });
 
     websocket = old.websocket.overrideDerivation (attrs: {
-      PKGCONFIG_CFLAGS = "-I${pkgs.openssl.dev}/include";
-      PKGCONFIG_LIBS = "-Wl,-rpath,${pkgs.openssl.out}/lib -L${pkgs.openssl.out}/lib -lssl -lcrypto";
+      _CFLAGS = "-I${pkgs.openssl.dev}/include";
+      _LIBS = "-Wl,-rpath,${pkgs.openssl.out}/lib -L${pkgs.openssl.out}/lib -lssl -lcrypto";
     });
 
     Rserve = old.Rserve.overrideDerivation (attrs: {
@@ -1000,8 +830,8 @@ let
       preConfigure = ''
         patchShebangs configure
         '';
-      PKGCONFIG_CFLAGS = "-I${pkgs.openssl.dev}/include -I${pkgs.cyrus_sasl.dev}/include -I${pkgs.zlib.dev}/include";
-      PKGCONFIG_LIBS = "-Wl,-rpath,${pkgs.openssl.out}/lib -L${pkgs.openssl.out}/lib -L${pkgs.cyrus_sasl.out}/lib -L${pkgs.zlib.out}/lib -lssl -lcrypto -lsasl2 -lz";
+      _CFLAGS = "-I${pkgs.openssl.dev}/include -I${pkgs.cyrus_sasl.dev}/include -I${pkgs.zlib.dev}/include";
+      _LIBS = "-Wl,-rpath,${pkgs.openssl.out}/lib -L${pkgs.openssl.out}/lib -L${pkgs.cyrus_sasl.out}/lib -L${pkgs.zlib.out}/lib -lssl -lcrypto -lsasl2 -lz";
     });
 
     ps = old.ps.overrideDerivation (attrs: {
