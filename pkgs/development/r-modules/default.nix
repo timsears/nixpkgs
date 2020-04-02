@@ -32,7 +32,7 @@ let
     inherit doCheck requireX;
     propagatedBuildInputs = depends ++ ( with pkgs;
       (lib.optionals stdenv.isDarwin [ libiconv pkgconfig flock which ])
-      ++ [ gsl_1 fftw.dev liblapack gmp.dev gtk2.dev bzip2.dev
+      ++ [ liblapack gmp.dev gtk2.dev bzip2.dev
            lzma icu.dev pcre.dev zlib.dev curl.dev libpng libtiff libjpeg ]);
     nativeBuildInputs = depends;
     meta.homepage = mkHomepage (args // { inherit name; });
@@ -238,18 +238,21 @@ let
     # if R deps are missing for some reason, add them here. For example ...
     # vsn = with self; [ lattice ggplot2 ];
     tesseract = [ self.pdftools ];
+    TextForecast = [ self.Rpoppler ];
   };
 
   packagesWithNativeBuildInputs = with pkgs; {
     BayesXsrc = [ readline.dev ncurses ];
     Cairo = [ libtiff libjpeg cairo.dev x11 fontconfig.lib ];
     ChemmineOB = [ openbabel  ];
+    GLPK = [ glpk ];
     JavaGD = [ jdk ];
     LBLGXE = lib.optional stdenv.isDarwin llvmPackages.openmp;
     KRIG  = lib.optional stdenv.isDarwin llvmPackages.openmp;
     ModelMetrics = lib.optional stdenv.isDarwin llvmPackages.openmp;
     MSGFplus = [ jdk];
     PKI = [ openssl.dev ];
+    PythonInR = [ python ];
     R2SWF = [ freetype.dev ];
     RAppArmor = [ libapparmor ];
     RGtk2 = [ gtk2.dev ];
@@ -261,6 +264,7 @@ let
     RProtoBuf = [ protobuf ];
     RSclient = [ openssl.dev ];
     RVowpalWabbit = [ boost ];
+    rDEA = [ glpk] ;
     Rglpk = [ glpk ];
     Rhpc = [ openmpi ];
     Rhtslib = [ automake autoconf ] ;
@@ -295,9 +299,9 @@ let
     pbdMPI = [ openmpi ];
     pbdNCDF4 = [ netcdf ];
     pbdPROF = [ openmpi ];
-    pdftools = [ poppler libjpeg.dev];
     proj4 = [ proj.dev ];
     protolite = [ protobuf ];
+    qgg =  lib.optional stdenv.isDarwin llvmPackages.openmp;
     qtbase = [ qt4.dev ];
     qtpaint = [ qt4 ];
     rJava = [ jdk libzip ];
@@ -328,13 +332,29 @@ let
   packagesWithBuildInputs = with pkgs; {
     # sort -t '=' -k 2
     HilbertVisGUI = [ gtkmm2.dev gnumake ];
+    RAppArmor = [ libapparmor ]; 
+    Rcplex = [ cplex ]; 
+    RcppMeCab = [ mecab ];
+    RmecabKo = [ mecab ] ;
     Rpoppler = [  poppler.dev ];
+    RQuantLin = [ ]; # doesn't exist -> [ QuantLib ]; 
     Rsymphony = [  doxygen graphviz subversion ];
     SparseM = lib.optionals stdenv.isDarwin [  ];
+    SuperGauss = [ pkgs.fftw.dev] ;
+    TextForecast = [ poppler.dev ]; 
     adimpro = [ xorg.xdpyinfo ];
+    av = [ libav ];
+    baseflow = [ cargo ];
+    bioacoustics = [ cmake soxr ];
+    cld3 = [ protobuf ];
+    gifski = [ pkgs.gifski ];
+    gsl = [ pkgs.gsl];
+    fftw = [ pkgs.fftw.dev ]; #uses doubles. other variations needed?
     gsubfn = [ xorg.xdpyinfo x11 ];
     jqr = [ jq.lib ];
     mzR = [ netcdf ];
+    nandb = [libtiff.dev ];
+    pdftools = [ poppler libjpeg.dev];
     pbdZMQ = lib.optionals stdenv.isDarwin [ darwin.binutils ];
     qpdf = [ libjpeg.dev ];
     qtbase = [ cmake perl ];
@@ -342,10 +362,13 @@ let
     rgl = [ libGLU libGLU.dev libGL xlibsWrapper ];
     rsvg = [ librsvg.dev  ];    
     sf = [  sqlite.dev proj.dev ];
+    ssh = [ libssh ]; 
+    sodium = [ libsodium.dev ]; 
     tcltk2 = [ tcl tk ];
     tikzDevice = [ texlive.combined.scheme-medium ];
   };
 
+  
   packagesRequiringX = [
     "accrual"
     "ade4TkGUI"
@@ -519,6 +542,7 @@ let
     "rgl"
     "RHRV"
     "rich"
+    "rpanel"
     "RNCEP"
     "RQDA"
     "RSDA"
@@ -581,6 +605,9 @@ let
     "rggobi" "explorase" "ggrisk" "PKgraph" # ggobi compile error
     # bad download: https://experimenthub.bioconductor.org/metadata/experimenthub.sqlit
     "DuoClustering2018" "FlowSorted_CordBloodCombined_450k" "FlowSorted_CordBlood_450k" "TabulaMurisData"
+    "GUIDE" "HierO"
+    "GFORCE" # removed
+    "DriftBurstHypothesis" #compile error
   ];
 
   otherOverrides = old: new: {
@@ -647,6 +674,27 @@ let
       patches = [ ./patches/Rhdf5lib.patch ];
     });
 
+    fftw = old.fftw.overrideDerivation ( attrs: {
+      preConfigure = ''
+        #export CFLAGS=-I${pkgs.fftw.dev}/include
+        export LD_FLAGS=${pkgs.fftw.dev}/lib
+      '';
+    });
+
+    RmecabKo = old.fftw.overrideDerivation ( attrs: {
+      preConfigure = ''
+        #export CFLAGS=-I${pkgs.mecab}/include
+        export LD_FLAGS=${pkgs.mecab}/lib
+      '';
+    });
+
+    sodium = old.sodium.overrideDerivation ( attrs: {
+      preConfigure = ''
+        export INCLUDE_DIR=-I${pkgs.libsodium}/include
+        export LIB_DIR=${pkgs.libsodium}/lib
+      '';
+    });
+    
     rJava = old.rJava.overrideDerivation (attrs: {
       preConfigure = ''
         export JAVA_CPPFLAGS=-I${pkgs.jdk}/include/
@@ -790,9 +838,9 @@ let
 
     rpanel = old.rpanel.overrideDerivation (attrs: {
       preConfigure = ''
-        export TCLLIBPATH="${pkgs.bwidget}/lib/bwidget${pkgs.bwidget.version}"
+        export TCLLIBPATH=". ${pkgs.bwidget}/lib/${pkgs.bwidget.libPrefix}"
       '';
-      TCLLIBPATH = "${pkgs.bwidget}/lib/bwidget${pkgs.bwidget.version}";
+      #TCLLIBPATH="${pkgs.bwidget}/lib/${pkgs.bwidget.libPrefix}";
     });
 
     RPostgres = old.RPostgres.overrideDerivation (attrs: {

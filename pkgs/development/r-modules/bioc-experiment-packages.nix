@@ -246,7 +246,7 @@ in with self; {
   curatedBladderData = derive2 { name="curatedBladderData"; version="1.22.0"; sha256="0pn3vsllrxpppzh5sv2nw3bqdhki3mn8iyssdklgghanlibmjdk0"; depends=[affy]; };
   curatedBreastData = derive2 { name="curatedBreastData"; version="2.14.0"; sha256="1mvf2cxvqa68vxiq3wxbq8xpk1yd5x1qyq9n1lrh34chnizmm5zi"; depends=[Biobase BiocStyle ggplot2 impute XML]; };
   curatedCRCData = derive2 { name="curatedCRCData"; version="2.18.0"; sha256="068i4clz4v9frf3f8s42asahl814a73fidsdf53bwfizvmjgqdbs"; depends=[BiocGenerics nlme]; };
-  curatedMetagenomicData = derive2 { name="curatedMetagenomicData"; version="1.16.0"; sha256="0087z3dda9pjc4s2slw57x5fv9mllqyrpmpkagrs3v9pw6b7x7my"; depends=[AnnotationHub Biobase dplyr ExperimentHub magrittr S4Vectors tidyr]; };
+  curatedMetagenomicData = derive2 { name="curatedMetagenomicData"; version="1.16.1"; sha256="1kykcm8kz1jw9fybryk7sclsd54gls34b9sm5hb4w9rqzk02v6da"; depends=[AnnotationHub Biobase dplyr ExperimentHub magrittr S4Vectors tidyr]; };
   curatedOvarianData = derive2 { name="curatedOvarianData"; version="1.24.0"; sha256="1gn5p2hd3inafh45bjniskhya6nyja9birg7hgxmr5mi5g95fc4s"; depends=[affy BiocGenerics]; };
   curatedTCGAData = derive2 { name="curatedTCGAData"; version="1.8.1"; sha256="0r579scg4f5hfd99wfpvgv62g0h57sc3w118lqgw8g3xhpbxnhcw"; depends=[AnnotationHub ExperimentHub HDF5Array MultiAssayExperiment S4Vectors SummarizedExperiment]; };
   davidTiling = derive2 { name="davidTiling"; version="1.26.0"; sha256="1qidyhjlkhn67llcmwx1wswyr0dm57ydzgwv9fz21mj8xmsc343l"; depends=[Biobase GO_db tilingArray]; };
